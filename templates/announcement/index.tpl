@@ -24,7 +24,7 @@
 {iterate from=announcements item=announcement}
 	<tr class="title">
 	{if $announcement->getTypeId()}
-		<td class="title"><h4>{$announcement->getAnnouncementTypeName()|escape}: {$announcement->getLocalizedTitle()|escape}</h4></td>
+		<td class="title"><h4><span style="font-style: italic; color: #616265;">{$announcement->getAnnouncementTypeName()|escape}:</span> {$announcement->getLocalizedTitle()|escape}</h4></td>
 	{else}
 		<td class="title"><h4>{$announcement->getLocalizedTitle()|escape}</h4></td>
 	{/if}

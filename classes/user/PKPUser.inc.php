@@ -388,6 +388,14 @@ class PKPUser extends DataObject {
 		return $this->getLocalizedBiography();
 	}
 
+  function getTitleBefore() {
+		return $this->getData('titleBefore');
+	}
+  
+  function getTitleAfter() {
+		return $this->getData('titleAfter');
+	}
+
 	/**
 	 * Get user biography.
 	 * @param $locale string
@@ -404,6 +412,14 @@ class PKPUser extends DataObject {
 	 */
 	function setBiography($biography, $locale) {
 		return $this->setData('biography', $biography, $locale);
+	}
+  
+  function setTitleBefore($titleBefore) {
+		return $this->setData('titleBefore', $titleBefore);
+	}
+  
+  function setTitleAfter($titleAfter) {
+		return $this->setData('titleAfter', $titleAfter);
 	}
 
 	/**
@@ -621,15 +637,17 @@ class PKPUser extends DataObject {
 	 * @return string
 	 */
 	function getFullName($lastFirst = false) {
+    $titleBefore = $this->getData('titleBefore');
 		$salutation = $this->getData('salutation');
 		$firstName = $this->getData('firstName');
 		$middleName = $this->getData('middleName');
 		$lastName = $this->getData('lastName');
 		$suffix = $this->getData('suffix');
+    $titleAfter = $this->getData('titleAfter');
 		if ($lastFirst) {
 			return "$lastName, " . ($salutation != ''?"$salutation ":'') . "$firstName" . ($middleName != ''?" $middleName":'');
 		} else {
-			return ($salutation != ''?"$salutation ":'') . "$firstName " . ($middleName != ''?"$middleName ":'') . $lastName . ($suffix != ''?", $suffix":'');
+			return ($titleBefore != ''?"$titleBefore ":'') . ($salutation != ''?"$salutation ":'') . "$firstName " . ($middleName != ''?"$middleName ":'') . $lastName . ($suffix != ''?", $suffix":'') . ($titleAfter != ''?", $titleAfter":'');
 		}
 	}
 

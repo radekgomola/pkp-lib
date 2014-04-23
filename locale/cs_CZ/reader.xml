@@ -36,7 +36,7 @@
 	<message key="comments.replies">Odpovědi</message>
 	<message key="comments.title">Titul</message>
 	<message key="comments.viewAllComments">Zobrazit všechny komentáře</message>
-	<message key="reader.fullText">Full Text:</message>
+	<message key="reader.fullText">Plný Text:</message>
 	<message key="rt.addComment">Přidat komentář</message>
 	<message key="rt.admin.configuration">Konfigurace</message>
 	<message key="rt.admin.contexts.confirmDelete">Jste si jistý, že chcete smazat tento Kontext a všechna související vyhledávání?</message>
@@ -73,6 +73,7 @@
 	<message key="rt.admin.searches.edit.editSearch">Upravit vyhledávání</message>
 	<message key="rt.admin.selectedVersion">Související položky</message>
 	<message key="rt.admin.settings.abstract">Abstrakt (představuje abstrakt položky).</message>
+  <message key="rt.admin.settings.viewReviewPolicy">prohlédnout pravidla pro recenze</message>
 	<message key="rt.admin.settings.authorBio">O autorovi (zobrazí biografické údaje, které o sobě poskytl autor).</message>
 	<message key="rt.admin.settings.captureCite">Jak citovat položku (poskytuje bibliografické podrobnosti pro položku).</message>
 	<message key="rt.admin.settings.defineTerms">Vyhledat pojmy (umožňuje čtenáři odeslat dvojklikem jakékoliv slovo v položce do slovníku).</message>

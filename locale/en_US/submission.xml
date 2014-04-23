@@ -397,4 +397,6 @@
 	<!-- Submission file upload form elements -->
 	<message key="submission.form.name">Give this file a helpful name</message>
 	<message key="submission.form.replaceExisting">Replacing an Existing File?</message>
+  <message key="references.more">Show references</message>
+<message key="references.less">Hide references</message>
 </locale>

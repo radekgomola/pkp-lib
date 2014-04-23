@@ -23,8 +23,25 @@
 	<link rel="stylesheet" href="{$baseUrl}/styles/compiled.css" type="text/css" />
 	<link rel="stylesheet" href="{$baseUrl}/styles/help.css" type="text/css" />
 
-	{foreach from=$stylesheets item=cssUrl}
-		<link rel="stylesheet" href="{$cssUrl}" type="text/css" />
+	<!--použitelné pouze pro muni press-->
+  {foreach from=$stylesheets item=cssUrl}
+    
+    {if $currentJournal} 
+       {if $currentJournal->getSetting('useMuniStyle')}
+          {if $cssUrl|strstr:"sitestyle.css"}
+            <link rel="stylesheet" href="{$cssUrl}" type="text/css" />
+          {/if}
+       {else}
+        {if $cssUrl|strstr:"sitestyle.css"}
+        {else}
+		      <link rel="stylesheet" href="{$cssUrl}" type="text/css" />
+        {/if}
+      {/if}
+    {else}
+      {if $cssUrl|strstr:"sitestyle.css"}
+        <link rel="stylesheet" href="{$cssUrl}" type="text/css" />
+      {/if}
+    {/if}
 	{/foreach}
 
 	<!-- Base Jquery -->

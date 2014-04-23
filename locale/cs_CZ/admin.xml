@@ -41,6 +41,7 @@
 	<message key="admin.languages.reload">Znovu načíst lokalizace</message>
 	<message key="admin.languages.uninstall">Odinstalovat lokalizaci</message>
 	<message key="admin.phpInfo">Rozšířené informace o PHP</message>
+  <message key="admin.scheduledTask">Naplánovaný úkol</message>
 	<message key="admin.saveSystemConfig">Uložit konfiguraci</message>
 	<message key="admin.server.apacheVersion">Verze Apache</message>
 	<message key="admin.server.dbDriver">Ovladač databáze</message>
@@ -49,6 +50,7 @@
 	<message key="admin.serverInformation">Informace o serveru</message>
 	<message key="admin.server.phpVersion">Verze PHP</message>
 	<message key="admin.server.platform">Platforma OS</message>
+  <message key="admin.settings">Nastavení</message>
 	<message key="admin.settings.aboutDescription">O popisu stránky</message>
 	<message key="admin.settings.contactEmail">E-mail hlavní kontaktní osoby</message>
 	<message key="admin.settings.contactName">Jméno hlavní kontaktní osoby</message>
@@ -65,10 +67,12 @@
 	<message key="admin.settings.siteLanguage">Jazyk stránky</message>
 	<message key="admin.settings.siteStyleSheetInvalid">Neplatný formát stylu stránky. Podporovaný formát je .css.</message>
 	<message key="admin.settings.siteStyleSheet">Styl stránky</message>
+  <message key="admin.settings.siteTheme">Vzhled stránek</message>
 	<message key="admin.settings.siteTitle">Název stránky</message>
 	<message key="admin.siteAdmin">Administrace internetové stránky</message>
 	<message key="admin.siteManagement">Správa stránky</message>
 	<message key="admin.siteSettings">Nastavení stránek</message>
+  <message key="admin.siteSetup">Nastavení stránky</message>
 	<message key="admin.systemConfigFileReadError"><![CDATA[Konfigurační soubor <tt>config.inc.php</tt> neexistuje, není čitelný nebo je neplatný.]]></message>
 	<message key="admin.systemInformation">Systémové informace</message>
 	<message key="admin.versionBuild">Build</message>
@@ -84,4 +88,9 @@
 	<message key="admin.version.updateAvailable">Je dostupná aktualizovaná verze systému</message>
 	<message key="admin.version.upToDate">Používáte nejaktuálnější verzi systému</message>
 	<message key="admin.version">Verze</message>
+  
+  <message key="admin.fileLoader.wrongBasePathLocation">Cesta {$path} musí vést do veřejné složky se soubory</message>
+	<message key="admin.fileLoader.pathNotAccessible">Složka {$path} není adresář nebo jej nelze číst.</message>
+	<message key="admin.fileLoader.moveFileFailed">soubor {$filename} nemohl být přesunut z {$currentFilePath} do {$destinationPath}</message>
+	<message key="admin.fileLoader">Načtení souboru</message>
 </locale>

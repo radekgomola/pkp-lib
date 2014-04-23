@@ -19,6 +19,10 @@
 </div><!-- content -->
 </div><!-- main -->
 </div><!-- body -->
+{if !$currentJournal}
+
+{include file="common/footer_nakl.tpl"}
+{/if}
 
 {get_debug_info}
 {if $enableDebugStats}{include file=$pqpTemplate}{/if}

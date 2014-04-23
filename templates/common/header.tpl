@@ -8,6 +8,16 @@
  * Common site header.
  *}
 {strip}
+<!-- vytváří záplatu pro chybu menu, kdy se nezobrazuje správně nadpis-->
+{if $pageTitle == "common.openJournalSystems"}
+{if $requestedPage=="user"}
+  {assign var=pageTitle value='user.register'}
+{elseif $requestedPage=="issue"}
+{assign var=pageTitle value='journal.currentIssue'}
+{/if}
+{/if}
+<!--jenom po sem-->
+
 {if !$pageTitleTranslated}{translate|assign:"pageTitleTranslated" key=$pageTitle}{/if}
 {if $pageCrumbTitle}
 	{translate|assign:"pageCrumbTitleTranslated" key=$pageCrumbTitle}
@@ -20,7 +30,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset={$defaultCharset|escape}" />
-	<title>{$pageTitleTranslated}</title>
+	<title>{$pageTitleTranslated|strip_tags:true}</title>
 	<meta name="description" content="{$metaSearchDescription|escape}" />
 	<meta name="keywords" content="{$metaSearchKeywords|escape}" />
 	<meta name="generator" content="{$applicationName} {$currentVersionString|escape}" />
@@ -30,7 +40,8 @@
 	<link rel="stylesheet" href="{$baseUrl}/lib/pkp/styles/common.css" type="text/css" />
 	<link rel="stylesheet" href="{$baseUrl}/styles/common.css" type="text/css" />
 	<link rel="stylesheet" href="{$baseUrl}/styles/compiled.css" type="text/css" />
-
+  <link rel="stylesheet" href="{$baseUrl}/styles/pdfView.css" type="text/css" />
+  
 	<!-- Base Jquery -->
 	{if $allowCDN}<script type="text/javascript" src="//www.google.com/jsapi"></script>
 		<script type="text/javascript">{literal}
@@ -52,13 +63,34 @@
 
 	{call_hook|assign:"leftSidebarCode" name="Templates::Common::LeftSidebar"}
 	{call_hook|assign:"rightSidebarCode" name="Templates::Common::RightSidebar"}
-	{if $leftSidebarCode || $rightSidebarCode}<link rel="stylesheet" href="{$baseUrl}/styles/sidebar.css" type="text/css" />{/if}
-	{if $leftSidebarCode}<link rel="stylesheet" href="{$baseUrl}/styles/leftSidebar.css" type="text/css" />{/if}
-	{if $rightSidebarCode}<link rel="stylesheet" href="{$baseUrl}/styles/rightSidebar.css" type="text/css" />{/if}
-	{if $leftSidebarCode && $rightSidebarCode}<link rel="stylesheet" href="{$baseUrl}/styles/bothSidebars.css" type="text/css" />{/if}
-
-	{foreach from=$stylesheets item=cssUrl}
-		<link rel="stylesheet" href="{$cssUrl}" type="text/css" />
+	
+  <!-- upravuji používání korporátního designu. ve chvíli kdy je použit korporátní design, tak není povolen levý blok -->
+  {if $leftSidebarCode || $rightSidebarCode}<link rel="stylesheet" href="{$baseUrl}/styles/sidebar.css" type="text/css" />{/if}
+  {if $rightSidebarCode}<link rel="stylesheet" href="{$baseUrl}/styles/rightSidebar.css" type="text/css" />{/if}
+  {if $currentJournal}
+  	{if !$currentJournal->getSetting('useMuniStyle') && $leftSidebarCode}<link rel="stylesheet" href="{$baseUrl}/styles/leftSidebar.css" type="text/css" />{/if}
+  	{if !$currentJournal->getSetting('useMuniStyle') && $leftSidebarCode && $rightSidebarCode}<link rel="stylesheet" href="{$baseUrl}/styles/bothSidebars.css" type="text/css" />{/if}
+  {/if}
+	
+  <!--použitelné pouze pro muni press. Upravuje to zapínání a vypínání korporátního designu-->
+  {foreach from=$stylesheets item=cssUrl}
+    
+    {if $currentJournal} 
+       {if $currentJournal->getSetting('useMuniStyle')}
+          {if $cssUrl|strstr:"sitestyle.css"}
+            <link rel="stylesheet" href="{$cssUrl}" type="text/css" />
+          {/if}
+       {else}
+        {if $cssUrl|strstr:"sitestyle.css"}
+        {else}
+		      <link rel="stylesheet" href="{$cssUrl}" type="text/css" />
+        {/if}
+      {/if}
+    {else}
+      {if $cssUrl|strstr:"sitestyle.css"}
+        <link rel="stylesheet" href="{$cssUrl}" type="text/css" />
+      {/if}
+    {/if}
 	{/foreach}
 
 	<!-- Default global locale keys for JavaScript -->
@@ -135,9 +167,13 @@
 
 <div id="header">
 <div id="headerTitle">
+<!--přídán odkaz v hlavičce a upraveno zobrazování loga-->
+<a href="{url page="index"}" class="header_link" style="text-decoration:none; outline:none;">
 <h1>
 {if $displayPageHeaderLogo && is_array($displayPageHeaderLogo)}
+<div class="header_logo">
 	<img src="{$publicFilesDir}/{$displayPageHeaderLogo.uploadName|escape:"url"}" width="{$displayPageHeaderLogo.width|escape}" height="{$displayPageHeaderLogo.height|escape}" {if $displayPageHeaderLogoAltText != ''}alt="{$displayPageHeaderLogoAltText|escape}"{else}alt="{translate key="common.pageHeaderLogo.altText"}"{/if} />
+</div>
 {/if}
 {if $displayPageHeaderTitle && is_array($displayPageHeaderTitle)}
 	<img src="{$publicFilesDir}/{$displayPageHeaderTitle.uploadName|escape:"url"}" width="{$displayPageHeaderTitle.width|escape}" height="{$displayPageHeaderTitle.height|escape}" {if $displayPageHeaderTitleAltText != ''}alt="{$displayPageHeaderTitleAltText|escape}"{else}alt="{translate key="common.pageHeader.altText"}"{/if} />
@@ -148,40 +184,54 @@
 {elseif $siteTitle}
 	{$siteTitle}
 {else}
-	{$applicationName}
+	{$siteTitle}
 {/if}
 </h1>
+</a>
 </div>
 </div>
 
 <div id="body">
 
-{if $leftSidebarCode || $rightSidebarCode}
-	<div id="sidebar">
-		{if $leftSidebarCode}
-			<div id="leftSidebar">
-				{$leftSidebarCode}
-			</div>
-		{/if}
-		{if $rightSidebarCode}
+<!-- upraveno aby se nezobrazoval levý blok ve chvíli, kdy jej někdo použije s korporátním designem-->
+{if $currentJournal}
+  	<div id="sidebar"> 
+      {if $rightSidebarCode}   
+  			<div id="rightSidebar">
+  				{$rightSidebarCode}
+  			</div>
+      {/if}
+      {if !$currentJournal->getSetting('useMuniStyle') && $leftSidebarCode}
+        <div id="leftSidebar">
+    			{$leftSidebarCode}
+    		</div>
+      {/if}
+  	</div>
+{else}
+  {if $rightSidebarCode}
+    <div id="sidebar">    
 			<div id="rightSidebar">
 				{$rightSidebarCode}
+        {include file="nove_pridane/blok_odkazy.tpl"}
 			</div>
-		{/if}
-	</div>
+  	</div>
+  {/if}
 {/if}
 
 <div id="main">
-{include file="common/navbar.tpl"}
+{include file="common/navbar2.tpl"}
 
 {include file="common/breadcrumbs.tpl"}
-
+<div class="headTitle">
 <h2>{$pageTitleTranslated}</h2>
 
 {if $pageSubtitle && !$pageSubtitleTranslated}{translate|assign:"pageSubtitleTranslated" key=$pageSubtitle}{/if}
+</div>
+<div id="content">
 {if $pageSubtitleTranslated}
 	<h3>{$pageSubtitleTranslated}</h3>
+  <br />
 {/if}
 
-<div id="content">
+
 

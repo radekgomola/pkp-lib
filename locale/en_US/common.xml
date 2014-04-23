@@ -13,7 +13,7 @@
   -->
 
 <locale name="en_US" full_name = "English">
-	<message key="about.aboutSite">About the Site</message>
+	<message key="about.aboutSite">About</message>
 	<message key="about.contact">Contact</message>
 	<message key="about.contact.email">Email</message>
 	<message key="about.contact.fax">Fax</message>
@@ -395,4 +395,6 @@
 	<!-- Common -->
 	<message key="grid.action.downloadFile">Download this file</message>
 	
+  
+  <message key="common.readMore">read more...</message>
 </locale>
