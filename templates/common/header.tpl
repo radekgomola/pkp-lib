@@ -41,6 +41,7 @@
 	<link rel="stylesheet" href="{$baseUrl}/styles/common.css" type="text/css" />
 	<link rel="stylesheet" href="{$baseUrl}/styles/compiled.css" type="text/css" />
   <link rel="stylesheet" href="{$baseUrl}/styles/pdfView.css" type="text/css" />
+  <link rel="stylesheet" href="{$baseUrl}/styles/grafika.css" type="text/css" />
   
 	<!-- Base Jquery -->
 	{if $allowCDN}<script type="text/javascript" src="//www.google.com/jsapi"></script>
@@ -195,15 +196,21 @@
 
 <!-- upraveno aby se nezobrazoval levý blok ve chvíli, kdy jej někdo použije s korporátním designem-->
 {if $currentJournal}
-  	<div id="sidebar"> 
+  	<div id="sidebar">
+      {assign var=blok value="0"} 
       {if $rightSidebarCode}   
   			<div id="rightSidebar">
   				{$rightSidebarCode}
+          {include file="nove_pridane/blok_jmc.tpl"}
+          {assign var=blok value="1"}
   			</div>
       {/if}
       {if !$currentJournal->getSetting('useMuniStyle') && $leftSidebarCode}
         <div id="leftSidebar">
     			{$leftSidebarCode}
+          {if ! blok=="1"}
+          {include file="nove_pridane/blok_jmc.tpl"}
+          {/if}
     		</div>
       {/if}
   	</div>

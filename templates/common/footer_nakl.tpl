@@ -4,11 +4,13 @@
   
 <div class="footer" style="padding-top:15px;">
   <div style="float:left; padding-right:20px;">
-    <img src="https://journals.muni.cz/images/mu_logo_small.png" alt=""/>
+    <a href="{translate key='footer.muni.link'}" title="{translate key='footer.muni'}" target="_blank">
+      <img src="https://journals.muni.cz/images/mu_logo_small.png" alt="" class="link_img"/>
+    </a>
   </div>
   <div style="float:right; padding-left:5px;">
     <a href="{translate key='footer.uvt.link'}" title="{translate key='footer.uvt'}" target="_blank">
-      <img src="https://journals.muni.cz/images/uvt_logo.png" alt="{translate key='footer.uvt'}"/>
+      <img src="https://journals.muni.cz/images/uvt_logo.png" alt="{translate key='footer.uvt'}" class="link_img"/>
     </a>
   </div> 
   <div class="footer_text">
