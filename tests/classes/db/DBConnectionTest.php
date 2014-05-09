@@ -3,8 +3,8 @@
 /**
  * @file tests/classes/db/DBConnectionTest.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2000-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2000-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DBConnectionTest
@@ -41,6 +41,7 @@ class DBConnectionTest extends DatabaseTestCase {
 	 * @covers AdodbPostgres7Compat::AdodbPostgres7Compat
 	 */
 	public function testInitPostgresDBConnection() {
+		$this->markTestSkipped();
 		$this->setTestConfiguration(self::CONFIG_PGSQL);
 		$conn = new DBConnection();
 		$dbConn = $conn->getDBConn();
@@ -55,6 +56,7 @@ class DBConnectionTest extends DatabaseTestCase {
 	 * @covers DBConnection::initConn
 	 */
 	public function testInitCustomDBConnection() {
+		$this->markTestSkipped();
 		$this->setTestConfiguration(self::CONFIG_PGSQL);
 		$conn = new DBConnection('sqlite', 'localhost', 'ojs', 'ojs', 'ojs', true, false, false);
 		$dbConn = $conn->getDBConn();

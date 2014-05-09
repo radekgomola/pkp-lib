@@ -3,8 +3,8 @@
 /**
  * @file tests/classes/security/authorization/PKPProcessAccessPolicyTest.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2000-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2000-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPProcessAccessPolicyTest
@@ -22,6 +22,7 @@ class PKPProcessAccessPolicyTest extends PolicyTestCase {
 	 * @covers PKPProcessAccessPolicy
 	 */
 	public function testPKPProcessAccessPolicy() {
+		$this->markTestSkipped();
 		// Generate a test process.
 		$processDao =& DAORegistry::getDAO('ProcessDAO');
 		$process =& $processDao->insertObject(PROCESS_TYPE_CITATION_CHECKING, 1);

@@ -2,8 +2,8 @@
 /**
  * @file tests/PKPTestHelper.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2000-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2000-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class TestHelper
@@ -11,6 +11,9 @@
  *
  * @brief Class that implements functionality common to all PKP test types.
  */
+
+/* Config backup file name */
+define('PKP_TEST_HELPER_BACKUP_CONFIG_FILE', Core::getBaseDir() . DIRECTORY_SEPARATOR . 'config.BACKUP.inc.php');
 
 abstract class PKPTestHelper {
 
@@ -59,6 +62,24 @@ abstract class PKPTestHelper {
 					$test->fail("Error while restoring $table: offending SQL is '$sql'");
 				}
 			}
+		}
+	}
+
+	/**
+	* Backup the config file.
+	*/
+	public static function backupConfigFile() {
+		$fileMgr = new FileManager();
+		$fileMgr->copyFile(CONFIG_FILE, PKP_TEST_HELPER_BACKUP_CONFIG_FILE);
+	}
+
+	/**
+	* Restore the config file, if any backup is present.
+	*/
+	public static function restoreConfigFile() {
+		$fileMgr = new FileManager();
+		if ($fileMgr->fileExists(PKP_TEST_HELPER_BACKUP_CONFIG_FILE)) {
+			$fileMgr->copyFile(PKP_TEST_HELPER_BACKUP_CONFIG_FILE, CONFIG_FILE);
 		}
 	}
 
