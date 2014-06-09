@@ -30,7 +30,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset={$defaultCharset|escape}" />
-	<title>{$pageTitleTranslated|strip_tags:true}</title>
+        
+        <title>{$pageTitleTranslated|strip_tags:true}</title>
 	<meta name="description" content="{$metaSearchDescription|escape}" />
 	<meta name="keywords" content="{$metaSearchKeywords|escape}" />
 	<meta name="generator" content="{$applicationName} {$currentVersionString|escape}" />
@@ -156,7 +157,8 @@
 </head>
 <body id="pkp-{$pageTitle|replace:'.':'-'}">
 <div id="container">
-
+    {translate|assign:"help" key="languages.help"}
+    <span id="{if $help == "cestina"}help_cz{else}help_en{/if}"></span>
 <div id="header">
 <div id="headerTitle">
 <!--přídán odkaz v hlavičce a upraveno zobrazování loga-->

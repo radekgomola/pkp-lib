@@ -82,6 +82,8 @@ if (self.blur) { self.focus(); }
 {/literal}
 
 <div id="container">
+    {translate|assign:"help" key="languages.help"}
+    <span id="{if $help == "cestina"}help_cz{else}help_en{/if}"></span>
 <body id="body" class="pkp-{$pageTitle|replace:'.':' pkp-'}">
 <div id="body">
 <div id="top"></div>
