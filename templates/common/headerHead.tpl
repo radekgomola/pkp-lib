@@ -18,7 +18,7 @@
 
 	<!-- Base Jquery -->
 	{if $allowCDN}
-		<script src="http://www.google.com/jsapi"></script>
+		<script src="https://www.google.com/jsapi"></script>
 		<script>{literal}
 			// Provide a local fallback if the CDN cannot be reached
 			if (typeof google == 'undefined') {
