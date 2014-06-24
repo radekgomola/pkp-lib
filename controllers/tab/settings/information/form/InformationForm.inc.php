@@ -24,7 +24,8 @@ class InformationForm extends ContextSettingsForm {
 		$settings = array(
 			'readerInformation' => 'string',
 			'authorInformation' => 'string',
-			'librarianInformation' => 'string'
+			'librarianInformation' => 'string',
+                        'informaceDistributori' => 'string'
 		);
 
 		parent::ContextSettingsForm($settings, 'controllers/tab/settings/information/form/informationForm.tpl', $wizardMode);
@@ -38,7 +39,7 @@ class InformationForm extends ContextSettingsForm {
 	 * @copydoc Form::getLocaleFieldNames()
 	 */
 	function getLocaleFieldNames() {
-		return array('readerInformation', 'authorInformation', 'librarianInformation');
+		return array('readerInformation', 'authorInformation', 'librarianInformation', 'informaceDistributori');
 	}
 }
 

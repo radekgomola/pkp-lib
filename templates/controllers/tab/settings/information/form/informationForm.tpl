@@ -33,6 +33,9 @@
 		{fbvFormSection label="manager.setup.information.forLibrarians"}
 			{fbvElement type="textarea" multilingual=true id="librarianInformation" value=$librarianInformation rich=true}
 		{/fbvFormSection}
+                {fbvFormSection label="manager.setup.information.proDistributory"}
+			{fbvElement type="textarea" multilingual=true id="informaceDistributori" value=$informaceDistributori rich=true}
+		{/fbvFormSection}
 	{/fbvFormArea}
 
 	{fbvFormButtons id="informationFormSubmit" submitText="common.save" hideCancel=true}
