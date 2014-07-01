@@ -203,7 +203,7 @@ class PKPAnnouncement extends DataObject {
 	 * @return date (YYYY-MM-DD)
 	 */
 	function getDatePosted() {
-		return date('Y-m-d', strtotime($this->getData('datePosted')));
+		return date('d. m. Y', strtotime($this->getData('datePosted')));
 	}
 
 	/**
