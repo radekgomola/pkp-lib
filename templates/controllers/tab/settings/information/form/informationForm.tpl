@@ -36,6 +36,12 @@
                 {fbvFormSection label="manager.setup.information.proDistributory"}
 			{fbvElement type="textarea" multilingual=true id="informaceDistributori" value=$informaceDistributori rich=true}
 		{/fbvFormSection}
+                {fbvFormSection label="manager.setup.information.proMedia"}
+			{fbvElement type="textarea" multilingual=true id="informaceMedia" value=$informaceMedia rich=true}
+		{/fbvFormSection}
+                {fbvFormSection label="manager.setup.information.keStazeni"}
+			{fbvElement type="textarea" multilingual=true id="informaceKeStazeni" value=$informaceKeStazeni rich=true}
+		{/fbvFormSection}
 	{/fbvFormArea}
 
 	{fbvFormButtons id="informationFormSubmit" submitText="common.save" hideCancel=true}

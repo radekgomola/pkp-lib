@@ -44,10 +44,10 @@
 			{fbvFormSection title="manager.announcements.form.title" for="title" required="true"}
 				{fbvElement type="text" multilingual="true" id="title" value=$title maxlength="255"}
 			{/fbvFormSection}
-			{fbvFormSection title="manager.announcements.form.descriptionShort" for="descriptionShort" required="true"}
+			{fbvFormSection title="manager.announcements.form.descriptionShort" for="descriptionShort" }
 				{fbvElement type="textarea" multilingual="true" id="descriptionShort" value=$descriptionShort label="manager.announcements.form.descriptionShortInstructions" rich=true height=$fbvStyles.height.SHORT}
 			{/fbvFormSection}
-			{fbvFormSection title="manager.announcements.form.description" for="description"}
+			{fbvFormSection title="manager.announcements.form.description" for="description" required="true"}
 				{fbvElement type="textarea" multilingual="true" id="description" value=$description label="manager.announcements.form.descriptionInstructions" rich=true}
 			{/fbvFormSection}
 			<script>
