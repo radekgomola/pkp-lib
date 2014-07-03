@@ -42,6 +42,9 @@
                 {fbvFormSection label="manager.setup.information.keStazeni"}
 			{fbvElement type="textarea" multilingual=true id="informaceKeStazeni" value=$informaceKeStazeni rich=true}
 		{/fbvFormSection}
+                {fbvFormSection label="manager.setup.information.doiCrossref"}
+			{fbvElement type="textarea" multilingual=true id="informaceDoiCrossref" value=$informaceDoiCrossref rich=true}
+		{/fbvFormSection}
 	{/fbvFormArea}
 
 	{fbvFormButtons id="informationFormSubmit" submitText="common.save" hideCancel=true}
