@@ -245,7 +245,7 @@ class Submission extends DataObject {
 	function getLocalizedAbstract() {
 		return $this->getLocalizedData('abstract');
 	}
-
+        
 	/**
 	 * Get abstract.
 	 * @param $locale
@@ -264,6 +264,31 @@ class Submission extends DataObject {
 		return $this->setData('abstract', $abstract, $locale);
 	}
 
+         /**
+	 * Get "localized" submission citace (if applicable).
+	 * @return string
+	 */
+	function getLocalizedCitace() {
+		return $this->getLocalizedData('citace');
+	}
+        
+        /**
+	 * Get citace.
+	 * @param $locale
+	 * @return string
+	 */
+	function getCitace($locale) {
+		return $this->getData('citace', $locale);
+	}
+
+	/**
+	 * Set citace.
+	 * @param citace string
+	 * @param $locale
+	 */
+	function setCitace($citace, $locale) {
+		return $this->setData('citace', $citace, $locale);
+	}
 	/**
 	 * Return the localized discipline
 	 * @return string
