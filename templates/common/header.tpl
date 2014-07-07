@@ -45,7 +45,7 @@
   <link rel="stylesheet" href="{$baseUrl}/styles/grafika.css" type="text/css" />
   
 	<!-- Base Jquery -->
-	{if $allowCDN}<script type="text/javascript" src="//www.google.com/jsapi"></script>
+	{if $allowCDN}<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 		<script type="text/javascript">{literal}
 			<!--
 			// Provide a local fallback if the CDN cannot be reached
@@ -170,7 +170,7 @@
 </div>
 {/if}
 {if $displayPageHeaderTitle && is_array($displayPageHeaderTitle)}
-	<img src="{$publicFilesDir}/{$displayPageHeaderTitle.uploadName|escape:"url"}" width="{$displayPageHeaderTitle.width|escape}" height="{$displayPageHeaderTitle.height|escape}" {if $displayPageHeaderTitleAltText != ''}alt="{$displayPageHeaderTitleAltText|escape}"{else}alt="{translate key="common.pageHeader.altText"}"{/if} />
+	<img src="{$publicFilesDir}/{$displayPageHeaderTitle.uploadName|escape:"url"}" style="display: inline" width="{$displayPageHeaderTitle.width|escape}" height="{$displayPageHeaderTitle.height|escape}" {if $displayPageHeaderTitleAltText != ''}alt="{$displayPageHeaderTitleAltText|escape}"{else}alt="{translate key="common.pageHeader.altText"}"{/if} />
 {elseif $displayPageHeaderTitle}
 	{$displayPageHeaderTitle}
 {elseif $alternatePageHeader}
