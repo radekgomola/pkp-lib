@@ -25,14 +25,14 @@ function confirmAction(url, msg) {
  * Open window displaying help.
  */
 function openHelp(url) {
-	window.open(url, 'Help', 'width=700,height=600,screenX=100,screenY=100,toolbar=0,scrollbars=1');
+	window.open(url, 'Help', 'width=880,height=600,screenX=100,screenY=100,toolbar=0,scrollbars=1');
 }
 
 /**
  * Open window displaying comments.
  */
 function openComments(url) {
-	window.open(url, 'Comments', 'width=700,height=600,screenX=100,screenY=100,toolbar=0,resizable=1,scrollbars=1');
+	window.open(url, 'Comments', 'width=880,height=600,screenX=100,screenY=100,toolbar=0,resizable=1,scrollbars=1');
 }
 
 /**
@@ -46,10 +46,10 @@ function openWindow(url) {
  * Open window for reading tools.
  */
 function openRTWindow(url) {
-	window.open(url, 'RT', 'width=700,height=500,screenX=100,screenY=100,toolbar=0,resizable=1,scrollbars=1');
+	window.open(url, 'RT', 'width=880,height=500,screenX=100,screenY=100,toolbar=0,resizable=1,scrollbars=1');
 }
 function openRTWindowWithToolbar(url) {
-	window.open(url, 'RT', 'width=700,height=500,screenX=100,screenY=100,toolbar=1,resizable=1,scrollbars=1');
+	window.open(url, 'RT', 'width=880,height=500,screenX=100,screenY=100,toolbar=1,resizable=1,scrollbars=1');
 }
 
 /**
