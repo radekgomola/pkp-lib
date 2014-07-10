@@ -162,8 +162,9 @@
 <div id="header">
 <div id="headerTitle">
 <!--přídán odkaz v hlavičce a upraveno zobrazování loga-->
-<a href="{url page="index"}" class="header_link" style="text-decoration:none; outline:none;">
 <h1>
+<a href="{url page="index"}" class="header_link" style="text-decoration:none; outline:none;">
+
 {if $displayPageHeaderLogo && is_array($displayPageHeaderLogo)}
 <div class="header_logo">
 	<img src="{$publicFilesDir}/{$displayPageHeaderLogo.uploadName|escape:"url"}" width="{$displayPageHeaderLogo.width|escape}" height="{$displayPageHeaderLogo.height|escape}" {if $displayPageHeaderLogoAltText != ''}alt="{$displayPageHeaderLogoAltText|escape}"{else}alt="{translate key="common.pageHeaderLogo.altText"}"{/if} />
@@ -180,8 +181,9 @@
 {else}
 	{$siteTitle}
 {/if}
-</h1>
+
 </a>
+</h1>
 </div>
 </div>
 
