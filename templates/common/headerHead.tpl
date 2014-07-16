@@ -74,7 +74,16 @@
 		{include file="common/minifiedScripts.tpl"}
 	{/if}
 
-	{$deprecatedJavascript}
+        <!-- fancy zoom -->
+        <script src="{$baseUrl}/lightboxy/FancyZoom_1.1/js-global/FancyZoom.js" type="text/javascript"></script>
+        <script src="{$baseUrl}/lightboxy/FancyZoom_1.1/js-global/FancyZoomHTML.js" type="text/javascript"></script>
+	
+        {*<link rel="stylesheet" href="css/milkbox/milkbox.css" media="screen" />
+        <script src="{$baseUrl}/lightboxy/milkbox-3.0.3/js/mootools-core.js"></script>
+        <script src="{$baseUrl}/lightboxy/milkbox-3.0.3/js/mootools-more.js"></script>
+        <script src="{$baseUrl}/lightboxy/milkbox-3.0.3/js/milkbox.js"></script>*}
+        
+        {$deprecatedJavascript}
 
 	{$deprecatedThemeStyles}
 
