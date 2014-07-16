@@ -74,15 +74,31 @@
 		{include file="common/minifiedScripts.tpl"}
 	{/if}
 
-        <!-- fancy zoom -->
+        {*<!-- fancy zoom -->
         <script src="{$baseUrl}/lightboxy/FancyZoom_1.1/js-global/FancyZoom.js" type="text/javascript"></script>
         <script src="{$baseUrl}/lightboxy/FancyZoom_1.1/js-global/FancyZoomHTML.js" type="text/javascript"></script>
-	
-        {*<link rel="stylesheet" href="css/milkbox/milkbox.css" media="screen" />
-        <script src="{$baseUrl}/lightboxy/milkbox-3.0.3/js/mootools-core.js"></script>
-        <script src="{$baseUrl}/lightboxy/milkbox-3.0.3/js/mootools-more.js"></script>
-        <script src="{$baseUrl}/lightboxy/milkbox-3.0.3/js/milkbox.js"></script>*}
-        
+      *}
+        <!--Highslide-->
+{*        <script type="text/javascript" src="{$baseUrl}/lightboxy/highslide/highslide/highslide.js"></script>*}
+        <script type="text/javascript" src="{$baseUrl}/lightboxy/highslide/highslide/highslide-full.js"></script>
+        <link rel="stylesheet" type="text/css" href="{$baseUrl}/lightboxy/highslide/highslide/highslide.css" />
+        <!--[if lt IE 7]>
+        <link rel="stylesheet" type="text/css" href="../highslide/highslide-ie6.css" />
+        <![endif]-->
+
+        {literal}
+            <script type="text/javascript">
+            //<![CDATA[
+            hs.registerOverlay({
+                    html: '<div class="closebutton" onclick="return hs.close(this)" title="Close"></div>',
+                    position: 'top right',
+                    fade: 2 // fading the semi-transparent overlay looks bad in IE
+            });
+
+            hs.wrapperClassName = 'borderless';
+            //]]>
+            </script>
+        {/literal}
         {$deprecatedJavascript}
 
 	{$deprecatedThemeStyles}

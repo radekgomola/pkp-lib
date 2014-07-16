@@ -11,7 +11,7 @@
 <html>
 {if !$pageTitleTranslated}{translate|assign:"pageTitleTranslated" key=$pageTitle}{/if}
 {include file="core:common/headerHead.tpl"}
-<body onload="setupZoom()">
+<body>
 	<script type="text/javascript">
 		// Initialise JS handler.
 		$(function() {ldelim}
