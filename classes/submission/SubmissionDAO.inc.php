@@ -61,11 +61,14 @@ class SubmissionDAO extends DAO {
 			'title', 'cleanTitle', 'abstract', 'prefix', 'subtitle',
 			'discipline', 'subjectClass', 'subject',
 			'coverageGeo', 'coverageChron', 'coverageSample',
-			'type', 'sponsor', 'source', 'rights'
+			'type', 'sponsor', 'source', 'rights', 
+                        'rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'dedikace',
+                        'bibliografickaCitace', 'poznamka', 'pocetStran', 'muPracoviste', 'urlOC', 'urlWeb'
+                        
 		);
 	}
 
-	/**
+       /**
 	 * Get a list of additional fields that do not have
 	 * dedicated accessors.
 	 * @return array

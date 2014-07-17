@@ -38,7 +38,7 @@ abstract class Submission extends DataObject {
 
 		parent::DataObject();
 	}
-
+        
 	/**
 	 * Get a public ID for this submission.
 	 * @param @literal $pubIdType string One of the NLM pub-id-type values or
@@ -619,6 +619,14 @@ abstract class Submission extends DataObject {
 		return $this->setData('type', $type, $locale);
 	}
 
+        /**
+	 * Return the localized rights
+	 * @return string
+	 */
+	function getLocalizedRights() {
+		return $this->getLocalizedData('rights');
+	}
+        
 	/**
 	 * Get rights.
 	 * @param $locale
@@ -636,7 +644,84 @@ abstract class Submission extends DataObject {
 	function setRights($rights, $locale) {
 		return $this->setData('rights', $rights, $locale);
 	}
+        
+        /**
+	 * Return the localized rights
+	 * @return string
+	 */
+	function getLocalizedRightsTyp() {
+		return $this->getLocalizedData('rightsTyp');
+	}
+        
+	/**
+	 * Get rights.
+	 * @param $locale
+	 * @return string
+	 */
+	function getRightsTyp($locale) {
+		return $this->getData('rightsTyp', $locale);
+	}
 
+	/**
+	 * Set rights.
+	 * @param $rights string
+	 * @param $locale
+	 */
+	function setRightsTyp($rightsTyp, $locale) {
+		return $this->setData('rightsTyp', $rightsTyp, $locale);
+	}
+
+        /**
+	 * Return the localized rights
+	 * @return string
+	 */
+	function getLocalizedRightsDrzitel() {
+		return $this->getLocalizedData('rightsDrzitel');
+	}
+        
+	/**
+	 * Get rights.
+	 * @param $locale
+	 * @return string
+	 */
+	function getRightsDrzitel($locale) {
+		return $this->getData('rightsDrzitel', $locale);
+	}
+
+	/**
+	 * Set rights.
+	 * @param $rights string
+	 * @param $locale
+	 */
+	function setRightsDrzitel($rightsDrzitel, $locale) {
+		return $this->setData('rightsDrzitel', $rightsDrzitel, $locale);
+	}
+        
+        /**
+	 * Return the localized rights
+	 * @return string
+	 */
+	function getLocalizedRightsTrvani() {
+		return $this->getLocalizedData('rightsTrvani');
+	}
+        
+	/**
+	 * Get rights.
+	 * @param $locale
+	 * @return string
+	 */
+	function getRightsTrvani($locale) {
+		return $this->getData('rightsTrvani', $locale);
+	}
+
+	/**
+	 * Set rights.
+	 * @param $rights string
+	 * @param $locale
+	 */
+	function setRightsTrvani($rightsTrvani, $locale) {
+		return $this->setData('rightsTrvani', $rightsTrvani, $locale);
+	}
 	/**
 	 * Get source.
 	 * @param $locale
@@ -655,6 +740,9 @@ abstract class Submission extends DataObject {
 		return $this->setData('source', $source, $locale);
 	}
 
+        function getLocalizedLanguage() {
+		return $this->getLocalizedData('language');
+	}
 	/**
 	 * Get language.
 	 * @return string
@@ -1116,7 +1204,178 @@ abstract class Submission extends DataObject {
 		return $this->SetData('datePublished', $datePublished);
 	}
 
+        /**
+	 * Vraci lokalizovaný počet stran
+	 * @return string
+	 */
+	function getLocalizedPocetStran() {
+		return $this->getLocalizedData('pocetStran');
+	}
+        /**
+	 * Vrací pocet stran
+	 * @return string
+	 */
+	function getPocetStran($locale) {
+		return $this->getData('pocetStran', $locale);
+        }
 
+	/**
+	 * Nastavuje pocet stran
+	 * @param $pocetStran string
+	 */
+	function setPocetStran($pocetStran, $locale) {
+		return $this->setData('pocetStran', $pocetStran, $locale);
+	}
+
+        /**
+	 * Vraci lokalizované pracoviště MU
+	 * @return string
+	 */
+	function getLocalizedMuPracoviste() {
+		return $this->getLocalizedData('muPracoviste');
+	}
+        /**
+	 * Vrací pracoviště MU
+	 * @return string
+	 */
+	function getMuPracoviste($locale) {
+		return $this->getData('muPracoviste', $locale);
+        }
+
+	/**
+	 * Nastavuje pracoviště MU
+	 * @param $muPracoviste string
+	 */
+	function setMuPracoviste($muPracoviste, $locale) {
+		return $this->setData('muPracoviste', $muPracoviste, $locale);
+	}
+        
+        
+        /**
+	 * Vraci lokalizovanou adresu OC
+	 * @return string
+	 */
+	function getLocalizedUrlOC() {
+		return $this->getLocalizedData('urlOC');
+	}
+        /**
+	 * Vrací url OC
+	 * @return string
+	 */
+	function getUrlOC($locale) {
+		return $this->getData('urlOC', $locale);
+        }
+
+	/**
+	 * Nastavuje url OC
+	 * @param $urlOC string
+	 */
+	function setUrlOC($urlOC) {
+		return $this->setData('urlOC', $urlOC, $locale);
+	}
+        
+          /**
+	 * Vraci lokalizovanou adresu webu
+	 * @return string
+	 */
+	function getLocalizedUrlWeb() {
+		return $this->getLocalizedData('urlWeb');
+	}
+        /**
+	 * Vrací url webu
+	 * @return string
+	 */
+	function getUrlWeb($locale) {
+		return $this->getData('urlWeb', $locale);
+        }
+
+	/**
+	 * Nastavuje url webu
+	 * @param $urlWeb string
+	 */
+	function setUrlWeb($urlWeb) {
+		return $this->setData('urlWeb', $urlWeb, $locale);
+	}
+        
+        /**
+	 * Vraci lokalizovanou bibliografickou citaci
+	 * @return string
+	 */
+	function getLocalizedBibliografickaCitace() {
+		return $this->getLocalizedData('bibliografickaCitace');
+	}
+
+	/**
+	 * Vrací bibliografickou citaci
+	 * @param $locale
+	 * @return string
+	 */
+	function getBibliografickaCitace($locale) {
+		return $this->getData('bibliografickaCitace', $locale);
+	}
+
+	/**
+	 * Nastavuje bibliografickou citaci
+	 * @param $bibliografickaCitace string
+	 * @param $locale
+	 */
+	function setBibliografickaCitace($bibliografickaCitace, $locale) {
+		return $this->setData('bibliografickaCitace', $bibliografickaCitace, $locale);
+	}
+        
+        /**
+	 * Vraci lokalizovanou poznámku
+	 * @return string
+	 */
+	function getLocalizedPoznamka() {
+		return $this->getLocalizedData('poznamka');
+	}
+
+	/**
+	 * Vrací poznámku
+	 * @param $locale
+	 * @return string
+	 */
+	function getPoznamka($locale) {
+		return $this->getData('poznamka', $locale);
+	}
+
+	/**
+	 * Nastavuje poznámku
+	 * @param $poznamka string
+	 * @param $locale
+	 */
+	function setPoznamka($poznamka, $locale) {
+		return $this->setData('poznamka', $poznamka, $locale);
+	}
+        
+        /**
+	 * Vraci lokalizovanou dedikaci
+	 * @return string
+	 */
+	function getLocalizedDedikace() {
+		return $this->getLocalizedData('dedikace');
+	}
+
+	/**
+	 * Vrací dedikaci
+	 * @param $locale
+	 * @return string
+	 */
+	function getDedikace($locale) {
+		return $this->getData('dedikace', $locale);
+	}
+
+	/**
+	 * Nastavuje dedikaci
+	 * @param $dedikace string
+	 * @param $locale
+	 */
+	function setDedikace($dedikace, $locale) {
+		return $this->setData('dedikace', $dedikace, $locale);
+	}
+        
+        
 	//
 	// Abstract methods.
 	//

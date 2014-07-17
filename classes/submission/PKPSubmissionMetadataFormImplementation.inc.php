@@ -72,8 +72,18 @@ class PKPSubmissionMetadataFormImplementation {
 				'type' => $submission->getType(null), // Localized
 				'source' =>$submission->getSource(null), // Localized
 				'rights' => $submission->getRights(null), // Localized
-				'citations' => $submission->getCitations()
-			);
+                                'rightsTyp' => $submission->getRightsTyp(null), // Localized
+                                'rightsDrzitel' => $submission->getRightsDrzitel(null), // Localized
+                                'rightsTrvani' => $submission->getRightsTrvani(null), // Localized
+				'citations' => $submission->getCitations(null),
+                                'pocetStran' => $submission->getPocetStran(null),
+                                'muPracoviste' => $submission->getMuPracoviste(null),
+                                'urlOC' => $submission->getUrlOC(null),
+                                'urlWeb' => $submission->getUrlWeb(null),
+                                'bibliografickaCitace' => $submission->getBibliografickaCitace(null), // Localized
+                                'poznamka' => $submission->getPoznamka(null), // Localized
+                                'dedikace' => $submission->getDedikace(null) // Localized
+			); 
 
 			foreach ($formData as $key => $data) {
 				$this->_parentForm->setData($key, $data);
@@ -105,7 +115,7 @@ class PKPSubmissionMetadataFormImplementation {
 	 */
 	function readInputData() {
 		// 'keywords' is a tagit catchall that contains an array of values for each keyword/locale combination on the form.
-		$userVars = array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights', 'keywords');
+		$userVars = array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights', 'rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'keywords', 'pocetStran', 'muPracoviste', 'urlOC', 'urlWeb', 'bibliografickaCitace', 'poznamka', 'dedikace');
 		$this->_parentForm->readUserVars($userVars);
 	}
 
@@ -114,7 +124,7 @@ class PKPSubmissionMetadataFormImplementation {
 	 * @return array
 	 */
 	function getLocaleFieldNames() {
-		return array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights');
+		return array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights','rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'bibliografickaCitace', 'poznamka', 'dedikace', 'pocetStran', 'muPracoviste', 'urlOC', 'urlWeb');
 	}
 
 	/**
@@ -137,9 +147,21 @@ class PKPSubmissionMetadataFormImplementation {
 		$submission->setType($this->_parentForm->getData('type'), null); // Localized
 		$submission->setSubjectClass($this->_parentForm->getData('subjectClass'), null); // Localized
 		$submission->setRights($this->_parentForm->getData('rights'), null); // Localized
+                $submission->setRightsTyp($this->_parentForm->getData('rightsTyp'), null); // Localized
+                $submission->setRightsDrzitel($this->_parentForm->getData('rightsDrzitel'), null); // Localized
+                $submission->setRightsTrvani($this->_parentForm->getData('rightsTrvani'), null); // Localized
 		$submission->setSource($this->_parentForm->getData('source'), null); // Localized
+                
+                $submission->setPocetStran($this->_parentForm->getData('pocetStran'), null);
+                $submission->setMuPracoviste($this->_parentForm->getData('muPracoviste'), null);
+                $submission->setUrlOC($this->_parentForm->getData('urlOC'), null);
+                $submission->setUrlWeb($this->_parentForm->getData('urlWeb'), null);
+                $submission->setBibliografickaCitace($this->_parentForm->getData('bibliografickaCitace'), null);
+                $submission->setPoznamka($this->_parentForm->getData('poznamka'), null);
+                $submission->setDedikace($this->_parentForm->getData('dedikace'), null);
 
-		// Save the submission
+
+        // Save the submission
 		$submissionDao->updateObject($submission);
 
 		// get the supported locale keys
