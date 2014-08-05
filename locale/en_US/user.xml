@@ -130,11 +130,11 @@ current password.<br /><br />Enter your email address below to reset your passwo
 	<message key="user.role.layoutEditor">Layout Editor</message>
 	<message key="user.role.layoutEditors">Layout Editors</message>
 	<message key="user.roles">Roles</message>
-	<message key="user.salutation">Salutation</message>
+	<message key="user.salutation">Title before name</message>
 	<message key="user.sendPassword">Confirmation</message>
 	<message key="user.sendPassword.description">Send me a confirmation email including my username and password</message>
 	<message key="user.signature">Signature</message>
-	<message key="user.suffix">Suffix</message>
+	<message key="user.suffix">Title after name</message>
 	<message key="user.title">Title</message>
 	<message key="user.url">URL</message>
 	<message key="user.userHome">User Home</message>

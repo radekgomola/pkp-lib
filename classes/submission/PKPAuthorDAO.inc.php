@@ -137,7 +137,7 @@ class PKPAuthorDAO extends DAO {
 		$author->setPrimaryContact($row['primary_contact']);
 		$author->setSequence($row['seq']);
 		$author->_setShowTitle($row['show_title']); // Dependent
-
+                $author->setSalutation($row['salutation']);
 		$this->getDataObjectSettings('author_settings', 'author_id', $row['author_id'], $author);
 
 		HookRegistry::call('AuthorDAO::_fromRow', array(&$author, &$row));
@@ -164,7 +164,7 @@ class PKPAuthorDAO extends DAO {
 		$author->setUserGroupId($row['user_group_id']);
 		$author->setPrimaryContact($row['primary_contact']);
 		$author->setSequence($row['seq']);
-
+                $author->setSalutation($row['salutation']);
 		$author->setAffiliation($row['affiliation_l'], $row['locale']);
 		$author->setAffiliation($row['affiliation_pl'], $row['primary_locale']);
 
@@ -205,9 +205,9 @@ class PKPAuthorDAO extends DAO {
 
 		$this->update(
 				'INSERT INTO authors
-				(submission_id, first_name, middle_name, last_name, suffix, country, email, url, user_group_id, primary_contact, seq)
+				(submission_id, first_name, middle_name, last_name, suffix, country, email, url, user_group_id, primary_contact, seq, salutation)
 				VALUES
-				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 				array(
 						(int) $author->getSubmissionId(),
 						$author->getFirstName(),
@@ -219,7 +219,8 @@ class PKPAuthorDAO extends DAO {
 						$author->getUrl(),
 						(int) $author->getUserGroupId(),
 						(int) $author->getPrimaryContact(),
-						(float) $author->getSequence()
+						(float) $author->getSequence(),
+                                                $author->getSalutation()
 				)
 		);
 
@@ -249,7 +250,8 @@ class PKPAuthorDAO extends DAO {
 					url = ?,
 					user_group_id = ?,
 					primary_contact = ?,
-					seq = ?
+					seq = ?,
+                                        salutation = ?,
 				WHERE	author_id = ?',
 				array(
 						$author->getFirstName(),
@@ -262,7 +264,8 @@ class PKPAuthorDAO extends DAO {
 						(int) $author->getUserGroupId(),
 						(int) $author->getPrimaryContact(),
 						(float) $author->getSequence(),
-						(int) $author->getId()
+						(int) $author->getId(),
+                                                $author->getSalutation(),
 				)
 		);
 		$this->updateLocaleFields($author);

@@ -97,7 +97,7 @@
 	<message key="user.role.siteAdmin">Administrátor stránky</message>
 	<message key="user.role.siteAdmins">Administrátoři stránky</message>
 	<message key="user.roles">Role</message>
-	<message key="user.salutation">Oslovení</message>
+	<message key="user.salutation">Titul před jménem</message>
 	<message key="user.sendPassword">Potvrzení</message>
 	<message key="user.sendPassword.description">Pošli mi e-mail s potvrzením obsahující mé uživatelské jméno a heslo</message>
 	<message key="user.signature">Podpis</message>

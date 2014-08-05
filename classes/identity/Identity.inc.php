@@ -40,7 +40,7 @@ class Identity extends DataObject {
 		$lastName = $this->getData('lastName');
 		$suffix = $this->getData('suffix');
 		if ($lastFirst) {
-			return "$lastName, " . ($salutation != ''?"$salutation ":'') . $firstName . ($middleName != ''?" $middleName":'');
+			return $lastName.", "  . $firstName . ($middleName != ''?" $middleName":'');
 		} else {
 			return ($salutation != ''?"$salutation ":'') . "$firstName " . ($middleName != ''?"$middleName ":'') . $lastName . ($suffix != ''?", $suffix":'');
 		}
