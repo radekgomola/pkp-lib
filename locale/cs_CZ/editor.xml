@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
+  <!-- * locale/cs_CZ/editor_CS.xml * * Copyright (c) 2014 Masaryk university * * Localization strings ( ). -->
+  <locale name="cs_CZ" full_name="Czech">
+    <message key="klic">česky</message>
+    <message key="editor.submissionLibrary.description">
+      <![CDATA[Nahrajte dokumenty, které se vztahují k recenznímu řízení a k publikaci tohoto rukopisu. Šablony mnohých z těchto dokumentů naleznete v <em>Knihovně dokumentů</em>.]]>
+    </message>
+    <message key="editor.review.notInitiated">Recenzní řízení zatím nebylo zahájeno.</message>
+    <message key="editor.submission.copyediting.personalMessageToUser">Zpráva uživateli</message>
+    <message key="editor.submission.externalReviewDescription">Chystáte se zahájit vnější recenzní řízení tohoto rukopisu. Soubory, které se vztahují k rukopisu, jsou vypsány níže a mohou být vybrány k recenzi.</message>
+    <message key="editor.submission.review.reviewFilesDescription">
+      <![CDATA[Tyto soubory lze odeslat do recenzního řízení během výběru <span class="pkp_help_title">recenzentů</span>]]>.</message>
+    <message key="editor.submission.fileAuditor.form.fileRequired">Je třeba vybrat alespoň jeden soubor, jemuž přiřadíte uživatele.</message>
+    <message key="editor.submission.fileAuditor.form.messageRequired">Je třeba zadat osobní vzkaz.</message>
+    <message key="editor.submission.fileAuditor.skipEmail">Nezasílat e-mailovou zprávu kontrolorovi</message>
+    <message key="editor.submission.fileAuditor.form.userRequired">Je třeba přiřadit uživatele.</message>
+    <message key="editor.submission.uploadSelectFiles">Nahrát / vybrat soubory</message>
+    <message key="editor.submission.revisions">Přepracované verze</message>
+    <message key="editor.submission.revisionsDescription">Zde se zobrazují přepracované verze souborů rukopisu. Ikona otevřené složky uvádí, kdo soubor nahrál.</message>
+    <message key="editor.submission.review.reviewersDescription">
+      <![CDATA[Volbou <em>+Přidat recenzenta</em> přizvete čtenáře k recenznímu řízení. Ikona zápisníku značí, že byl vložen posudek. Ten je následně po přečtení označen jako <em>Potvrzený</em>. Jakmile uplyne termín pro odevzdání posudků, recenzentům se pro připomenutí zobrazí ikona červené obálky.]]>
+    </message>
+    <message key="editor.submission.addReviewer">Přidat recenzenta</message>
+    <message key="editor.submission.fileList.includeAllStages">Zahrňte všechny soubory ze všech dostupných fází publikačního procesu.</message>
+    <message key="editor.submission.review.currentFiles">Aktuální posudky pro {$round}. kolo recenzního řízení</message>
+    <message key="editor.submission.returnToSimpleSearch">Návrat k jednoduchému vyhledávání</message>
+    <message key="editor.review.createReviewer">Vytvořit nového recenzenta</message>
+    <message key="editor.review.enrollReviewer.short">Zahrnout stávajícího uživatele</message>
+    <message key="editor.review.unassignReviewer">Zrušit přiřazení recenzenta</message>
+    <message key="editor.submissionReview.reviewType">Typ recenzního řízení</message>
+    <message key="editor.submissionReview.skipEmail">Nezasílat e-mailovou zprávu autorovi</message>
+    <message key="editor.submissionReview.open">Otevřít</message>
+    <message key="editor.submissionReview.blind">Anonymní (blind)</message>
+    <message key="editor.submissionReview.doubleBlind">Oboustranně anonymní (double-blind)</message>
+    <message key="editor.submissionReview.restrictFiles">Omezit přístup k souborům</message>
+    <message key="editor.submissionReview.restrictFiles.gridTitle">Dostupné soubory posudků</message>
+    <message key="editor.submissionReview.limitFiles">Správa dostupných souborů</message>
+    <message key="editor.submissionReview.limitFiles.link">Soubory</message>
+    <message key="editor.submissionReview.restrictFiles.gridDescription">V případě, že tomuto recenzentovi nepřiznáte celkový přístup ke všem uvedeným souborům, ujistěte se, že jsou zaškrtnuty všechny relevantní.</message>
+    <message key="editor.review.personalMessageToReviewer">E-mailová zpráva, která se zasílá recenzentovi</message>
+    <message key="editor.review.importantDates">Důležité termíny</message>
+    <message key="editor.review.uploadRevision">Nahrát přepracovanou verzi</message>
+    <message key="editor.review.NotifyAuthorAccept">Oznámit autorovi přijetí rukopisu:</message>
+    <message key="editor.review.NotifyAuthorDecline">Oznámit autorovi, že rukopis byl zamítnut:</message>
+    <message key="editor.review.NotifyAuthorRevisions">Oznámit autorovi, že je třeba odevzdat přepracovanou verzi:</message>
+    <message key="editor.review.NotifyAuthorResubmit">Oznámit autorovi, že je třeba odevzdat přepracovanou verzi, která se bude znovu posuzovat:</message>
+    <message key="editor.review.NotifyAuthorExternal">Oznámit autorovi rozhodnutí postoupit rukopis do vnějšího recenzního řízení:</message>
+    <message key="editor.review.personalMessageToAuthor">E-mailová zpráva, která se zasílá autorovi</message>
+    <message key="editor.review.dateAccepted">Termín přijímání posudků</message>
+    <message key="editor.review.noReviews">Nelze importovat žádné posudky</message>
+    <message key="editor.review.reminder">Upomenout recenzenta</message>
+    <message key="editor.review.thankReviewer">Poděkovat recenzentovi</message>
+    <message key="editor.review.reminderError">Odeslání připomínky se nezdařilo.</message>
+    <message key="editor.review.thankReviewerError">Odeslání poděkování se nezdařilo.</message>
+    <message key="editor.review.skipEmail">Nezasílat e-mailovou zprávu recenzentovi</message>
+    <message key="editor.review.sendReminder">Zaslat připomínku</message>
+    <message key="editor.review.reviewDueDate">Termín odevzdání posudku</message>
+    <message key="editor.review.reviewCompleted">Recenzní řízení dokončeno</message>
+    <message key="editor.review.reviewerComments">Komentáře recenzenta</message>
+    <message key="editor.review.days">Průměrná doba (dny)</message>
+    <message key="editor.review.mustSelect">Je třeba vybrat recenzenta</message>
+    <message key="editor.review.errorAddingReviewer">Přidání recenzenta se nezdařilo. Zkuste to prosím znovu.</message>
+    <message key="editor.review.errorDeletingReviewer">Odstranění recenzenta se nezdařilo. Zkuste to prosím znovu.</message>
+    <message key="editor.review.userGroupSelect">Přiřadit tohoto uživatele k této skupině recenzentů</message>
+    <message key="editor.review.unconsiderReviewText">Přejete si toto řízení označit jako ignorované? (Jeho historie zůstane zachována.)</message>
+    <message key="editor.review.unconsiderReview">Označit jako ignorované</message>
+    <message key="editor.review.errorUnconsideringReview">Označení tohoto recenzního řízení se nezdařilo. Zkuste to prosím znovu.</message>
+    <message key="editor.review.readConfirmation">Kliknutím na "Potvrdit" po přečtení posudku naznačíte, že recenzní řízení může pokračovat.</message>
+    <message key="editor.submission.selectCopyedingFiles">Redakce souborů</message>
+    <message key="editor.submission.selectReviewer">Vybrat recenzenta</message>
+    <message key="editor.submission.taskDueDate">Termín dokončení úkolu</message>
+    <message key="editor.submission.taskSchedule">Rozpis úkolu</message>
+    <message key="editor.review.enrollReviewer">Označit stávajícího uživatele jako recenzenta</message>
+    <message key="editor.submission.editorial.introduction">
+      <![CDATA[V redakční fázi redaktor pracuje na finálních verzích souborů. Poté je nahraje do sekce <span class="pkp_help_title">Korektury</span>, kde je autor a další uživatelé přezkoumají. Vytvoří se tak <span class="pkp_help_title">upravený</span> čistopis rukopisu, který po <em>schválení</em> editorem putuje do tiskové fáze.]]>
+    </message>
+    <message key="editor.submission.noAuditRequested">Pro tento soubor není požadována kontrola</message>
+    <message key="editor.submission.personalMessageToUser">E-mailová zpráva, která se zasílá uživateli</message>
+    <message key="editor.submission.proof.reminder">Připomínka: Korektura</message>
+    <message key="editor.submission.editorial.approveCopyeditDescription">Upravené soubory je třeba před odesláním do výrobní fáze schválit. Chcete schválit tento soubor?</message>
+    <message key="editor.submission.editorial.disapproveCopyeditDescription">Odmítnuté upravené soubory nelze odeslat do tiskové fáze. Chcete odmítnout tento soubor?</message>
+    <message key="editor.submission.editorial.approveCopyeditFile">Schválit upravený soubor</message>
+    <message key="editor.submission.addAuditor">Přiřadit kontrolora</message>
+    <message key="editor.submission.editorial.copyeditingDescription">
+      <![CDATA[Přiřaďte upravené soubory autorům (nebo podle potřeby dalším uživatelům), kteří mohou přezkoumat změny a zodpovědět dotazy. Jejich komentáře a nahrané soubory se objeví pod ikonou zápisníku. Soubory redaktor označí jako <em>potvrzené</em> a následně připraví finální verze, které nahraje do sekce <span class="pkp_help_title">Korektury</span>. Před odesláním do výrobní fáze musí být finální verze schváleny redaktorem.]]>
+    </message>
+    <message key="editor.submission.final.manageFinalDraftFilesDescription">Všechny soubory nahrané v jakékoli fázi lze přidat do seznamu finálních verzí rukopisu - tak, že níže zaškrtnete políčko Přidat a kliknete na odkaz Hledat. Systém vypíše všechny dostupné soubory, které pak lze zahrnout do výběru. Dodatečné soubory, které zatím nebyly nahrány v rámci některé fáze, lze přidat do seznamu pomocí odkazu Nahrát finální verzi.</message>
+    <message key="editor.review">Posudek</message>
+    <message key="editor.signoff.approved">Schváleno</message>
+    <message key="editor.submission.production.productionReadyFiles">Soubory připravené k tisku</message>
+    <message key="editor.submission.newRound">Nové kolo recenzního řízení</message>
+    <message key="editor.submission.selectAttachments">Vyberte přílohy posudku (k rukám autora)</message>
+    <message key="editor.submissionReview.recordDecision">Zadat rozhodnutí redakční rady</message>
+    <message key="editor.submission.selectFairCopy">Vyberte schválené upravené soubory, které lze odeslat k tisku.</message>
+    <message key="editor.submission.newRoundDescription">Chystáte se zahájit nové kolo recenzního řízení tohoto rukopisu. Soubory nevyužité v předchozích kolech jsou uvedeny níže. Recenzenti z předchozích kol jsou automaticky přiřazeni i v dalším kole.</message>
+    <message key="editor.submission.createNewRound">Zahájit nové kolo recenzního řízení</message>
+    <message key="editor.submission.review.manageReviewFilesDescription">Všechny soubory nahrané v jakékoli fázi (včetně redakční a tiskové) lze odeslat k posouzení: Níže zaškrtněte políčko Přidat a klikněte na odkaz Hledat. Systém vypíše všechny dostupné soubory, které pak lze zahrnout do výběru. Dodatečné soubory, které zatím nebyly nahrány v některé fázi, lze přidat do tohoto seznamu pomocí odkazu Nahrát soubor.</message>
+    <message key="editor.submission.selectPromoteRevisions">Vybrat přepracované verze pro další fázi</message>
+  </locale>

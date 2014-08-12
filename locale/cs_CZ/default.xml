@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
+  <!-- * locale/cs_CZ/default_CS.xml * * Copyright (c) 2014 Masaryk university * * Localization strings ( ). -->
+  <locale name="cs_CZ" full_name="Czech">
+    <message key="klic">česky</message>
+    <message key="default.groups.name.siteAdmin">Správce systému</message>
+    <message key="default.groups.plural.siteAdmin">Správci systému</message>
+    <message key="default.groups.name.productionEditor">Tiskový redaktor</message>
+    <message key="default.groups.plural.productionEditor">Tiskoví redaktoři</message>
+    <message key="default.groups.abbrev.productionEditor">Tisk. red.</message>
+    <message key="default.groups.name.copyeditor">Redaktor</message>
+    <message key="default.groups.plural.copyeditor">Redaktoři</message>
+    <message key="default.groups.abbrev.copyeditor">Red.</message>
+    <message key="default.groups.name.proofreader">Korektor</message>
+    <message key="default.groups.plural.proofreader">Korektoři</message>
+    <message key="default.groups.abbrev.proofreader">Kor.</message>
+    <message key="default.groups.name.designer">Grafik</message>
+    <message key="default.groups.plural.designer">Grafici</message>
+    <message key="default.groups.abbrev.designer">Graf.</message>
+    <message key="default.groups.name.internalReviewer">Interní recenzent</message>
+    <message key="default.groups.plural.internalReviewer">Interní recenzenti</message>
+    <message key="default.groups.abbrev.internalReviewer">Int. rec.</message>
+    <message key="default.groups.name.externalReviewer">Externí recenzent</message>
+    <message key="default.groups.plural.externalReviewer">Externí recenzenti</message>
+    <message key="default.groups.abbrev.externalReviewer">Ext. rec.</message>
+    <message key="default.groups.name.marketing">Koordinátor marketingu a prodeje</message>
+    <message key="default.groups.plural.marketing">Koordinátoři marketingu a prodeje</message>
+    <message key="default.groups.abbrev.marketing">Market., prodej</message>
+    <message key="default.groups.name.funding">Finanční koordinátor</message>
+    <message key="default.groups.plural.funding">Finanční koordinátoři</message>
+    <message key="default.groups.abbrev.funding">Fin. koord.</message>
+    <message key="default.groups.name.indexer">Rejstříkář</message>
+    <message key="default.groups.plural.indexer">Rejstříkáři</message>
+    <message key="default.groups.abbrev.indexer">Rejst.</message>
+    <message key="default.groups.name.layoutEditor">Sazeč</message>
+    <message key="default.groups.plural.layoutEditor">Sazeči</message>
+    <message key="default.groups.abbrev.layoutEditor">Saz.</message>
+    <message key="default.groups.name.author">Autor</message>
+    <message key="default.groups.plural.author">Autoři</message>
+    <message key="default.groups.abbrev.author">Aut.</message>
+    <message key="default.groups.name.translator">Překladatel</message>
+    <message key="default.groups.plural.translator">Překladatelé</message>
+    <message key="default.groups.abbrev.translator">Překl.</message>
+    <message key="default.groups.name.reader">Čtenář</message>
+    <message key="default.groups.plural.reader">Čtenáři</message>
+    <message key="default.groups.abbrev.reader">Čt.</message>
+    <message key="default.genres.submission">Příspěvek</message>
+    <message key="default.genres.other">Ostatní</message>
+    <message key="default.genres.multimedia">Multimédia</message>
+    <message key="default.genres.image">Obrázek</message>
+    <message key="default.genres.styleSheet">Stylová šablona</message>
+  </locale>

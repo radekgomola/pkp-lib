@@ -138,7 +138,7 @@
 	<message key="common.fileSize">Velikost souboru</message>
 	<message key="common.fileType">Typ souboru</message>
   <message key="common.fileUploaderError">Načítá se nahrávání souborů. Pokud se neobjeví, je možné, že není podporován tímto prohlížečem. Prosím kontaktujte administrátora pro podporu.</message>
-	<message key="common.go">Vpřed</message>
+	<message key="common.go">Jít</message>
 	<message key="common.height">Výška</message>
 	<message key="common.homePageHeaderLogo.altText">Logo záhlaví domácí stránky</message>
 	<message key="common.hour">Hodina</message>

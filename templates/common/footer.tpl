@@ -40,7 +40,7 @@
         {/if}
         <div class="pkp_structure_subfoot">
             <div class="pkp_structure_content">
-                <div style="float:left">
+                <div style="float:left; width: 680px">
                     {translate key="footer.publisher"}<strong> <a href="http://www.muni.cz/press?lang=cs" target="_blank" title="MUNIPRESS"> MUNIPRESS</a></strong><br /><br />
                     <strong>{translate key="footer.contacts"}</strong><br />
                     <!--<a href="http://www.muni.cz/people/24294" target="_blank" title="PhDr. Alena Mizerová" style="font-weight:bold"> PhDr.&nbsp;Alena&nbsp;Mizerová</a>&nbsp;<em>(ředitelka)</em>,-->
