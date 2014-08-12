@@ -15,6 +15,19 @@
   -->
 
 <locale name="cs_CZ" full_name = "Čeština">
+<!-- Author Submission -->
+	<message key="author.submit.submissionCitations">Poskytněte formátovaný seznam referencí pro práce citavané v příspěvku. Prosím, oddělujte jednotlivé reference prázným řádkem.</message>
+	<message key="submission.submit.submissionComplete">Příspěvek dokončen</message>
+	<message key="submission.submit.submissionCompleteThanks">Děkujeme za Váš zájem o publikování v {$contextName}.</message>
+	<message key="submission.submit.whatNext">Co se stane dále?</message>
+	<message key="submission.submit.whatNext.forNow">Nyní můžete:</message>
+	<message key="submission.submit.whatNext.review">Recenzovat tento příspěvek</message>
+	<message key="submission.submit.whatNext.create">Vytvořit nový příspěvek</message>
+	<message key="submission.submit.whatNext.return">Vrátit se do navigační lišty</message>
+	<message key="submission.submit.uploadExpeditedFiles">Jako redaktor nyní můžete nahrát PDF soubor a zaslat jej přímo do produkce k poslednímu kroku zaslání příspěvku.</message>
+	<message key="submission.submit.extendedMetadata">Rozšířená metadata</message>
+	<message key="submission.submit.expediteSubmission">Odeslat příspěvek</message>
+  
 	<message key="submission.agencies">Agentury</message>
 	<message key="submission.abstractViews">Zobrazení abstraktu</message>
 	<message key="submission.accepted">Přijata</message>
@@ -97,6 +110,7 @@
 	<message key="submission.dueDate">Termín splnění</message>
 	<message key="submission.due">Termín</message>
 	<message key="submission.editing">Editování</message>
+  <message key="submission.editorial">Úvodník</message>
 	<message key="submission.editMetadata">Editovat metadata</message>
 	<message key="submission.email.backToEmailLog">Zpět k protokolu emailů</message>
 	<message key="submission.email.confirmClearLog">Jste si jistý, že chcete vyčistit protokol emailů pro tento příspěvek?</message>
@@ -151,6 +165,8 @@
 	<message key="submission.layout.galleyLabelRequired">Je vyžadován popisek sazebnice.</message>
 	<message key="submission.layout.galleyLanguageRequired">Je vyžadován jazyk sazebnice.</message>
 	<message key="submission.layout.galleyLocaleRequired">Je vyžadováno umístění sazebnice.</message>
+  <message key="submission.layout.galleyRemoteURL">Adresa URL</message>
+	<message key="submission.layout.galleyRemoteURLValid">Prosím, zadejte platnou adresu URL (včetně http://).</message>
 	<message key="submission.layout.galleyNoImages">Žádné obrázky</message>
 	<message key="submission.layout.galleys">Sazebnice</message>
 	<message key="submission.layout.galleyStylesheet">Stylesheet sazebnice</message>
@@ -191,6 +207,7 @@
 	<message key="submission.page.summary">#{$id} Souhrn</message>
 	<message key="submission.page.citations">#{$id} Citace</message>
 	<message key="submission.peerReview"><![CDATA[Recenzní&nbsp;řízení]]></message>
+  <message key="submission.production">Produkce</message>
 	<message key="submission.recommendation">Doporučení</message>
 	<message key="submission.rejected">Zamítnut</message>
 	<message key="submission.request">Požádat</message>
@@ -198,7 +215,10 @@
 	<message key="submission.restrictions">Omezení</message>
 	<message key="submission.reviewMetadata">Zkontrolovat metadata</message>
 	<message key="submission.review">Recenze</message>
+  <message key="submission.reviewed">Recenzováno</message>
 	<message key="submission.reviewVersion">Verze recenze</message>
+  <message key="submission.rights">Práva</message>
+	<message key="submission.rights.tip">Pokud chcete můžete poskytnout úplne prohlášení o přístupových právek držených k tomuto příspěvku.</message>
 	<message key="submissions.active">Aktivní</message>
 	<message key="submissions.archived">Archivované</message>
 	<message key="submission.saveMetadata">Uložit metadata</message>
@@ -210,8 +230,10 @@
 	<message key="submissions.queued">Ve frontě</message>
 	<message key="submissions.queuedUnassigned">Čeká na přidělení</message>
 	<message key="submissions.ruling">Rozhodnuto</message>
+  
 	<message key="submissions.submit">Odeslat</message>
 	<message key="submissions.submitted">Odeslané</message>
+  <message key="submission.submission">Příspěvek</message>
 	<message key="submission.start">Zahájit</message>
 	<message key="submission.submissionHistory">Historie příspěvku</message>
 	<message key="submission.submissionManuscript">Rukopis příspěvku</message>

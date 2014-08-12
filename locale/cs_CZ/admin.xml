@@ -15,6 +15,8 @@
   -->
 
 <locale name="cs_CZ" full_name = "Čeština">
+	<message key="admin.systemInfo.settingName">Název nastavení</message>
+	<message key="admin.systemInfo.settingValue">Hodnota nastavení</message>
 	<message key="admin.adminFunctions">Administrátorské funkce</message>
 	<message key="admin.auth.confirmDelete">Jste si jistý, že chcete trvale odstranit tento zdroj ověření?</message>
 	<message key="admin.auth.create">Vytvořit zdroj ověření</message>
@@ -26,14 +28,36 @@
 	<message key="admin.confirmClearTemplateCache">Jste si jistý, že chcete vyčistit cache zkompilovaných šablon?</message>
 	<message key="admin.confirmExpireSessions">Jste si jistý, že chcete ukončit všechny uživatelské relace? Všichni uživatelé přihlášení do systému budou donuceni se znovu přihlásit (včetně Vás).</message>
 	<message key="admin.contentsOfConfigFile">Obsah konfiguračního souboru</message>
+  <message key="admin.copyAccessLogFileTool.usage">Copy the passed apache access log file(s), filtering the entries related with this installation,
+to the current files directory, inside the UsageStatsPlugin stage directory. Must run under user with enough privilegies to read access apache log files.
+
+This tool will only copy files that aren't already inside the usageStats file\n loader directories (stage, processing, archive, reject).
+
+Usage: {$scriptName} path/to/apache/log/file.log
+Usage (processing all files inside a directory): {$scriptName} path/to/apache/directory 
+	</message>
+	<message key="admin.copyAccessLogFileTool.error.creatingFolder">Chyba: nelze vytvořit dočasnou složku {$tmpDir}</message>
+	<message key="admin.copyAccessLogFileTool.error.acessingFile">Chyba: Soubor {$filePath} neexistuje nebo není přístupný.</message>
+	<message key="admin.copyAccessLogFileTool.error.copyingFile">Chyba: nelze zkopírovat soubor z {$filePath} do {$tmpFilePath}</message>
+	<message key="admin.copyAccessLogFileTool.error.deletingFile">Chyba: nelze smazat soubor {$tmpFilePath}</message>
+	<message key="admin.copyAccessLogFileTool.warning.fileAlreadyExists">Varování: soubor {$filePath} již univtř složky pro statisky užívání existuje.</message>
+	<message key="admin.copyAccessLogFileTool.success">Úspěch: {$filePath} do {$destinationPath}</message>
 	<message key="admin.currentVersion">Aktuální verze</message>
 	<message key="admin.dateInstalled">Datum instalace</message>
 	<message key="admin.displayConfigFileInstructions"><![CDATA[Obsah Vaší aktualizované konfigurace je zobrazen níže. K provedení změn konfigurace musíte otevřít <tt>config.inc.php</tt> ve vhodném textovém editoru a nahradit jeho obsah obsahem textového pole níže.]]></message>
 	<message key="admin.displayNewSystemConfig">Zobrazit novou konfiguraci</message>
 	<message key="admin.expireSessions">Vypršení uživatelské relace</message>
+  <message key="admin.languages.download">Stáhnout lokalizaci</message>
+	<message key="admin.languages.downloadLocales">Stáhnout lokalizace</message>
+	<message key="admin.languages.download.cannotOpen">Nelze otevřít popisovač jazyka ze stránky PKP.</message>
+	<message key="admin.languages.download.cannotModifyRegistry">Nelze vložit nový jazyk do registru jazyků, typicky "registry/locales.xml".</message>
+	<message key="admin.languages.cantDisable">Tento jazyk je základním jazykem. Není možné zakázat základní zjazyk bez zvolení jiného.</message>
+
 	<message key="admin.languages.confirmReload">Jste si jistý, že chcete znovu načíst tuto lokalizaci? To vymaže všechna existující data vztahující se k lokalizaci jako například přizpůsobené e-mailové šablony.</message>
 	<message key="admin.languages.installedLocales">Instalované lokalizace</message>
 	<message key="admin.languages.installLanguages">Spravovat lokalizace</message>
+  <message key="admin.languages.availableLocales">Dostupné lokalizace</message>
+	<message key="admin.languages.installLocale">Instalovat lokalizaci</message>
 	<message key="admin.languages.installLocales">Instalovat</message>
 	<message key="admin.languages.installNewLocales">Instalovat nové lokalizace</message>
 	<message key="admin.languages.languageSettings">Nastavení jazyka</message>
@@ -41,6 +65,7 @@
 	<message key="admin.languages.reload">Znovu načíst lokalizace</message>
 	<message key="admin.languages.uninstall">Odinstalovat lokalizaci</message>
 	<message key="admin.phpInfo">Rozšířené informace o PHP</message>
+  <message key="admin.scheduledTask">Naplánovaná úloha</message>
 	<message key="admin.saveSystemConfig">Uložit konfiguraci</message>
 	<message key="admin.server.apacheVersion">Verze Apache</message>
 	<message key="admin.server.dbDriver">Ovladač databáze</message>
@@ -49,6 +74,7 @@
 	<message key="admin.serverInformation">Informace o serveru</message>
 	<message key="admin.server.phpVersion">Verze PHP</message>
 	<message key="admin.server.platform">Platforma OS</message>
+  <message key="admin.settings">Nastavení</message>
 	<message key="admin.settings.aboutDescription">O popisu stránky</message>
 	<message key="admin.settings.contactEmail">E-mail hlavní kontaktní osoby</message>
 	<message key="admin.settings.contactName">Jméno hlavní kontaktní osoby</message>
@@ -84,4 +110,13 @@
 	<message key="admin.version.updateAvailable">Je dostupná aktualizovaná verze systému</message>
 	<message key="admin.version.upToDate">Používáte nejaktuálnější verzi systému</message>
 	<message key="admin.version">Verze</message>
+  
+  <message key="admin.fileLoader.wrongBasePathLocation">Základní cesta {$path} musí být uvnitř veřejného adresáře souborů.</message>
+	<message key="admin.fileLoader.pathNotAccessible">Složka {$path} není adresářem nebo ji nelze číst.</message>
+	<message key="admin.fileLoader.moveFileFailed">Soubor {$filename} nelze přesunout z {$currentFilePath} do {$destinationPath}</message>
+	<message key="admin.fileLoader.emailSubject">Načítání souborů</message>
+	
+	<message key="admin.copyAccessLogFileTool.error.noEgrep">Není nastavena cesta pro Egrep. Viz. config.inc.php, sekce cli.</message>
+	<message key="admin.copyAccessLogFileTool.error.noGunzip">Není nastavena cesta pro Gunzip. Viz. config.inc.php, sekce cli.</message>
+	
 </locale>

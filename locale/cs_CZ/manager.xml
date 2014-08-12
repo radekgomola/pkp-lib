@@ -15,11 +15,16 @@
   -->
 
 <locale name="cs_CZ" full_name = "Čeština">
-	<message key="manager.announcements">Oznámení</message>
+	<message key="manager.website.information">Informace</message>
+	<message key="manager.website.appearance">Vzhled</message>
+	<message key="manager.website.imageFileRequired">Je vyžadován soubor obrázku. Prosím, ujistěte se, že jste vybral a nahrál soubor.</message>
+
+  <message key="manager.announcements">Oznámení</message>
 	<message key="manager.announcements.confirmDelete">Jste si jistý, že chcete trvale odstranit toto oznámení?</message>
 	<message key="manager.announcements.create">Vytvořit nové oznámení</message>
 	<message key="manager.announcements.createTitle">Vytvořit</message>
 	<message key="manager.announcements.dateExpire">Vypršení</message>
+  <message key="manager.announcements.datePublish">Publikováno</message>
 	<message key="manager.announcements.edit">Editovat oznámení</message>
 	<message key="manager.announcements.editTitle">Editovat</message>
 	<message key="manager.announcements.form.dateExpireDayIncompleteDate">Zvolte prosím rok a/nebo měsíc ke zvolenému dni vypršení.</message>
@@ -54,10 +59,22 @@
 	<message key="manager.announcementTypes.form.typeNameRequired">Je vyžadován název typu oznámení.</message>
 	<message key="manager.announcementTypes.noneCreated">Nebyly vytvořeny žádné typy oznámení.</message>
 	<message key="manager.announcementTypes.typeName">Typ oznámení</message>
+  
+  <!-- Publication Process settings -->
+	<message key="manager.publication.submissionStage">Příspěvek</message>
+	<message key="manager.publication.reviewStage">Recenze</message>
+	<message key="manager.publication.editorialStage">Redakce</message>
+	<message key="manager.publication.productionStage">Produkce</message>
+	<message key="manager.publication.emails">E-maily</message>
+	<message key="manager.publication.libraryDescription"><![CDATA[Tyto soubory byly připraveny jako šablony a určeny pro použití jako součást <span class="pkp_help_title">Dokumentů příspěvku</span>.]]></message>
 	<message key="manager.emails.confirmDelete">Jste si jistý, že chcete smazat tuto šablonu emailu?</message>
 	<message key="manager.emails.confirmReset">Jste si jistý, že chcete resetovat tuto šablonu emailu na její výchozí hodnoty?</message>
+  <message key="manager.emails.addEmail">Přidat šablonu e-mailu</message>
 	<message key="manager.emails.createEmail">Vytvořit email</message>
+  <message key="manager.emails.data">Data zprávy šablony</message>
+	<message key="manager.emails.details">Detaily šablony</message>
 	<message key="manager.emails.disable">Zakázat</message>
+  <message key="manager.emails.disable.message">Chystáte se zakázat tuto šablonu e-mailu. Pokud některý systémový proces používá uto šablonu, nebude ji moci více používat. Chcete skutečně potvrdit tuto operaci?</message>
 	<message key="manager.emails.editEmail">Editovat email</message>
 	<message key="manager.emails.editTestExample">Editovat testovací příklad emailu</message>
 	<message key="manager.emails.emailKey">Klíč emailu</message>
@@ -66,12 +83,15 @@
 	<message key="manager.emails.emailTemplates">Šablony emailů</message>
 	<message key="manager.emails.enabled">Povolit tuto šablonu emailu</message>
 	<message key="manager.emails.enable">Povolit</message>
+  <message key="manager.emails.enable.message">Chystate se povolit tuto šablonu emailu. Chcete skutečně potvrdit tuto operaci?</message>
 	<message key="manager.emails.form.emailKeyRequired">Pro daný email je vyžadován unikátní emailový klíč</message>
 	<message key="manager.emails.form.bodyRequired">Je vyžadován text zprávy emailu.</message>
 	<message key="manager.emails.form.subjectRequired">Je vyžadován předmět emailu.</message>
 	<message key="manager.emails">Připravené e-maily</message>
 	<message key="manager.emails.resetAll">Resetovat všechny šablony</message>
+  <message key="manager.emails.resetAll.message">Pokud vyresetujete šablony, všechny provedené úpravy budou ztraceny. Chcete skutečně potvrdit tuto operaci?</message>
 	<message key="manager.emails.reset">Resetovat</message>
+  <message key="manager.emails.reset.message">Pokud vyresetujete šablony, všechny provedené úpravy budou ztraceny a e-mail bude nastaven na výchozí hodnotu. Chcete skutečně potvrdit tuto operaci?</message>
 	<message key="manager.emails.resetToDefault">Resetovat na výchozí</message>
 	<message key="manager.filesBrowser">Prohlížeč souborů</message>
 	<message key="manager.files.confirmDelete">Vymazat tento soubor nebo adresář? Adresář musí být prázdný, aby mohl být smazán.</message>
@@ -92,9 +112,15 @@
 	<message key="manager.groups.membership.noUsers">Nebyli nalezeni žádní uživatelé.</message>
 	<message key="manager.groups.title">Název</message>
 	<message key="manager.importExport">Importovat/Exportovat data</message>
+  <message key="manager.language.ui">UR</message>
+	<message key="manager.language.submissions">Příspěvek</message>
+	<message key="manager.language.forms">Formuláře</message>
+	<message key="manager.language.reloadLocalizedDefaultSettings">Obnovit výchozí</message>
 	<message key="manager.languages.alternateLocaleInstructions">Tento systém volitelně umožňuje, aby byly určité zásadní informace vkládány v několika dalších jazycích. Pro využití této funkce zvolte alternativní lokalizace a vyberte z níže uvedených možností.</message>
 	<message key="manager.languages.supportedLocalesInstructions">Vyberte všechny jazykové lokalizace, které mají být podporovány a dostupné na všech stránkách prostřednictvím menu pro výběr jazyka. Menu se zobrazí pouze v případě, že je zvolena více než jedna jazyková lokalizace.</message>
-	<message key="manager.payment.timestamp">časové razítko</message>
+  <message key="manager.masthead.title">Tiráž</message>
+	<message key="manager.navigation">Navigace</message>
+	<message key="manager.payment.timestamp">Časové razítko</message>
 	<message key="manager.people.authSource">Zdroj ověření</message>
 	<message key="manager.people.confirmUnenroll">Odejmout roli tomuto uživateli?</message>
 	<message key="manager.people.createUser">Vytvořit nového uživatele</message>
@@ -141,11 +167,25 @@
 	<message key="manager.plugins.sitePlugin">Tento doplněk je využíván v rámci celého webového systému. Pouze administrátor stránek může spravovat tento doplněk.</message>
 	<message key="manager.plugins">Doplňky systému</message>
 	<message key="manager.readingTools">Čtenářské nástroje</message>
+  <message key="manager.reviewerSearch.advancedSearch">Rozšířené vyhledávání recenzentů</message>
+	<message key="manager.reviewerSearch.advancedSearch.short">Rozšířené vyhledávání</message>
+	<message key="manager.reviewerSearch.searchByName">Vyhledat recenzenta podle jména</message>
+	<message key="manager.reviewerSearch.searchByName.short">Vyhledat podle jména</message>
+	<message key="manager.reviewerSearch.doneAmount">Recenze jsou hotovy</message>
+	<message key="manager.reviewerSearch.avgAmount">Průměrně dní k dokončení</message>
+	<message key="manager.reviewerSearch.lastAmount">Počet dní od poslední recenze</message>
+	<message key="manager.reviewerSearch.activeAmount">Stávající aktivní recenze</message>
+	<message key="manager.reviewerSearch.interests">Recenzní zájmy</message>
+	<message key="manager.reviewerSearch.form.instructions">Použíjte formulář níže pro nastavení maximálního počtu hodnot pro termíny, které chcete vyhledat. Formulář je předvyplněn s vypočítáným průměrem těchto polí.</message>
+	<message key="manager.reviewerSearch.form.interests.instructions">Vložte recezní zájmy oddělené čárkou...</message>
 	<message key="manager.roles">Role</message>
 	<message key="manager.setup.errorDeletingItem">Při mazání této položky došlo k chybě.</message>
 	<message key="manager.setup.homeHeaderImageInvalid">Neplatný formát obrázku loga pro záhlaví domácí stránky. Podporované formáty jsou .gif, .jpg, nebo .png.</message>
 	<message key="manager.setup.homepageImageInvalid">Neplatný formát obrázku pro domácí stránku. Podporované formáty jsou .gif, .jpg, nebo .png.</message>
 	<message key="manager.setup.homeTitleImageInvalid">Neplatný formát obrázku názvu pro záhlaví domácí stránky. Podporované formáty jsou .gif, .jpg, nebo .png.</message>
+  <message key="manager.setup.layout.theme">Téma</message>
+	<message key="manager.setup.layout.themeDescription">Vyberte téma z dostupné nabídky doplňkových témats.</message>
+	<message key="manager.setup.layout.blockManagement">Manažer postranních bloků</message>
 	<message key="manager.setup.layout.leftSidebar">Levý postranní panel</message>
 	<message key="manager.setup.layout.rightSidebar">Pravý postranní panel</message>
 	<message key="manager.setup.layout.unselected">Nevybráno</message>
@@ -154,9 +194,12 @@
 	<message key="manager.setup.pageHeaderTitleImageInvalid">Neplatný formát obrázku názvu pro záhlaví stránky. Podporované formáty jsou .gif, .jpg, nebo .png.</message>
 	<message key="manager.setup.selectOne">Zvolte jeden</message>
 	<message key="manager.statistics"><![CDATA[Statistiky &amp; Výkazy]]></message>
+  <message key="manager.siteAccessOptions.siteAccessOptions">Nastavení přístupu ke stránce</message>
 	<message key="manager.statistics.statistics.count.value">{$count} ({$percentage}%)</message>
 	<message key="manager.statistics.statistics.totalNewValue">{$numTotal} ({$numNew} nových)</message>
 	<message key="manager.users">Uživatelé</message>
+  <message key="plugins.categories.metadata">Plugin metadat</message>
+	<message key="plugins.categories.metadata.description">Plugin metadat implementuje další standardy formátu metadat.</message>
 	<message key="plugins.categories.auth">Autorizační doplňky</message>
 	<message key="plugins.categories.blocks">Doplňkové panely</message>
 	<message key="plugins.categories.blocks.description">Doplňkové panely patří mezi doplňky, které je možné připojit do uživatelského rozhranní. Například různé postranní lišty s nástroji.</message>

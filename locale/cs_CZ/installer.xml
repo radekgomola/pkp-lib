@@ -36,6 +36,7 @@
 	<message key="installer.databasePassword">Heslo</message>
 	<message key="installer.databaseSettings">Nastavení databáze</message>
 	<message key="installer.databaseUsername">Uživatelské jméno</message>
+  <message key="installer.encryptionInstructions">SHA1 je doporučeno.</message>
 	<message key="installer.encryption">Algoritmus šifrování hesla</message>
 	<message key="installer.filesDir">Adresář pro nahrávání souborů</message>
 	<message key="installer.fileSettings">Nastavení souboru</message>
@@ -58,9 +59,11 @@
 	<message key="installer.installFilesDirError">Adresář určený pro nahrané soubory neexistuje nebo není zapsatelný.</message>
 	<message key="installer.installParseDBFileError"><![CDATA[Chyba při rozebírání (parsing) instalačního souboru databáze <tt>{$file}</tt>.]]></message>
 	<message key="installer.installParseEmailTemplatesFileError"><![CDATA[Chyba při rozebírání souboru šablony emailu <tt>{$file}</tt>.]]></message>
+  <message key="installer.unsupportedUpgradeError">Upgrade není podporován. Viz. docs/UPGRADE-UNSUPPORTED pro větší detaily.</message>
 	<message key="installer.locale">Lokalizace</message>
 	<message key="installer.locale.maybeIncomplete">Označené soubory lokalizace mohou být nekompletní.</message>
 	<message key="installer.localeSettings">Nastavení lokalizace</message>
+  <message key="installer.oaiSettings">Nastavení OAI</message>
 	<message key="installer.manualInstall">Instalovat ručně</message>
 	<message key="installer.miscSettings">Různá nastavení</message>
 	<message key="installer.oaiRepositoryIdInstructions"><![CDATA[jedinečný identifikátor použitý pro identifikaci záznamů metadat indexovaných z těchto stránek s využitím <a href="http://www.openarchives.org/" target="_blank">Open Archives Initiative</a> protokolu pro shromažďování metadat (Protocol for Metadata Harvesting).]]></message>
@@ -69,4 +72,19 @@
 	<message key="installer.releaseNotes">Poznámky k vydání</message>
 	<message key="installer.securitySettings">Bezpečnostní nastavení</message>
 	<message key="installer.manualUpgrade">Upgradovat ručně</message>
+  <message key="installer.preInstallationInstructionsTitle">Předinstalační kroky</message>
+	<message key="installer.preInstallationInstructions"><![CDATA[
+		<p>1. Následující soubory a složky (a jejich obsah) musí mít povolen zápis:</p>
+		<ul>
+			<li><tt>config.inc.php</tt> je zapisovatelný (nepovinné): {$writable_config}</li>
+			<li><tt>public/</tt> je zapisovatelné: {$writable_public}</li>
+			<li><tt>cache/</tt> je zapisovatelná: {$writable_cache}</li>
+			<li><tt>cache/t_cache/</tt> je zapisovatelná: {$writable_templates_cache}</li>
+			<li><tt>cache/t_compile/</tt> je zapisovatelná: {$writable_templates_compile}</li>
+			<li><tt>cache/_db</tt> je zapisovatelná: {$writable_db_cache}</li>
+		</ul>
+
+		<p>2. Složka pro ukládání souborů musí být vytvořena a musí mít povolen zápius.(Viz. "Nastavení složky File" níže).</p>]]>
+	</message>
+	<message key="installer.configureXSLMessage"><![CDATA[<p>Vaše instalace PHP nemá povolen XSL module. Buď jej povolte nebo nastavte paramter xslt_command ve svém konfiguračním souboru config.inc.php.</p>]]></message>
 </locale>
