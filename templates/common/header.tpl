@@ -155,8 +155,13 @@
                     // other browser
                     return false;
                 } 
-                function vypisKdyzIE(vypis){
-                    if(detectIE()){
+                function vypisKdyzIE(IE10,IE11,vypis){
+                    if(detectIE()==10){
+                        document.write(IE10);
+                        document.write(vypis);
+                    }
+                    if(detectIE()==11){
+                        document.write(IE11);
                         document.write(vypis);
                     }
                 }
