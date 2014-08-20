@@ -66,6 +66,7 @@
 	<message key="manager.publication.editorialStage">Redakce</message>
 	<message key="manager.publication.productionStage">Produkce</message>
 	<message key="manager.publication.emails">E-maily</message>
+        <message key="manager.publication.library">Knihovna nakladatelství</message>
 	<message key="manager.publication.libraryDescription"><![CDATA[Tyto soubory byly připraveny jako šablony a určeny pro použití jako součást <span class="pkp_help_title">Dokumentů příspěvku</span>.]]></message>
 	<message key="manager.emails.confirmDelete">Jste si jistý, že chcete smazat tuto šablonu emailu?</message>
 	<message key="manager.emails.confirmReset">Jste si jistý, že chcete resetovat tuto šablonu emailu na její výchozí hodnoty?</message>
@@ -145,7 +146,7 @@
 	<message key="manager.people.enrollUserAs">Zapsat uživatele jako</message>
 	<message key="manager.people.invalidUser">Promiňte, požadovaný uživatel neexistuje.</message>
 	<message key="manager.people.mergeUser">Sloučit uživatele</message>
-	<message key="manager.people.mergeUsers.confirm">Jste si jistý, že chcete sloučit účet s uživatelským jménem "{$oldUsername}" do účtu s uživatelský jménem "{$newUsername}"? Účet s uživatelským jménem "{$oldUsername}" poté přestane existovat. Tato akce je nevratná.</message>
+	<message key="manager.people.mergeUsers.confirm">Jste si jistý, že chcete sloučit účet s uživatelským jménem "{$oldAccountCount}" do účtu s uživatelský jménem "{$newUsername}"? Účet s uživatelským jménem "{$oldAccountCount}" poté přestane existovat. Tato akce je nevratná.</message>
 	<message key="manager.people.mergeUsers">Sloučit více uživatelů</message>
 	<message key="manager.people.mustChooseRole">Zvolte prosím roli v horní části stránky předtím, než kliknete na "Zapsat uživatele".</message>
 	<message key="manager.people.mustProvideName">Prosím, uveďte nejprve alespoň příjmení uživatele.</message>
@@ -190,6 +191,7 @@
 	<message key="manager.setup.layout.rightSidebar">Pravý postranní panel</message>
 	<message key="manager.setup.layout.unselected">Nevybráno</message>
 	<message key="manager.setup.loggingAndAuditing">Zaznamenávání údajů a kontrola</message>
+        <message key="manager.setup.metaCitationsDescription">Zaškrtnutím následujícího políčka, povolíte úpravy citací a referencí. Toto umožní autorům vkládat surové citace zároveň s příspěvky. Redaktoři získají přístup k citačnímu asistentu, který může citace zkontrolovat vůči externím databázím, jako jsou WoldCat, ISBNdb, PubMed a další. Schválené citace mohou být exportovány do finálních sazebnic souborů.</message>
 	<message key="manager.setup.pageHeaderLogoImageInvalid">Neplatný formát obrázku loga pro záhlaví stránky. Podporované formáty jsou .gif, .jpg, nebo .png.</message>
 	<message key="manager.setup.pageHeaderTitleImageInvalid">Neplatný formát obrázku názvu pro záhlaví stránky. Podporované formáty jsou .gif, .jpg, nebo .png.</message>
 	<message key="manager.setup.selectOne">Zvolte jeden</message>
@@ -217,4 +219,230 @@
 	<message key="plugins.categories.themes">Doplňky témat vzhledu</message>
 	<message key="plugins.categories.oaiMetadataFormats">Plugin formátu OAI metadat</message>
 	<message key="plugins.categories.oaiMetadataFormats.description">Tyto formátové pluginy vydávají matadata v OAI komunikaci.</message>
+  
+  <message key="manager.statistics">
+      <![CDATA[Statistiky a zprávy]]>
+    </message>
+    <message key="manager.statistics.defaultMetricDescription">V prostředí {$contextObjectName} je nastaven záznam více než jednoho ukazatele. Statistické údaje o používání se zobrazují v různých prostředích. Existují případy, kdy je nutno zvolit jediný ukazatel, např. při zobrazení žebříčku nejužívanějších příspěvků nebo při řazení výsledků hledání. Označte prosím jednu z nastavených metrik jako výchozí.</message>
+    <message key="manager.statistics.city">Město</message>
+    <message key="manager.statistics.region">Region</message>
+    <message key="manager.statistics.reports">Generátor stat. záznamů</message>
+    <message key="manager.statistics.reports.description">Systém vytváří statistické záznamy, které uvádí podrobnosti o příspěvcích a o používání stránky za sledované časové období. Záznamy se ukládají ve formátu CSV, takže k jejich zobrazení je třeba tabulkový procesor.</message>
+    <message key="manager.statistics.reports.aggregationColumns">Agregovat statistiky podle:</message>
+    <message key="manager.statistics.reports.defaultReportTemplates">Výchozí šablony záznamů</message>
+    <message key="manager.statistics.reports.generateReport">Vytvořit vlastní záznam</message>
+    <message key="manager.statistics.reports.advancedOptions">Pokročilé možnosti</message>
+    <message key="manager.statistics.reports.advancedOptions.label">Můžete přizpůsobit sloupce a změnit možnosti filtrování a řazení. Změna kterékoli z těchto možností může mít vliv na výslednou podobu šablony záznamu.</message>
+    <message key="manager.statistics.reports.columns">Sloupce</message>
+    <message key="manager.statistics.reports.columns.description">Vyberte sloupce, ze kterých se záznam bude skládat. Zde vybrané sloupce určují nejen data, která budou záznamy obsahovat, ale také úroveň agregace zobrazených statistik. Pokud například zvolíte sloupce Id. číslo, Typ a Měsíc, záznam podá zprávu o všech přístupech z daného objektu za jeden měsíc a vypíše data v jedné řadě. Pokud namísto Měsíce vyberete Den, u každého objekt bude samostatná řada pro každý jednotlivý den.</message>
+    <message key="manager.statistics.reports.filters">Filtry</message>
+    <message key="manager.statistics.reports.objectType">Typ objektu</message>
+    <message key="manager.statistics.reports.objectId">Id. číslo objektu</message>
+    <message key="manager.statistics.reports.objectId.label">Zadejte jedno nebo více identifikačních čísel oddělených čárkou (např. 1,2,3,4,5).</message>
+    <message key="manager.statistics.reports.today">Dnes</message>
+    <message key="manager.statistics.reports.currentMonth">Tento měsíc</message>
+    <message key="manager.statistics.reports.orderBy">Seřadit podle</message>
+    <message key="manager.statistics.reports.orderDir">Směr</message>
+    <message key="manager.statistics.reports.orderDir.asc">vzestupně</message>
+    <message key="manager.statistics.reports.orderDir.desc">sestupně</message>
+    <message key="manager.statistics.reports.month.label">Použít formát data RRRRMM.</message>
+    <message key="manager.statistics.reports.day.label">Použít formát data RRRRMMDD.</message>
+    <message key="manager.statistics.reports.cities.label">Jedno nebo více jmen měst oddělených čárkou (např. Město1,Město2)</message>
+    <message key="manager.statistics.reports.form.columnsRequired">Je třeba vybrat alespoň jeden sloupec záznamu.</message>
+    <message key="manager.statistics.reports.reportUrl">Adresa záznamu</message>
+    <message key="manager.statistics.reports.reportUrl.label">Následující adresu můžete použít pro vygenerování záznamu za použití současného nastavení. Jednoduše ji zkopírujte a vložte to prohlížeče. Generátor si také můžete uložit mezi záložky prohlížeče.</message>
+    <message key="manager.statistics.reports.filters.byContext">Podle prostředí</message>
+    <message key="manager.statistics.reports.filters.byObject">Podle typu a id. čísla objektu</message>
+    <message key="manager.statistics.reports.filters.byTime">Vyberte rozsah záznamů</message>
+    <message key="manager.statistics.reports.filters.byTime.dimensionSelector">nebo vyberte rozsah podle:</message>
+    <message key="manager.statistics.reports.filters.byLocation">Podle geografického umístění</message>
+    <message key="manager.statistics.reports.filters.byLocation.description">Filtrovat výsledky podle země, regionu a/nebo města.</message>
+    <message key="manager.affiliationAndSupport">Sponzor</message>
+    <message key="manager.setup.authorGuidelines">Pokyny pro autory</message>
+    <message key="manager.setup.competingInterests">Střet zájmů</message>
+    <message key="manager.setup.competingInterestsDescription">Recenzenti budou požádáni, aby se řídili pravidlem uvedení potenciálního střetu zájmů, které specifikujete níže.</message>
+    <message key="manager.setup.groupType">Třídění typů souborů</message>
+    <message key="manager.setup.reviewOptions.numWeeksPerResponse">Lhůta pro odpověď v recenzním řízení (v týdnech)</message>
+    <message key="manager.setup.reviewOptions.numWeeksPerReview">Lhůta pro dokončení recenzního řízení (v týdnech)</message>
+    <message key="manager.setup.reviewOptions.neverSendReminder">Neupomínat</message>
+    <message key="manager.setup.reviewOptions.remindForInvite">Poslat upomínku, pokud recenzent neodpoví na žádost o posudek v následující lhůtě (ve dnech):</message>
+    <message key="manager.setup.reviewOptions.remindForSubmit">Poslat upomínku, pokud recenzent nepředloží posudek v následující lhůtě (ve dnech):</message>
+    <message key="manager.setup.sortableByComponent">Možno řadit podle komponenty</message>
+    <message key="manager.setup.dependentGenre">Závislé žánry</message>
+    <message key="manager.setup.sponsors">Přidat sponzorskou organizaci</message>
+    <message key="manager.setup.sponsors.note">Můžete přidat poznámku o pravidlech sponzorování a vztahu ke sponzorům. Ta se zobrazí spolu se seznamem sponzorů v sekci O nakladatelství.</message>
+    <message key="manager.setup.contributors.note">Můžete přidat poznámku o pravidlech podpory a vztahu k podporovatelům. Ta se zobrazí spolu se seznamem podporovatelů v sekci O nakladatelství.</message>
+    <message key="manager.setup.styleSheetDescription">Můžete nahrát dodatečný soubor kaskádových stylů (CSS), který změní vzhled.</message>
+    <message key="manager.setup.citations">Citace</message>
+    <message key="manager.setup.citationAssistant">Asistent pro formátování citací</message>
+    <message key="manager.setup.citationFilterParser">Extrakce citací</message>
+    <message key="manager.setup.citationFilterParserDescription">
+      <![CDATA[<p>Před vyhledáváním a kontrolou citací v databázích je třeba citace nejprve rozložit na strojově čitelná metadata: Pole název, vydavatel, datum vydání apod. je třeba extrahovat z originální textové citace vytvořené autorem. Tento proces mohou usnadnit napojení na externí webové služby. Jednu či více těchto služeb můžete přidat kliknutím na tlačítko "Přidat položku" níže. Některé z těchto služeb bude možná nutné nastavit - v takovém případě uvidíte upozornění.</p> <p>Existující službu můžete upravit nebo odstranit kliknutím na ikonu ozubeného kolečka vedle ní.</p>]]>
+    </message>
+    <message key="manager.setup.citationFilterLookup">Kontrola citací</message>
+    <message key="manager.setup.citationFilterLookupDescription">
+      <![CDATA[<p>Musíte rovněž povolit a nastavit napojení na externí citační databáze. Pomohou Vám nacházet chyby v citacích od autorů nebo přidávat dodatečné informace (např. identifikační čísla DOI či PubMed), vyžadované případně při elektronickém publikování a ukládání.</p> <p>Poskytujeme napojení na několik externích databází, ve kterých lze citace vyhledávat. Některé z nich vyžadují registraci nebo zadání konfiguračních informací. Více informací o registraci najdete na veřejných stránkách daných databází. Můžete přidat jednu nebo více služeb kliknutím na tlačítko "přidat položku" níže.</p> <p>Stávající napojení na databázi můžete upravit nebo odstranit kliknutím na ikonu ozubeného kolečka vedle položky.</p> <p><strong>Upozornění:</strong> Pokud mát proces kontroly citace proběhnout v rozumném čase, v konfiguračním souboru je třeba nastavit adekvátní čas u direktivy <tt>citation_checking_max_processes</tt>. Více informací najdete v sekci Obecné nastavení v souboru <tt>config.inc.php</tt>.</p>]]>
+    </message>
+    <message key="manager.setup.citationOutput">Citační výstup</message>
+    <message key="manager.setup.citationOutputStyleDescription">Zvolte styl citace, který se bude používat ve vašich příspěvcích. Asistent pro formátování citací vám umožní porovnat autorovu verzi citace s verzí vytvořenou z informací v XML. Můžete tak snadno odhalit chyby:</message>
+    <message key="manager.setup.errorDeletingItem">Odstraňování této položky se nezdařilo.</message>
+    <message key="manager.setup.filter.grid.errorDeletingFilter">Došlo k chybě při pokusu o odstranění tohoto filtru. Odešlete prosím chybové hlášení.</message>
+    <message key="manager.setup.filter.grid.filterDisplayName">Služba</message>
+    <message key="manager.setup.filter.grid.filterSettings">Informace o registraci a nastavení služby</message>
+    <message key="manager.setup.filter.grid.filterTemplateRequired">Vyberte jednu z možností ze seznamu.</message>
+    <message key="manager.setup.filter.grid.confirmDelete">Opravdu chcete odstranit filtr "{$filterName}"?</message>
+    <message key="manager.setup.filter.lookup.grid.descriptionConfirm">Rozhodl/a jste se přidat do databáze filtr "{$filterDisplayName}". Potvrďte to prosím kliknutím na OK.</message>
+    <message key="manager.setup.filter.lookup.grid.descriptionTemplate">Vyberte prosím vyhledávací databázi.</message>
+    <message key="manager.setup.filter.lookup.grid.description.iSBNdb">
+      <![CDATA[<p>Tento filtr se připojuje k databázi knih a ISBN <a href="http://isbndb.com/" target="_blank">ISBNdb.com</a>.</p> <p>Je třeba zadat API klíč pro tuto službu. Informace o generování klíče jsou k dispozici v <a href="http://isbndb.com/docs/api/30-keys.html" target="_blank">online dokumentaci</a>.</p>]]>
+    </message>
+    <message key="manager.setup.filter.lookup.grid.description.crossRef">
+      <![CDATA[<p>Tento filtr se připojuje k citační databázi CrossRef prostřednictvím rozhraní <a href="http://www.crossref.org/02publishers/openurl_info.html" target="_blank">OpenURL Query Interface</a>.</p> <p>Pokud chcete tento filtr používat, můžete se přihlásit pod svým systémovým účtem CrossRef, případně <a href="http://www.crossref.org/requestaccount/" target="_blank">zde</a> registrovat svou e-mailovou adresu.</p>]]>
+    </message>
+    <message key="manager.setup.filter.lookup.grid.description.pubMed">
+      <![CDATA[<p>Tento filtr se připojuje k mezidatabázovému vyhledávači <a href="http://www.ncbi.nlm.nih.gov/gquery/gquery.fcgi" target="_blank">Entrez</a> systému PubMed.</p> <p>Registrace e-mailové adresy není striktně povinná, ale může se hodit, pokud budete řešit problémy s připojením. Více informací najdete v sekci <a href="http://www.be-md.ncbi.nlm.nih.gov/bookshelf/br.fcgi?book=helpeutils&part=chapter2#chapter2.Usage_Guidelines_and_Requiremen" target="_blank">Pokyny a požadavky k používání</a> v dokumentaci Entrez.</p>]]>
+    </message>
+    <message key="manager.setup.filter.lookup.grid.description.worldCat">
+      <![CDATA[<p>Tento filtr se připojuje ke službám OCLC v systémech <a href="http://www.worldcat.org/affiliate/webservices/xisbn/app.jsp" target="_blank">xISBN</a> a (volitelně) <a href="http://www.worldcat.org/" target="_blank">Worldcat</a>.</p> <p>Pokud disponujete <a href="http://www.worldcat.org/devnet/wiki/SearchAPIWhoCanUse" target="_blank">API klíčem WorldCat</a>, můžete jej zadat níže a připojit se.</p>]]>
+    </message>
+    <message key="manager.setup.filter.lookup.grid.loadMessage">Počkejte prosím, než se načte konfigurační tabulka citačních databází...</message>
+    <message key="manager.setup.filter.lookup.grid.title">Služby napojení na citační databáze</message>
+    <message key="manager.setup.filter.noMoreTemplates">Všechny dostupé služby již byly přidány. Kliknutím na tlačítko Storno se vrátíte do nastavení.</message>
+    <message key="manager.setup.filter.parser.grid.descriptionConfirm">Rozhodl/a jste se přidat do databáze syntaktický analyzátor (parser) {$filterDisplayName}. Potvrďte to prosím kliknutím na OK.</message>
+    <message key="manager.setup.filter.parser.grid.descriptionTemplate">Vyberte prosím citační syntaktický analyzátor (parser).</message>
+    <message key="manager.setup.filter.parser.grid.description.freeCite">
+      <![CDATA[<p>Tento extrakční filtr se připojuje do webové služby <a href="http://freecite.library.brown.edu/" target="_blank">FreeCite</a>.</p>]]>
+    </message>
+    <message key="manager.setup.filter.parser.grid.description.paraCite">
+      <![CDATA[<p>Tento extrakční filtr používá Perl moduly <a href="http://paracite.eprints.org/developers/" target="_blank">ParaTools</a>, díky nimž poskytuje funkce syntaktické analýzy <a href="http://paracite.eprints.org" target="_blank">ParaCite</a>. Pro správné fungování je třeba mít nainstalovaný Perl spolu s CPAN moduly <a href="http://search.cpan.org/~mjewell/Biblio-Citation-Parser-1.10/" target="_blank">Biblio::Citation::Parser</a> a <a href="http://search.cpan.org/~sburke/Text-Unidecode-0.04/" target="_blank">Text::Unidecode</a>. Také je nutné v konfiguračním souboru nastavit direktivu <tt>perl</tt>. Tuto direktivu naleznete v sekci Externí příkazy souboru<tt>config.inc.php</tt>.</p> <p>Můžete si zde také vybrat, který modul syntaktického analyzátoru (parseru) ParaTools se má používat. Můžete si zvolit mezi standardním modulem <a href="http://search.cpan.org/~mjewell/Biblio-Citation-Parser-1.10/lib/Biblio/Citation/Parser/Jiao.pm" target="_blank">Jiao</a> a alternativním modulem <a href="http://search.cpan.org/~mjewell/Biblio-Citation-Parser-1.10/lib/Biblio/Citation/Parser/Citebase.pm" target="_blank">Citebase</a>.</p>]]>
+    </message>
+    <message key="manager.setup.filter.parser.grid.description.parsCit">
+      <![CDATA[<p>Tento extrakční filtr se připojuje k webové službě <a href="http://aye.comp.nus.edu.sg/parsCit/" target="_blank">ParsCit</a>.</p>]]>
+    </message>
+    <message key="manager.setup.filter.parser.grid.description.regEx">Extrakční filtr RegEx analyzuje citace pomocí série regulárních výrazů.</message>
+    <message key="manager.setup.filter.parser.grid.loadMessage">Počkejte prosím, než se načte konfigurační tabulka syntaktických analyzátorů (parserů)...</message>
+    <message key="manager.setup.filter.parser.grid.title">Služby pro extrakci citací</message>
+    <message key="manager.setup.filter.pleaseSelect">Vyberte prosím...</message>
+    <message key="plugins.categories.citationLookup">Zásuvné moduly služeb pro napojení na citační databáze</message>
+    <message key="plugins.categories.citationLookup.description">Zásuvné moduly služeb pro napojení na citační databáze vyhledávají citace v databázích, např. během úpravy citace.</message>
+    <message key="plugins.categories.citationOutput">Zásuvné moduly pro citační výstupy</message>
+    <message key="plugins.categories.citationOutput.description">Zásuvné moduly pro citační výstupy zajišťují užívýní citačních standardů. Toto nastavení přebíjí nastavení zásuvných modulů pro formát citací.</message>
+    <message key="plugins.categories.citationParser">Zásuvné moduly pro extrakci citací</message>
+    <message key="plugins.categories.citationParser.description">Zásuvné moduly pro extrakci citací extrahují data na úrovni jednotlivých polí ze samotýcg citací (např. pole Autor, Název atd.)</message>
+    <message key="plugins.categories.pubIds">Zásuvné moduly pro veřejných identifikátorů</message>
+    <message key="plugins.categories.pubIds.description">Tyto zásuvné moduly poskytují podporu pro veřejné identifikátory.</message>
+    <message key="manager.plugins.copyError">Kopírování zásuvného modulu se nezdařilo. Může to být způsobeno problémem s oprávněním. Ujistěte se, že webový server má povoleno zapisovat do adresáře s moduly (včetně podadresářů). Po skončení jej ale nezapomeňte opět zabezpečit.</message>
+    <message key="manager.plugins.delete">Odstranit zásuvný modul</message>
+    <message key="manager.plugins.deleteConfirm">Opravdu si přejete odstrant tento zásuvný modul ze systému?</message>
+    <message key="manager.plugins.deleteDescription">Kliknutím na Odstranit tento modul vymažete ze souborového systému.</message>
+    <message key="manager.plugins.deleteError">Odstranění zásuvného modulu "{$pluginName}" ze systému se nezdařilo. Může to být způsobeno problémem s oprávněním. Ujistěte se, že webový server má povoleno zapisovat do adresáře s moduly (včetně podadresářů). Po skončení jej ale nezapomeňte opět zabezpečit.</message>
+    <message key="manager.plugins.deleteSuccess">Zásuvný modul "{$pluginName}" byl úspěšně odstraněn.</message>
+    <message key="manager.plugins.description">Tato stránka umožňuje správci prohlížet a případně nastavovat aktuálně nainstalované zásuvné moduly. Moduly jsou rozděleny do kategorií podle funkce. Kategorie jsou uvedeny níže. U každé kategorie najdete současnou sadu zásuvných modulů.</message>
+    <message key="manager.plugins.doesNotExist">Zásuvný modul "{$pluginName}" neexistuje.</message>
+    <message key="manager.plugins.fileSelectError">Nejprve prosím vyberte soubor.</message>
+    <message key="manager.plugins.install">Nainstalovat nový zásuvný modul</message>
+    <message key="manager.plugins.installDescription">Tento formulář vám umožňuje nahrát a nainstalovat nový modul. Ujistěte se prosím, že je zásuvný modul koprimován jako soubor .tar.gz.</message>
+    <message key="manager.plugins.installedVersionNewer">Zásuvný modul již existuje a je stejný nebo novější než instalovaná verze</message>
+    <message key="manager.plugins.installedVersionOlder">Zásuvný modul již existuje a je stejný nebo starší než instalovaná verze</message>
+    <message key="manager.plugins.installFailed">Instalace se nezdařila. {$errorString}</message>
+    <message key="manager.plugins.installSuccessful">Aktualizace na verzi {$versionNumber} byla úspěšná</message>
+    <message key="manager.plugins.invalidPluginArchive">Nahraný archiv zásuvných modulů neobsahuje adresář, který by odpovídal názvu modulu.</message>
+    <message key="manager.plugins.wrongCategory">Nahraný zásuvný modul neodpovídá kategorii aktualizovaného modulu.</message>
+    <message key="manager.plugins.wrongName">Soubor version.xml nahraného zásuvného modulu obsahuje název modulu, který neodpovídá názvu aktualizovaného modulu.</message>
+    <message key="manager.plugins.pleaseInstall">Zásuvný modul neexistuje. Nainstalujte jej, prosím</message>
+    <message key="manager.plugins.pleaseUpgrade">Zásuvný modul již existuje, ale je novější než instalovaná verze. Aktualizujte jej, prosím</message>
+    <message key="manager.plugins.settings">Nastavení</message>
+    <message key="manager.plugins.tarCommandNotFound">Příkaz tar není k dispozici. Nastavte jej prosím správně v souboru "config.inc.php".</message>
+    <message key="manager.plugins.upgrade">Aktualizace zásuvného modulu</message>
+    <message key="manager.plugins.upgradeDescription">Tento formulář vám umožní aktualizovat zásuvný modul. Ujistěte se prosím, že je zásuvný modul koprimován jako soubor .tar.gz.</message>
+    <message key="manager.plugins.upgradeFailed">Aktualizace se nezdařila. {$errorString}</message>
+    <message key="manager.plugins.upgradeSuccessful">Úspěšně jste aktualizoval/a systém na verzi {$versionString}</message>
+    <message key="manager.plugins.uploadError">Chyba při nahrávání souboru</message>
+    <message key="manager.plugins.uploadPluginDir">Vyberte soubor zásuvného modulu</message>
+    <message key="manager.plugins.versionFileInvalid">Soubor version.xml v adresáři zásuvných modulů obsahuje neplatná data.</message>
+    <message key="manager.plugins.versionFileNotFound">Soubor version.xml nebyl nalezen v adresáři zásuvných modulů</message>
+    <message key="notification.localeEnabled">Místní nastavení bylo povoleno.</message>
+    <message key="notification.localeDisabled">Místní nastavení bylo zakázáno.</message>
+    <message key="notification.primaryLocaleDefined">Místní nastavení "{$locale}" bylo nastaveno jako výchozí.</message>
+    <message key="notification.localeInstalled">Všechna vybraná místní nastavení jsou instalována a aktivována.</message>
+    <message key="notification.localeUninstalled">Místní nastavení "{$locale}" bylo odinstalováno.</message>
+    <message key="notification.localeReloaded">Místní nastavení "{$locale}" bylo obnoveno.</message>
+    <message key="notification.localeSettingsSaved">Volby místních nastavení byly uloženy.</message>
+    <message key="notification.editedUser">Uživatel byl upraven.</message>
+    <message key="manager.distribution.indexing">Indexování</message>
+    <message key="manager.paymentMethod">Platby</message>
+    <message key="manager.paymentMethod.title">Způsoby platby</message>
+    <message key="manager.paymentMethod.description">Vyberte způsob platby se seznamu možností. Oblast níže se odpovídajícím způsobem aktualizuje.</message>
+    <message key="manager.paymentMethod.none">Nebyl vybrán žádný způsob platby</message>
+    <message key="manager.paymentMethod.method">Způsob platby</message>
+    <message key="manager.paymentMethod.currency">Měna</message>
+    <message key="manager.paymentMethod.currency.description">Platby provedené přímo prostřednictvím tohoto systému se uskuteční ve zvolené měně.</message>
+    <message key="settings.roles.roleOptions">Možnosti rolí</message>
+    <message key="settings.roles.showTitles">Zobrazit role v seznamu přispěvatelů</message>
+    <message key="settings.roles.permitSelfRegistration">Povolit samostatnou registraci uživatelů</message>
+    <message key="settings.roles.roleName">Název role</message>
+    <message key="settings.roles.roleAbbrev">Zkratka</message>
+    <message key="settings.roles.assignedStages">Přiřazené fáze</message>
+    <message key="settings.roles.stages">Fáze</message>
+    <message key="settings.roles.listRoles">Zobrazit role z</message>
+    <message key="settings.roles.roleDetails">Podrobnosti o roli</message>
+    <message key="settings.roles.from">Úroveň oprávnění</message>
+    <message key="settings.roles.removeText">Chystáte se odebrat tuto roli ze zvoleného prostředí. Tento krok rovněž vymaže související nastavení a odstraní všechny uživatele, kteří jsou k roli přiřazeni. Chcete pokračovat?</message>
+    <message key="settings.roles.nameRequired">Je třeba zadat název role.</message>
+    <message key="settings.roles.abbrevRequired">Je třeba zadat zkratku role.</message>
+    <message key="settings.roles.uniqueName">Je třeba zadat jedinečný název role.</message>
+    <message key="settings.roles.uniqueAbbrev">Je třeba zadat jedinečnou zkratku role.</message>
+    <message key="settings.roles.roleIdRequired">Je třeba zadat úroveň oprávnění pro roli.</message>
+    <message key="settings.roles.stageIdRequired">Je třeba zadat přiřazené fáze.</message>
+    <message key="grid.content.navigation.footer">Zápatí</message>
+    <message key="grid.content.navigation.footer.noneExist">Aktuálně neexistují žádná zápatí.</message>
+    <message key="grid.content.navigation.footer.addCategory">Přidat kategorii</message>
+    <message key="grid.action.deleteFooterCategory">Odstranit kategorii zápatí</message>
+    <message key="grid.content.navigation.footer.FooterLink">Odkazy zápatí</message>
+    <message key="grid.content.navigation.footer.editCategory">Upravit kategorii</message>
+    <message key="grid.content.navigation.footer.deleteCategory">Odstranit kategorii</message>
+    <message key="grid.content.navigation.footer.deleteCategoryConfirm">Opravdu si přejete odstranit tuto kategorii? Tento krok nelze vrátit zpět a odstraní i odkazy v této kategorii.</message>
+    <message key="grid.content.navigation.footer.titleRequired">Je třeba zadat název.</message>
+    <message key="grid.content.navigation.footer.descriptionRequired">Je třeba zadat popis.</message>
+    <message key="grid.content.navigation.footer.pathRequired">Je třeba zadat adresu. Adresa musí být jedinečná.</message>
+    <message key="grid.content.navigation.footer.pathInUse">Tuto adresu již používá jiná kategorie.</message>
+    <message key="grid.action.addFooterCategoryLink">Přidat novou kategorii zápatí</message>
+    <message key="grid.action.editFooterCategory">Upravit tuto kategorii zápatí</message>
+    <message key="grid.content.navigation.socialMedia">Sociální sítě</message>
+    <message key="grid.content.navigation.socialMedia.platform">Platforma</message>
+    <message key="grid.content.navigation.socialMedia.code">Blok kódu pro sociální sdílení</message>
+    <message key="grid.content.navigation.socialMedia.platformRequired">Je třeba zadat název platformy (Facebook, Google+ atd.).</message>
+    <message key="grid.content.navigation.socialMedia.codeRequired">Je třeba zadat kód, díky kterému se zobrazí požadovaná sociální síť.</message>
+    <message key="grid.content.navigation.socialMedia.addSocialLink">Přidat odkaz sociální sítě</message>
+    <message key="grid.content.navigation.socialMedia.includeInCatalog">Použít pro každou položku zveřejněnou v katalogu?</message>
+    <message key="grid.content.navigation.socialMedia.inCatalog">Použito v katalogu</message>
+    <message key="grid.action.addMedia">Přidat nový typ sociální sítě</message>
+    <message key="notification.addedFooterCategory">Kategorie byla přidána.</message>
+    <message key="notification.editedFooterCategory">Kategorie byla upravena.</message>
+    <message key="notification.removedFooterCategory">Kategorie byla odstraněna.</message>
+    <message key="notification.addedSocialMedia">Sociální síť byla přidána.</message>
+    <message key="notification.editedSocialMedia">Sociální síť byla upravena.</message>
+    <message key="notification.removedSocialMedia">Sociální síť byla odstraněna.</message>
+    <message key="settings.libraryFiles.fileRequired">Je třeba zadat soubor knihovny. Ujistěte se prosím, že jste vybral/a a nahrál/a správný soubor.</message>
+    <message key="settings.libraryFiles.nameRequired">Je třeba zadat název tohoto souboru knihovny.</message>
+    <message key="settings.libraryFiles.typeRequired">Je třeba zadat typ tohoto souboru knihovny.</message>
+    <message key="settings.libraryFiles.category.contracts">Smlouvy</message>
+    <message key="settings.libraryFiles.category.marketing">Marketing</message>
+    <message key="settings.libraryFiles.category.permissions">Oprávnění</message>
+    <message key="settings.libraryFiles.category.reports">Záznamy</message>
+    <message key="settings.libraryFiles.category.other">Ostatní</message>
+    <message key="grid.action.addGenre">Přidat žánr</message>
+    <message key="grid.action.editGenre">Upravit tento žánr</message>
+    <message key="grid.action.deleteGenre">Odstranit tento žánr</message>
+    <message key="grid.action.restoreGenres">Obnovit výchozí nastavení žánrů</message>
+    <message key="manager.setup.genres.sortable">Povolit třídění tohoto typu podle komponent (např. podle kapitol)</message>
+    <message key="manager.setup.genres.dependent">Označit soubory tohoto typu jako závislé (např. sekundární příspěvky)</message>
+    <message key="manager.settings.wizard">Průvodce nastavením</message>
+    <message key="manager.users.roleRequired">Je třeba vybrat alespoň jednu roli, která bude přiřazena tomuto uživateli.</message>
+    <message key="manager.website">Webová stránka</message>
+    <message key="manager.website.title">Nastavení stránky</message>
+    <message key="manager.workflow">Publikační proces</message>
+    <message key="manager.workflow.title">Nastavení procesu</message>
+    <message key="manager.distribution">Distribuce</message>
+    <message key="manager.distribution.title">Nastavení distribuce</message>
 </locale>

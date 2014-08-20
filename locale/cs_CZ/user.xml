@@ -116,9 +116,10 @@ e-mailu níže pro resetování hesla. Potvrzení příjde na tuto e-mailovou ad
 	<message key="user.register.registerAs">Zaregistrovat jako</message>
 	<message key="user.register">Registrovat</message>
 	<message key="user.register.usernameRestriction">Uživatelské jméno může obsahovat pouze malá písmena, číslice a pomlčky/podtržítka.</message>
-  <message key="user.role.author">Autor</message>
+        <message key="user.role.author">Autor</message>
+        <message key="user.role.author_s">Autor(ři)</message>
 	<message key="user.role.authors">Autoři</message>
-  <message key="user.role.editor">Redaktor</message>
+        <message key="user.role.editor">Redaktor</message>
 	<message key="user.role.editors">Redaktoři</message>
 	<message key="user.role.reader">Čtenář</message>
 	<message key="user.role.readers">Čtenáři</message>

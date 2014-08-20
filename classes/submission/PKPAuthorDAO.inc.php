@@ -130,14 +130,15 @@ class PKPAuthorDAO extends DAO {
 		$author->setMiddleName($row['middle_name']);
 		$author->setLastName($row['last_name']);
 		$author->setSuffix($row['suffix']);
+                $author->setSalutation($row['salutation']);
 		$author->setCountry($row['country']);
 		$author->setEmail($row['email']);
 		$author->setUrl($row['url']);
 		$author->setUserGroupId($row['user_group_id']);
 		$author->setPrimaryContact($row['primary_contact']);
 		$author->setSequence($row['seq']);
-		$author->_setShowTitle($row['show_title']); // Dependent
                 $author->setSalutation($row['salutation']);
+		$author->_setShowTitle($row['show_title']); // Dependent           
 		$this->getDataObjectSettings('author_settings', 'author_id', $row['author_id'], $author);
 
 		HookRegistry::call('AuthorDAO::_fromRow', array(&$author, &$row));
@@ -214,13 +215,15 @@ class PKPAuthorDAO extends DAO {
 						$author->getMiddleName() . '', // make non-null
 						$author->getLastName(),
 						$author->getSuffix() . '',
+                                                $author->getSalutation().'',
 						$author->getCountry(),
 						$author->getEmail(),
 						$author->getUrl(),
+                                                
 						(int) $author->getUserGroupId(),
 						(int) $author->getPrimaryContact(),
 						(float) $author->getSequence(),
-                                                $author->getSalutation()
+                                                
 				)
 		);
 
@@ -245,19 +248,20 @@ class PKPAuthorDAO extends DAO {
 					middle_name = ?,
 					last_name = ?,
 					suffix = ?,
+                                        salutation = ?,
 					country = ?,
 					email = ?,
 					url = ?,
 					user_group_id = ?,
-					primary_contact = ?,
-					seq = ?,
-                                        salutation = ?,
+					primary_contact = ?,                                        
+					seq = ?,                                        
 				WHERE	author_id = ?',
 				array(
 						$author->getFirstName(),
 						$author->getMiddleName() . '', // make non-null
 						$author->getLastName(),
 						$author->getSuffix() . '',
+                                                $author->getSalutation().'',
 						$author->getCountry(),
 						$author->getEmail(),
 						$author->getUrl(),
@@ -265,7 +269,7 @@ class PKPAuthorDAO extends DAO {
 						(int) $author->getPrimaryContact(),
 						(float) $author->getSequence(),
 						(int) $author->getId(),
-                                                $author->getSalutation(),
+                                                
 				)
 		);
 		$this->updateLocaleFields($author);

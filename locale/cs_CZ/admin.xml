@@ -66,7 +66,7 @@ Usage (processing all files inside a directory): {$scriptName} path/to/apache/di
 	<message key="admin.languages.uninstall">Odinstalovat lokalizaci</message>
 	<message key="admin.phpInfo">Rozšířené informace o PHP</message>
   <message key="admin.scheduledTask">Naplánovaná úloha</message>
-	<message key="admin.saveSystemConfig">Uložit konfiguraci</message>
+	<!--<message key="admin.saveSystemConfig">Uložit konfiguraci</message>-->
 	<message key="admin.server.apacheVersion">Verze Apache</message>
 	<message key="admin.server.dbDriver">Ovladač databáze</message>
 	<message key="admin.server.dbVersion">Verze databázového serveru</message>
@@ -91,10 +91,12 @@ Usage (processing all files inside a directory): {$scriptName} path/to/apache/di
 	<message key="admin.settings.siteLanguage">Jazyk stránky</message>
 	<message key="admin.settings.siteStyleSheetInvalid">Neplatný formát stylu stránky. Podporovaný formát je .css.</message>
 	<message key="admin.settings.siteStyleSheet">Styl stránky</message>
+        <message key="admin.settings.siteTheme">Téma stránky</message>
 	<message key="admin.settings.siteTitle">Název stránky</message>
 	<message key="admin.siteAdmin">Administrace internetové stránky</message>
 	<message key="admin.siteManagement">Správa stránky</message>
 	<message key="admin.siteSettings">Nastavení stránek</message>
+        <message key="admin.siteSetup">Nastavení stránek</message>
 	<message key="admin.systemConfigFileReadError"><![CDATA[Konfigurační soubor <tt>config.inc.php</tt> neexistuje, není čitelný nebo je neplatný.]]></message>
 	<message key="admin.systemInformation">Systémové informace</message>
 	<message key="admin.versionBuild">Build</message>

@@ -168,7 +168,7 @@
 	<message key="common.note">Poznámka</message>
 	<message key="common.notes">Poznámky</message>
   <message key="common.notes.tooltip">Poznámky (žlutá: obsahuje novou poznámku; modrá: obsahuje již prohlédnuté poznámky; šedá: neobsahuje žádnou poznámku)</message>
-  <message key="common.notify">Oznámit</message>
+  <!--<message key="common.notify">Oznámit</message>-->
 	<message key="common.notified">Oznámeno</message>
 	<message key="common.noMatches">Nic nenalezeno</message>
 	<message key="common.off">Off</message>
@@ -179,6 +179,7 @@
 	<message key="common.originalFileName">Původní jméno souboru</message>
 	<message key="common.or">nebo</message>
 	<message key="common.other">Jiný</message>
+        <message key="common.overdue">Opožděný</message>
 	<message key="common.pageHeaderLogo.altText">Logo záhlaví stránky</message>
 	<message key="common.plugin">Plugin</message>
   <message key="common.pluginEnabled">Plugin "{$pluginName}" byl povolen.</message>
@@ -223,7 +224,9 @@
 	<message key="common.top">Začátek</message>
 	<message key="common.true">Ano</message>
 	<message key="common.type">Typ</message>
+        <message key="common.element">Prvek</message>
 	<message key="common.uninitiated">Nezahájeno</message>
+        <message key="common.unread">Nečteno</message>
 	<message key="common.untitled">Bez názvu</message>
 	<message key="common.updated">Aktualizováno</message>
 	<message key="common.uploadedFile">Nahraný soubor</message>
@@ -407,13 +410,14 @@
 	<message key="notification.mailList.register">Můžete se na těchto stránkách zaregistrovat, abyste...</message>
 	<message key="notification.mailList.review"><![CDATA[Participoval na <a href="{$reviewUrl}">recenzním</a> řízení]]></message>
 	<message key="notification.noneExist">Aktuálně nemáte žádná oznámení.</message>
-  <message key="notification.addedNote">Poznámka odeslána.</message>
+        <message key="notification.addedNote">Poznámka odeslána.</message>
 	<message key="notification.removedNote">Poznámka smazána.</message>
 	<message key="notification.removedFile">Soubor smazán.</message>
 	<message key="notification.notification">Oznámení</message>
 	<message key="notification.notifications">Oznámení</message>
 	<message key="notification.notificationsNew">(Nové: {$numNew})</message>
 	<message key="notification.notificationsDescription"><![CDATA[Máte {$unreadCount} nepřečtených oznámení a {$readCount} přečtených oznámení.  <a href="{$settingsUrl}">Klikněte zde</a>, abyste upravili nastavení vašich oznámení.]]></message>
+        <message key="notification.sentNotification">Oznámení odesláno.</message>
 	<message key="notification.settings">Nastavení oznámení</message>
 	<message key="notification.settingsDescription">Zvolte systémové události, o kterých chcete být informován. Zrušení zaškrtnutí u položky zabrání tomu, aby se oznámení události zobrazovalo ve Vašem seznamu oznámení.</message>
 	<message key="notification.subscribe">Přihlásit</message>
@@ -422,7 +426,7 @@
 	<message key="notification.reminderError">Při zasílání hesla se vyskytla chyba. Ujistěte se prosím, že jste uvedl emailovou adresu správně.</message>
 	<message key="notification.reminderSent">Vaše nové heslo bylo odesláno na poskytnutou emailovou adresu.</message>
 	<message key="notification.unsubscribe">Odhlásit</message>
-	<message key="notification.unsubscribeDescription">Pro odhlášení z odběru emailových oznámení vložte níže Vaši emailovou adresu a heslo. Pokud si nepamatujete své heslo, nechejte políčko pro heslo prázdné a na uvedenou emailovou adresu Vám bude odesláno nové.</message>
+<!--	<message key="notification.unsubscribeDescription">Pro odhlášení z odběru emailových oznámení vložte níže Vaši emailovou adresu a heslo. Pokud si nepamatujete své heslo, nechejte políčko pro heslo prázdné a na uvedenou emailovou adresu Vám bude odesláno nové.</message>-->
 	<message key="notification.unsubscribeError">Při odhlašování se vyskytla chyba. Ujistěte se prosím, že Vaše emailová adresa a heslo jsou správné.</message>
 	<message key="notification.unsubscribeSuccess">Byl jste úspěšně odhlášen.</message>
   <message key="notification.savedSubmissionMetadata">Metadata příspěvku uložena.</message>
@@ -431,6 +435,13 @@
 	<message key="search.advancedSearchMore">Nastavení pokročilého vyhledávání (klikni pro zobrazení)</message>
 	<message key="search.advancedSearchLess">Nastavení pokročilého vyhledávání (klikni pro skrytí)</message>
 	<message key="search.allFields">Vše</message>
+        <message key="search.cli.rebuildIndex.clearingIndex">Čistím index</message>
+	<message key="search.cli.rebuildIndex.done">hotovo</message>
+	<message key="search.cli.rebuildIndex.error">chyba</message>
+	<message key="search.cli.rebuildIndex.indexing">Indexuji "{$journalName}"</message>
+        <message key="search.cli.rebuildIndex.indexingByJournalNotSupported">Implementace vyhledávání nedovoluje pře-indexování jednotlivých časopisů </message>
+	<message key="search.cli.rebuildIndex.result">{$numIndexed} články byly indexovány</message>
+	<message key="search.cli.rebuildIndex.unknownJournal">Zadana cesta k časopisu "{$journalPath}" nemůže být pro časopis použita.</message>
   <message key="search.coverage">Pokrytí</message>
 	<message key="search.date">Datum</message>
 	<message key="search.dateFrom">Od</message>
@@ -446,7 +457,7 @@
 	<message key="search.operator.and">and</message>
 	<message key="search.operator.not">not</message>
 	<message key="search.operator.or">or</message>
-	<message key="search.reviseSearch">Upravit vyhledávání</message>
+	<!--<message key="search.reviseSearch">Upravit vyhledávání</message>-->
 	<message key="search.searchAllCategories">Vyhledat ve všech kategoriích</message>
 	<message key="search.searchCategories">Vyhledat kategorie</message>
 	<message key="search.searchResults">Výsledky hledání</message>
@@ -499,4 +510,6 @@
 	<message key="navigation.archives">Archívy</message>
 	<message key="user.authorization.authorRoleMissing">Momentálně nemáte dostatečná opravnění pro prohlížení příspěvku. Prosím upravte svůj profilvýběrem povolených rolí v části: "Registrován jako".</message>
 	<message key="user.authorization.submissionAuthor">Stáavající uživatel není autorem požadovaného příspěvku. prosím zkontrolujte, že jste přihlášen jako pod správným uživatelským účtem.</message>
+        
+        <message key="common.name">Název</message>
 </locale>

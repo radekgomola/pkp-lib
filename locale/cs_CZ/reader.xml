@@ -73,6 +73,7 @@
 	<message key="rt.admin.searches.edit.editSearch">Upravit vyhledávání</message>
 	<message key="rt.admin.selectedVersion">Související položky</message>
 	<message key="rt.admin.settings.abstract">Abstrakt (představuje abstrakt položky).</message>
+        <message key="rt.admin.settings.viewReviewPolicy">Zobrazit pravidla recenzí</message>
 	<message key="rt.admin.settings.authorBio">O autorovi (zobrazí biografické údaje, které o sobě poskytl autor).</message>
 	<message key="rt.admin.settings.captureCite">Jak citovat položku (poskytuje bibliografické podrobnosti pro položku).</message>
 	<message key="rt.admin.settings.defineTerms">Vyhledat pojmy (umožňuje čtenáři odeslat dvojklikem jakékoliv slovo v položce do slovníku).</message>

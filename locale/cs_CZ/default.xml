@@ -2,7 +2,6 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
   <!-- * locale/cs_CZ/default_CS.xml * * Copyright (c) 2014 Masaryk university * * Localization strings ( ). -->
   <locale name="cs_CZ" full_name="Czech">
-    <message key="klic">česky</message>
     <message key="default.groups.name.siteAdmin">Správce systému</message>
     <message key="default.groups.plural.siteAdmin">Správci systému</message>
     <message key="default.groups.name.productionEditor">Tiskový redaktor</message>
