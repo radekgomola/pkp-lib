@@ -23,7 +23,7 @@
                             <h4>{$category->getLocalizedTitle()}</h4>
                             <ul>
                                 {foreach from=$links item=link}
-                                    <li><a href="{$link->getUrl()}" target="_blank">{$link->getLocalizedTitle()}</a></li>
+                                    <li><a href="{$link->getLocalizedUrl()}">{$link->getLocalizedTitle()|strip_unsafe_html}</a></li>
                                     {/foreach}
                                     {if $links|@count < $maxLinks}
                                         {section name=padding start=$links|@count loop=$maxLinks step=1}
