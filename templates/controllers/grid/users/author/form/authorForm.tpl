@@ -29,7 +29,8 @@
 		disablePasswordSection=true
 		disableSendNotifySection=true
 		disableGenderSection=true
-                disableSalutationSection=false
+                disableSalutationSection=true
+                disableSuffixSection=true
 		disableInitialsSection=true
 		disablePhoneSection=true
 		disableFaxSection=true

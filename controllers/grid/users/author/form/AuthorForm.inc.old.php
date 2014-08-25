@@ -112,6 +112,7 @@ class AuthorForm extends Form {
 				'middleName' => $author->getMiddleName(),
 				'lastName' => $author->getLastName(),
 				'suffix' => $author->getSuffix(),
+//                                'salutation' => $author->getSalutation(),
 				'affiliation' => $author->getAffiliation(AppLocale::getLocale()),
 				'country' => $author->getCountry(),
 				'email' => $author->getEmail(),
@@ -160,6 +161,7 @@ class AuthorForm extends Form {
 			'middleName',
 			'lastName',
 			'suffix',
+//                        'salutation',
 			'affiliation',
 			'country',
 			'email',
@@ -194,6 +196,7 @@ class AuthorForm extends Form {
 		$author->setMiddleName($this->getData('middleName'));
 		$author->setLastName($this->getData('lastName'));
 		$author->setSuffix($this->getData('suffix'));
+//                $author->setSalutation($this->getData('salutation'));
 		$author->setAffiliation($this->getData('affiliation'), null); // localized
 		$author->setCountry($this->getData('country'));
 		$author->setEmail($this->getData('email'));
