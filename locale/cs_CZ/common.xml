@@ -354,7 +354,7 @@
 	<message key="locale.supported">Podporované lokalizace</message>
   <message key="navigation.management">Správa</message>
 	<message key="navigation.access"><![CDATA[Uživatelé &amp; Role]]></message>
-	<message key="navigation.about">Podrobnosti</message>
+	<message key="navigation.about">O nás</message>
   <message key="navigation.admin">Administrace</message>
 	<message key="navigation.tools">Nástroje</message>
 	<message key="navigation.tools.importExport">Import/Export</message>

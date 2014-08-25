@@ -33,5 +33,17 @@
 			{/if}
 			<li><a href="{url router=$smarty.const.ROUTE_PAGE page="login"}">{translate key="navigation.login"}</a></li>
 		{/if}
-	</ul>
+                <li>
+                    <form action="#">
+                         {translate|assign:"langCzEn" key="jazyk.vyber"}
+                         {if $langCzEn == "cs_CZ"}
+                             <img src="{$baseUrl}/images/vlajky/cz_square_small_grey2.png" style="float:left;"/>
+                             <input id="tlacitko" type="submit" class="lang_cz_en_small en_small" onclick="location.href={if $languageToggleNoUser}'{$currentUrl|escape}{if strstr($currentUrl, '?')}&amp;{else}?{/if}setLocale=en_US'{else}('{url|escape:"javascript" router=$smarty.const.ROUTE_PAGE page="user" op="setLocale" path="NEW_LOCALE" source=$smarty.server.REQUEST_URI}'.replace('NEW_LOCALE', 'en_US')){/if}" />
+                         {else}     
+                             <input id="tlacitko" type="submit" class="lang_cz_en_small cz_small" onclick="location.href={if $languageToggleNoUser}'{$currentUrl|escape}{if strstr($currentUrl, '?')}&amp;{else}?{/if}setLocale=cs_CZ'{else}('{url|escape:"javascript" router=$smarty.const.ROUTE_PAGE page="user" op="setLocale" path="NEW_LOCALE" source=$smarty.server.REQUEST_URI}'.replace('NEW_LOCALE', 'cs_CZ')){/if}" />
+                             <img src="{$baseUrl}/images/vlajky/en_square_small_grey2.png" style="float:right;"/>
+                         {/if}                    
+                     </form>
+                 </li>
+        </ul>
 </div>

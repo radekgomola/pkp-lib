@@ -215,14 +215,13 @@ class PKPAuthorDAO extends DAO {
 						$author->getMiddleName() . '', // make non-null
 						$author->getLastName(),
 						$author->getSuffix() . '',
-                                                $author->getSalutation().'',
 						$author->getCountry(),
 						$author->getEmail(),
-						$author->getUrl(),
-                                                
+						$author->getUrl(),  
 						(int) $author->getUserGroupId(),
 						(int) $author->getPrimaryContact(),
 						(float) $author->getSequence(),
+                                                $author->getSalutation().'',
                                                 
 				)
 		);
@@ -248,20 +247,19 @@ class PKPAuthorDAO extends DAO {
 					middle_name = ?,
 					last_name = ?,
 					suffix = ?,
-                                        salutation = ?,
 					country = ?,
 					email = ?,
 					url = ?,
 					user_group_id = ?,
 					primary_contact = ?,                                        
-					seq = ?,                                        
+					seq = ?,    
+                                        salutation = ?
 				WHERE	author_id = ?',
 				array(
 						$author->getFirstName(),
 						$author->getMiddleName() . '', // make non-null
 						$author->getLastName(),
 						$author->getSuffix() . '',
-                                                $author->getSalutation().'',
 						$author->getCountry(),
 						$author->getEmail(),
 						$author->getUrl(),
@@ -269,6 +267,7 @@ class PKPAuthorDAO extends DAO {
 						(int) $author->getPrimaryContact(),
 						(float) $author->getSequence(),
 						(int) $author->getId(),
+                                                $author->getSalutation().'',
                                                 
 				)
 		);

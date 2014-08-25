@@ -200,8 +200,8 @@
 	<message key="manager.statistics.statistics.count.value">{$count} ({$percentage}%)</message>
 	<message key="manager.statistics.statistics.totalNewValue">{$numTotal} ({$numNew} nových)</message>
 	<message key="manager.users">Uživatelé</message>
-  <message key="plugins.categories.metadata">Plugin metadat</message>
-	<message key="plugins.categories.metadata.description">Plugin metadat implementuje další standardy formátu metadat.</message>
+  <message key="plugins.categories.metadata">Metadatové doplňky</message>
+	<message key="plugins.categories.metadata.description">Metadatové doplňky implementují další standardy formátů metadat.</message>
 	<message key="plugins.categories.auth">Autorizační doplňky</message>
 	<message key="plugins.categories.blocks">Doplňkové panely</message>
 	<message key="plugins.categories.blocks.description">Doplňkové panely patří mezi doplňky, které je možné připojit do uživatelského rozhranní. Například různé postranní lišty s nástroji.</message>
@@ -217,7 +217,7 @@
 	<message key="plugins.categories.reports">Doplňky pro generování výkazů</message>
 	<message key="plugins.categories.themes.description">Doplňky témat vzhledu mohou být využity ke změně vzhledu systému.</message>
 	<message key="plugins.categories.themes">Doplňky témat vzhledu</message>
-	<message key="plugins.categories.oaiMetadataFormats">Plugin formátu OAI metadat</message>
+	<message key="plugins.categories.oaiMetadataFormats">Doplňky pro metadatový formátu OAI</message>
 	<message key="plugins.categories.oaiMetadataFormats.description">Tyto formátové pluginy vydávají matadata v OAI komunikaci.</message>
   
   <message key="manager.statistics">
@@ -329,8 +329,8 @@
     <message key="plugins.categories.citationOutput.description">Zásuvné moduly pro citační výstupy zajišťují užívýní citačních standardů. Toto nastavení přebíjí nastavení zásuvných modulů pro formát citací.</message>
     <message key="plugins.categories.citationParser">Zásuvné moduly pro extrakci citací</message>
     <message key="plugins.categories.citationParser.description">Zásuvné moduly pro extrakci citací extrahují data na úrovni jednotlivých polí ze samotýcg citací (např. pole Autor, Název atd.)</message>
-    <message key="plugins.categories.pubIds">Zásuvné moduly pro veřejných identifikátorů</message>
-    <message key="plugins.categories.pubIds.description">Tyto zásuvné moduly poskytují podporu pro veřejné identifikátory.</message>
+    <message key="plugins.categories.pubIds">Doplňky pro veřejné identifikátory</message>
+    <message key="plugins.categories.pubIds.description">Tyto doplňky poskytují podporu pro veřejné identifikátory.</message>
     <message key="manager.plugins.copyError">Kopírování zásuvného modulu se nezdařilo. Může to být způsobeno problémem s oprávněním. Ujistěte se, že webový server má povoleno zapisovat do adresáře s moduly (včetně podadresářů). Po skončení jej ale nezapomeňte opět zabezpečit.</message>
     <message key="manager.plugins.delete">Odstranit zásuvný modul</message>
     <message key="manager.plugins.deleteConfirm">Opravdu si přejete odstrant tento zásuvný modul ze systému?</message>
