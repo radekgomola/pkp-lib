@@ -175,7 +175,8 @@ class PKPRegistrationForm extends Form {
 			'userLocales',
 			'registerAsReviewer',
 			'existingUser',
-			'sendPassword'
+			'sendPassword',
+                        'uco'
 		);
 		if ($this->captchaEnabled) {
 			$userVars[] = 'recaptcha_challenge_field';
@@ -244,7 +245,8 @@ class PKPRegistrationForm extends Form {
 			$user->setDateRegistered(Core::getCurrentDate());
 			$user->setCountry($this->getData('country'));
 			$user->setInlineHelp(1); // default new users to having inline help visible.
-
+                        $user->setUCO($this->getData('uco'));
+                        
 			$site = $request->getSite();
 			$availableLocales = $site->getSupportedLocales();
 

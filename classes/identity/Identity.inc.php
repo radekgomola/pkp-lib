@@ -112,6 +112,22 @@ class Identity extends DataObject {
 		return $this->setData('initials', $initials);
 	}
 
+        /**
+	 * Get UČO.
+	 * @return string
+	 */
+	function getUCO() {
+		return $this->getData('uco');
+	}
+
+	/**
+	 * Set UČO.
+	 * @param $uco string
+	 */
+	function setUCO($uco) {
+		return $this->setData('uco', $uco);
+	}
+        
 	/**
 	 * Get user salutation.
 	 * @return string

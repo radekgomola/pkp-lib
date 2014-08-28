@@ -35,6 +35,7 @@
  *   $disableBiographySection: Disable Biography section
  *   $disableMailingSection: Disable Mailing section
  *   $disableSignatureSection: Disable Signature section
+ *   $disableUCOSection: Disable UČO section
  *
  *   $countryRequired: Whether or not the country select is a required field
  *   $extraContentSectionUnfolded: Whether or not the extra content section is unfolded by default
@@ -157,6 +158,7 @@
 						{if !$disableSuffixSection}
 							{fbvElement type="text" label="user.suffix" id="suffix" value=$suffix size=$fbvStyles.size.SMALL inline=true}
 						{/if}
+                                                
 						{if !$disableInitialsSection}
 							{fbvElement type="text" label="user.initials" name="initials" id="initials" value=$initials maxlength="5" inline=true size=$fbvStyles.size.SMALL}
 						{/if}
@@ -173,6 +175,9 @@
 						{/if}
 						{if !$disableFaxSection}
 							{fbvElement type="text" label="user.fax" name="fax" id="fax" value=$fax maxlength="24" inline=true size=$fbvStyles.size.SMALL}
+						{/if}
+                                                {if !$disableUCOSection}
+							{fbvElement type="text" label="user.UCO" name="uco" id="uco" value=$uco maxlength="24" inline=true size=$fbvStyles.size.SMALL}
 						{/if}
 					{/fbvFormSection}
 				{/if}

@@ -97,7 +97,8 @@ class UserDetailsForm extends UserForm {
 				'biography' => $user->getBiography(null), // Localized
 				'interestsKeywords' => $interestManager->getInterestsForUser($user),
 				'interestsTextOnly' => $interestManager->getInterestsString($user),
-				'userLocales' => $user->getLocales()
+				'userLocales' => $user->getLocales(),
+                                'uco' => $user->getUCO()
 			);
 		} else if (isset($this->author)) {
 			$author =& $this->author;
@@ -190,7 +191,8 @@ class UserDetailsForm extends UserForm {
 			'userLocales',
 			'generatePassword',
 			'sendNotify',
-			'mustChangePassword'
+			'mustChangePassword',
+                        'uco'
 		));
 		if ($this->userId == null) {
 			$this->readUserVars(array('username'));
@@ -257,9 +259,11 @@ class UserDetailsForm extends UserForm {
 		$user->setMailingAddress($this->getData('mailingAddress'));
 		$user->setCountry($this->getData('country'));
 		$user->setBiography($this->getData('biography'), null); // Localized
+                $user->setUCO($this->getData('uco'));
 		$user->setMustChangePassword($this->getData('mustChangePassword') ? 1 : 0);
 		$user->setAuthId((int) $this->getData('authId'));
-
+                
+                
 		$site = $request->getSite();
 		$availableLocales = $site->getSupportedLocales();
 

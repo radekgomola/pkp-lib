@@ -26,6 +26,7 @@ define('USER_FIELD_URL', 'url');
 define('USER_FIELD_INTERESTS', 'interests');
 define('USER_FIELD_INITIAL', 'initial');
 define('USER_FIELD_AFFILIATION', 'affiliation');
+//define('USER_FIELD_UCO', 'uco');
 define('USER_FIELD_NONE', null);
 
 class PKPUserDAO extends DAO {
@@ -51,7 +52,7 @@ class PKPUserDAO extends DAO {
 	 * @return User
 	 */
 	function getById($userId, $allowDisabled = true) {
-		$result = $this->retrieve(
+		$result = $this->retrieve(                        
 			'SELECT * FROM users WHERE user_id = ?' . ($allowDisabled?'':' AND disabled = 0'),
 			array((int) $userId)
 		);
@@ -62,6 +63,26 @@ class PKPUserDAO extends DAO {
 		}
 		$result->Close();
 		return $user;
+	}
+        
+        /**
+	 * Retrieve a user by UČO.
+	 * @param $uco string
+	 * @param $allowDisabled boolean
+	 * @return User
+	 */
+        function &getByUCO($uco, $allowDisabled = true) {
+		$result = $this->retrieve(
+			'SELECT * FROM users WHERE uco = ?' . ($allowDisabled?'':' AND disabled = 0'),
+			array($username)
+		);
+
+		$returner = null;
+		if ($result->RecordCount() != 0) {
+			$returner =& $this->_returnUserFromRowWithData($result->GetRowAssoc(false));
+		}
+		$result->Close();
+		return $returner;
 	}
 
 	/**
@@ -83,8 +104,8 @@ class PKPUserDAO extends DAO {
 		$result->Close();
 		return $returner;
 	}
-
-	/**
+        
+        /**
 	 * Get the user by the TDL ID (implicit authentication).
 	 * @param $authstr string
 	 * @param $allowDisabled boolean
@@ -350,7 +371,7 @@ class PKPUserDAO extends DAO {
 		$user->setAuthId($row['auth_id']);
 		$user->setAuthStr($row['auth_str']);
 		$user->setInlineHelp($row['inline_help']);
-
+                $user->setUCO($row['uco']);
 		if ($callHook) HookRegistry::call('UserDAO::_returnUserFromRow', array(&$user, &$row));
 
 		return $user;
@@ -369,9 +390,9 @@ class PKPUserDAO extends DAO {
 		}
 		$this->update(
 			sprintf('INSERT INTO users
-				(username, password, salutation, first_name, middle_name, initials, last_name, suffix, gender, email, url, phone, fax, mailing_address, billing_address, country, locales, date_last_email, date_registered, date_validated, date_last_login, must_change_password, disabled, disabled_reason, auth_id, auth_str, inline_help)
+				(username, password, salutation, first_name, middle_name, initials, last_name, suffix, gender, email, url, phone, fax, mailing_address, billing_address, country, locales, date_last_email, date_registered, date_validated, date_last_login, must_change_password, disabled, disabled_reason, auth_id, auth_str, inline_help, uco)
 				VALUES
-				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, %s, %s, %s, %s, ?, ?, ?, ?, ?, ?)',
+				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, %s, %s, %s, %s, ?, ?, ?, ?, ?, ?, ?)',
 				$this->datetimeToDB($user->getDateLastEmail()), $this->datetimeToDB($user->getDateRegistered()), $this->datetimeToDB($user->getDateValidated()), $this->datetimeToDB($user->getDateLastLogin())),
 			array(
 				$user->getUsername(),
@@ -397,6 +418,7 @@ class PKPUserDAO extends DAO {
 				$user->getAuthId()=='' ? null : (int) $user->getAuthId(),
 				$user->getAuthStr(),
 				(int) $user->getInlineHelp(),
+                                $user->getUCO(),
 			)
 		);
 
@@ -425,7 +447,7 @@ class PKPUserDAO extends DAO {
 		}
 
 		$this->updateLocaleFields($user);
-
+                
 		return $this->update(
 			sprintf('UPDATE	users
 				SET	username = ?,
@@ -453,7 +475,8 @@ class PKPUserDAO extends DAO {
 					disabled_reason = ?,
 					auth_id = ?,
 					auth_str = ?,
-					inline_help = ?
+					inline_help = ?,
+                                        uco = ?
 				WHERE	user_id = ?',
 				$this->datetimeToDB($user->getDateLastEmail()), $this->datetimeToDB($user->getDateValidated()), $this->datetimeToDB($user->getDateLastLogin())),
 			array(
@@ -480,7 +503,8 @@ class PKPUserDAO extends DAO {
 				$user->getAuthId()=='' ? null : (int) $user->getAuthId(),
 				$user->getAuthStr(),
 				(int) $user->getInlineHelp(),
-				(int) $user->getId(),
+                                $user->getUCO(),
+				(int) $user->getId(),                               
 			)
 		);
 	}
@@ -560,6 +584,7 @@ class PKPUserDAO extends DAO {
 		$sql = 'SELECT DISTINCT u.* FROM users u';
 		switch ($field) {
 			case USER_FIELD_USERID:
+                                
 				$sql .= ' WHERE u.user_id = ?';
 				$var = (int) $value;
 				break;

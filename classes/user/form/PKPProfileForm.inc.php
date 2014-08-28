@@ -183,7 +183,8 @@ class PKPProfileForm extends Form {
 			'biography' => $user->getBiography(null), // Localized
 			'userLocales' => $user->getLocales(),
 			'interestsKeywords' => $interestManager->getInterestsForUser($user),
-			'interestsTextOnly' => $interestManager->getInterestsString($user)
+			'interestsTextOnly' => $interestManager->getInterestsString($user),
+                        'uco' => $user->getUCO(),
 		);
 	}
 
@@ -212,6 +213,7 @@ class PKPProfileForm extends Form {
 			'interestsTextOnly',
 			'userLocales',
 			'authorGroup',
+                        'uco'
 		));
 
 		if ($this->getData('userLocales') == null || !is_array($this->getData('userLocales'))) {
@@ -280,7 +282,8 @@ class PKPProfileForm extends Form {
 		$user->setMailingAddress($this->getData('mailingAddress'));
 		$user->setCountry($this->getData('country'));
 		$user->setBiography($this->getData('biography'), null); // Localized
-
+                $user->setUCO($this->getData('uco'));
+                
 		// Insert the user interests
 		$interests = $this->getData('interestsKeywords') ? $this->getData('interestsKeywords') : $this->getData('interestsTextOnly');
 		import('lib.pkp.classes.user.InterestManager');

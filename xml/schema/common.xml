@@ -212,6 +212,7 @@
 		</field>
 		<field name="disabled_reason" type="X"/>
 		<field name="inline_help" type="I1" />
+                <field name="uco" type="C2" size="24"/>
 		<descr>User authentication credentials and profile data.</descr>
 		<index name="users_username">
 			<col>username</col>
