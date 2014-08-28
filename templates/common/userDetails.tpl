@@ -177,7 +177,7 @@
 							{fbvElement type="text" label="user.fax" name="fax" id="fax" value=$fax maxlength="24" inline=true size=$fbvStyles.size.SMALL}
 						{/if}
                                                 {if !$disableUCOSection}
-							{fbvElement type="text" label="user.UCO" name="uco" id="uco" value=$uco maxlength="24" inline=true size=$fbvStyles.size.SMALL}
+							{fbvElement type="text" label="user.uco" name="uco" id="uco" value=$uco maxlength="24" inline=true size=$fbvStyles.size.SMALL}
 						{/if}
 					{/fbvFormSection}
 				{/if}
