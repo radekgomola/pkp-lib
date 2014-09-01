@@ -1226,6 +1226,30 @@ abstract class Submission extends DataObject {
 	function setPocetStran($pocetStran, $locale) {
 		return $this->setData('pocetStran', $pocetStran, $locale);
 	}
+        
+        
+        /**
+	 * Vraci lokalizovanou cenu
+	 * @return string
+	 */
+	function getLocalizedCena() {
+		return $this->getLocalizedData('cena');
+	}
+        /**
+	 * Vrací cenu
+	 * @return string
+	 */
+	function getCena($locale) {
+		return $this->getData('cena', $locale);
+        }
+
+	/**
+	 * Nastavuje cenu
+	 * @param $cena string
+	 */
+	function setCena($cena, $locale) {
+		return $this->setData('cena', $cena, $locale);
+	}
 
         /**
 	 * Vraci lokalizované pracoviště MU

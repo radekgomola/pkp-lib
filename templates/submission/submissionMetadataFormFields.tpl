@@ -44,8 +44,11 @@
         
  
  {fbvFormArea id="dalsiInformaceZakladni" title="informace.doplnkove.zakladni" class="border"}
+        {fbvFormSection label="submission.cena" for="cena"}
+		{fbvElement type="text" multilingual=true name="cena" id="cena" value=$cena maxlength="40" readonly=$readOnly}
+	{/fbvFormSection}
         {fbvFormSection label="submission.pocetStran" for="pocetStran"}
-		{fbvElement type="text" multilingual=true name="pocetStran" id="pocetStran" value=$pocetStran maxlength="255" readonly=$readOnly}
+		{fbvElement type="text" multilingual=true name="pocetStran" id="pocetStran" value=$pocetStran maxlength="40" readonly=$readOnly}
 	{/fbvFormSection}
         {fbvFormSection label="submission.muPracoviste" for="muPracoviste"}
 		{fbvElement type="text" multilingual=true name="muPracoviste" id="muPracoviste" value=$muPracoviste maxlength="255" readonly=$readOnly}

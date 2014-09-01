@@ -37,14 +37,16 @@
 
 	{$additionalFormFields}
 
-	{if $canExpedite}
-		<div id="metadataAccordion"><h3><a href="#">{translate key="submission.submit.extendedMetadata"}</a></h3>
-			<div id="extraSubmissionFields">
-	{/if}
-	{include file="core:submission/submissionMetadataFormFields.tpl"}
-	{if $canExpedite}
-			</div>
-		</div>
-	{/if}
+        {if !$disableExtraFormData}
+            {if $canExpedite}
+                    <div id="metadataAccordion"><h3><a href="#">{translate key="submission.submit.extendedMetadata"}</a></h3>
+                            <div id="extraSubmissionFields">
+            {/if}
+            {include file="core:submission/submissionMetadataFormFields.tpl"}
+            {if $canExpedite}
+                            </div>
+                    </div>
+            {/if}
+        {/if}
 	{fbvFormButtons id="step3Buttons" submitText="submission.submit.finishSubmission" confirmSubmit="submission.confirmSubmit"}
 </form>

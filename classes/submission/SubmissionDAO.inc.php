@@ -63,8 +63,8 @@ class SubmissionDAO extends DAO {
 			'coverageGeo', 'coverageChron', 'coverageSample',
 			'type', 'sponsor', 'source', 'rights', 
                         'rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'dedikace',
-                        'bibliografickaCitace', 'poznamka', 'pocetStran', 'muPracoviste', 'urlOC', 'urlWeb'
-                        
+                        'bibliografickaCitace', 'poznamka', 'pocetStran', 'muPracoviste', 
+                        'urlOC', 'urlWeb', 'cena'                        
 		);
 	}
 

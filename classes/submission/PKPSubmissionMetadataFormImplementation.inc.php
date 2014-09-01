@@ -76,13 +76,14 @@ class PKPSubmissionMetadataFormImplementation {
                                 'rightsDrzitel' => $submission->getRightsDrzitel(null), // Localized
                                 'rightsTrvani' => $submission->getRightsTrvani(null), // Localized
 				'citations' => $submission->getCitations(null),
-                                'pocetStran' => $submission->getPocetStran(null),
-                                'muPracoviste' => $submission->getMuPracoviste(null),
-                                'urlOC' => $submission->getUrlOC(null),
-                                'urlWeb' => $submission->getUrlWeb(null),
-                                'bibliografickaCitace' => $submission->getBibliografickaCitace(null), // Localized
+                                'pocetStran' => $submission->getPocetStran(null),// Localized
+                                'muPracoviste' => $submission->getMuPracoviste(null),// Localized
+                                'urlOC' => $submission->getUrlOC(null),// Localized
+                                'urlWeb' => $submission->getUrlWeb(null),// Localized
+                                'bibliografickaCitace' => $submission->getBibliografickaCitace(null), // Localized// Localized
                                 'poznamka' => $submission->getPoznamka(null), // Localized
-                                'dedikace' => $submission->getDedikace(null) // Localized
+                                'dedikace' => $submission->getDedikace(null), // Localized
+                                'cena' => $submission->getCena(null) // Localized
 			); 
 
 			foreach ($formData as $key => $data) {
@@ -115,7 +116,7 @@ class PKPSubmissionMetadataFormImplementation {
 	 */
 	function readInputData() {
 		// 'keywords' is a tagit catchall that contains an array of values for each keyword/locale combination on the form.
-		$userVars = array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights', 'rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'keywords', 'pocetStran', 'muPracoviste', 'urlOC', 'urlWeb', 'bibliografickaCitace', 'poznamka', 'dedikace');
+		$userVars = array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights', 'rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'keywords', 'pocetStran', 'muPracoviste', 'urlOC', 'urlWeb', 'bibliografickaCitace', 'poznamka', 'dedikace', 'cena');
 		$this->_parentForm->readUserVars($userVars);
 	}
 
@@ -124,7 +125,7 @@ class PKPSubmissionMetadataFormImplementation {
 	 * @return array
 	 */
 	function getLocaleFieldNames() {
-		return array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights','rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'bibliografickaCitace', 'poznamka', 'dedikace', 'pocetStran', 'muPracoviste', 'urlOC', 'urlWeb');
+		return array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights','rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'bibliografickaCitace', 'poznamka', 'dedikace', 'pocetStran', 'muPracoviste', 'urlOC', 'urlWeb', 'cena');
 	}
 
 	/**
@@ -159,6 +160,7 @@ class PKPSubmissionMetadataFormImplementation {
                 $submission->setBibliografickaCitace($this->_parentForm->getData('bibliografickaCitace'), null);
                 $submission->setPoznamka($this->_parentForm->getData('poznamka'), null);
                 $submission->setDedikace($this->_parentForm->getData('dedikace'), null);
+                $submission->setCena($this->_parentForm->getData('cena'), null);
 
 
         // Save the submission
