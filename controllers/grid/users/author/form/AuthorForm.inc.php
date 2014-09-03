@@ -117,6 +117,7 @@ class AuthorForm extends Form {
 				'email' => $author->getEmail(),
 				'url' => $author->getUrl(),
 				'userGroupId' => $author->getUserGroupId(),
+                                'uco' => $author->getUCO(),
 				'biography' => $author->getBiography(AppLocale::getLocale()),
 				'primaryContact' => $author->getPrimaryContact()
 			);
@@ -165,6 +166,7 @@ class AuthorForm extends Form {
 			'email',
 			'url',
 			'userGroupId',
+                        'uco',
 			'biography',
 			'primaryContact'
 		));
@@ -199,6 +201,7 @@ class AuthorForm extends Form {
 		$author->setEmail($this->getData('email'));
 		$author->setUrl($this->getData('url'));
 		$author->setUserGroupId($this->getData('userGroupId'));
+                $author->setUCO($this->getData('uco'));
 		$author->setBiography($this->getData('biography'), null); // localized
 		$author->setPrimaryContact(($this->getData('primaryContact') ? true : false));
 

@@ -134,6 +134,7 @@ class PKPAuthorDAO extends DAO {
 		$author->setEmail($row['email']);
 		$author->setUrl($row['url']);
 		$author->setUserGroupId($row['user_group_id']);
+                $author->setUCO($row['uco']);
 		$author->setPrimaryContact($row['primary_contact']);
 		$author->setSequence($row['seq']);
 		$author->_setShowTitle($row['show_title']); // Dependent
@@ -162,6 +163,7 @@ class PKPAuthorDAO extends DAO {
 		$author->setEmail($row['email']);
 		$author->setUrl($row['url']);
 		$author->setUserGroupId($row['user_group_id']);
+                $author->setUCO($row['uco']);
 		$author->setPrimaryContact($row['primary_contact']);
 		$author->setSequence($row['seq']);
 
@@ -205,9 +207,9 @@ class PKPAuthorDAO extends DAO {
 
 		$this->update(
 				'INSERT INTO authors
-				(submission_id, first_name, middle_name, last_name, suffix, country, email, url, user_group_id, primary_contact, seq)
+				(submission_id, first_name, middle_name, last_name, suffix, country, email, url, user_group_id, uco, primary_contact, seq)
 				VALUES
-				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 				array(
 						(int) $author->getSubmissionId(),
 						$author->getFirstName(),
@@ -218,6 +220,7 @@ class PKPAuthorDAO extends DAO {
 						$author->getEmail(),
 						$author->getUrl(),
 						(int) $author->getUserGroupId(),
+                                                (int) $author->getUCO(),
 						(int) $author->getPrimaryContact(),
 						(float) $author->getSequence()
 				)
@@ -248,6 +251,7 @@ class PKPAuthorDAO extends DAO {
 					email = ?,
 					url = ?,
 					user_group_id = ?,
+                                        uco = ?,
 					primary_contact = ?,
 					seq = ?
 				WHERE	author_id = ?',
@@ -260,6 +264,7 @@ class PKPAuthorDAO extends DAO {
 						$author->getEmail(),
 						$author->getUrl(),
 						(int) $author->getUserGroupId(),
+                                                (int) $author->getUCO(),
 						(int) $author->getPrimaryContact(),
 						(float) $author->getSequence(),
 						(int) $author->getId()
