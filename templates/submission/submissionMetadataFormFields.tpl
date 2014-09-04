@@ -46,6 +46,9 @@
  {fbvFormArea id="dalsiInformaceZakladni" title="informace.doplnkove.zakladni" class="border"}
         {fbvFormSection label="submission.cena" for="cena"}
 		{fbvElement type="text" multilingual=true name="cena" id="cena" value=$cena maxlength="40" readonly=$readOnly}
+        {/fbvFormSection}       
+        {fbvFormSection label="submission.cena.ebook" for="cena_ebook"}
+                {fbvElement type="text" multilingual=true name="cena_ebook" id="cena_ebook" value=$cena_ebook maxlength="40" readonly=$readOnly}
 	{/fbvFormSection}
         {fbvFormSection label="submission.pocetStran" for="pocetStran"}
 		{fbvElement type="text" multilingual=true name="pocetStran" id="pocetStran" value=$pocetStran maxlength="40" readonly=$readOnly}
@@ -55,6 +58,9 @@
 	{/fbvFormSection}
         {fbvFormSection label="submission.url.oc" for="urlOC"}
 		{fbvElement type="text" multilingual=true name="urlOC" id="urlOC" value=$urlOC maxlength="255" readonly=$readOnly}
+        {/fbvFormSection}
+        {fbvFormSection label="submission.url.oc.ebook" for="urlOC_ebook"}
+                {fbvElement type="text" multilingual=true name="urlOC_ebook" id="urlOC_ebook" value=$urlOC_ebook maxlength="255" readonly=$readOnly}
 	{/fbvFormSection}
         {fbvFormSection label="submission.url.web" for="urlWeb"}
 		{fbvElement type="text" multilingual=true name="urlWeb" id="urlWeb" value=$urlWeb maxlength="255" readonly=$readOnly}

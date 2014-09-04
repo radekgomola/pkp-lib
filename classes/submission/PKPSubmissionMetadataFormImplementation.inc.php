@@ -83,7 +83,10 @@ class PKPSubmissionMetadataFormImplementation {
                                 'bibliografickaCitace' => $submission->getBibliografickaCitace(null), // Localized// Localized
                                 'poznamka' => $submission->getPoznamka(null), // Localized
                                 'dedikace' => $submission->getDedikace(null), // Localized
-                                'cena' => $submission->getCena(null) // Localized
+                                'cena' => $submission->getCena(null), // Localized
+                                
+                                'cena_ebook' => $submission->getCenaEbook(null), // Localized
+                                'urlOC_ebook' => $submission->getUrlOCEbook(null) // Localized
 			); 
 
 			foreach ($formData as $key => $data) {
@@ -116,7 +119,7 @@ class PKPSubmissionMetadataFormImplementation {
 	 */
 	function readInputData() {
 		// 'keywords' is a tagit catchall that contains an array of values for each keyword/locale combination on the form.
-		$userVars = array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights', 'rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'keywords', 'pocetStran', 'muPracoviste', 'urlOC', 'urlWeb', 'bibliografickaCitace', 'poznamka', 'dedikace', 'cena');
+		$userVars = array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights', 'rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'keywords', 'pocetStran', 'muPracoviste', 'urlOC', 'urlWeb', 'bibliografickaCitace', 'poznamka', 'dedikace', 'cena', 'cena_ebook', 'urlOC_ebook');
 		$this->_parentForm->readUserVars($userVars);
 	}
 
@@ -125,7 +128,7 @@ class PKPSubmissionMetadataFormImplementation {
 	 * @return array
 	 */
 	function getLocaleFieldNames() {
-		return array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights','rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'bibliografickaCitace', 'poznamka', 'dedikace', 'pocetStran', 'muPracoviste', 'urlOC', 'urlWeb', 'cena');
+		return array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights','rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'bibliografickaCitace', 'poznamka', 'dedikace', 'pocetStran', 'muPracoviste', 'urlOC', 'urlWeb', 'cena', 'cena_ebook', 'urlOC_ebook');
 	}
 
 	/**
@@ -161,7 +164,8 @@ class PKPSubmissionMetadataFormImplementation {
                 $submission->setPoznamka($this->_parentForm->getData('poznamka'), null);
                 $submission->setDedikace($this->_parentForm->getData('dedikace'), null);
                 $submission->setCena($this->_parentForm->getData('cena'), null);
-
+                $submission->setCenaEbook($this->_parentForm->getData('cena_ebook'), null);
+                $submission->setUrlOCEbook($this->_parentForm->getData('urlOC_ebook'), null);
 
         // Save the submission
 		$submissionDao->updateObject($submission);

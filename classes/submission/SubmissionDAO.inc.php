@@ -64,7 +64,7 @@ class SubmissionDAO extends DAO {
 			'type', 'sponsor', 'source', 'rights', 
                         'rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'dedikace',
                         'bibliografickaCitace', 'poznamka', 'pocetStran', 'muPracoviste', 
-                        'urlOC', 'urlWeb', 'cena'                        
+                        'urlOC', 'urlWeb', 'cena','urlOC_ebook', 'cena_ebook'
 		);
 	}
 

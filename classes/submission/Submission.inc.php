@@ -1250,6 +1250,29 @@ abstract class Submission extends DataObject {
 	function setCena($cena, $locale) {
 		return $this->setData('cena', $cena, $locale);
 	}
+        
+        /**
+	 * Vraci lokalizovanou cenu e-knihy
+	 * @return string
+	 */
+	function getLocalizedCenaEbook() {
+		return $this->getLocalizedData('cena_ebook');
+	}
+        /**
+	 * Vrací cenu e-knihy
+	 * @return string
+	 */
+	function getCenaEbook($locale) {
+		return $this->getData('cena_ebook', $locale);
+        }
+
+	/**
+	 * Nastavuje cenu
+	 * @param $cena_ebook string
+	 */
+	function setCenaEbook($cena_ebook, $locale) {
+		return $this->setData('cena_ebook', $cena_ebook, $locale);
+	}
 
         /**
 	 * Vraci lokalizované pracoviště MU
@@ -1296,6 +1319,29 @@ abstract class Submission extends DataObject {
 	 */
 	function setUrlOC($urlOC) {
 		return $this->setData('urlOC', $urlOC, $locale);
+	}
+        
+        /**
+	 * Vraci lokalizovanou adresu OC
+	 * @return string
+	 */
+	function getLocalizedUrlOCEbook() {
+		return $this->getLocalizedData('urlOC_ebook');
+	}
+        /**
+	 * Vrací url OC
+	 * @return string
+	 */
+	function getUrlOCEbook($locale) {
+		return $this->getData('urlOC_ebook', $locale);
+        }
+
+	/**
+	 * Nastavuje url OC
+	 * @param $urlOC string
+	 */
+	function setUrlOCEbook($urlOC_ebook) {
+		return $this->setData('urlOC_ebook', $urlOC_ebook, $locale);
 	}
         
           /**
