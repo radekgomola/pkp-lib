@@ -53,6 +53,36 @@
 			<col>submission_id</col>
 		</index>
 	</table>
+        
+        <!--
+	  *
+	  * TABLE munipress_author_metadata
+	  *
+	  -->
+	<table name="munipress_author_metadata">
+		<field name="munipress_author_id" type="I8">
+			<KEY />
+			<AUTOINCREMENT/>
+		</field>
+		<field name="author_id" type="I8">
+			<NOTNULL/>
+		</field>
+		<field name="author_rc" type="C2" size="20">
+			<NOTNULL/>
+			<DEFAULT VALUE="/"/>
+		</field>
+		<field name="uco" type="I4">
+			<DEFAULT VALUE=""/>
+		</field>
+		<field name="mu" type="I4" />
+		<field name="tituly_pred" type="C2" size="80"/>
+		<field name="tituly_za" type="C2" size="80" />
+                <field name="poznamka" type="X"/>
+                <descr>Munipress metadata for authors.</descr>
+		<index name="munipress_authors_id">
+			<col>author_id</col>
+		</index>
+	</table>
 
 	<!--
 	  *
@@ -157,6 +187,45 @@
 		<field name="viewable" type="I1" />
 		<descr>Comments posted on submissions</descr>
 		<index name="submission_comments_submission_id">
+			<col>submission_id</col>
+		</index>
+	</table>
+        
+        <!--
+	  *
+	  * TABLE munipress_metadata
+	  *
+	  -->
+	<table name="munipress_metadata">
+		<field name="munipress_submission_id" type="I8">
+			<KEY />
+			<AUTOINCREMENT/>
+		</field>
+		<field name="submission_id" type="I8">
+			<NOTNULL/>
+		</field>
+		<field name="typ_02_58" type="C2" size="50" />
+                <field name="jazyky" type="C2" size="50" />
+		<field name="vydani_cislo" type="I4" />
+                <field name="licence_typ" type="C2" size="100" />
+                <field name="licence_drzitel" type="C2" size="100" />
+                <field name="licence_trvani" type="D" />
+                <field name="obchodni_centrum_id" type="I8" />			
+                <field name="obchodni_centrum_id_ebook" type="I8" />
+		<field name="cena" type="I4" />
+                <field name="cena_ebook" type="I4" />
+		<field name="souvisejici_publikace" type="C2" size="500"/>
+		<field name="nakl_smlouva" type="D" />
+                <field name="platnost_smlouvy" type="D" />
+                <field name="naklad" type="I4" />
+                <field name="pocet_stran" type="I4" />
+                <field name="tiskarna" type="C2" size="120" />
+                <field name="honor_celkem" type="C2" size="40" />
+                <field name="honor_vypl" type="C2" size="40" />
+                <field name="povinne_vytisky_dosly" type="D" />
+                <field name="povinne_vytisky_odesly" type="D" />
+                <descr>Munipress metadata for submissions.</descr>
+		<index name="munipress_submission_id">
 			<col>submission_id</col>
 		</index>
 	</table>
