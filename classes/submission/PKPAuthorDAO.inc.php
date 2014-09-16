@@ -36,8 +36,10 @@ class PKPAuthorDAO extends DAO {
 		if ($submissionId !== null) $params[] = (int) $submissionId;
 		$result = $this->retrieve(
 			'SELECT a.*,
+                                munia.*,
 				ug.show_title
 			FROM	authors a
+                                LEFT JOIN munipress_author_metadata munia ON (a.author_id = munia.author_id)
 				JOIN user_groups ug ON (a.user_group_id=ug.user_group_id)
 			WHERE	a.author_id = ?'
 				. ($submissionId !== null?' AND a.submission_id = ?':''),
@@ -48,7 +50,6 @@ class PKPAuthorDAO extends DAO {
 		if ($result->RecordCount() != 0) {
 			$returner = $this->_fromRow($result->GetRowAssoc(false));
 		}
-
 		$result->Close();
 		return $returner;
 	}
@@ -63,8 +64,9 @@ class PKPAuthorDAO extends DAO {
 		$authors = array();
 
 		$result = $this->retrieve(
-			'SELECT	a.*, ug.show_title
+			'SELECT	a.*, munia.*,ug.show_title
 			FROM	authors a
+                                LEFT JOIN munipress_author_metadata munia ON (a.author_id = munia.author_id)
 				JOIN user_groups ug ON (a.user_group_id=ug.user_group_id)
 			WHERE	a.submission_id = ?
 			ORDER BY seq',
@@ -134,10 +136,15 @@ class PKPAuthorDAO extends DAO {
 		$author->setEmail($row['email']);
 		$author->setUrl($row['url']);
 		$author->setUserGroupId($row['user_group_id']);
-                $author->setUCO($row['uco']);
 		$author->setPrimaryContact($row['primary_contact']);
 		$author->setSequence($row['seq']);
 		$author->_setShowTitle($row['show_title']); // Dependent
+                $author->setUCO($row['uco']);
+                $author->setMU($row['mu']);
+                $author->setTitulyPred($row['tituly_pred']);
+                $author->setTitulyZa($row['tituly_za']);
+                $author->setRodneCislo($row['rodne_cislo']);
+                $author->setPoznamka($row['poznamka']);
 
 		$this->getDataObjectSettings('author_settings', 'author_id', $row['author_id'], $author);
 
@@ -163,9 +170,14 @@ class PKPAuthorDAO extends DAO {
 		$author->setEmail($row['email']);
 		$author->setUrl($row['url']);
 		$author->setUserGroupId($row['user_group_id']);
-                $author->setUCO($row['uco']);
 		$author->setPrimaryContact($row['primary_contact']);
 		$author->setSequence($row['seq']);
+                $author->setUCO($row['uco']);
+                $author->setMU($row['mu']);
+                $author->setTitulyPred($row['tituly_pred']);
+                $author->setTitulyZa($row['tituly_za']);
+                $author->setRodneCislo($row['rodne_cislo']);
+                $author->setPoznamka($row['poznamka']);
 
 		$author->setAffiliation($row['affiliation_l'], $row['locale']);
 		$author->setAffiliation($row['affiliation_pl'], $row['primary_locale']);
@@ -207,9 +219,9 @@ class PKPAuthorDAO extends DAO {
 
 		$this->update(
 				'INSERT INTO authors
-				(submission_id, first_name, middle_name, last_name, suffix, country, email, url, user_group_id, uco, primary_contact, seq)
+				(submission_id, first_name, middle_name, last_name, suffix, country, email, url, user_group_id, primary_contact, seq)
 				VALUES
-				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 				array(
 						(int) $author->getSubmissionId(),
 						$author->getFirstName(),
@@ -220,15 +232,30 @@ class PKPAuthorDAO extends DAO {
 						$author->getEmail(),
 						$author->getUrl(),
 						(int) $author->getUserGroupId(),
-                                                (int) $author->getUCO(),
 						(int) $author->getPrimaryContact(),
 						(float) $author->getSequence()
 				)
 		);
 
 		$author->setId($this->getInsertId());
-		$this->updateLocaleFields($author);
-
+                
+                $this->update(
+				'INSERT INTO munipress_author_metadata
+				(author_id, uco, mu, tituly_pred, tituly_za, rodne_cislo, poznamka)
+				VALUES
+				(?, ?, ?, ?, ?, ?, ?)',
+				array(
+						(int) $author->getId(),
+						(int) $author->getUCO() . '',// make non-null
+						(int) $author->getMU() . '', // make non-null
+						$author->getTitulyPred(),
+						$author->getTitulyZa(),
+						$author->getRodneCislo(),
+						$author->getPoznamka()
+				)
+		);
+                
+                $this->updateLocaleFields($author);
 		return $author->getId();
 	}
 
@@ -240,7 +267,7 @@ class PKPAuthorDAO extends DAO {
 		// Reset primary contact for submission to this author if applicable
 		if ($author->getPrimaryContact()) {
 			$this->resetPrimaryContact($author->getId(), $author->getSubmissionId());
-		}
+		}                
 		$returner = $this->update(
 				'UPDATE	authors
 				SET	first_name = ?,
@@ -251,7 +278,6 @@ class PKPAuthorDAO extends DAO {
 					email = ?,
 					url = ?,
 					user_group_id = ?,
-                                        uco = ?,
 					primary_contact = ?,
 					seq = ?
 				WHERE	author_id = ?',
@@ -264,12 +290,32 @@ class PKPAuthorDAO extends DAO {
 						$author->getEmail(),
 						$author->getUrl(),
 						(int) $author->getUserGroupId(),
-                                                (int) $author->getUCO(),
 						(int) $author->getPrimaryContact(),
 						(float) $author->getSequence(),
 						(int) $author->getId()
 				)
 		);
+                
+                $this->update(
+				'UPDATE	munipress_author_metadata
+				SET	uco = ?,
+					mu = ?,
+					tituly_pred = ?,
+					tituly_za = ?,
+					rodne_cislo = ?,
+					poznamka = ?
+				WHERE	author_id = ?',
+				array(
+						(int) $author->getUCO(). '',// make non-null
+						(int) $author->getMU(). '', // make non-null
+						$author->getTitulyPred(),
+						$author->getTitulyZa(),
+						$author->getRodneCislo(),
+						$author->getPoznamka(),
+						(int) $author->getId()
+				)
+		);
+                
 		$this->updateLocaleFields($author);
 		return $returner;
 	}
@@ -295,8 +341,10 @@ class PKPAuthorDAO extends DAO {
 			($submissionId?' AND submission_id = ?':''),
 			$params
 		);
-		if ($returner) $this->update('DELETE FROM author_settings WHERE author_id = ?', array((int) $authorId));
-
+		if ($returner) {
+                    $this->update('DELETE FROM author_settings WHERE author_id = ?', array((int) $authorId));
+                    $this->update('DELETE FROM munipress_author_metadata WHERE author_id = ?', array((int) $authorId));
+                }
 		return $returner;
 	}
 

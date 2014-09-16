@@ -47,7 +47,6 @@
 		</field>
 		<field name="url" type="C2" size="255"/>
 		<field name="user_group_id" type="I8" />
-                <field name="uco" type="I8" />
 		<descr>Author metadata for submissions.</descr>
 		<index name="authors_submission_id">
 			<col>submission_id</col>
@@ -66,17 +65,12 @@
 		</field>
 		<field name="author_id" type="I8">
 			<NOTNULL/>
-		</field>
-		<field name="author_rc" type="C2" size="20">
-			<NOTNULL/>
-			<DEFAULT VALUE="/"/>
-		</field>
-		<field name="uco" type="I4">
-			<DEFAULT VALUE=""/>
-		</field>
+		</field>		
+		<field name="uco" type="I4" />
 		<field name="mu" type="I4" />
 		<field name="tituly_pred" type="C2" size="80"/>
 		<field name="tituly_za" type="C2" size="80" />
+                <field name="rodne_cislo" type="C2" size="20" />	
                 <field name="poznamka" type="X"/>
                 <descr>Munipress metadata for authors.</descr>
 		<index name="munipress_authors_id">
@@ -224,6 +218,7 @@
                 <field name="honor_vypl" type="C2" size="40" />
                 <field name="povinne_vytisky_dosly" type="D" />
                 <field name="povinne_vytisky_odesly" type="D" />
+                <field name="a_kolektiv" type="I1" />
                 <descr>Munipress metadata for submissions.</descr>
 		<index name="munipress_submission_id">
 			<col>submission_id</col>

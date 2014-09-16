@@ -104,7 +104,6 @@ class AuthorForm extends Form {
 	 */
 	function initData() {
 		$author = $this->getAuthor();
-
 		if ($author) {
 			$this->_data = array(
 				'authorId' => $author->getId(),
@@ -112,14 +111,20 @@ class AuthorForm extends Form {
 				'middleName' => $author->getMiddleName(),
 				'lastName' => $author->getLastName(),
 				'suffix' => $author->getSuffix(),
-				'affiliation' => $author->getAffiliation(AppLocale::getLocale()),
 				'country' => $author->getCountry(),
 				'email' => $author->getEmail(),
 				'url' => $author->getUrl(),
-				'userGroupId' => $author->getUserGroupId(),
-                                'uco' => $author->getUCO(),
-				'biography' => $author->getBiography(AppLocale::getLocale()),
+                                'affiliation' => $author->getAffiliation(AppLocale::getLocale()),
+                                'biography' => $author->getBiography(AppLocale::getLocale()),
+                                'uco' => $author->getUCO(), /*MUNIPRESS*/
+                                'mu' => $author->getMU(), /*MUNIPRESS*/
+                                'tituly_pred' => $author->getTitulyPred(), /*MUNIPRESS*/
+                                'tituly_za' => $author->getTitulyZa(), /*MUNIPRESS*/ 
+                                'rodne_cislo' => $author->getRodneCislo(), /*MUNIPRESS*/
+                                'poznamka' => $author->getPoznamka(), /*MUNIPRESS*/
+				'userGroupId' => $author->getUserGroupId(),			
 				'primaryContact' => $author->getPrimaryContact()
+                                
 			);
 		}
 	}
@@ -160,15 +165,21 @@ class AuthorForm extends Form {
 			'firstName',
 			'middleName',
 			'lastName',
-			'suffix',
-			'affiliation',
+                        'suffix',
 			'country',
 			'email',
 			'url',
-			'userGroupId',
-                        'uco',
-			'biography',
-			'primaryContact'
+                        'affiliation',
+                        'biography',
+                        'uco', /*MUNIPRESS*/
+                        'mu', /*MUNIPRESS*/
+                        'tituly_pred', /*MUNIPRESS*/
+                        'tituly_za', /*MUNIPRESS*/ 
+                        'rodne_cislo', /*MUNIPRESS*/
+                        'poznamka', /*MUNIPRESS*/
+			'userGroupId',			
+			'primaryContact',
+                        
 		));
 	}
 
@@ -195,16 +206,29 @@ class AuthorForm extends Form {
 		$author->setFirstName($this->getData('firstName'));
 		$author->setMiddleName($this->getData('middleName'));
 		$author->setLastName($this->getData('lastName'));
-		$author->setSuffix($this->getData('suffix'));
-		$author->setAffiliation($this->getData('affiliation'), null); // localized
+//		$author->setSuffix($this->getData('suffix'));		
 		$author->setCountry($this->getData('country'));
 		$author->setEmail($this->getData('email'));
 		$author->setUrl($this->getData('url'));
-		$author->setUserGroupId($this->getData('userGroupId'));
-                $author->setUCO($this->getData('uco'));
-		$author->setBiography($this->getData('biography'), null); // localized
-		$author->setPrimaryContact(($this->getData('primaryContact') ? true : false));
+                $author->setAffiliation($this->getData('affiliation'), null); // localized
+                $author->setBiography($this->getData('biography'), null); // localized
+                
+                /**
+                 * MUNIPRESS
+                 */
 
+                $author->setUCO($this->getData('uco'));
+                $author->setMU($this->getData('mu'));
+                $author->setTitulyPred($this->getData('tituly_pred'));
+                $author->setTitulyZa($this->getData('tituly_za'));
+                $author->setRodneCislo($this->getData('rodne_cislo'));
+                $author->setPoznamka($this->getData('poznamka'));
+                
+		$author->setUserGroupId($this->getData('userGroupId'));                
+		$author->setPrimaryContact(($this->getData('primaryContact') ? true : false));
+                
+                
+                
 		if ($existingAuthor) {
 			$authorDao->updateObject($author);
 			$authorId = $author->getId();

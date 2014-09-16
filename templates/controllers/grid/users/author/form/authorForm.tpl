@@ -32,15 +32,43 @@
                 disableSalutationSection=true
                 disableSuffixSection=true
 		disableInitialsSection=true
-		disablePhoneSection=true
-		disableFaxSection=true
 		disableLocaleSection=true
 		disableInterestsSection=true
 		disableMailingSection=true
+                disableUCOSection=true
 		disableSignatureSection=true
 		extraContentSectionUnfolded=true
-		countryRequired=true
+		countryRequired=true    
+                disablePhoneSection=true
+                disableFaxSection=true   
+                disableUrlSection=true             
 	}
+        
+        {********************
+            MUNIPRESS
+        **********************}
+        {if $isUserLoggedIn }
+            {fbvFormArea id="munipress" }
+                    {fbvFormSection label="author.munipress"}
+                         {fbvElement type="text" label="user.url" name="url" id="url" value=$url inline=true size=$fbvStyles.size.SMALL}
+                    {/fbvFormSection}
+                    {fbvFormSection}
+                         {fbvElement type="text" label="author.munipress.titulyPred" name="tituly_pred" id="tituly_pred" value=$tituly_pred inline=true size=$fbvStyles.size.SMALL}
+                         {fbvElement type="text" label="author.munipress.tituly_za" name="tituly_za" id="tituly_za" value=$tituly_za inline=true size=$fbvStyles.size.SMALL}
+                    {/fbvFormSection}
+                    
+                    {fbvFormSection}
+                         {fbvElement type="text" label="author.munipress.rodneCislo" name="rodne_cislo" id="rodne_cislo" value=$rodne_cislo inline=true size=$fbvStyles.size.SMALL}
+                         {fbvElement type="text" label="author.munipress.mu" name="mu" id="mu" value=$mu inline=true size=$fbvStyles.size.SMALL}
+			{fbvElement type="text" label="user.uco" name="uco" id="uco" value=$uco maxlength="24" inline=true size=$fbvStyles.size.SMALL}
+                    {/fbvFormSection}	
+                    
+                    {fbvFormSection for="poznamka"}
+                            {fbvElement type="textarea" label="author.munipress.poznamka" name="poznamka" id="poznamka" rich=true value=$poznamka inline=true size=$fbvStyles.size.LARGE}
+                    {/fbvFormSection}
+            {/fbvFormArea}
+        {/if}
+        {********************}
 
 	{fbvFormArea id="submissionSpecific"}
 		{fbvFormSection id="userGroupId" label="submission.submit.contributorRole" list=true}

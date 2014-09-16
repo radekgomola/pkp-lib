@@ -215,9 +215,7 @@
 						{if !$disableMailingSection}
 							{fbvElement type="textarea" label="common.mailingAddress" name="mailingAddress" id="mailingAddress" rich=true value=$mailingAddress inline=true size=$fbvStyles.size.MEDIUM}
 						{/if}
-					{/fbvFormSection}
-					<br />
-					<span class="instruct">{translate key="user.biography.description"}</span>
+					{/fbvFormSection}					
 				{/if}
 
 				{if !$disableSignatureSection}

@@ -112,6 +112,12 @@ class UserDetailsForm extends UserForm {
 				'userUrl' => $author->getUrl(),
 				'country' => $author->getCountry(),
 				'biography' => $author->getBiography(null), // Localized
+                                'uco' => $author->getUCO(), /*MUNIPRESS*/
+                                'mu' => $author->getMU(), /*MUNIPRESS*/
+                                'tituly_pred' => $author->getTitulyPred(), /*MUNIPRESS*/
+                                'tituly_za' => $author->getTitulyZa(), /*MUNIPRESS*/ 
+                                'rodne_cislo' => $author->getRodneCislo(), /*MUNIPRESS*/
+                                'poznamka' => $author->getPoznamka(), /*MUNIPRESS*/
 			);
 		}
 		foreach($data as $key => $value) {
