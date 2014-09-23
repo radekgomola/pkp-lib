@@ -174,6 +174,32 @@ abstract class Submission extends DataObject {
 		return $this->setData('commentsToEditor', $commentsToEditor);
 	}
 
+         /**
+	 * Return the localized rights
+	 * @return string
+	 */
+	function getLocalizedRights() {
+		return $this->getLocalizedData('rights');
+	}
+        
+	/**
+	 * Get rights.
+	 * @param $locale
+	 * @return string
+	 */
+	function getRights($locale) {
+		return $this->getData('rights', $locale);
+	}
+
+	/**
+	 * Set rights.
+	 * @param $rights string
+	 * @param $locale
+	 */
+	function setRights($rights, $locale) {
+		return $this->setData('rights', $rights, $locale);
+	}
+        
 	/**
 	 * Return first author
 	 * @param $lastOnly boolean return lastname only (default false)
@@ -619,109 +645,6 @@ abstract class Submission extends DataObject {
 		return $this->setData('type', $type, $locale);
 	}
 
-        /**
-	 * Return the localized rights
-	 * @return string
-	 */
-	function getLocalizedRights() {
-		return $this->getLocalizedData('rights');
-	}
-        
-	/**
-	 * Get rights.
-	 * @param $locale
-	 * @return string
-	 */
-	function getRights($locale) {
-		return $this->getData('rights', $locale);
-	}
-
-	/**
-	 * Set rights.
-	 * @param $rights string
-	 * @param $locale
-	 */
-	function setRights($rights, $locale) {
-		return $this->setData('rights', $rights, $locale);
-	}
-        
-        /**
-	 * Return the localized rights
-	 * @return string
-	 */
-	function getLocalizedRightsTyp() {
-		return $this->getLocalizedData('rightsTyp');
-	}
-        
-	/**
-	 * Get rights.
-	 * @param $locale
-	 * @return string
-	 */
-	function getRightsTyp($locale) {
-		return $this->getData('rightsTyp', $locale);
-	}
-
-	/**
-	 * Set rights.
-	 * @param $rights string
-	 * @param $locale
-	 */
-	function setRightsTyp($rightsTyp, $locale) {
-		return $this->setData('rightsTyp', $rightsTyp, $locale);
-	}
-
-        /**
-	 * Return the localized rights
-	 * @return string
-	 */
-	function getLocalizedRightsDrzitel() {
-		return $this->getLocalizedData('rightsDrzitel');
-	}
-        
-	/**
-	 * Get rights.
-	 * @param $locale
-	 * @return string
-	 */
-	function getRightsDrzitel($locale) {
-		return $this->getData('rightsDrzitel', $locale);
-	}
-
-	/**
-	 * Set rights.
-	 * @param $rights string
-	 * @param $locale
-	 */
-	function setRightsDrzitel($rightsDrzitel, $locale) {
-		return $this->setData('rightsDrzitel', $rightsDrzitel, $locale);
-	}
-        
-        /**
-	 * Return the localized rights
-	 * @return string
-	 */
-	function getLocalizedRightsTrvani() {
-		return $this->getLocalizedData('rightsTrvani');
-	}
-        
-	/**
-	 * Get rights.
-	 * @param $locale
-	 * @return string
-	 */
-	function getRightsTrvani($locale) {
-		return $this->getData('rightsTrvani', $locale);
-	}
-
-	/**
-	 * Set rights.
-	 * @param $rights string
-	 * @param $locale
-	 */
-	function setRightsTrvani($rightsTrvani, $locale) {
-		return $this->setData('rightsTrvani', $rightsTrvani, $locale);
-	}
 	/**
 	 * Get source.
 	 * @param $locale
@@ -1203,148 +1126,148 @@ abstract class Submission extends DataObject {
 	function setDatePublished($datePublished) {
 		return $this->SetData('datePublished', $datePublished);
 	}
+        
+        
+        /***********
+         * MUNIPRESS
+         *************/
+        
+        /**
+	 * Vrací hodnotu moznosti "a kolektiv"
+	 * @return boolean
+	 */
+	function getAKolektiv() {
+		return $this->getData('a_kol');
+        }
+
+	/**
+	 * Nastavuje hodnotu moznosti "a kolektiv"
+	 * @param $a_kol boolean
+	 */
+	function setAKolektiv($a_kol) {
+		return $this->setData('a_kol', $a_kol);
+	}
 
         /**
-	 * Vraci lokalizovaný počet stran
-	 * @return string
+	 * Vrací cenu
+	 * @return int
 	 */
-	function getLocalizedPocetStran() {
-		return $this->getLocalizedData('pocetStran');
+	function getCena() {
+		return $this->getData('cena');
+        }
+
+	/**
+	 * Nastavuje cenu
+	 * @param $cena int
+	 */
+	function setCena($cena) {
+		return $this->setData('cena', $cena);
 	}
+
+        /**
+	 * Vrací cenu e-knihy
+	 * @return int
+	 */
+	function getCenaEbook() {
+		return $this->getData('cena_ebook');
+        }
+
+	/**
+	 * Nastavuje cenu e-knihy
+	 * @param $cena_ebook int
+	 */
+	function setCenaEbook($cena_ebook) {
+		return $this->setData('cena_ebook', $cena_ebook);
+	}
+
+        /**
+	 * Vrací ID pro url pro OC
+	 * @return int
+	 */
+	function getUrlOC() {
+		return $this->getData('urlOC');
+        }
+
+	/**
+	 * Nastavuje ID pro url pro OC
+	 * @param $urlOC int
+	 */
+	function setUrlOC($urlOC) {
+		return $this->setData('urlOC', $urlOC);
+	}
+
+        /**
+	 * Vrací ID pro url pro OC pro e-kniha
+	 * @return int 
+	 */
+	function getUrlOCEbook() {
+		return $this->getData('urlOC_ebook');
+        }
+
+	/**
+	 * Nastavuje ID pro url pro OC
+	 * @param $urlOC_ebook int
+	 */
+	function setUrlOCEbook($urlOC_ebook) {
+		return $this->setData('urlOC_ebook', $urlOC_ebook);
+	}
+        
         /**
 	 * Vrací pocet stran
-	 * @return string
+	 * @return int
 	 */
-	function getPocetStran($locale) {
-		return $this->getData('pocetStran', $locale);
+	function getPocetStran() {
+		return $this->getData('pocetStran');
         }
 
 	/**
 	 * Nastavuje pocet stran
-	 * @param $pocetStran string
+	 * @param $pocetStran int
 	 */
-	function setPocetStran($pocetStran, $locale) {
-		return $this->setData('pocetStran', $pocetStran, $locale);
+	function setPocetStran($pocetStran) {
+		return $this->setData('pocetStran', $pocetStran);
 	}
         
-        
         /**
-	 * Vraci lokalizovanou cenu
-	 * @return string
+	 * Vrací číslo vydání
+	 * @return int
 	 */
-	function getLocalizedCena() {
-		return $this->getLocalizedData('cena');
-	}
-        /**
-	 * Vrací cenu
-	 * @return string
-	 */
-	function getCena($locale) {
-		return $this->getData('cena', $locale);
+	function getCisloVydani() {
+		return $this->getData('cisloVydani');
         }
 
 	/**
-	 * Nastavuje cenu
-	 * @param $cena string
+	 * Nastavuje číslo vydání
+	 * @param $cisloVydani int
 	 */
-	function setCena($cena, $locale) {
-		return $this->setData('cena', $cena, $locale);
+	function setCisloVydani($cisloVydani) {
+		return $this->setData('cisloVydani', $cisloVydani);
 	}
         
-        /**
-	 * Vraci lokalizovanou cenu e-knihy
+         /**
+	 * Vraci lokalizovaný typ 02/58
 	 * @return string
 	 */
-	function getLocalizedCenaEbook() {
-		return $this->getLocalizedData('cena_ebook');
+	function getLocalizedTypPublikace() {
+		return $this->getLocalizedData('typ_02_58');
 	}
         /**
-	 * Vrací cenu e-knihy
+	 * Vrací typ 02/58
 	 * @return string
 	 */
-	function getCenaEbook($locale) {
-		return $this->getData('cena_ebook', $locale);
+	function getTypPublikace($locale) {
+		return $this->getData('typ_02_58', $locale);
         }
 
 	/**
-	 * Nastavuje cenu
-	 * @param $cena_ebook string
+	 * Nastavuje typ 02/58
+	 * @param $typ_02_58 string
 	 */
-	function setCenaEbook($cena_ebook, $locale) {
-		return $this->setData('cena_ebook', $cena_ebook, $locale);
-	}
-
-        /**
-	 * Vraci lokalizované pracoviště MU
-	 * @return string
-	 */
-	function getLocalizedMuPracoviste() {
-		return $this->getLocalizedData('muPracoviste');
-	}
-        /**
-	 * Vrací pracoviště MU
-	 * @return string
-	 */
-	function getMuPracoviste($locale) {
-		return $this->getData('muPracoviste', $locale);
-        }
-
-	/**
-	 * Nastavuje pracoviště MU
-	 * @param $muPracoviste string
-	 */
-	function setMuPracoviste($muPracoviste, $locale) {
-		return $this->setData('muPracoviste', $muPracoviste, $locale);
-	}
-        
-        
-        /**
-	 * Vraci lokalizovanou adresu OC
-	 * @return string
-	 */
-	function getLocalizedUrlOC() {
-		return $this->getLocalizedData('urlOC');
-	}
-        /**
-	 * Vrací url OC
-	 * @return string
-	 */
-	function getUrlOC($locale) {
-		return $this->getData('urlOC', $locale);
-        }
-
-	/**
-	 * Nastavuje url OC
-	 * @param $urlOC string
-	 */
-	function setUrlOC($urlOC) {
-		return $this->setData('urlOC', $urlOC, $locale);
+	function setTypPublikace($typ_02_58, $locale) {
+		return $this->setData('typ_02_58', $typ_02_58, $locale);
 	}
         
         /**
-	 * Vraci lokalizovanou adresu OC
-	 * @return string
-	 */
-	function getLocalizedUrlOCEbook() {
-		return $this->getLocalizedData('urlOC_ebook');
-	}
-        /**
-	 * Vrací url OC
-	 * @return string
-	 */
-	function getUrlOCEbook($locale) {
-		return $this->getData('urlOC_ebook', $locale);
-        }
-
-	/**
-	 * Nastavuje url OC
-	 * @param $urlOC string
-	 */
-	function setUrlOCEbook($urlOC_ebook) {
-		return $this->setData('urlOC_ebook', $urlOC_ebook, $locale);
-	}
-        
-          /**
 	 * Vraci lokalizovanou adresu webu
 	 * @return string
 	 */
@@ -1365,7 +1288,7 @@ abstract class Submission extends DataObject {
 	 */
 	function setUrlWeb($urlWeb) {
 		return $this->setData('urlWeb', $urlWeb, $locale);
-	}
+	}      
         
         /**
 	 * Vraci lokalizovanou bibliografickou citaci
@@ -1445,6 +1368,213 @@ abstract class Submission extends DataObject {
 		return $this->setData('dedikace', $dedikace, $locale);
 	}
         
+        /**
+	 * Vrací číslo přepínače typu licence (0-Open acces, 1-Munipress, 2-jiné)
+	 * @return int
+	 */
+	function getTypLicencePrepinac() {
+		return $this->getData('licenceTypPrepinac');
+        }
+
+	/**
+	 * Nastavuje číslo přepínače typu licence
+	 * @param $licenceTypPrepinac int
+	 */
+	function setTypLicencePrepinac($licenceTypPrepinac) {
+		return $this->setData('licenceTypPrepinac', $licenceTypPrepinac);
+	}
+        
+	/**
+	 * Get typ licence.
+	 * @return string
+	 */
+	function getLicenceTyp() {
+		return $this->getData('licenceTyp');
+	}
+
+	/**
+	 * Set typ licence.
+	 * @param $licenceTyp string
+	 */
+	function setLicenceTyp($licenceTyp) {
+		return $this->setData('licenceTyp', $licenceTyp);
+	}
+
+	/**
+	 * Get držitele licence.
+	 * @return string
+	 */
+	function getLicenceDrzitel() {
+		return $this->getData('licenceDrzitel');
+	}
+
+	/**
+	 * Set držitele licence.
+	 * @param $licenceDrzitel string
+	 */
+	function setLicenceDrzitel($licenceDrzitel) {
+		return $this->setData('licenceDrzitel', $licenceDrzitel);
+	}
+
+	/**
+	 * Get datum expirace.
+	 * @return date
+	 */
+	function getLicenceExpirace() {
+		return $this->getData('licenceExpirace');
+	}
+
+	/**
+	 * Set datum expirace.
+	 * @param $licenceExpirace date
+	 */
+	function setLicenceExpirace($licenceExpirace) {
+		return $this->setData('licenceExpirace', $licenceExpirace);
+	}
+        
+        /**
+	 * Get datum vzniku licence.
+	 * @return date
+	 */
+	function getLicenceVznik() {
+		return $this->getData('licenceVznik');
+	}
+
+	/**
+	 * Set datum vzniku licence.
+	 * @param $licenceVznik date
+	 */
+	function setLicenceVznik($licenceVznik) {
+		return $this->setData('licenceVznik', $licenceVznik);
+	}
+        
+         /**
+	 * Vrací hodnotu moznosti pro zverejneni licence
+	 * @return boolean
+	 */
+	function getLicenceZverejnit() {
+		return $this->getData('licenceZverejnit');
+        }
+
+	/**
+	 * Nastavuje hodnotu moznosti pro zverejneni licence
+	 * @param $licenceZverejnit boolean
+	 */
+	function setLicenceZverejnit($licenceZverejnit) {
+		return $this->setData('licenceZverejnit', $licenceZverejnit);
+	}
+        
+        /**
+	 * Vrací naklad
+	 * @return int
+	 */
+	function getNaklad() {
+		return $this->getData('naklad');
+        }
+
+	/**
+	 * Nastavuje naklad
+	 * @param $naklad int
+	 */
+	function setNaklad($naklad) {
+		return $this->setData('naklad', $naklad);
+	}
+        
+        /**
+	 * Vrací celkovy honorar
+	 * @return int
+	 */
+	function getHonorarCelkem() {
+		return $this->getData('honorarCelkem');
+        }
+
+	/**
+	 * Nastavuje celkovy honorar
+	 * @param $honorarCelkem int
+	 */
+	function setHonorarCelkem($honorarCelkem) {
+		return $this->setData('honorarCelkem', $honorarCelkem);
+	}
+        
+        /**
+	 * Vrací vyplatni honorar
+	 * @return int
+	 */
+	function getHonorarVyplata() {
+		return $this->getData('honorarVyplata');
+        }
+
+	/**
+	 * Nastavuje vyplatni honorar
+	 * @param $honorarVyplata int
+	 */
+	function setHonorarVyplata($honorarVyplata) {
+		return $this->setData('honorarVyplata', $honorarVyplata);
+	}
+        
+        /**
+	 * Get datum kdy dosly povinne vytisky.
+	 * @return date
+	 */
+	function getPovVytiskyDosly() {
+		return $this->getData('povVytiskyDosly');
+	}
+
+	/**
+	 * Set datum kdy dosly povinne vytisky.
+	 * @param $povVytiskyDosly date
+	 */
+	function setPovVytiskyDosly($povVytiskyDosly) {
+		return $this->setData('povVytiskyDosly', $povVytiskyDosly);
+	}
+        
+        /**
+	 * Get datum kdy odesly povinne vytisky..
+	 * @return date
+	 */
+	function getPovVytiskyOdesly() {
+		return $this->getData('povVytiskyOdesly');
+	}
+
+	/**
+	 * Set datum kdy odesly povinne vytisky.
+	 * @param $povVytiskyOdesly date
+	 */
+	function setPovVytiskyOdesly($povVytiskyOdesly) {
+		return $this->setData('povVytiskyOdesly', $povVytiskyOdesly);
+	}
+        
+        /**
+	 * Get tiskarnu
+	 * @return text
+	 */
+	function getTiskarna() {
+		return $this->getData('tiskarna');
+	}
+
+	/**
+	 * Set tiskarnu.
+	 * @param $tiskarna text
+	 */
+	function setTiskarna($tiskarna) {
+		return $this->setData('tiskarna', $tiskarna);
+	}
+        
+        /**
+	 * Get poznamka neverejna
+	 * @return text
+	 */
+	function getPoznamkaAdmin() {
+		return $this->getData('poznamkaAdmin');
+	}
+
+	/**
+	 * Set poznamka neverejna.
+	 * @param $poznamkaAdmin text
+	 */
+	function setPoznamkaAdmin($poznamkaAdmin) {
+		return $this->setData('poznamkaAdmin', $poznamkaAdmin);
+	}
         
 	//
 	// Abstract methods.

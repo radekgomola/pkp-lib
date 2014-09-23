@@ -41,60 +41,6 @@
 	{*{fbvFormSection label="submission.rights" for="rights" description="submission.rights.tip"}
 		{fbvElement type="text" multilingual=true name="rights" id="rights" value=$rights maxlength="255" readonly=$readOnly}
 	{/fbvFormSection}*}
-        
- 
- {fbvFormArea id="dalsiInformaceZakladni" title="informace.doplnkove.zakladni" class="border"}
-        {fbvFormSection label="submission.cena" for="cena"}
-		{fbvElement type="text" multilingual=true name="cena" id="cena" value=$cena maxlength="40" readonly=$readOnly}
-        {/fbvFormSection}       
-        {fbvFormSection label="submission.cena.ebook" for="cena_ebook"}
-                {fbvElement type="text" multilingual=true name="cena_ebook" id="cena_ebook" value=$cena_ebook maxlength="40" readonly=$readOnly}
-	{/fbvFormSection}
-        {fbvFormSection label="submission.pocetStran" for="pocetStran"}
-		{fbvElement type="text" multilingual=true name="pocetStran" id="pocetStran" value=$pocetStran maxlength="40" readonly=$readOnly}
-	{/fbvFormSection}
-        {fbvFormSection label="submission.muPracoviste" for="muPracoviste"}
-		{fbvElement type="text" multilingual=true name="muPracoviste" id="muPracoviste" value=$muPracoviste maxlength="255" readonly=$readOnly}
-	{/fbvFormSection}
-        {fbvFormSection label="submission.url.oc" for="urlOC"}
-		{fbvElement type="text" multilingual=true name="urlOC" id="urlOC" value=$urlOC maxlength="255" readonly=$readOnly}
-        {/fbvFormSection}
-        {fbvFormSection label="submission.url.oc.ebook" for="urlOC_ebook"}
-                {fbvElement type="text" multilingual=true name="urlOC_ebook" id="urlOC_ebook" value=$urlOC_ebook maxlength="255" readonly=$readOnly}
-	{/fbvFormSection}
-        {fbvFormSection label="submission.url.web" for="urlWeb"}
-		{fbvElement type="text" multilingual=true name="urlWeb" id="urlWeb" value=$urlWeb maxlength="255" readonly=$readOnly}
-	{/fbvFormSection}
-        {fbvFormSection title="submission.bibliografickaCitace" for="bibliografickaCitace"}
-		{fbvElement type="textarea" multilingual=true name="bibliografickaCitace" id="bibliografickaCitace" value=$bibliografickaCitace rich=true readonly=$readOnly}
-	{/fbvFormSection}
-        {fbvFormSection title="submission.poznamka" for="poznamka"}
-		{fbvElement type="textarea" multilingual=true name="poznamka" id="poznamka" value=$poznamka rich=true readonly=$readOnly}
-	{/fbvFormSection}
-        
- {/fbvFormArea}
-        
- {fbvFormArea id="dalsiInformaceRozsirene" title="informace.doplnkove.dalsi" class="border"}       
-        
-{*        Tady jsou upravená práva podle metadat*}
-        {fbvFormSection label="submission.rights.typ" for="rightsTyp" description="submission.rights.typ.tip"}
-		{fbvElement type="text" multilingual=true name="rightsTyp" id="rightsTyp" value=$rightsTyp maxlength="255" readonly=$readOnly}
-	{/fbvFormSection}
-        {fbvFormSection label="submission.rights.drzitel" for="rightsDrzitel" description="submission.rights.drzitel.tip"}
-		{fbvElement type="text" multilingual=true name="rightsDrzitel" id="rightsDrzitel" value=$rightsDrzitel maxlength="255" readonly=$readOnly}
-	{/fbvFormSection}
-        <script>
-            $('input[id^="rightsTrvani"]').datepicker({ldelim} dateFormat: 'dd. mm. yy' {rdelim});
-        </script>
-        {fbvFormSection label="submission.rights.trvani" for="rightsTrvani"}
-		{fbvElement type="text" multilingual=true id="rightsTrvani" name="rightsTrvani" value=$rightsTrvani size=$fbvStyles.size.MEDIUM}
-        {/fbvFormSection}
-        
-        
-        {fbvFormSection title="submission.dedikace" for="dedikace"}
-		{fbvElement type="textarea" multilingual=true name="dedikace" id="dedikace" value=$dedikace rich=true readonly=$readOnly}
-	{/fbvFormSection}
-{/fbvFormArea}
 
 {*{fbvFormArea id="tagitFields" title="submission.submit.metadataForm" class="border"}
 	{fbvFormSection description="submission.submit.metadataForm.tip" title="common.languages"}
@@ -118,3 +64,133 @@
 		{fbvElement type="keyword" id="agencies" multilingual=true subLabelTranslate=true current=$agencies disabled=$readOnly}
 	{/fbvFormSection}
 {/fbvFormArea}*}
+
+ {fbvFormArea id="verejneInformace" title="submission.informace.verejne" class="border"}
+        {if $a_kol}
+		{assign var="checked" value=true}
+        {else}
+                {assign var="checked" value=false}
+        {/if}
+        {fbvFormSection list=true}
+		{fbvElement type="checkbox" label="submission.a_kolektiv" checked=$checked name="a_kol" id="a_kol"}
+        {/fbvFormSection} 
+        
+        {fbvFormSection label="submission.ceny"}
+		{fbvElement type="text" label="submission.ceny.kniha" name="cena" id="cena" value=$cena maxlength="40" inline=true size=$fbvStyles.size.SMALL}
+                {fbvElement type="text" label="submission.ceny.ekniha" name="cena_ebook" id="cena_ebook" value=$cena_ebook inline=true maxlength="40" size=$fbvStyles.size.SMALL}
+        {/fbvFormSection} 
+        
+        {fbvFormSection label="submission.metadata.url.oc"}
+		{fbvElement type="text" label="submission.metadata.url.oc.kniha" name="urlOC" id="urlOC" value=$urlOC maxlength="50" inline=true size=$fbvStyles.size.SMALL}
+                {fbvElement type="text" label="submission.metadata.url.oc.ekniha" name="urlOC_ebook" id="urlOC_ebook" value=$urlOC_ebook maxlength="50" inline=true size=$fbvStyles.size.SMALL}
+        {/fbvFormSection}
+        
+        {fbvFormSection label="submission.ostatni"}
+		{fbvElement type="text" label="submission.pocetStran" name="pocetStran" id="pocetStran" value=$pocetStran maxlength="40" inline=true size=$fbvStyles.size.SMALL}
+                {fbvElement type="text" label="submission.cisloVydani" name="cisloVydani" id="cisloVydani" value=$cisloVydani maxlength="40" inline=true size=$fbvStyles.size.SMALL}
+                {fbvElement type="text" label="submission.typ_02_58"  multilingual=true name="typ_02_58" id="typ_02_58" value=$typ_02_58 maxlength="40" inline=true size=$fbvStyles.size.SMALL}
+        {/fbvFormSection}  
+        {fbvFormSection label="submission.url.web" for="urlWeb"}
+		{fbvElement type="text" multilingual=true name="urlWeb" id="urlWeb" value=$urlWeb maxlength="255" readonly=$readOnly}
+	{/fbvFormSection}
+            
+        {fbvFormSection label="submission.souvisejiciPublikace" description="submission.submit.metadataForm.tip"}
+                {fbvElement type="keyword" name="souvisejiciPublikace" id="souvisejiciPublikace" current=$souvisejiciPublikace maxlength="500"}
+        {/fbvFormSection} 
+        
+        {fbvFormSection label="submission.klicovaSlova" description="submission.submit.metadataForm.tip"}
+		{fbvElement type="keyword" id="keyword" multilingual=true current=$keywords size=$fbvStyles.size.BIG}
+	{/fbvFormSection}
+        
+        {fbvFormSection  label="submission.jazyky" description="submission.submit.metadataForm.tip"}
+		{url|assign:languagesSourceUrl router=$smarty.const.ROUTE_PAGE page="submission" op="fetchChoices" codeList="74"}
+		{fbvElement type="keyword" id="languages" subLabelTranslate=true multilingual=true current=$languages source=$languagesSourceUrl}
+        {/fbvFormSection}
+         
+        {fbvFormSection label="submission.muPracoviste"}
+		{fbvElement type="keyword" multilingual=true name="muPracoviste" id="muPracoviste" current=$muPracoviste}
+	{/fbvFormSection}
+        
+        {fbvFormSection title="submission.bibliografickaCitace" for="bibliografickaCitace"}
+		{fbvElement type="textarea" multilingual=true name="bibliografickaCitace" id="bibliografickaCitace" value=$bibliografickaCitace rich=true readonly=$readOnly}
+	{/fbvFormSection}
+        {fbvFormSection title="submission.poznamka" for="poznamka"}
+		{fbvElement type="textarea" multilingual=true name="poznamka" id="poznamka" value=$poznamka rich=true readonly=$readOnly}
+	{/fbvFormSection}
+        {fbvFormSection title="submission.dedikace" for="dedikace"}
+		{fbvElement type="textarea" multilingual=true name="dedikace" id="dedikace" value=$dedikace rich=true readonly=$readOnly}
+	{/fbvFormSection}        
+ {/fbvFormArea}
+        
+ {fbvFormArea id="munipressInformace" title="submission.informace.munipress" class="border"}       
+        
+{*        Tady jsou metadata pro munipress*}
+        {fbvFormSection list="true" title="submission.licence"}
+                        {if $licenceTypPrepinac eq "0"}
+				{assign var="checked" value=true}
+			{else}
+				{assign var="checked" value=false}
+			{/if}
+                        
+                        {fbvElement type="radio" id="licenceTypPrepinac" name="licenceTypPrepinac" required="true" value="0" checked=$checked label="submission.licence.openAccess"}<br /><br />
+                        {if $licenceTypPrepinac eq "1"}
+				{assign var="checked" value=true}
+			{else}
+				{assign var="checked" value=false}
+			{/if}
+			{fbvElement type="radio" id="licenceTypPrepinac" name="licenceTypPrepinac" required="true" value="1" checked=$checked label="submission.licence.munipress"}<br /><br />
+			{if !in_array($licenceTypPrepinac, array("0", "1"))}
+				{assign var="checked" value=true}
+			{else}
+				{assign var="checked" value=false}
+			{/if}
+			{fbvElement type="radio" id="licenceTypPrepinac" name="licenceTypPrepinac" required="true" value="2" checked=$checked label="submission.licence.jinyTyp"}
+        {/fbvFormSection}
+        {fbvFormSection}
+		{fbvElement label="submission.licence.typ" type="text" name="licenceTyp" id="licenceTyp" value=$licenceTyp maxlength="255" inline=true  size=$fbvStyles.size.MEDIUM}
+                {fbvElement label="submission.licence.drzitel" type="text" name="licenceDrzitel" id="licenceDrzitel" value=$licenceDrzitel maxlength="255" inline=true  size=$fbvStyles.size.MEDIUM}
+	{/fbvFormSection}
+        {fbvFormSection}
+        <script>
+            $('input[id^="licenceExpirace"]').datepicker({ldelim} dateFormat: 'dd. mm. yy' {rdelim});
+            $('input[id^="licenceVznik"]').datepicker({ldelim} dateFormat: 'dd. mm. yy' {rdelim});
+        </script>
+		{fbvElement type="text" label="submission.licence.trvani" id="licenceExpirace" name="licenceExpirace" value=$licenceExpirace inline=true size=$fbvStyles.size.MEDIUM}
+                {fbvElement type="text" label="submission.licence.vznik" id="licenceVznik" name="licenceVznik" value=$licenceVznik inline=true size=$fbvStyles.size.MEDIUM}
+	{/fbvFormSection} 
+        
+        {if $licenceZverejnit}
+		{assign var="checked" value=true}
+        {else}
+                {assign var="checked" value=false}
+        {/if}
+        {fbvFormSection list=true}
+		{fbvElement type="checkbox" label="submission.licence.zverejnit" checked=$checked name="licenceZverejnit" id="licenceZverejnit" value=$licenceZverejnit}
+        {/fbvFormSection} 
+        
+        {fbvFormSection label="submission.naklad"}
+		{fbvElement type="text" name="naklad" id="naklad" value=$naklad maxlength="40" inline=true size=$fbvStyles.size.SMALL}
+        {/fbvFormSection} 
+        
+        {fbvFormSection title="submission.honorar"}
+		{fbvElement type="text" label="submission.honorar.celkem" name="honorarCelkem" id="honorarCelkem" value=$honorarCelkem maxlength="40" inline=true size=$fbvStyles.size.MEDIUM}
+                {fbvElement type="text" label="submission.honorar.vyplata" name="honorarVyplata" id="honorarVyplata" value=$honorarVyplata inline=true maxlength="40" size=$fbvStyles.size.MEDIUM}
+        {/fbvFormSection}         
+        
+        {fbvFormSection title="submission.povinneVytisky"}
+        <script>
+            $('input[id^="povVytiskyOdesly"]').datepicker({ldelim} dateFormat: 'dd. mm. yy' {rdelim});
+            $('input[id^="povVytiskyDosly"]').datepicker({ldelim} dateFormat: 'dd. mm. yy' {rdelim});
+        </script>
+		{fbvElement type="text" label="submission.povinneVytisky.dosly" id="povVytiskyDosly" name="povVytiskyDosly" value=$povVytiskyDosly inline=true size=$fbvStyles.size.MEDIUM}
+                {fbvElement type="text" label="submission.povinneVytisky.odesly" id="povVytiskyOdesly" name="povVytiskyOdesly" value=$povVytiskyOdesly inline=true size=$fbvStyles.size.MEDIUM}
+	{/fbvFormSection} 
+        
+        {fbvFormSection title="submission.tiskarna"}
+		{fbvElement type="textarea" name="tiskarna" id="tiskarna" value=$tiskarna rich=true}
+	{/fbvFormSection}  
+        {fbvFormSection title="submission.poznamka.admin"}
+		{fbvElement type="textarea" name="poznamkaAdmin" id="poznamkaAdmin" value=$poznamkaAdmin rich=true}
+	{/fbvFormSection}         
+       
+{/fbvFormArea}

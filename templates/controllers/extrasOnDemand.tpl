@@ -17,8 +17,8 @@
 <div id="{$id}" class="pkp_controllers_extrasOnDemand">
 	<div class="toggleExtras">
 		<span class="ui-icon"></span>
-		<span class="toggleExtras-inactive">{translate key=$moreDetailsText}</span>
-		<span class="toggleExtras-active">{translate key=$lessDetailsText}</span>
+		<span class="toggleExtras-inactive">{if $moreDetailsText}{translate key=$moreDetailsText}{elseif $moreDetailsTextNT}{$moreDetailsTextNT}{/if}</span>
+		<span class="toggleExtras-active">{if $lessDetailsText}{translate key=$lessDetailsText}{elseif $lessDetailsTextNT}{$lessDetailsTextNT}{/if}</span>
 	</div>
 	<div style="clear:both;"></div>
 	<div class="extrasContainer">

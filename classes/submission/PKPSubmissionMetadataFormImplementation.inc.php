@@ -72,21 +72,36 @@ class PKPSubmissionMetadataFormImplementation {
 				'type' => $submission->getType(null), // Localized
 				'source' =>$submission->getSource(null), // Localized
 				'rights' => $submission->getRights(null), // Localized
-                                'rightsTyp' => $submission->getRightsTyp(null), // Localized
-                                'rightsDrzitel' => $submission->getRightsDrzitel(null), // Localized
-                                'rightsTrvani' => $submission->getRightsTrvani(null), // Localized
-				'citations' => $submission->getCitations(null),
-                                'pocetStran' => $submission->getPocetStran(null),// Localized
-                                'muPracoviste' => $submission->getMuPracoviste(null),// Localized
-                                'urlOC' => $submission->getUrlOC(null),// Localized
-                                'urlWeb' => $submission->getUrlWeb(null),// Localized
-                                'bibliografickaCitace' => $submission->getBibliografickaCitace(null), // Localized// Localized
+                                'citations' => $submission->getCitations(null),
+                                
+                                /*MUNIPRESS*/
+                                'a_kol' => $submission->getAKolektiv(),
+                                'cena' => $submission->getCena(), 
+                                'cena_ebook' => $submission->getCenaEbook(), 		
+                                'urlOC' => $submission->getUrlOC(),
+                                'urlOC_ebook' => $submission->getUrlOCEbook(),
+                                'pocetStran' => $submission->getPocetStran(),
+                                'cisloVydani' => $submission->getCisloVydani(),
+                                'licenceTypPrepinac' => $submission->getTypLicencePrepinac(),                         
+                                'licenceTyp' => $submission->getLicenceTyp(), 
+                                'licenceDrzitel' => $submission->getLicenceDrzitel(),
+                                'licenceExpirace' => $submission->getLicenceExpirace(), 
+                                'licenceVznik' => $submission->getLicenceVznik(),
+                                'licenceZverejnit' => $submission->getLicenceZverejnit(),
+                                'naklad' => $submission->getNaklad(),
+                                'honorarCelkem' => $submission->getHonorarCelkem(),
+                                'honorarVyplata' => $submission->getHonorarVyplata(),
+                                'povVytiskyDosly' => $submission->getPovVytiskyDosly(),
+                                'povVytiskyOdesly' => $submission->getPovVytiskyOdesly(),
+                                'tiskarna' => $submission->getTiskarna(),
+                                'poznamkaAdmin' => $submission->getPoznamkaAdmin(),
+                                
+                                'typ_02_58' => $submission->getLocalizedTypPublikace(null), // Localized
+                                'urlWeb' => $submission->getLocalizedUrlWeb(null), // Localized
+                                'bibliografickaCitace' => $submission->getBibliografickaCitace(null), // Localized
                                 'poznamka' => $submission->getPoznamka(null), // Localized
                                 'dedikace' => $submission->getDedikace(null), // Localized
-                                'cena' => $submission->getCena(null), // Localized
                                 
-                                'cena_ebook' => $submission->getCenaEbook(null), // Localized
-                                'urlOC_ebook' => $submission->getUrlOCEbook(null) // Localized
 			); 
 
 			foreach ($formData as $key => $data) {
@@ -98,16 +113,30 @@ class PKPSubmissionMetadataFormImplementation {
 
 			// load the persisted metadata controlled vocabularies
 			$submissionKeywordDao = DAORegistry::getDAO('SubmissionKeywordDAO');
+                        $submissionLanguageDao = DAORegistry::getDAO('SubmissionLanguageDAO');
+                        
+                        /*MUNIPRESS*/
+//                        $submissionSouvisejiciPublikaceDao = DAORegistry::getDAO('SubmissionSouvisejiciPublikaceDAO');
+                        $submissionMUPracovisteDao = DAORegistry::getDAO('SubmissionMUPracovisteDAO');
+                        
 			$submissionSubjectDao = DAORegistry::getDAO('SubmissionSubjectDAO');
 			$submissionDisciplineDao = DAORegistry::getDAO('SubmissionDisciplineDAO');
 			$submissionAgencyDao = DAORegistry::getDAO('SubmissionAgencyDAO');
-			$submissionLanguageDao = DAORegistry::getDAO('SubmissionLanguageDAO');
+			
 
-			$this->_parentForm->setData('subjects', $submissionSubjectDao->getSubjects($submission->getId(), $locales));
+			
 			$this->_parentForm->setData('keywords', $submissionKeywordDao->getKeywords($submission->getId(), $locales));
+                        $this->_parentForm->setData('languages', $submissionLanguageDao->getLanguages($submission->getId(), $locales));
+                        
+                        /*MUNIPRESS*/
+//                        $this->_parentForm->setData('souvisejiciPublikace', $submissionSouvisejiciPublikaceDao->getSouvisejiciPublikace($submission->getId(), $locales));
+//                        $this->_parentForm->setData('muPracoviste', $submissionMUPracovisteDao->getMUPracoviste($submission->getId(), $locales));
+                        
+                        
+                        $this->_parentForm->setData('subjects', $submissionSubjectDao->getSubjects($submission->getId(), $locales));
 			$this->_parentForm->setData('disciplines', $submissionDisciplineDao->getDisciplines($submission->getId(), $locales));
 			$this->_parentForm->setData('agencies', $submissionAgencyDao->getAgencies($submission->getId(), $locales));
-			$this->_parentForm->setData('languages', $submissionLanguageDao->getLanguages($submission->getId(), $locales));
+			
 
 			// include all submission metadata fields for submissions
 			$this->_parentForm->setData('submissionSettings', array('all' => true));
@@ -119,7 +148,17 @@ class PKPSubmissionMetadataFormImplementation {
 	 */
 	function readInputData() {
 		// 'keywords' is a tagit catchall that contains an array of values for each keyword/locale combination on the form.
-		$userVars = array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights', 'rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'keywords', 'pocetStran', 'muPracoviste', 'urlOC', 'urlWeb', 'bibliografickaCitace', 'poznamka', 'dedikace', 'cena', 'cena_ebook', 'urlOC_ebook');
+		$userVars = array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 
+                                'coverageChron', 'coverageSample', 'type', 'subjectClass', 
+                                'source', 'rights', 'keywords', 
+                                'a_kol', 'cena', 'cena_ebook', 'urlOC', 'urlOC_ebook', 
+                                'pocetStran', 'cisloVydani', 'licenceTypPrepinac', 'licenceTyp', 
+                                'licenceDrzitel', 'licenceExpirace', 'licenceVznik', 
+                                'licenceZverejnit', 'naklad', 'honorarCelkem', 
+                                'honorarVyplata', 'povVytiskyDosly', 'povVytiskyOdesly', 
+                                'tiskarna', 'poznamkaAdmin', 'typ_02_58', 'urlWeb',
+                                'bibliografickaCitace', 'poznamka', 'dedikace',
+                                'languages', 'souvisejiciPublikace', 'muPracoviste');
 		$this->_parentForm->readUserVars($userVars);
 	}
 
@@ -128,7 +167,7 @@ class PKPSubmissionMetadataFormImplementation {
 	 * @return array
 	 */
 	function getLocaleFieldNames() {
-		return array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights','rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'bibliografickaCitace', 'poznamka', 'dedikace', 'pocetStran', 'muPracoviste', 'urlOC', 'urlWeb', 'cena', 'cena_ebook', 'urlOC_ebook');
+		return array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights', 'bibliografickaCitace', 'poznamka', 'dedikace', 'typ_02_58', 'urlWeb');
 	}
 
 	/**
@@ -151,23 +190,37 @@ class PKPSubmissionMetadataFormImplementation {
 		$submission->setType($this->_parentForm->getData('type'), null); // Localized
 		$submission->setSubjectClass($this->_parentForm->getData('subjectClass'), null); // Localized
 		$submission->setRights($this->_parentForm->getData('rights'), null); // Localized
-                $submission->setRightsTyp($this->_parentForm->getData('rightsTyp'), null); // Localized
-                $submission->setRightsDrzitel($this->_parentForm->getData('rightsDrzitel'), null); // Localized
-                $submission->setRightsTrvani($this->_parentForm->getData('rightsTrvani'), null); // Localized
 		$submission->setSource($this->_parentForm->getData('source'), null); // Localized
                 
-                $submission->setPocetStran($this->_parentForm->getData('pocetStran'), null);
-                $submission->setMuPracoviste($this->_parentForm->getData('muPracoviste'), null);
-                $submission->setUrlOC($this->_parentForm->getData('urlOC'), null);
-                $submission->setUrlWeb($this->_parentForm->getData('urlWeb'), null);
-                $submission->setBibliografickaCitace($this->_parentForm->getData('bibliografickaCitace'), null);
-                $submission->setPoznamka($this->_parentForm->getData('poznamka'), null);
-                $submission->setDedikace($this->_parentForm->getData('dedikace'), null);
-                $submission->setCena($this->_parentForm->getData('cena'), null);
-                $submission->setCenaEbook($this->_parentForm->getData('cena_ebook'), null);
-                $submission->setUrlOCEbook($this->_parentForm->getData('urlOC_ebook'), null);
+                /*MUNIPRESS*/
+                $submission->setAKolektiv($this->_parentForm->getData('a_kol'));
+                $submission->setCena($this->_parentForm->getData('cena'));                
+                $submission->setCenaEbook($this->_parentForm->getData('cena_ebook'));
+                $submission->setUrlOC($this->_parentForm->getData('urlOC'));
+                $submission->setUrlOCEbook($this->_parentForm->getData('urlOC_ebook'));
+                $submission->setPocetStran($this->_parentForm->getData('pocetStran')); 
+                $submission->setCisloVydani($this->_parentForm->getData('cisloVydani'));
+                $submission->setTypLicencePrepinac($this->_parentForm->getData('licenceTypPrepinac'));
+                $submission->setLicenceTyp($this->_parentForm->getData('licenceTyp'));
+                $submission->setLicenceDrzitel($this->_parentForm->getData('licenceDrzitel'));                
+                $submission->setLicenceExpirace($this->_parentForm->getData('licenceExpirace'));
+                $submission->setLicenceVznik($this->_parentForm->getData('licenceVznik'));
+                $submission->setLicenceZverejnit($this->_parentForm->getData('licenceZverejnit'));
+                $submission->setNaklad($this->_parentForm->getData('naklad')); 
+                $submission->setHonorarCelkem($this->_parentForm->getData('honorarCelkem'));
+                $submission->setHonorarVyplata($this->_parentForm->getData('honorarVyplata'));
+                $submission->setPovVytiskyDosly($this->_parentForm->getData('povVytiskyDosly'));
+                $submission->setPovVytiskyOdesly($this->_parentForm->getData('povVytiskyOdesly')); 
+                $submission->setTiskarna($this->_parentForm->getData('tiskarna'));
+                $submission->setPoznamkaAdmin($this->_parentForm->getData('poznamkaAdmin'));                
+                
+                $submission->setTypPublikace($this->_parentForm->getData('typ_02_58'), null); // Localized
+                $submission->setUrlWeb($this->_parentForm->getData('urlWeb'), null); // Localized
+                $submission->setBibliografickaCitace($this->_parentForm->getData('bibliografickaCitace'), null); // Localized
+                $submission->setPoznamka($this->_parentForm->getData('poznamka'), null); // Localized
+                $submission->setDedikace($this->_parentForm->getData('dedikace'), null); // Localized
 
-        // Save the submission
+                // Save the submission
 		$submissionDao->updateObject($submission);
 
 		// get the supported locale keys
@@ -175,15 +228,25 @@ class PKPSubmissionMetadataFormImplementation {
 
 		// persist the metadata/keyword fields.
 		$submissionKeywordDao = DAORegistry::getDAO('SubmissionKeywordDAO');
+                $submissionLanguageDao = DAORegistry::getDAO('SubmissionLanguageDAO');
+                
+                /*MUNIPRESS*/
+//                $submissionSouvisejiciPublikaceDao = DAORegistry::getDAO('SubmissionSouvisejiciPublikaceDAO');
+//                $submissionMUPracovisteDao = DAORegistry::getDAO('SubmissionMUPracovisteDAO');
+                
 		$submissionSubjectDao = DAORegistry::getDAO('SubmissionSubjectDAO');
 		$submissionDisciplineDao = DAORegistry::getDAO('SubmissionDisciplineDAO');
 		$submissionAgencyDao = DAORegistry::getDAO('SubmissionAgencyDAO');
-		$submissionLanguageDao = DAORegistry::getDAO('SubmissionLanguageDAO');
 
 		$keywords = array();
+                $languages = array();
+                
+                /*MUNIPRESS*/
+//                $souvisejiciPublikace = array();
+//                $muPracoviste = array();
+                
 		$agencies = array();
 		$disciplines = array();
-		$languages = array();
 		$subjects = array();
 
 		$tagitKeywords = $this->_parentForm->getData('keywords');
@@ -191,18 +254,29 @@ class PKPSubmissionMetadataFormImplementation {
 		if (is_array($tagitKeywords)) {
 			foreach ($locales as $locale) {
 				$keywords[$locale] = array_key_exists($locale . '-keyword', $tagitKeywords) ? $tagitKeywords[$locale . '-keyword'] : array();
+                                $languages[$locale] = array_key_exists($locale . '-languages', $tagitKeywords) ? $tagitKeywords[$locale . '-languages'] : array();
+                                /*MUNIPRESS*/
+//                                $souvisejiciPublikace[$locale] = array_key_exists($locale . '-souvisejiciPublikace', $tagitKeywords) ? $tagitKeywords[$locale . '-souvisejiciPublikace'] : array();
+//                                $muPracoviste[$locale] = array_key_exists($locale . '-muPracoviste', $tagitKeywords) ? $tagitKeywords[$locale . '-muPracoviste'] : array();
+                                
+                                
 				$agencies[$locale] = array_key_exists($locale . '-agencies', $tagitKeywords) ? $tagitKeywords[$locale . '-agencies'] : array();
 				$disciplines[$locale] = array_key_exists($locale . '-disciplines', $tagitKeywords) ? $tagitKeywords[$locale . '-disciplines'] : array();
-				$languages[$locale] = array_key_exists($locale . '-languages', $tagitKeywords) ? $tagitKeywords[$locale . '-languages'] : array();
+				
 				$subjects[$locale] = array_key_exists($locale . '-subjects', $tagitKeywords) ?$tagitKeywords[$locale . '-subjects'] : array();
 			}
 		}
 
 		// persist the controlled vocabs
 		$submissionKeywordDao->insertKeywords($keywords, $submission->getId());
+                $submissionLanguageDao->insertLanguages($languages, $submission->getId());
+                
+                /*MUNIPRESS*/
+//                $submissionSouvisejiciPublikaceDao->insertSouvisejiciPublikace($keywords, $submission->getId());
+//                $submissionMUPracovisteDao->insertMUPracoviste($languages, $submission->getId());
+                
 		$submissionAgencyDao->insertAgencies($agencies, $submission->getId());
 		$submissionDisciplineDao->insertDisciplines($disciplines, $submission->getId());
-		$submissionLanguageDao->insertLanguages($languages, $submission->getId());
 		$submissionSubjectDao->insertSubjects($subjects, $submission->getId());
 
 		// Resequence the authors (this ensures a primary contact).

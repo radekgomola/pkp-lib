@@ -62,9 +62,8 @@ class SubmissionDAO extends DAO {
 			'discipline', 'subjectClass', 'subject',
 			'coverageGeo', 'coverageChron', 'coverageSample',
 			'type', 'sponsor', 'source', 'rights', 
-                        'rightsTyp', 'rightsDrzitel', 'rightsTrvani', 'dedikace',
-                        'bibliografickaCitace', 'poznamka', 'pocetStran', 'muPracoviste', 
-                        'urlOC', 'urlWeb', 'cena','urlOC_ebook', 'cena_ebook'
+                        'dedikace', 'bibliografickaCitace', 'poznamka', 
+                        'typ_02_58', 'urlWeb'
 		);
 	}
 
@@ -109,6 +108,29 @@ class SubmissionDAO extends DAO {
 		$submission->setLastModified($this->datetimeFromDB($row['last_modified']));
 		$submission->setLanguage($row['language']);
 		$submission->setCommentsToEditor($row['comments_to_ed']);
+                
+                /*MUNIPRESS*/
+                $submission->setAKolektiv($row['a_kol']);
+                $submission->setCena($row['cena']);
+                $submission->setCenaEbook($row['cena_ebook']);
+                $submission->setUrlOC($row['urlOC']);
+                $submission->setUrlOCEbook($row['urlOC_ebook']);
+                $submission->setPocetStran($row['pocetStran']);
+                $submission->setCisloVydani($row['cisloVydani']);
+                $submission->setTypLicencePrepinac($row['licenceTypPrepinac']);
+                $submission->setLicenceTyp($row['licenceTyp']);
+                $submission->setLicenceDrzitel($row['licenceDrzitel']);
+                $submission->setLicenceExpirace($this->datetimeFromDB($row['licenceExpirace']));
+                $submission->setLicenceVznik($this->datetimeFromDB($row['licenceVznik']));
+                $submission->setLicenceZverejnit($row['licenceZverejnit']);
+                $submission->setNaklad($row['naklad']);
+                $submission->setHonorarCelkem($row['honorarCelkem']);
+                $submission->setHonorarVyplata($row['honorarVyplata']);
+                $submission->setPovVytiskyDosly($this->datetimeFromDB($row['povVytiskyDosly']));
+                $submission->setPovVytiskyOdesly($this->datetimeFromDB($row['povVytiskyOdesly']));
+                $submission->setTiskarna($row['tiskarna']);
+                $submission->setPoznamkaAdmin($row['poznamkaAdmin']);
+                        
 
 		$this->getDataObjectSettings('submission_settings', 'submission_id', $submission->getId(), $submission);
 
@@ -216,6 +238,7 @@ class SubmissionDAO extends DAO {
 
 		$this->update('DELETE FROM submission_settings WHERE submission_id = ?', (int) $submissionId);
 		$this->update('DELETE FROM submissions WHERE submission_id = ?', (int) $submissionId);
+                $this->update('DELETE FROM munipress_metadata WHERE submission_id = ?', (int) $submissionId);
 	}
 
 	/**
@@ -280,7 +303,7 @@ class SubmissionDAO extends DAO {
 		if ($contextId) $params[] = (int) $contextId;
 
 		$result = $this->retrieve(
-			'SELECT	s.*, ps.date_published,
+			'SELECT	s.*, ps.date_published, 
 				' . $this->_getFetchColumns() . '
 			FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
