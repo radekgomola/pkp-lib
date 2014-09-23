@@ -25,6 +25,7 @@
 	$.pkp.controllers.ExtrasOnDemandHandler = function($widgetWrapper, options) {
 		this.parent($widgetWrapper, options);
 
+                this.options_ = options;
 		// Show the toggle button and attach click event
 		// to it. We hide this by default to provide a graceful
 		// fallback in case JS is switched off.
@@ -32,12 +33,17 @@
 				this.callbackWrapper(this.toggleExtras));
 
 		// Hide extras (default initial widget state).
-		this.deactivateExtraContent_();
+                
+                if(this.options_.active == true){
+                    this.activateExtraContent_();
+                }else{
+                   this.deactivateExtraContent_(); 
+                }
 	};
 	$.pkp.classes.Helper.inherits(
 			$.pkp.controllers.ExtrasOnDemandHandler, $.pkp.classes.Handler);
 
-
+                        
 	//
 	// Public methods
 	//
@@ -58,7 +64,7 @@
 		}
 	};
 
-
+        $.pkp.controllers.ExtrasOnDemandHandler.prototype.options_ = null;
 	//
 	// Private methods
 	//

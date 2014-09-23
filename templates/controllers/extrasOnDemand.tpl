@@ -11,14 +11,27 @@
 	// Initialise JS handler.
 	$(function() {ldelim}
 		$('#{$id}').pkpHandler(
-			'$.pkp.controllers.ExtrasOnDemandHandler');
+			'$.pkp.controllers.ExtrasOnDemandHandler',
+                            {ldelim}
+					{if $active}
+						active: {$active}
+					{/if}					
+                            {rdelim});
 	{rdelim});
 </script>
 <div id="{$id}" class="pkp_controllers_extrasOnDemand">
 	<div class="toggleExtras">
 		<span class="ui-icon"></span>
-		<span class="toggleExtras-inactive">{if $moreDetailsText}{translate key=$moreDetailsText}{elseif $moreDetailsTextNT}{$moreDetailsTextNT}{/if}</span>
-		<span class="toggleExtras-active">{if $lessDetailsText}{translate key=$lessDetailsText}{elseif $lessDetailsTextNT}{$lessDetailsTextNT}{/if}</span>
+                {if $moreDetailsText && $lessDetailsText}
+                    <span class="toggleExtras-inactive">{translate key=$moreDetailsText}</span>
+                    <span class="toggleExtras-active">{translate key=$lessDetailsText}</span>
+                {/if}
+                
+                {if $moreDetailsTextNT && $lessDetailsTextNT}
+                    <span class="toggleExtras-inactive"><a href="{url router=$smarty.const.ROUTE_PAGE page="catalog" op="category" path=$cesta}">{$moreDetailsTextNT}</a></span>
+                
+                    <span class="toggleExtras-active">{$lessDetailsTextNT}</span>
+                {/if}
 	</div>
 	<div style="clear:both;"></div>
 	<div class="extrasContainer">
