@@ -12,6 +12,7 @@
   -->
 
 <locale name="en_US" full_name="U.S. English">
+        <message key="user.hello">Hello, </message>
 	<message key="common.publicKnowledgeProject">Public Knowledge Project</message>
 	<message key="common.currentStyleSheet">Current Stylesheet</message>
 	<message key="about.description">Description</message>

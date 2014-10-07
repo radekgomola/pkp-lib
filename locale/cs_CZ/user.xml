@@ -15,6 +15,7 @@
   -->
 
 <locale name="cs_CZ" full_name = "Čeština">
+   
 	<message key="user.accountInformation">Informace o účtu</message>
   <message key="user.affiliation">Pracoviště</message>
 	<message key="user.affiliation.description">(Vaše instituce, např. "Simon Fraser University")</message>

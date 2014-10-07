@@ -36,7 +36,7 @@
 			<div class="pkp_structure_content">
 				<div class="line">
 					{if !$noContextsConfigured}
-						{include file="header/search.tpl"}
+						{include file="header/search.tpl" hideRegisterLink=true}
 					{/if}
 				</div>
 

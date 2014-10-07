@@ -83,7 +83,7 @@
         <script type="text/javascript" src="{$baseUrl}/lightboxy/highslide/highslide/highslide-full.js"></script>
         <link rel="stylesheet" type="text/css" href="{$baseUrl}/lightboxy/highslide/highslide/highslide.css" />
         <!--[if lt IE 7]>
-        <link rel="stylesheet" type="text/css" href="../highslide/highslide-ie6.css" />
+        <link rel="stylesheet" type="text/css" href="{$baseUrl}/lightboxy/highslide/highslide-ie6.css" />
         <![endif]-->
 
         {literal}

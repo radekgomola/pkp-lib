@@ -88,8 +88,10 @@
         {fbvFormSection label="submission.ostatni"}
 		{fbvElement type="text" label="submission.pocetStran" name="pocetStran" id="pocetStran" value=$pocetStran maxlength="40" inline=true size=$fbvStyles.size.SMALL}
                 {fbvElement type="text" label="submission.cisloVydani" name="cisloVydani" id="cisloVydani" value=$cisloVydani maxlength="40" inline=true size=$fbvStyles.size.SMALL}
-                {fbvElement type="text" label="submission.typ_02_58"  multilingual=true name="typ_02_58" id="typ_02_58" value=$typ_02_58 maxlength="40" inline=true size=$fbvStyles.size.SMALL}
+                {assign var=pokus value=$typ_02_58}
+                {fbvElement type="text" label="submission.typ_02_58"  value=$typ_02_58 multilingual=true name="typ_02_58" id="typ_02_58"  inline=true size=$fbvStyles.size.SMALL readonly=$readOnly}
         {/fbvFormSection}  
+        {$pokus}
         {fbvFormSection label="submission.url.web" for="urlWeb"}
 		{fbvElement type="text" multilingual=true name="urlWeb" id="urlWeb" value=$urlWeb maxlength="255" readonly=$readOnly}
 	{/fbvFormSection}

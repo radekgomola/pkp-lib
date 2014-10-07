@@ -96,14 +96,14 @@ class PKPSubmissionMetadataFormImplementation {
                                 'tiskarna' => $submission->getTiskarna(),
                                 'poznamkaAdmin' => $submission->getPoznamkaAdmin(),
                                 
-                                'typ_02_58' => $submission->getLocalizedTypPublikace(null), // Localized
+                                
                                 'urlWeb' => $submission->getLocalizedUrlWeb(null), // Localized
                                 'bibliografickaCitace' => $submission->getBibliografickaCitace(null), // Localized
                                 'poznamka' => $submission->getPoznamka(null), // Localized
                                 'dedikace' => $submission->getDedikace(null), // Localized
+                                'typ_02_58' => $submission->getLocalizedTypPublikace(null), // Localized
                                 
 			); 
-
 			foreach ($formData as $key => $data) {
 				$this->_parentForm->setData($key, $data);
 			}
