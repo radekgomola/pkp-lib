@@ -67,6 +67,30 @@ class Representation extends DataObject {
 		return $this->setData('name', $name, $locale);
 	}
 
+        /**
+	 * Get "localized" format name (if applicable).
+	 * @return string
+	 */
+	function getLocalizedCalameoHash() {
+		return $this->getLocalizedData('calameoHash');
+	}
+
+	/**
+	 * Get the format name (if applicable).
+	 * @return string
+	 */
+	function getCalameoHash() {
+		return $this->getData('calameoHash');
+	}
+
+	/**
+	 * Set name.
+	 * @param $name string
+	 * @param $locale
+	 */
+	function setCalameoHash($calameoHash, $locale = null) {
+		return $this->setData('calameoHash', $calameoHash, $locale);
+	}
 	/**
 	 * Set submission ID.
 	 * @param $submissionId int
