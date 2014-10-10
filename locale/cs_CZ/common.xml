@@ -18,7 +18,8 @@
      <message key="user.hello">Ahoj, </message>
   <message key="common.publicKnowledgeProject">Public Knowledge Project</message>
 	<message key="common.currentStyleSheet">Stávající šablona stylů</message>
-	<message key="about.description">Popis</message>
+	<!--<message key="about.description">Popis</message>-->
+        <message key="about.description">Poslání</message>
 	<message key="about.guidelines">Vodídka</message>
 	<message key="about.aboutSite">Podrobnosti o těchto stránkách</message>
 	<message key="about.contact">Kontakt</message>
@@ -29,7 +30,8 @@
 	<message key="about.contact.supportContact">Podpůrný kontakt</message>
 	<message key="about.other">Jiné</message>
 	<message key="about.people">Lidé</message>
-	<message key="about.policies">Pravidla</message>
+<!--	<message key="about.policies">Pravidla</message>-->
+        <message key="about.policies">Ediční zásady</message>
 	<message key="about.siteMap">Mapa stránek</message>
 	<message key="announcement.announcements">Oznámení</message>
 	<message key="announcement.announcementsHome">Oznámení</message>

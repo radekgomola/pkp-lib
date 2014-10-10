@@ -15,7 +15,8 @@
         <message key="user.hello">Hello, </message>
 	<message key="common.publicKnowledgeProject">Public Knowledge Project</message>
 	<message key="common.currentStyleSheet">Current Stylesheet</message>
-	<message key="about.description">Description</message>
+<!--	<message key="about.description">Description</message>-->
+        <message key="about.description">Envoi</message>
 	<message key="about.guidelines">Guides</message>
 	<message key="about.aboutSite">About the Site</message>
 	<message key="about.contact">Contact</message>
@@ -26,7 +27,8 @@
 	<message key="about.contact.supportContact">Support Contact</message>
 	<message key="about.other">Other</message>
 	<message key="about.people">People</message>
-	<message key="about.policies">Policies</message>
+<!--        <message key="about.policies">Policies</message>-->
+	<message key="about.policies">Editorial Policies</message>
 	<message key="about.siteMap">Site Map</message>
 	<message key="announcement.announcements">Announcements</message>
 	<message key="announcement.announcementsHome">Announcements</message>
