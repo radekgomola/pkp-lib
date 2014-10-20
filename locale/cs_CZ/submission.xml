@@ -304,7 +304,7 @@
 	<message key="submission.history.recentLogEntries">Nedávné záznamy</message>
 	<message key="submission.history.submissionEmailLog">Protokol emailů</message>
 	<message key="submission.history.submissionEventLog">Protokol událostí</message>
-	<message key="submission.history.submissionNotes">Poznámky k přípsěvku</message>
+	<message key="submission.history.submissionNotes">Poznámky k příspěvku</message>
 	<message key="submission.history.viewLog">Zobrazit protokol</message>
 	<message key="submission.indexing">Indexace</message>
 	<message key="submission.initiated">Zahájeno</message>

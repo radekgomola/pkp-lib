@@ -32,8 +32,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset={$defaultCharset|escape}" />
         
         <title>{$pageTitleTranslated|strip_tags:true}</title>
-	<meta name="description" content="{$metaSearchDescription|escape}" />
-	<meta name="keywords" content="{$metaSearchKeywords|escape}" />
+	<meta name="description" content="{if $metaSearchDescription!=''}{$metaSearchDescription|escape}{else}{translate key=journals.munipress.description}{/if}" />
+	<meta name="keywords" content="{if $metaSearchKeywords!=''}{$metaSearchKeywords|escape}{else}{translate key=journals.munipress.keywords}{/if}" />
 	<meta name="generator" content="{$applicationName} {$currentVersionString|escape}" />
 	{$metaCustomHeaders}
 	{if $displayFavicon}<link rel="icon" href="{$faviconDir}/{$displayFavicon.uploadName|escape:"url"}" type="{$displayFavicon.mimeType|escape}" />{/if}
