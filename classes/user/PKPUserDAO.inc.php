@@ -258,7 +258,7 @@ class PKPUserDAO extends DAO {
 	}
 
 	function getLocaleFieldNames() {
-		return array('biography', 'signature', 'gossip', 'affiliation');
+		return parent::getLocaleFieldNames() + array('biography', 'signature', 'gossip', 'affiliation');
 	}
 
 	function updateLocaleFields(&$user) {
