@@ -150,7 +150,6 @@
 	<message key="common.notAvailable">Nedostupný</message>
 	<message key="common.note">Poznámka</message>
 	<message key="common.notes">Poznámky</message>
-	<message key="common.notify">Oznámit</message>
   <message key="common.notified">Nahlásit</message>
   <message key="common.noMatches">Nic nenalezeno</message>
 	<message key="common.off">Off</message>
@@ -357,7 +356,6 @@
 	<message key="notification.reminderError">Při zasílání hesla se vyskytla chyba. Ujistěte se prosím, že jste uvedl emailovou adresu správně.</message>
 	<message key="notification.reminderSent">Vaše nové heslo bylo odesláno na poskytnutou emailovou adresu.</message>
 	<message key="notification.unsubscribe">Odhlásit</message>
-	<message key="notification.unsubscribeDescription">Pro odhlášení z odběru emailových oznámení vložte níže Vaši emailovou adresu a heslo. Pokud si nepamatujete své heslo, nechejte políčko pro heslo prázdné a na uvedenou emailovou adresu Vám bude odesláno nové.</message>
 	<message key="notification.unsubscribeError">Při odhlašování se vyskytla chyba. Ujistěte se prosím, že Vaše emailová adresa a heslo jsou správné.</message>
 	<message key="notification.unsubscribeSuccess">Byl jste úspěšně odhlášen.</message>
 	<message key="search.abstract">Abstrakt</message>
@@ -387,10 +385,8 @@
 	<message key="search.operator.and">and</message>
 	<message key="search.operator.not">not</message>
 	<message key="search.operator.or">or</message>
-	<message key="search.reviseSearch">Upravit vyhledávání</message>
 	<message key="search.searchAllCategories">Vyhledat ve všech kategoriích</message>
 	<message key="search.searchCategories">Vyhledat kategorie</message>
-	<message key="search.searchResults">Výsledky hledání</message>
 	<message key="search.subject">Klíčové(á) slovo(a)</message>
 	<message key="search.titleIndex">Procházet index názvů</message>
 	<message key="search.title">Název</message>
@@ -401,4 +397,5 @@
   
   <!-- Doplňované -->
   <message key="common.readMore">číst dále...</message>
+	<message key="common.notice">Oznámit</message>
 </locale>

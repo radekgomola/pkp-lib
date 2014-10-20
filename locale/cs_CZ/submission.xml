@@ -231,25 +231,6 @@
 	<message key="submission.citations.filter.webserviceError">Webová služba {$filterName} vrátila chybu při volání následující URL: {$webserviceUrl}. To může znamenat, že služba je dočasně nedostupná. Stále můžete pracovat se zbývajícími službami a uložit výsledky. Můžete také zkusit použít službu později. Pokud problém přetrvá, prosím, kontaktujte manažera časopisu a požádejte ho o deaktivaci služby.</message>
 	<message key="submission.citations.filter.webserviceResultTransformationError">Nastala chyba v {$filterName}: Převod XML výsledků (např. z webové služby) do polí metadat selhal. Důvodem může být, že služba vrátila neplatná nebo neúplná data. prosím, nahlaste tuto chybu administrátorovi stránky.</message>
 	<message key="submission.citations.metadata.changeWarning">jste si jistý, že chcete aktualizovat Váš sezanm referencí? Pokud kliknete OK, všechny změny provedené Editorem budou ztraceny. Pokud si nejste jistí, jestli můžete provádět změny, prosím, kontaktujte Editora.</message>
-  <message key="submission.citations.jQueryRequired"><![CDATA[Editace citací vyžaduje doplněk jQuery. Prosím, navštivte <a target="_blank" href="{$genericPluginsUrl}">stránku Obecné doplňky</a> a zde povolte doplněk jQuery.]]></message>
-	<message key="submission.citations.grid.fields">Název pole</message>
-	<message key="submission.citations.grid.values">Hodnota pole</message>
-	<message key="submission.citations.grid.title">Upravit citace</message>
-	<message key="submission.citations.grid.importCitations">Importovat citace</message>
-	<message key="submission.citations.grid.exportCitations">Exportovat citace</message>
-	<message key="submission.citations.grid.editCheckCitation">Upravit/Kontrolovat</message>
-	<message key="submission.citations.grid.checkCitationAgain">Znovu zkontrolovat</message>
-	<message key="submission.citations.grid.editedCitation">Text citace</message>
-	<message key="submission.citations.grid.editedCitationRequired">Je vyžadován text citace</message>
-	<message key="submission.citations.grid.publicationTypeRequired">Prosím ujistěte se, že jste skutečně správně nastavili typ publikace. Možné varianty jsou: kniha (pro knihu nebo kapitolu v knize) a časopis (pro článek v časopise). Jinak nebude citace zobrazena ve správném formátu.</message>
-	<message key="submission.citations.grid.errorDeletingCitation">Při mazání citace došlo k chybě.</message>
-	<message key="submission.citations.form.title">Upravit citaci</message>
-	<message key="submission.citations.form.loadMessage">Prosím, vyčkejte na načtení editoru citací.</message>
-	<message key="submission.citations.form.description">Pokud nejste spokojen(a) s obsahem citací, můžete citace ručně upravit editací jednotlivých položek a poté provést opětovnou kontrolu.</message>
-	<message key="submission.citations.form.unsavedChanges">Citace obsahuje data z externích databází, které nejsou dosud uloženy. Prosím přečtěte si a případně upravte datová pole. Poté zvolte "OK" pro uložení změn, nebo zvolte tlačítko "Zrušit", kterým provedené změny neuložíte.</message>
-	<message key="submission.citations.form.filterError">Analýza nebo vyhledávání nevrátily žádné výsledky. Úpravou textu citace pravděpodobně získáte lepší výsledek.</message>
-	<message key="submission.citations.output.unsupportedPublicationType">Nepodporovaný nebo chybějící typ publikace. Prosím upravte citaci ručně a zadejte typ publikace (buď "kniha" nebo "časopis").</message>
-	<message key="submission.citations.output.exportDescription">Prosím, zkopírujte obsah tohoto dialogového okna a vložte jej do dokumentu.</message>
 	<message key="submission.comments.addComment">Přidat komentář</message>
   <message key="submission.comments.addReviews">Přidat recenzenta do e-mailu</message>
 	<message key="submission.comments.comments">Komentáře</message>
@@ -405,7 +386,6 @@
 	<message key="submission.viewMetadata">Zobrazit metadata</message>
 	<message key="submission.views">Zobrazení</message>
 	<message key="submission.uploadSuccessful">Váš soubor byl nahrán</message>
-	<message key="submission.uploadSuccessfulContinue">Váš soubor byl nahrán. Pokračujte na úpravu metadat souboru.</message>
 	<message key="submission.loadMessage">Prosím čekejte, Váš soubor je nahráván na server.</message>
   <message key="submission.artworkFileDetails">Detaily souboru s předlohou</message>
 	<message key="submission.fileDetails">Detaily souboru</message>

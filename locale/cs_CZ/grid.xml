@@ -123,9 +123,6 @@
 	<message key="grid.action.deleteSeries">Smazat serii</message>
 
 	<!-- Masthead Grid -->
-	<message key="grid.masthead.title">Tiráž</message>
-	<message key="grid.masthead.column.groups">Skupiny</message>
-  
   <!-- Categories Grid -->
 	<message key="grid.action.addCategory">Přidat kategorii</message>
 	<message key="grid.action.editCategory">Upravit kategorii</message>
@@ -145,29 +142,10 @@
 	<message key="grid.reviewForm.title">Recenzní formuláře</message>
 
 	<!-- Book File Types Grid -->
-  <message key="grid.bookFileType.form.sortable">Povolit třídění souborů dle jednotlivých položek (např. dle kapitol)</message>
-
   <!-- Files -->
 	<message key="grid.noFiles">Žádné soubory</message>
 
 	<!-- Artwork Files Grid -->
-	<message key="grid.artworkFile.title">Grafické dílo včetně oprávnění k jeho užití</message>
-	<message key="grid.artworkFile.file">Soubor</message>
-	<message key="grid.artworkFile.form.title">Vložit grafické dílo včetně oprávnění k jeho užití</message>
-	<message key="grid.artworkFile.form.metadata">Metadata ke grafickému dílu</message>
-	<message key="grid.artworkFile.caption">Titulek</message>
-	<message key="grid.artworkFile.credit">Autor</message>
-	<message key="grid.artworkFile.copyrightOwner">Vlastník autorských práv</message>
-	<message key="grid.artworkFile.copyrightContact">Kontaktní informace (nejedná-li se o autora nebo vydavatele)</message>
-	<message key="grid.artworkFile.permissionTerms">Podmínky oprávnění k užití díla</message>
-	<message key="grid.artworkFile.permissionForm">Formulář oprávnění k užití díla</message>
-	<message key="grid.artworkFile.type">Typ</message>
-	<message key="grid.artworkFile.type.table">Tabulka</message>
-	<message key="grid.artworkFile.type.figure">Obrázek</message>
-	<message key="grid.artworkFile.placement">Umístění v knize</message>
-	<message key="grid.artworkFile.placementDetail">Tabulka/Obr. č.</message>
-	<message key="grid.artworkFile.contactAuthor">Kontaktovat autora</message>
-
 	<!-- Library Files -->
 	<message key="grid.libraryFiles.column.files">Soubory</message>
 	<message key="grid.libraryFiles.submission.title">Knihovna příspěvků</message>
@@ -187,8 +165,6 @@
 	<message key="author.users.contributor.principalContact">Hlavní kontakt</message>
 
 	<!-- Chapters -->
-	<message key="grid.chapters.title">Kapitoly</message>
-  
   <!-- Roles -->
 	<message key="grid.roles.currentRoles">Současné role</message>
 	<message key="grid.roles.add">vytvořit novou roli</message>

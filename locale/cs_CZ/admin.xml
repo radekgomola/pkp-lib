@@ -42,7 +42,6 @@
 	<message key="admin.languages.uninstall">Odinstalovat lokalizaci</message>
 	<message key="admin.phpInfo">Rozšířené informace o PHP</message>
   <message key="admin.scheduledTask">Naplánovaný úkol</message>
-	<message key="admin.saveSystemConfig">Uložit konfiguraci</message>
 	<message key="admin.server.apacheVersion">Verze Apache</message>
 	<message key="admin.server.dbDriver">Ovladač databáze</message>
 	<message key="admin.server.dbVersion">Verze databázového serveru</message>
@@ -93,4 +92,12 @@
 	<message key="admin.fileLoader.pathNotAccessible">Složka {$path} není adresář nebo jej nelze číst.</message>
 	<message key="admin.fileLoader.moveFileFailed">soubor {$filename} nemohl být přesunut z {$currentFilePath} do {$destinationPath}</message>
 	<message key="admin.fileLoader">Načtení souboru</message>
+	<message key="admin.scheduledTask.startTime">Proces započal.</message>
+	<message key="admin.scheduledTask.stopTime">Proces byl zastaven.</message>
+	<message key="admin.scheduledTask.noLog">Proces nevytvořil žádný log.</message>
+	<message key="admin.scheduledTask.openAccessNotification">Open access oznámení</message>
+	<message key="admin.scheduledTask.reviewReminder">Připomenutí recenze</message>
+	<message key="admin.scheduledTask.subscriptionExpiryReminder">Připomenutí expirace předplatného</message>
+	<message key="admin.settings.oneStepReset">Použít jeden krok pro obnovení hesla?</message>
+	<message key="admin.fileLoader.fileProcessed">Soubor {$filename} byl zpracován a archivován.</message>
 </locale>
