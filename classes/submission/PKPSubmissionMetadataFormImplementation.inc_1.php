@@ -82,20 +82,19 @@ class PKPSubmissionMetadataFormImplementation {
                                 'urlOC_ebook' => $submission->getUrlOCEbook(),
                                 'pocetStran' => $submission->getPocetStran(),
                                 'cisloVydani' => $submission->getCisloVydani(),
-                                'licenceTypPrepinac' => $submission->getTypLicencePrepinac(),                         
-                                'licenceTyp' => $submission->getLicenceTyp(), 
-                                'licenceDrzitel' => $submission->getLicenceDrzitel(),
-                                'licenceExpirace' => $submission->getLicenceExpirace(), 
-                                'licenceVznik' => $submission->getLicenceVznik(),
-                                'licenceZverejnit' => $submission->getLicenceZverejnit(),
-                                'naklad' => $submission->getNaklad(),
-                                'tiskarna' => $submission->getTiskarna(),
-                                'poznamkaAdmin' => $submission->getPoznamkaAdmin(),   
-                                'honorarCelkem' => $submission->getHonorarCelkem(),
-                                'honorarVyplata' => $submission->getHonorarVyplata(),
-                                'povVytiskyDosly' => $submission->getPovVytiskyDosly(),
-                                'povVytiskyOdesly' => $submission->getPovVytiskyOdesly(),
-                                                             
+//                                'licenceTypPrepinac' => $submission->getTypLicencePrepinac(),                         
+//                                'licenceTyp' => $submission->getLicenceTyp(), 
+//                                'licenceDrzitel' => $submission->getLicenceDrzitel(),
+//                                'licenceExpirace' => $submission->getLicenceExpirace(), 
+//                                'licenceVznik' => $submission->getLicenceVznik(),
+//                                'licenceZverejnit' => $submission->getLicenceZverejnit(),
+//                                'naklad' => $submission->getNaklad(),
+//                                'honorarCelkem' => $submission->getHonorarCelkem(),
+//                                'honorarVyplata' => $submission->getHonorarVyplata(),
+//                                'povVytiskyDosly' => $submission->getPovVytiskyDosly(),
+//                                'povVytiskyOdesly' => $submission->getPovVytiskyOdesly(),
+//                                'tiskarna' => $submission->getTiskarna(),
+//                                'poznamkaAdmin' => $submission->getPoznamkaAdmin(),                                
                                 
                                 'urlWeb' => $submission->getLocalizedUrlWeb(null), // Localized
                                 'bibliografickaCitace' => $submission->getBibliografickaCitace(null), // Localized
@@ -117,7 +116,7 @@ class PKPSubmissionMetadataFormImplementation {
                         
                         /*MUNIPRESS*/
 //                        $submissionSouvisejiciPublikaceDao = DAORegistry::getDAO('SubmissionSouvisejiciPublikaceDAO');
-                        $submissionMUPracovisteDao = DAORegistry::getDAO('SubmissionMUPracovisteDAO');
+//                        $submissionMUPracovisteDao = DAORegistry::getDAO('SubmissionMUPracovisteDAO');
                         
 			$submissionSubjectDao = DAORegistry::getDAO('SubmissionSubjectDAO');
 			$submissionDisciplineDao = DAORegistry::getDAO('SubmissionDisciplineDAO');
@@ -200,26 +199,25 @@ class PKPSubmissionMetadataFormImplementation {
                 $submission->setUrlOCEbook($this->_parentForm->getData('urlOC_ebook'));
                 $submission->setPocetStran($this->_parentForm->getData('pocetStran')); 
                 $submission->setCisloVydani($this->_parentForm->getData('cisloVydani'));
-                $submission->setTypLicencePrepinac($this->_parentForm->getData('licenceTypPrepinac'));
-                $submission->setLicenceTyp($this->_parentForm->getData('licenceTyp'));
-                $submission->setLicenceDrzitel($this->_parentForm->getData('licenceDrzitel'));                
-                $submission->setLicenceExpirace($this->_parentForm->getData('licenceExpirace'));
-                $submission->setLicenceVznik($this->_parentForm->getData('licenceVznik'));
-                $submission->setLicenceZverejnit($this->_parentForm->getData('licenceZverejnit'));
-                $submission->setNaklad($this->_parentForm->getData('naklad')); 
-                $submission->setTiskarna($this->_parentForm->getData('tiskarna'));
-                $submission->setPoznamkaAdmin($this->_parentForm->getData('poznamkaAdmin'));          
-                $submission->setHonorarCelkem($this->_parentForm->getData('honorarCelkem'));
-                $submission->setHonorarVyplata($this->_parentForm->getData('honorarVyplata'));
-                $submission->setPovVytiskyDosly($this->_parentForm->getData('povVytiskyDosly'));
-                $submission->setPovVytiskyOdesly($this->_parentForm->getData('povVytiskyOdesly')); 
-                
-                
-                $submission->setTypPublikace($this->_parentForm->getData('typ_02_58'), null); // Localized
-                $submission->setUrlWeb($this->_parentForm->getData('urlWeb'), null); // Localized
-                $submission->setBibliografickaCitace($this->_parentForm->getData('bibliografickaCitace'), null); // Localized
-                $submission->setPoznamka($this->_parentForm->getData('poznamka'), null); // Localized
-                $submission->setDedikace($this->_parentForm->getData('dedikace'), null); // Localized
+//                $submission->setTypLicencePrepinac($this->_parentForm->getData('licenceTypPrepinac'));
+//                $submission->setLicenceTyp($this->_parentForm->getData('licenceTyp'));
+//                $submission->setLicenceDrzitel($this->_parentForm->getData('licenceDrzitel'));                
+//                $submission->setLicenceExpirace($this->_parentForm->getData('licenceExpirace'));
+//                $submission->setLicenceVznik($this->_parentForm->getData('licenceVznik'));
+//                $submission->setLicenceZverejnit($this->_parentForm->getData('licenceZverejnit'));
+//                $submission->setNaklad($this->_parentForm->getData('naklad')); 
+//                $submission->setHonorarCelkem($this->_parentForm->getData('honorarCelkem'));
+//                $submission->setHonorarVyplata($this->_parentForm->getData('honorarVyplata'));
+//                $submission->setPovVytiskyDosly($this->_parentForm->getData('povVytiskyDosly'));
+//                $submission->setPovVytiskyOdesly($this->_parentForm->getData('povVytiskyOdesly')); 
+//                $submission->setTiskarna($this->_parentForm->getData('tiskarna'));
+//                $submission->setPoznamkaAdmin($this->_parentForm->getData('poznamkaAdmin'));                
+//                
+//                $submission->setTypPublikace($this->_parentForm->getData('typ_02_58'), null); // Localized
+//                $submission->setUrlWeb($this->_parentForm->getData('urlWeb'), null); // Localized
+//                $submission->setBibliografickaCitace($this->_parentForm->getData('bibliografickaCitace'), null); // Localized
+//                $submission->setPoznamka($this->_parentForm->getData('poznamka'), null); // Localized
+//                $submission->setDedikace($this->_parentForm->getData('dedikace'), null); // Localized
 
                 // Save the submission
 		$submissionDao->updateObject($submission);

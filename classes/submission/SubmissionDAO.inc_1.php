@@ -117,24 +117,21 @@ class SubmissionDAO extends DAO {
                 $submission->setUrlOCEbook($row['urlOC_ebook']);
                 $submission->setPocetStran($row['pocetStran']);
                 $submission->setCisloVydani($row['cisloVydani']);
-                $submission->setTypLicencePrepinac($row['licenceTypPrepinac']);
-                $submission->setLicenceTyp($row['licenceTyp']);
-                $submission->setLicenceDrzitel($row['licenceDrzitel']);
-                $submission->setLicenceExpirace($this->datetimeFromDB($row['licenceExpirace']));
-                $submission->setLicenceVznik($this->datetimeFromDB($row['licenceVznik']));
-                $submission->setLicenceZverejnit($row['licenceZverejnit']);
-                $submission->setNaklad($row['naklad']);
-                $submission->setTiskarna($row['tiskarna']);
-                $submission->setPoznamkaAdmin($row['poznamkaAdmin']);
-                $submission->setHonorarCelkem($row['honorarCelkem']);
-                $submission->setHonorarVyplata($row['honorarVyplata']);
-                $submission->setPovVytiskyDosly($this->datetimeFromDB($row['povVytiskyDosly']));
-                $submission->setPovVytiskyOdesly($this->datetimeFromDB($row['povVytiskyOdesly']));
-                                
-                $file = fopen("c:/local_servers/test2.txt", w);
-                fwrite($file, $row['urlOC']);
-                fclose($file);
-                
+//                $submission->setTypLicencePrepinac($row['licenceTypPrepinac']);
+//                $submission->setLicenceTyp($row['licenceTyp']);
+//                $submission->setLicenceDrzitel($row['licenceDrzitel']);
+//                $submission->setLicenceExpirace($this->datetimeFromDB($row['licenceExpirace']));
+//                $submission->setLicenceVznik($this->datetimeFromDB($row['licenceVznik']));
+//                $submission->setLicenceZverejnit($row['licenceZverejnit']);
+//                $submission->setNaklad($row['naklad']);
+//                $submission->setHonorarCelkem($row['honorarCelkem']);
+//                $submission->setHonorarVyplata($row['honorarVyplata']);
+//                $submission->setPovVytiskyDosly($this->datetimeFromDB($row['povVytiskyDosly']));
+//                $submission->setPovVytiskyOdesly($this->datetimeFromDB($row['povVytiskyOdesly']));
+//                $submission->setTiskarna($row['tiskarna']);
+//                $submission->setPoznamkaAdmin($row['poznamkaAdmin']);
+                        
+
 		$this->getDataObjectSettings('submission_settings', 'submission_id', $submission->getId(), $submission);
 
 		return $submission;
@@ -306,11 +303,10 @@ class SubmissionDAO extends DAO {
 		if ($contextId) $params[] = (int) $contextId;
 
 		$result = $this->retrieve(
-			'SELECT	s.*, ps.date_published, munis.*,
+			'SELECT	s.*, ps.date_published, 
 				' . $this->_getFetchColumns() . '
 			FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
-                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
 				' . $this->_getFetchJoins() . '
 			WHERE	s.submission_id = ?
 				' . ($contextId?' AND s.context_id = ?':''),
@@ -321,7 +317,6 @@ class SubmissionDAO extends DAO {
 		if ($result->RecordCount() != 0) {
 			$returner = $this->_fromRow($result->GetRowAssoc(false));
 		}
-                
 
 		$result->Close();
 		return $returner;
@@ -352,11 +347,10 @@ class SubmissionDAO extends DAO {
 		if ($contextId) $params[] = (int) $contextId;
 
 		$result = $this->retrieve(
-				'SELECT	s.*, ps.date_published, munis.*,
+				'SELECT	s.*, ps.date_published,
 				' . $this->_getFetchColumns() . '
 				FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
-                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
 				' . $this->_getFetchJoins() . '
 				WHERE	s.submission_id = ?
 				AND s.date_submitted IS NOT NULL AND ps.date_published IS NULL AND s.user_id <> ? AND s.status <> ' .  STATUS_DECLINED .
@@ -383,11 +377,10 @@ class SubmissionDAO extends DAO {
 		$params[] = (int) $contextId;
 
 		$result = $this->retrieve(
-			'SELECT	s.*, ps.date_published, munis.*,
+			'SELECT	s.*, ps.date_published,
 				' . $this->_getFetchColumns() . '
 			FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
-                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
 				' . $this->_getFetchJoins() . '
 			WHERE	s.context_id = ?',
 			$params
@@ -408,11 +401,10 @@ class SubmissionDAO extends DAO {
 		if ($contextId) $params[] = (int) $contextId;
 
 		$result = $this->retrieve(
-			'SELECT	s.*, ps.date_published, munis.*,
+			'SELECT	s.*, ps.date_published,
 				' . $this->_getFetchColumns() . '
 			FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
-                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
 				' . $this->_getFetchJoins() . '
 			WHERE	s.user_id = ?' .
 				($contextId?' AND s.context_id = ?':''),
@@ -434,11 +426,10 @@ class SubmissionDAO extends DAO {
 		if ($contextId) $params[] = (int) $contextId;
 
 		$result = $this->retrieveRange(
-				'SELECT	s.*, ps.date_published, munis.*,
+				'SELECT	s.*, ps.date_published,
 				' . $this->_getFetchColumns() . '
 				FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
-                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
 				' . $this->_getFetchJoins() . '
 				WHERE	ps.date_published IS NULL AND s.user_id = ?' .
 				($contextId?' AND s.context_id = ?':''),
@@ -464,12 +455,10 @@ class SubmissionDAO extends DAO {
 		if ($reviewUserId) $params[] = (int) $reviewUserId;
 
 		$result = $this->retrieveRange(
-			'SELECT	s.*, ps.date_published, munis.*,
+			'SELECT	s.*, ps.date_published,
 				' . $this->_getFetchColumns() . '
 			FROM	submissions s
-				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id) 
-                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
-                                '
+				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id) '
 				. (($stageUserId)?'LEFT JOIN stage_assignments sa ON (s.submission_id = sa.submission_id) ':'')
 				. (($reviewUserId)?'LEFT JOIN review_assignments ra ON (s.submission_id = ra.submission_id) ':'')
 				. $this->_getFetchJoins() .

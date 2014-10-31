@@ -201,8 +201,8 @@
                 <field name="a_kol" type="I1" />
                 <field name="cena" type="I4" />
                 <field name="cena_ebook" type="I4" />
-                <field name="urlOC" type="I4" />
-                <field name="urlOC_ebook" type="I4" />
+                <field name="urlOC" type="I8" />
+                <field name="urlOC_ebook" type="I8" />
                 <field name="pocetStran" type="I4" />
                 <field name="cisloVydani" type="I4" />
                 <field name="licenceTypPrepinac" type="I1" />
@@ -214,10 +214,10 @@
                 <field name="naklad" type="I4" />
                 <field name="tiskarna" type="C2" size="120"/>
                 <field name="poznamkaAdmin" type="X" />  
-                <field name="honor_celkem" type="C2" size="40"/>
-                <field name="honor_vypl" type="C2" size="40"/>
-                <field name="povinne_vytisky_dosly" type="D"/>
-                <field name="povinne_vytisky_odesly" type="D"/>   
+                <field name="honorarCelkem" type="C2" size="40"/>
+                <field name="honorarVyplata" type="C2" size="40"/>
+                <field name="povVytiskyDosly" type="D"/>
+                <field name="povVytiskyOdesly" type="D"/>   
                               
                 
                 <descr>Munipress metadata for submissions.</descr>
