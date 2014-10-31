@@ -9,7 +9,11 @@
  *}
 <!DOCTYPE html>
 <html>
-{if !$pageTitleTranslated}{translate|assign:"pageTitleTranslated" key=$pageTitle}{/if}
+    {if $pageTitleName}
+        {assign var=pageTitleTranslated value=$pageTitleName}
+    {else}
+        {if !$pageTitleTranslated}{translate|assign:"pageTitleTranslated" key=$pageTitle}{/if}
+    {/if}
 {include file="core:common/headerHead.tpl"}
 <body>
 	<script type="text/javascript">
