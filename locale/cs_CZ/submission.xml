@@ -244,8 +244,7 @@
 	<message key="submission.comments.review">Recenze</message>
 	<message key="submission.comments.sendDecisionToReviewers">Poslat recenzentům rozhodnutí editora</message>
 	<message key="submission.comments.subject">Předmět</message>
-	<message key="submission.complete">Dokončit</message>
-	<message key="submission.complete">Complete</message>
+	<message key="submission.complete">Dokončení</message>
 	<message key="submission.copyedited">Redigováno</message>
 	<message key="submission.done">Hotovo</message>
 	<message key="submission.dueDate">Termín splnění</message>

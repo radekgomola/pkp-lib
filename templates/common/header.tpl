@@ -29,6 +29,17 @@
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+   
+    {*<script type="text/javascript">
+        if(!localStorage["alertdisplayed2"]) {ldelim}
+                alert("System has been updated! If you find any kind of problem contact an administrator at gomola@press.muni.cz, please!");
+                localStorage["alertdisplayed2"] = true;
+                {rdelim}
+    </script>*}
+    
+    {*{if $loggedInUsername != "admin"}
+        <meta http-equiv="refresh" content="0;url={$baseUrl}/underConstruction.html" />
+    {/if}*}
 	<meta http-equiv="Content-Type" content="text/html; charset={$defaultCharset|escape}" />
         
         <title>{$pageTitleTranslated|strip_tags:true}</title>
