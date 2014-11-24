@@ -20,7 +20,7 @@
 	<message key="common.currentStyleSheet">Stávající šablona stylů</message>
 	<!--<message key="about.description">Popis</message>-->
         <message key="about.description">Poslání</message>
-	<message key="about.guidelines">Vodídka</message>
+	<message key="about.guidelines">Vodítka</message>
 	<message key="about.aboutSite">Podrobnosti o těchto stránkách</message>
 	<message key="about.contact">Kontakt</message>
 	<message key="about.contact.email">Email</message>
