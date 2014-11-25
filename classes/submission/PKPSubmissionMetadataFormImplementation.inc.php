@@ -117,7 +117,7 @@ class PKPSubmissionMetadataFormImplementation {
                         
                         /*MUNIPRESS*/
 //                        $submissionSouvisejiciPublikaceDao = DAORegistry::getDAO('SubmissionSouvisejiciPublikaceDAO');
-                        $submissionMUPracovisteDao = DAORegistry::getDAO('SubmissionMUPracovisteDAO');
+//                        $submissionMUPracovisteDao = DAORegistry::getDAO('SubmissionMUPracovisteDAO');
                         
 			$submissionSubjectDao = DAORegistry::getDAO('SubmissionSubjectDAO');
 			$submissionDisciplineDao = DAORegistry::getDAO('SubmissionDisciplineDAO');
