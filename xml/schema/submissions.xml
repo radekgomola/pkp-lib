@@ -201,23 +201,23 @@
                 <field name="a_kol" type="I1" />
                 <field name="cena" type="I4" />
                 <field name="cena_ebook" type="I4" />
-                <field name="urlOC" type="I8" />
-                <field name="urlOC_ebook" type="I8" />
-                <field name="pocetStran" type="I4" />
-                <field name="cisloVydani" type="I4" />
-                <field name="licenceTypPrepinac" type="I1" />
-                <field name="licenceTyp" type="C2" size="100" />
-                <field name="licenceDrzitel" type="C2" size="100" />
-                <field name="licenceExpirace" type="D" />
-                <field name="licenceVznik" type="D" />
-                <field name="licenceZverejnit" type="I1" />
-                <field name="naklad" type="I4" />
-                <field name="tiskarna" type="C2" size="120"/>
-                <field name="poznamkaAdmin" type="X" />  
-                <field name="honorarCelkem" type="C2" size="40"/>
-                <field name="honorarVyplata" type="C2" size="40"/>
-                <field name="povVytiskyDosly" type="D"/>
-                <field name="povVytiskyOdesly" type="D"/>   
+                <field name="url_oc" type="I8" />
+                <field name="url_oc_ebook" type="I8" />
+                <field name="pocet_stran" type="I4" />
+                <field name="cislo_vydani" type="I4" />
+                <field name="licence_typ_prepinac" type="I1" />
+                <field name="licence_typ" type="C2" size="100" />
+                <field name="licence_drzitel" type="C2" size="100" />
+                <field name="licence_expirace" type="D" />
+                <field name="licence_vznik" type="D" />
+                <field name="licence_zverejnit" type="I1" />
+                <field name="naklad_db" type="I4" />
+                <field name="tiskarna_db" type="C2" size="120"/>
+                <field name="poznamka_admin" type="X" />  
+                <field name="honorar_celkem" type="C2" size="40"/>
+                <field name="honorar_vyplata" type="C2" size="40"/>
+                <field name="pov_vytisky_dosly" type="D"/>
+                <field name="pov_vytisky_odesly" type="D"/>   
                               
                 
                 <descr>Munipress metadata for submissions.</descr>

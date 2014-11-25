@@ -93,6 +93,8 @@ class SubmissionDAO extends DAO {
 	 * @return Submission
 	 */
 	function _fromRow($row) {
+                
+                
 		$submission = $this->newDataObject();
 
 		$submission->setId($row['submission_id']);
@@ -113,30 +115,32 @@ class SubmissionDAO extends DAO {
                 $submission->setAKolektiv($row['a_kol']);
                 $submission->setCena($row['cena']);
                 $submission->setCenaEbook($row['cena_ebook']);
-                $submission->setUrlOC($row['urlOC']);
-                $submission->setUrlOCEbook($row['urlOC_ebook']);
-                $submission->setPocetStran($row['pocetStran']);
-                $submission->setCisloVydani($row['cisloVydani']);
-                $submission->setTypLicencePrepinac($row['licenceTypPrepinac']);
-                $submission->setLicenceTyp($row['licenceTyp']);
-                $submission->setLicenceDrzitel($row['licenceDrzitel']);
-                $submission->setLicenceExpirace($this->datetimeFromDB($row['licenceExpirace']));
-                $submission->setLicenceVznik($this->datetimeFromDB($row['licenceVznik']));
-                $submission->setLicenceZverejnit($row['licenceZverejnit']);
-                $submission->setNaklad($row['naklad']);
-                $submission->setTiskarna($row['tiskarna']);
-                $submission->setPoznamkaAdmin($row['poznamkaAdmin']);
-                $submission->setHonorarCelkem($row['honorarCelkem']);
-                $submission->setHonorarVyplata($row['honorarVyplata']);
-                $submission->setPovVytiskyDosly($this->datetimeFromDB($row['povVytiskyDosly']));
-                $submission->setPovVytiskyOdesly($this->datetimeFromDB($row['povVytiskyOdesly']));
+                $submission->setUrlOC($row['url_oc']);
+                $submission->setUrlOCEbook($row['url_oc_ebook']);
+                $submission->setPocetStran($row['pocet_stran']);
+                $submission->setCisloVydani($row['cislo_vydani']);
+                $submission->setTypLicencePrepinac($row['licence_typ_prepinac']);
+                $submission->setLicenceTyp($row['licence_typ']);
+                $submission->setLicenceDrzitel($row['licence_drzitel']);
+                $submission->setLicenceExpirace($this->dateFromDB($row['licence_expirace']));
+                $submission->setLicenceVznik($this->dateFromDB($row['licence_vznik']));
+                $submission->setLicenceZverejnit($row['licence_zverejnit']);
+                $submission->setNaklad($row['naklad_db']);
+                $submission->setTiskarna($row['tiskarna_db']);
+                $submission->setPoznamkaAdmin($row['poznamka_admin']);
+                $submission->setHonorarCelkem($row['honorar_celkem']);
+                $submission->setHonorarVyplata($row['honorar_vyplata']);
+                $submission->setPovVytiskyDosly($this->dateFromDB($row['pov_vytisky_dosly']));
+                $submission->setPovVytiskyOdesly($this->dateFromDB($row['pov_vytisky_odesly']));
                                 
-                $file = fopen("c:/local_servers/test2.txt", w);
-                fwrite($file, $row['urlOC']);
-                fclose($file);
+                
                 
 		$this->getDataObjectSettings('submission_settings', 'submission_id', $submission->getId(), $submission);
 
+                $file = fopen("c:/local_servers/test2.txt", w);
+                fwrite($file, $submission->getTypPublikace(null));
+                fclose($file);
+                
 		return $submission;
 	}
 

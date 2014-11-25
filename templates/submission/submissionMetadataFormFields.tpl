@@ -66,13 +66,14 @@
 {/fbvFormArea}*}
 
  {fbvFormArea id="verejneInformace" title="submission.informace.verejne" class="border"}
+        {fbvFormSection for="a_kol" list=true}
         {if $a_kol}
 		{assign var="checked" value=true}
         {else}
                 {assign var="checked" value=false}
         {/if}
-        {fbvFormSection list=true}
-		{fbvElement type="checkbox" label="submission.a_kolektiv" checked=$checked name="a_kol" id="a_kol"}
+        
+		{fbvElement type="checkbox" label="submission.a_kolektiv" checked=$checked name="a_kol" id="a_kol" translate="true"}
         {/fbvFormSection} 
         
         {fbvFormSection label="submission.ceny"}
@@ -89,10 +90,10 @@
 		{fbvElement type="text" label="submission.pocetStran" name="pocetStran" id="pocetStran" value=$pocetStran maxlength="40" inline=true size=$fbvStyles.size.SMALL}
                 {fbvElement type="text" label="submission.cisloVydani" name="cisloVydani" id="cisloVydani" value=$cisloVydani maxlength="40" inline=true size=$fbvStyles.size.SMALL}
                 {assign var=pokus value=$typ_02_58}
-                {fbvElement type="text" label="submission.typ_02_58"  value=$typ_02_58 multilingual=true name="typ_02_58" id="typ_02_58"  inline=true size=$fbvStyles.size.SMALL readonly=$readOnly}
+                {fbvElement type="text" label="submission.typ_02_58" multilingual="true" value=$typ_02_58 name="typ_02_58" id="typ_02_58"  inline=true size=$fbvStyles.size.SMALL readonly=$readOnly}
         {/fbvFormSection}  
         {fbvFormSection label="submission.url.web" for="urlWeb"}
-		{fbvElement type="text" multilingual=true name="urlWeb" id="urlWeb" value=$urlWeb maxlength="255" readonly=$readOnly}
+		{fbvElement type="text" name="urlWeb" multilingual="true" id="urlWeb" value="WEB" maxlength="255" readonly=$readOnly}
 	{/fbvFormSection}
             
         {fbvFormSection label="submission.souvisejiciPublikace" description="submission.submit.metadataForm.tip"}
@@ -153,20 +154,21 @@
 	{/fbvFormSection}
         {fbvFormSection}
         <script>
-            $('input[id^="licenceExpirace"]').datepicker({ldelim} dateFormat: 'dd. mm. yy' {rdelim});
-            $('input[id^="licenceVznik"]').datepicker({ldelim} dateFormat: 'dd. mm. yy' {rdelim});
+            $('input[id^="licenceExpirace"]').datepicker({ldelim} dateFormat: 'yy-mm-dd' {rdelim});
+            $('input[id^="licenceVznik"]').datepicker({ldelim} dateFormat: 'yy-mm-dd' {rdelim});
         </script>
-		{fbvElement type="text" label="submission.licence.trvani" id="licenceExpirace" name="licenceExpirace" value=$licenceExpirace inline=true size=$fbvStyles.size.MEDIUM}
-                {fbvElement type="text" label="submission.licence.vznik" id="licenceVznik" name="licenceVznik" value=$licenceVznik inline=true size=$fbvStyles.size.MEDIUM}
+		{fbvElement type="text" label="submission.licence.trvani" id="licenceExpirace" name="licenceExpirace" value=$licenceExpirace|date_format:"%Y-%m-%d" inline=true size=$fbvStyles.size.MEDIUM}
+                {fbvElement type="text" label="submission.licence.vznik" id="licenceVznik" name="licenceVznik" value=$licenceVznik|date_format:"%Y-%m-%d" inline=true size=$fbvStyles.size.MEDIUM}
 	{/fbvFormSection} 
         
+        {fbvFormSection for="licenceZverejnit" list=true}
         {if $licenceZverejnit}
 		{assign var="checked" value=true}
         {else}
                 {assign var="checked" value=false}
         {/if}
-        {fbvFormSection list=true}
-		{fbvElement type="checkbox" label="submission.licence.zverejnit" checked=$checked name="licenceZverejnit" id="licenceZverejnit" value=$licenceZverejnit}
+        
+		{fbvElement type="checkbox" label="submission.licence.zverejnit" checked=$checked name="licenceZverejnit" id="licenceZverejnit" translate="true"}
         {/fbvFormSection} 
         
         {fbvFormSection label="submission.naklad"}
@@ -180,11 +182,11 @@
         
         {fbvFormSection title="submission.povinneVytisky"}
         <script>
-            $('input[id^="povVytiskyOdesly"]').datepicker({ldelim} dateFormat: 'dd. mm. yy' {rdelim});
-            $('input[id^="povVytiskyDosly"]').datepicker({ldelim} dateFormat: 'dd. mm. yy' {rdelim});
+            $('input[id^="povVytiskyOdesly"]').datepicker({ldelim} dateFormat: 'yy-mm-dd' {rdelim});
+            $('input[id^="povVytiskyDosly"]').datepicker({ldelim} dateFormat: 'yy-mm-dd' {rdelim});
         </script>
-		{fbvElement type="text" label="submission.povinneVytisky.dosly" id="povVytiskyDosly" name="povVytiskyDosly" value=$povVytiskyDosly inline=true size=$fbvStyles.size.MEDIUM}
-                {fbvElement type="text" label="submission.povinneVytisky.odesly" id="povVytiskyOdesly" name="povVytiskyOdesly" value=$povVytiskyOdesly inline=true size=$fbvStyles.size.MEDIUM}
+		{fbvElement type="text" label="submission.povinneVytisky.dosly" id="povVytiskyDosly" name="povVytiskyDosly" value=$povVytiskyDosly|date_format:"%Y-%m-%d" inline=true size=$fbvStyles.size.MEDIUM}
+                {fbvElement type="text" label="submission.povinneVytisky.odesly" id="povVytiskyOdesly" name="povVytiskyOdesly" value=$povVytiskyOdesly|date_format:"%Y-%m-%d" inline=true size=$fbvStyles.size.MEDIUM}
 	{/fbvFormSection} 
         
         {fbvFormSection title="submission.tiskarna"}

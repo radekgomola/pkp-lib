@@ -1421,8 +1421,7 @@ abstract class Submission extends DataObject {
 	 * @return date
 	 */
 	function getLicenceExpirace() {
-                return date('d. m. Y', strtotime($this->getData('licenceExpirace')));
-//		return $this->getData('licenceExpirace');
+            return $this->getData('licenceExpirace');
 	}
 
 	/**

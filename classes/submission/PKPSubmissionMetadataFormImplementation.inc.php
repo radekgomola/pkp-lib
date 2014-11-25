@@ -130,7 +130,7 @@ class PKPSubmissionMetadataFormImplementation {
                         
                         /*MUNIPRESS*/
 //                        $this->_parentForm->setData('souvisejiciPublikace', $submissionSouvisejiciPublikaceDao->getSouvisejiciPublikace($submission->getId(), $locales));
-//                        $this->_parentForm->setData('muPracoviste', $submissionMUPracovisteDao->getMUPracoviste($submission->getId(), $locales));
+                        //$this->_parentForm->setData('muPracoviste', $submissionMUPracovisteDao->getMUPracoviste($submission->getId(), $locales));
                         
                         
                         $this->_parentForm->setData('subjects', $submissionSubjectDao->getSubjects($submission->getId(), $locales));

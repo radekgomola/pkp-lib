@@ -52,19 +52,19 @@ class SubmissionSubjectDAO extends ControlledVocabDAO {
 	 */
 	function getMUPracoviste($submissionId, $locales) {
 		$returner = array();
-		$submissionMUPracovisteEntryDao = DAORegistry::getDAO('SubmissionMUPracovisteEntryDAO');
-		foreach ($locales as $locale) {
-			$returner[$locale] = array();
-			$muPracoviste = $this->build($submissionId);
-			$submissionMUPracoviste = $submissionMUPracovisteEntryDao->getByControlledVocabId($muPracoviste->getId());
-
-			while ($muPrac = $submissionMUPracoviste->next()) {
-				$muPrac = $muPrac->getMUPrac();
-				if (array_key_exists($locale, $muPrac)) { // quiets PHP when there are no Subjects for a given locale
-					$returner[$locale][] = $muPrac[$locale];
-				}
-			}
-		}
+		//$submissionMUPracovisteEntryDao = DAORegistry::getDAO('SubmissionMUPracovisteEntryDAO');
+//		foreach ($locales as $locale) {
+//			$returner[$locale] = array();
+//			$muPracoviste = $this->build($submissionId);
+//			$submissionMUPracoviste = $submissionMUPracovisteEntryDao->getByControlledVocabId($muPracoviste->getId());
+//
+//			while ($muPrac = $submissionMUPracoviste->next()) {
+//				$muPrac = $muPrac->getMUPrac();
+//				if (array_key_exists($locale, $muPrac)) { // quiets PHP when there are no Subjects for a given locale
+//					$returner[$locale][] = $muPrac[$locale];
+//				}
+//			}
+//		}
 		return $returner;
 	}
 
