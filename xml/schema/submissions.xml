@@ -205,6 +205,7 @@
                 <field name="url_oc_ebook" type="I8" />
                 <field name="pocet_stran" type="I4" />
                 <field name="cislo_vydani" type="I4" />
+                <field name="archiv" type="I1" />
                 <field name="licence_typ_prepinac" type="I1" />
                 <field name="licence_typ" type="C2" size="100" />
                 <field name="licence_drzitel" type="C2" size="100" />
