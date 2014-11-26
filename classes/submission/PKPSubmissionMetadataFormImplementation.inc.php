@@ -75,6 +75,7 @@ class PKPSubmissionMetadataFormImplementation {
                                 'citations' => $submission->getCitations(null),
                                 
                                 /*MUNIPRESS*/
+                                'archivace' => $submission->getArchivace(),
                                 'a_kol' => $submission->getAKolektiv(),
                                 'cena' => $submission->getCena(), 
                                 'cena_ebook' => $submission->getCenaEbook(), 		
@@ -151,7 +152,7 @@ class PKPSubmissionMetadataFormImplementation {
 		$userVars = array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 
                                 'coverageChron', 'coverageSample', 'type', 'subjectClass', 
                                 'source', 'rights', 'keywords', 
-                                'a_kol', 'cena', 'cena_ebook', 'urlOC', 'urlOC_ebook', 
+                                'archivace', 'a_kol', 'cena', 'cena_ebook', 'urlOC', 'urlOC_ebook', 
                                 'pocetStran', 'cisloVydani', 'licenceTypPrepinac', 'licenceTyp', 
                                 'licenceDrzitel', 'licenceExpirace', 'licenceVznik', 
                                 'licenceZverejnit', 'naklad', 'honorarCelkem', 
@@ -193,6 +194,7 @@ class PKPSubmissionMetadataFormImplementation {
 		$submission->setSource($this->_parentForm->getData('source'), null); // Localized
                 
                 /*MUNIPRESS*/
+                $submission->setArchivace($this->_parentForm->getData('archivace'));
                 $submission->setAKolektiv($this->_parentForm->getData('a_kol'));
                 $submission->setCena($this->_parentForm->getData('cena'));                
                 $submission->setCenaEbook($this->_parentForm->getData('cena_ebook'));

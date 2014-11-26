@@ -123,10 +123,22 @@
 		{fbvElement type="textarea" multilingual=true name="dedikace" id="dedikace" value=$dedikace rich=true readonly=$readOnly}
 	{/fbvFormSection}        
  {/fbvFormArea}
-        
+       
+ {*        Tady jsou metadata pro munipress*}
  {fbvFormArea id="munipressInformace" title="submission.informace.munipress" class="border"}       
         
-{*        Tady jsou metadata pro munipress*}
+        {fbvFormSection for="archivace" list=true}
+        {if $archivace}
+		{assign var="checked" value=true}
+        {else}
+                {assign var="checked" value=false}
+        {/if}
+        
+		{fbvElement type="checkbox" label="submission.archivace" checked=$checked name="archivace" id="archivace" translate="true"}
+                <span class="sub_label">({translate key="submission.archivace.description"})</span>
+                
+        {/fbvFormSection} 
+        
         {fbvFormSection list="true" title="submission.licence"}
                         {if $licenceTypPrepinac eq "0"}
 				{assign var="checked" value=true}

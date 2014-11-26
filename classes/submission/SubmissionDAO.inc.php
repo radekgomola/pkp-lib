@@ -112,6 +112,7 @@ class SubmissionDAO extends DAO {
 		$submission->setCommentsToEditor($row['comments_to_ed']);
                 
                 /*MUNIPRESS*/
+                
                 $submission->setAKolektiv($row['a_kol']);
                 $submission->setCena($row['cena']);
                 $submission->setCenaEbook($row['cena_ebook']);
@@ -119,6 +120,7 @@ class SubmissionDAO extends DAO {
                 $submission->setUrlOCEbook($row['url_oc_ebook']);
                 $submission->setPocetStran($row['pocet_stran']);
                 $submission->setCisloVydani($row['cislo_vydani']);
+                $submission->setArchivace($row['archiv']);
                 $submission->setTypLicencePrepinac($row['licence_typ_prepinac']);
                 $submission->setLicenceTyp($row['licence_typ']);
                 $submission->setLicenceDrzitel($row['licence_drzitel']);
@@ -136,10 +138,6 @@ class SubmissionDAO extends DAO {
                 
                 
 		$this->getDataObjectSettings('submission_settings', 'submission_id', $submission->getId(), $submission);
-
-                $file = fopen("c:/local_servers/test2.txt", w);
-                fwrite($file, $submission->getTypPublikace(null));
-                fclose($file);
                 
 		return $submission;
 	}

@@ -1136,6 +1136,22 @@ abstract class Submission extends DataObject {
 	 * Vrací hodnotu moznosti "a kolektiv"
 	 * @return boolean
 	 */
+	function getArchivace() {
+		return $this->getData('archivace');
+        }
+
+	/**
+	 * Nastavuje hodnotu moznosti "a kolektiv"
+	 * @param $a_kol boolean
+	 */
+	function setArchivace($archivace) {
+		return $this->setData('archivace', $archivace);
+	}
+        
+        /**
+	 * Vrací hodnotu moznosti "a kolektiv"
+	 * @return boolean
+	 */
 	function getAKolektiv() {
 		return $this->getData('a_kol');
         }
