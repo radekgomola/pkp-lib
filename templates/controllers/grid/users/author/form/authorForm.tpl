@@ -39,9 +39,8 @@
 		disableSignatureSection=true
 		extraContentSectionUnfolded=true
 		countryRequired=true    
-                disablePhoneSection=true
-                disableFaxSection=true   
-                disableUrlSection=true             
+                disableUrlSection=true
+     
 	}
         
         {********************
@@ -49,10 +48,10 @@
         **********************}
         {if $isUserLoggedIn }
             {fbvFormArea id="munipress" }
-                    {fbvFormSection label="author.munipress"}
+                    {*{fbvFormSection }
                          {fbvElement type="text" label="user.url" name="url" id="url" value=$url inline=true size=$fbvStyles.size.SMALL}
-                    {/fbvFormSection}
-                    {fbvFormSection}
+                    {/fbvFormSection}*}
+                    {fbvFormSection label="author.munipress"}
                          {fbvElement type="text" label="author.munipress.titulyPred" name="tituly_pred" id="tituly_pred" value=$tituly_pred inline=true size=$fbvStyles.size.SMALL}
                          {fbvElement type="text" label="author.munipress.tituly_za" name="tituly_za" id="tituly_za" value=$tituly_za inline=true size=$fbvStyles.size.SMALL}
                     {/fbvFormSection}
