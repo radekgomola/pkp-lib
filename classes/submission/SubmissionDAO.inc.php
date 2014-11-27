@@ -309,11 +309,11 @@ class SubmissionDAO extends DAO {
 
 		$result = $this->retrieve(
 			'SELECT	s.*, ps.date_published, munis.*,
-				' . $this->_getFetchColumns() . '
-			FROM	submissions s
-				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
+				' . $this->_getFetchColumns() . '                                
+			FROM	submissions s                                
+				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)  
                                 LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
-				' . $this->_getFetchJoins() . '
+				' . $this->_getFetchJoins() . '                                
 			WHERE	s.submission_id = ?
 				' . ($contextId?' AND s.context_id = ?':''),
 			$params

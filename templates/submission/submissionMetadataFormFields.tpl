@@ -93,7 +93,7 @@
                 {fbvElement type="text" label="submission.typ_02_58" multilingual="true" value=$typ_02_58 name="typ_02_58" id="typ_02_58"  inline=true size=$fbvStyles.size.SMALL readonly=$readOnly}
         {/fbvFormSection}  
         {fbvFormSection label="submission.url.web" for="urlWeb"}
-		{fbvElement type="text" name="urlWeb" multilingual="true" id="urlWeb" value="WEB" maxlength="255" readonly=$readOnly}
+		{fbvElement type="text" name="urlWeb" multilingual="true" id="urlWeb" value=$urlWeb maxlength="255" readonly=$readOnly}
 	{/fbvFormSection}
             
         {fbvFormSection label="submission.souvisejiciPublikace" description="submission.submit.metadataForm.tip"}

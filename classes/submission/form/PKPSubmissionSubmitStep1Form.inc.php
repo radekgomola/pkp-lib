@@ -212,8 +212,8 @@ class PKPSubmissionSubmitStep1Form extends SubmissionSubmitForm {
                         
                         /********************
                          * MUNIPRESS
-                        ******************/
-                        
+                         * ******************/
+                                                 
                         $authorUCO = (int) $this->getData('uco');
 			$author->setUCO($authorUCO);
                         $authorMU = (int) $this->getData('mu');
