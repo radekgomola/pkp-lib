@@ -108,11 +108,9 @@
 		{url|assign:languagesSourceUrl router=$smarty.const.ROUTE_PAGE page="submission" op="fetchChoices" codeList="74"}
 		{fbvElement type="keyword" id="languages" subLabelTranslate=true multilingual=true current=$languages source=$languagesSourceUrl}
         {/fbvFormSection}
-         
         {fbvFormSection label="submission.muPracoviste"}
-		{fbvElement type="keyword" multilingual=true name="muPracoviste" id="muPracoviste" current=$muPracoviste}
+		{fbvElement type="text" multilingual=true name="fakulta" id="fakulta" value=$fakulta readonly=$readOnly}
 	{/fbvFormSection}
-        
         {fbvFormSection title="submission.bibliografickaCitace" for="bibliografickaCitace"}
 		{fbvElement type="textarea" multilingual=true name="bibliografickaCitace" id="bibliografickaCitace" value=$bibliografickaCitace rich=true readonly=$readOnly}
 	{/fbvFormSection}

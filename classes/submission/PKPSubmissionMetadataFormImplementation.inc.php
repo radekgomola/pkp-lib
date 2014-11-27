@@ -98,11 +98,12 @@ class PKPSubmissionMetadataFormImplementation {
                                 'povVytiskyOdesly' => $submission->getPovVytiskyOdesly(),
                                                              
                                 
-                                'urlWeb' => $submission->getLocalizedUrlWeb(null), // Localized
+                                'urlWeb' => $submission->getUrlWeb(null), // Localized
                                 'bibliografickaCitace' => $submission->getBibliografickaCitace(null), // Localized
                                 'poznamka' => $submission->getPoznamka(null), // Localized
                                 'dedikace' => $submission->getDedikace(null), // Localized
-                                'typ_02_58' => $submission->getLocalizedTypPublikace(null), // Localized
+                                'typ_02_58' => $submission->getTypPublikace(null), // Localized
+                                'fakulta' => $submission->getFakulta(null), // Localized
                                 
 			); 
 			foreach ($formData as $key => $data) {
@@ -168,7 +169,7 @@ class PKPSubmissionMetadataFormImplementation {
 	 * @return array
 	 */
 	function getLocaleFieldNames() {
-		return array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights', 'bibliografickaCitace', 'poznamka', 'dedikace', 'typ_02_58', 'urlWeb');
+		return array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights', 'bibliografickaCitace', 'poznamka', 'dedikace', 'typ_02_58', 'urlWeb', 'muPracoviste');
 	}
 
 	/**
@@ -222,7 +223,8 @@ class PKPSubmissionMetadataFormImplementation {
                 $submission->setBibliografickaCitace($this->_parentForm->getData('bibliografickaCitace'), null); // Localized
                 $submission->setPoznamka($this->_parentForm->getData('poznamka'), null); // Localized
                 $submission->setDedikace($this->_parentForm->getData('dedikace'), null); // Localized
-
+                $submission->setFakulta($this->_parentForm->getData('fakulta'), null); // Localized
+                //
                 // Save the submission
 		$submissionDao->updateObject($submission);
 

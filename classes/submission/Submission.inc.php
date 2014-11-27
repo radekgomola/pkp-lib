@@ -1131,6 +1131,32 @@ abstract class Submission extends DataObject {
         /***********
          * MUNIPRESS
          *************/
+         /**
+	 * Vraci lokalizovanou fakultu
+	 * @return string
+	 */
+	function getLocalizedFakulta() {
+		return $this->getLocalizedData('fakulta');
+	}
+
+	/**
+	 * Vrací fakultu
+	 * @param $locale
+	 * @return string
+	 */
+	function getFakulta($locale) {
+		return $this->getData('fakulta', $locale);
+	}
+
+	/**
+	 * Nastavuje fakultu
+	 * @param $fakulta string
+	 * @param $locale
+	 */
+	function setFakulta($fakulta, $locale) {
+		return $this->setData('fakulta', $fakulta, $locale);
+	}
+        
         
         /**
 	 * Vrací hodnotu moznosti "a kolektiv"

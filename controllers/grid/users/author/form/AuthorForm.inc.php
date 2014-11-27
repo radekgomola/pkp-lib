@@ -114,8 +114,8 @@ class AuthorForm extends Form {
 				'country' => $author->getCountry(),
 				'email' => $author->getEmail(),
 				'url' => $author->getUrl(),
-                                'affiliation' => $author->getAffiliation(AppLocale::getLocale()),
-                                'biography' => $author->getBiography(AppLocale::getLocale()),
+                                'affiliation' => $author->getAffiliation(NULL),
+                                'biography' => $author->getBiography(NULL),
                                 'uco' => $author->getUCO(), /*MUNIPRESS*/
                                 'mu' => $author->getMU(), /*MUNIPRESS*/
                                 'tituly_pred' => $author->getTitulyPred(), /*MUNIPRESS*/

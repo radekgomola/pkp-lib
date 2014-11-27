@@ -218,8 +218,7 @@
                 <field name="honorar_celkem" type="C2" size="40"/>
                 <field name="honorar_vyplata" type="C2" size="40"/>
                 <field name="pov_vytisky_dosly" type="D"/>
-                <field name="pov_vytisky_odesly" type="D"/>   
-                              
+                <field name="pov_vytisky_odesly" type="D"/>              
                 
                 <descr>Munipress metadata for submissions.</descr>
 		<index name="munipress_submission_id">

@@ -202,14 +202,14 @@
 				{/if}
 
 				{if !$disableAffiliationSection}
-					{fbvFormSection for="affiliation"}
+					{fbvFormSection for="affiliation"}                                                
 						{fbvElement type="text" label="user.affiliation" multilingual="true" name="affiliation" id="affiliation" value=$affiliation inline=true size=$fbvStyles.size.LARGE}
 					{/fbvFormSection}
 				{/if}
 
 				{if !$disableBiographyMailingSection}
 					{fbvFormSection}
-						{if !$disableBiographySection}
+						{if !$disableBiographySection}                                                        
 							{fbvElement type="textarea" label="user.biography" multilingual="true" name="biography" id="biography" rich=true value=$biography inline=true size=$fbvStyles.size.MEDIUM}
 						{/if}
 						{if !$disableMailingSection}
