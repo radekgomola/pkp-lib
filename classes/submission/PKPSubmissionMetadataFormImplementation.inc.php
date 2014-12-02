@@ -103,7 +103,7 @@ class PKPSubmissionMetadataFormImplementation {
                                 'poznamka' => $submission->getPoznamka(null), // Localized
                                 'dedikace' => $submission->getDedikace(null), // Localized
                                 'typ_02_58' => $submission->getTypPublikace(null), // Localized
-                                'fakulta' => $submission->getFakulta(null), // Localized
+                                'muPracoviste' => $submission->getFakulta(null), // Localized
                                 
 			); 
 			foreach ($formData as $key => $data) {
@@ -223,7 +223,7 @@ class PKPSubmissionMetadataFormImplementation {
                 $submission->setBibliografickaCitace($this->_parentForm->getData('bibliografickaCitace'), null); // Localized
                 $submission->setPoznamka($this->_parentForm->getData('poznamka'), null); // Localized
                 $submission->setDedikace($this->_parentForm->getData('dedikace'), null); // Localized
-                $submission->setFakulta($this->_parentForm->getData('fakulta'), null); // Localized
+                $submission->setFakulta($this->_parentForm->getData('muPracoviste'), null); // Localized
                 //
                 // Save the submission
 		$submissionDao->updateObject($submission);

@@ -62,8 +62,8 @@ class SubmissionDAO extends DAO {
 			'discipline', 'subjectClass', 'subject',
 			'coverageGeo', 'coverageChron', 'coverageSample',
 			'type', 'sponsor', 'source', 'rights', 
-                        'dedikace','urlWeb', 'fakulta', 'bibliografickaCitace', 'poznamka', 
-                        'typ_02_58',
+                        'dedikace','urlWeb', 'bibliografickaCitace', 'poznamka', 
+                        'typ_02_58', 'muPracoviste', 
 		);
 	}
 

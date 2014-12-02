@@ -1136,7 +1136,7 @@ abstract class Submission extends DataObject {
 	 * @return string
 	 */
 	function getLocalizedFakulta() {
-		return $this->getLocalizedData('fakulta');
+		return $this->getLocalizedData('muPracoviste');
 	}
 
 	/**
@@ -1145,16 +1145,16 @@ abstract class Submission extends DataObject {
 	 * @return string
 	 */
 	function getFakulta($locale) {
-		return $this->getData('fakulta', $locale);
+		return $this->getData('muPracoviste', $locale);
 	}
 
 	/**
 	 * Nastavuje fakultu
-	 * @param $fakulta string
+	 * @param $muPracoviste string
 	 * @param $locale
 	 */
-	function setFakulta($fakulta, $locale) {
-		return $this->setData('fakulta', $fakulta, $locale);
+	function setFakulta($muPracoviste, $locale) {
+		return $this->setData('muPracoviste', $muPracoviste, $locale);
 	}
         
         

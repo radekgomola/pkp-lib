@@ -90,7 +90,7 @@ class SubmissionNativeXmlFilter extends NativeExportFilter {
 		$this->addIdentifiers($doc, $submissionNode, $submission);
 		$this->addMetadata($doc, $submissionNode, $submission);
 		$this->addAuthors($doc, $submissionNode, $submission);
-		$this->addFiles($doc, $submissionNode, $submission);
+		//$this->addFiles($doc, $submissionNode, $submission);
 		$this->addRepresentations($doc, $submissionNode, $submission);
 
 		return $submissionNode;
@@ -131,7 +131,7 @@ class SubmissionNativeXmlFilter extends NativeExportFilter {
 	 * @return DOMElement|null
 	 */
 	function addPubIdentifier($doc, $submissionNode, $submission, $pubIdPlugin) {
-		$pubId = $pubIdPlugin->getPubId($submission, !$submission->getPublished());
+		$pubId = $pubIdPlugin->getPubId($submission);
 		if ($pubId) {
 			$submissionNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'id', $pubId));
 			$node->setAttribute('type', $pubIdPlugin->getPubIdType());
