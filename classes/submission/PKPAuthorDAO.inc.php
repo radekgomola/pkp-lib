@@ -145,6 +145,12 @@ class PKPAuthorDAO extends DAO {
                 $author->setTitulyZa($row['tituly_za']);
                 $author->setRodneCislo($row['rodne_cislo']);
                 $author->setPoznamka($row['poznamka']);
+                $author->setDruhePrijmeni($row['druhe_prijmeni']);
+                $author->setObcanskeJmeno($row['obcanske_jmeno']);
+                $author->setObcanskePrijmeni($row['obcanske_prijmeni']);
+                $author->setZobrazHlavicka($row['zobraz_hlavicka']);
+                $author->setZobrazAutori($row['zobraz_autori']);
+                $author->setZobrazOstatni($row['zobraz_ostatni']);
 
 		$this->getDataObjectSettings('author_settings', 'author_id', $row['author_id'], $author);
 
@@ -178,6 +184,12 @@ class PKPAuthorDAO extends DAO {
                 $author->setTitulyZa($row['tituly_za']);
                 $author->setRodneCislo($row['rodne_cislo']);
                 $author->setPoznamka($row['poznamka']);
+                $author->setDruhePrijmeni($row['druhe_prijmeni']);
+                $author->setObcanskeJmeno($row['obcanske_jmeno']);
+                $author->setObcanskePrijmeni($row['obcanske_prijmeni']);
+                $author->setZobrazHlavicka($row['zobraz_hlavicka']);
+                $author->setZobrazAutori($row['zobraz_autori']);
+                $author->setZobrazOstatni($row['zobraz_ostatni']);
 
 		$author->setAffiliation($row['affiliation_l'], $row['locale']);
 		$author->setAffiliation($row['affiliation_pl'], $row['primary_locale']);
@@ -241,17 +253,23 @@ class PKPAuthorDAO extends DAO {
                 
                 $this->update(
 				'INSERT INTO munipress_author_metadata
-				(author_id, uco, mu, tituly_pred, tituly_za, rodne_cislo, poznamka)
+				(author_id, uco, mu, tituly_pred, tituly_za, rodne_cislo, poznamka, druhe_prijmeni, obcanske_jmeno, obcanske_prijmeni, zobraz_hlavicka, zobraz_autori, zobraz_ostatni)
 				VALUES
-				(?, ?, ?, ?, ?, ?, ?)',
+				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 				array(
 						(int) $author->getId(),
-						(int) $author->getUCO() . '',// make non-null
-						(int) $author->getMU() . '', // make non-null
+						(int) $author->getUCO(),
+						(int) $author->getMU(),
 						$author->getTitulyPred(),
 						$author->getTitulyZa(),
 						$author->getRodneCislo(),
-						$author->getPoznamka()
+						$author->getPoznamka(), 
+                                                $author->getDruhePrijmeni(), 
+                                                $author->getObcanskeJmeno(), 
+                                                $author->getObcanskePrijmeni(), 
+                                                $author->getZobrazHlavicka()? 1:0, 
+                                                $author->getZobrazAutori()? 1:0, 
+                                                $author->getZobrazOstatni()? 1:0
 				)
 		);
                 
@@ -303,19 +321,30 @@ class PKPAuthorDAO extends DAO {
 					tituly_pred = ?,
 					tituly_za = ?,
 					rodne_cislo = ?,
-					poznamka = ?
+					poznamka = ?,
+                                        druhe_prijmeni = ?, 
+                                        obcanske_jmeno = ?, 
+                                        obcanske_prijmeni = ?, 
+                                        zobraz_hlavicka = ?, 
+                                        zobraz_autori = ?, 
+                                        zobraz_ostatni= ?
 				WHERE	author_id = ?',
 				array(
-						(int) $author->getUCO(). '',// make non-null
-						(int) $author->getMU(). '', // make non-null
+						(int) $author->getUCO(),
+						(int) $author->getMU(), 
 						$author->getTitulyPred(),
 						$author->getTitulyZa(),
 						$author->getRodneCislo(),
 						$author->getPoznamka(),
+                                                $author->getDruhePrijmeni(), 
+                                                $author->getObcanskeJmeno(), 
+                                                $author->getObcanskePrijmeni(), 
+                                                $author->getZobrazHlavicka() ? 1:0, 
+                                                $author->getZobrazAutori() ? 1:0, 
+                                                $author->getZobrazOstatni() ? 1:0,
 						(int) $author->getId()
 				)
 		);
-                
 		$this->updateLocaleFields($author);
 		return $returner;
 	}

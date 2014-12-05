@@ -132,6 +132,100 @@ class PKPAuthor extends Identity {
 		$userGroup = $this->getUserGroup();
 		return $userGroup->getLocalizedName();
 	}
+        
+        /***************
+         * MUNIPRESS
+         **************/
+        /**
+	 * Get druhé příjmení (rozená, provdaná).
+	 * @return string
+	 */
+	function getDruhePrijmeni() {
+		return $this->getData('druhePrijmeni');
+	}
+
+	/**
+	 * Set druhé příjmení (rozená, provdaná).
+	 * @param $druhePrijmeni string
+	 */
+	function setDruhePrijmeni($druhePrijmeni) {
+		return $this->setData('druhePrijmeni', $druhePrijmeni);
+	}
+        /**
+	 * Get občanské jméno.
+	 * @return string
+	 */
+	function getObcanskeJmeno() {
+		return $this->getData('obcanskeJmeno');
+	}
+
+	/**
+	 * Set dbčanské jméno.
+	 * @param $obcanskeJmeno string
+	 */
+	function setObcanskeJmeno($obcanskeJmeno) {
+		return $this->setData('obcanskeJmeno', $obcanskeJmeno);
+	}
+        /**
+	 * Get občanské příjmení.
+	 * @return string
+	 */
+	function getObcanskePrijmeni() {
+		return $this->getData('obcanskePrijmeni');
+	}
+
+	/**
+	 * Set občanské příjmení.
+	 * @param $obcanskePrijmeni string
+	 */
+	function setObcanskePrijmeni($obcanskePrijmeni) {
+		return $this->setData('obcanskePrijmeni', $obcanskePrijmeni);
+	}
+        /**
+	 * Get zobrazeni - v hlavičce.
+	 * @return boolean
+	 */
+	function getZobrazHlavicka() {
+		return $this->getData('zobrazHlavicka');
+	}
+
+	/**
+	 * Set zobrazeni - v hlavičce.
+	 * @param $zobrazHlavicka boolean
+	 */
+	function setZobrazHlavicka($zobrazHlavicka) {
+		return $this->setData('zobrazHlavicka', $zobrazHlavicka);
+	}
+        /**
+	 * Get zobrazení - mezi autory.
+	 * @return int
+	 */
+	function getZobrazAutori() {
+		return $this->getData('zobrazAutori');
+	}
+
+	/**
+	 * Set zobrazení - mezi autory.
+	 * @param $zobrazAutori int
+	 */
+	function setZobrazAutori($zobrazAutori) {
+		return $this->setData('zobrazAutori', $zobrazAutori);
+	}
+        /**
+	 * Get zobrazení - ve více informacích.
+	 * @return boolean
+	 */
+	function getZobrazOstatni() {
+		return $this->getData('zobrazOstatni');
+	}
+
+	/**
+	 * Set zobrazení - ve více informacích.
+	 * @param $zobrazOstatni boolean
+	 */
+	function setZobrazOstatni($zobrazOstatni) {
+		return $this->setData('zobrazOstatni', $zobrazOstatni);
+	}
 }
 
 ?>

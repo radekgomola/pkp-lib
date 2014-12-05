@@ -60,7 +60,19 @@
                          {fbvElement type="text" label="author.munipress.rodneCislo" name="rodne_cislo" id="rodne_cislo" value=$rodne_cislo inline=true size=$fbvStyles.size.SMALL}
                          {fbvElement type="text" label="author.munipress.mu" name="mu" id="mu" value=$mu inline=true size=$fbvStyles.size.SMALL}
 			{fbvElement type="text" label="user.uco" name="uco" id="uco" value=$uco maxlength="24" inline=true size=$fbvStyles.size.SMALL}
+                    {/fbvFormSection}
+                    
+                    {fbvFormSection}
+                         {fbvElement type="text" label="author.munipress.druhePrijmeni" name="druhePrijmeni" id="druhePrijmeni" value=$druhePrijmeni inline=true size=$fbvStyles.size.SMALL}
+                         {fbvElement type="text" label="author.munipress.obcanskeJmeno" name="obcanskeJmeno" id="obcanskeJmeno" value=$obcanskeJmeno inline=true size=$fbvStyles.size.SMALL}
+			{fbvElement type="text" label="author.munipress.obcanskePrijmeni" name="obcanskePrijmeni" id="obcanskePrijmeni" value=$obcanskePrijmeni maxlength="24" inline=true size=$fbvStyles.size.SMALL}
                     {/fbvFormSection}	
+                    
+                    {fbvFormSection list="true" label="author.munipress.stylZobrazeni"}
+                        {fbvElement type="checkbox" label="author.munipress.zobrazeni.zobrazitVHlavicce" id="zobrazHlavicka" checked=$zobrazHlavicka}
+                        {fbvElement type="checkbox" label="author.munipress.zobrazeni.zobrazitMeziAutory" id="zobrazAutori" checked=$zobrazAutori}
+                        {fbvElement type="checkbox" label="author.munipress.zobrazeni.zobrazitVOstatních" id="zobrazOstatni" checked=$zobrazOstatni}
+                    {/fbvFormSection}
                     
                     {fbvFormSection for="poznamka"}
                             {fbvElement type="textarea" label="author.munipress.poznamka" name="poznamka" id="poznamka" rich=true value=$poznamka inline=true size=$fbvStyles.size.LARGE}

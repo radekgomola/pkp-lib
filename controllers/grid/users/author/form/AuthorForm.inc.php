@@ -122,6 +122,12 @@ class AuthorForm extends Form {
                                 'tituly_za' => $author->getTitulyZa(), /*MUNIPRESS*/ 
                                 'rodne_cislo' => $author->getRodneCislo(), /*MUNIPRESS*/
                                 'poznamka' => $author->getPoznamka(), /*MUNIPRESS*/
+                                'druhePrijmeni'=> $author->getDruhePrijmeni(), /*MUNIPRESS*/
+                                'obcanskeJmeno'=> $author->getObcanskeJmeno(), /*MUNIPRESS*/
+                                'obcanskePrijmeni'=> $author->getObcanskePrijmeni(), /*MUNIPRESS*/
+                                'zobrazHlavicka'=> $author->getZobrazHlavicka(), /*MUNIPRESS*/
+                                'zobrazAutori'=> $author->getZobrazAutori(), /*MUNIPRESS*/
+                                'zobrazOstatni'=> $author->getZobrazOstatni(),/*MUNIPRESS*/
 				'userGroupId' => $author->getUserGroupId(),			
 				'primaryContact' => $author->getPrimaryContact()
                                 
@@ -177,6 +183,12 @@ class AuthorForm extends Form {
                         'tituly_za', /*MUNIPRESS*/ 
                         'rodne_cislo', /*MUNIPRESS*/
                         'poznamka', /*MUNIPRESS*/
+                        'druhePrijmeni', /*MUNIPRESS*/
+                        'obcanskeJmeno', /*MUNIPRESS*/
+                        'obcanskePrijmeni', /*MUNIPRESS*/
+                        'zobrazHlavicka', /*MUNIPRESS*/
+                        'zobrazAutori', /*MUNIPRESS*/
+                        'zobrazOstatni',/*MUNIPRESS*/
 			'userGroupId',			
 			'primaryContact',
                         
@@ -223,6 +235,12 @@ class AuthorForm extends Form {
                 $author->setTitulyZa($this->getData('tituly_za'));
                 $author->setRodneCislo($this->getData('rodne_cislo'));
                 $author->setPoznamka($this->getData('poznamka'));
+                $author->setDruhePrijmeni($this->getData('druhePrijmeni'));
+                $author->setObcanskeJmeno($this->getData('obcanskeJmeno'));
+                $author->setObcanskePrijmeni($this->getData('obcanskePrijmeni'));
+                $author->setZobrazHlavicka($this->getData('zobrazHlavicka'));
+                $author->setZobrazAutori($this->getData('zobrazAutori'));
+                $author->setZobrazOstatni($this->getData('zobrazOstatni'));
                 
 		$author->setUserGroupId($this->getData('userGroupId'));                
 		$author->setPrimaryContact(($this->getData('primaryContact') ? true : false));

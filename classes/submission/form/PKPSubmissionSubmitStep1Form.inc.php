@@ -221,7 +221,13 @@ class PKPSubmissionSubmitStep1Form extends SubmissionSubmitForm {
                         $author->setTitulyPred($this->getData('tituly_pred'));
                         $author->setTitulyZa($this->getData('tituly_za'));
                         $author->setRodneCislo($this->getData('rodne_cislo'));
-                        $author->setPoznamka($this->getData('poznamka'));            
+                        $author->setPoznamka($this->getData('poznamka'));  
+                        $author->setDruhePrijmeni($row['druhePrijmeni']);
+                        $author->setObcanskeJmeno($row['obcanskeJmeno']);
+                        $author->setObcanskePrijmeni($row['obcanskePrijmeni']);
+                        $author->setZobrazHlavicka($row['zobrazHlavicka']);
+                        $author->setZobrazAutori($row['zobrazAutori']);
+                        $author->setZobrazOstatni($row['zobrazOstatni']);
 
                         
                         

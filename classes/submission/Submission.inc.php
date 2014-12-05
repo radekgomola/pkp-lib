@@ -230,6 +230,7 @@ abstract class Submission extends DataObject {
 		$author = null;
 		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
 		foreach($authors as $author) {
+                    if($author->getZobrazHlavicka() == 1){
 			if (!empty($str)) {
 				if ($lastUserGroupId != $author->getUserGroupId()) {
 					$userGroup = $userGroupDao->getById($lastUserGroupId);
@@ -241,6 +242,7 @@ abstract class Submission extends DataObject {
 			}
 			$str .= $lastOnly ? $author->getLastName() : $author->getFullName();
 			$lastUserGroupId = $author->getUserGroupId();
+                    }
 		}
 
 		// If there needs to be a trailing user group title, add it
