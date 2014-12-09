@@ -533,16 +533,16 @@ class SubmissionDAO extends DAO {
 	 */
 	function getFaculties() {
 		return array(
-			'ESF' => 'munipress.fakulty.esf',
-			'FI' => 'munipress.fakulty.fi',
-			'FSS' => 'munipress.fakulty.fss',
-                        'FSpS' => 'munipress.fakulty.fsps',
-                        'FF' => 'munipress.fakulty.ff',
-                        'LF' => 'munipress.fakulty.lf',
-                        'PdF' => 'munipress.fakulty.pdf',
-                        'PF' => 'munipress.fakulty.pf',
-                        'PrF' => 'munipress.fakulty.prf',
-                        'REKT' => 'munipress.fakulty.rekt'
+			'esf' => 'munipress.fakulty.esf',
+			'fi' => 'munipress.fakulty.fi',
+			'fss' => 'munipress.fakulty.fss',
+                        'fsps' => 'munipress.fakulty.fsps',
+                        'ff' => 'munipress.fakulty.ff',
+                        'lf' => 'munipress.fakulty.lf',
+                        'pdf' => 'munipress.fakulty.pdf',
+                        'pf' => 'munipress.fakulty.pf',
+                        'prf' => 'munipress.fakulty.prf',
+                        'rekt' => 'munipress.fakulty.rekt'
                 );
 	}
 }
