@@ -1133,30 +1133,23 @@ abstract class Submission extends DataObject {
         /***********
          * MUNIPRESS
          *************/
-         /**
-	 * Vraci lokalizovanou fakultu
-	 * @return string
-	 */
-	function getLocalizedFakulta() {
-		return $this->getLocalizedData('muPracoviste');
-	}
 
 	/**
-	 * Vrací fakultu
+	 * Vrací zkratku fakulty
 	 * @param $locale
 	 * @return string
 	 */
-	function getFakulta($locale) {
-		return $this->getData('muPracoviste', $locale);
+	function getFakulta() {
+		return $this->getData('muPracoviste');
 	}
 
 	/**
-	 * Nastavuje fakultu
+	 * Nastavuje zkratku fakulty
 	 * @param $muPracoviste string
 	 * @param $locale
 	 */
-	function setFakulta($muPracoviste, $locale) {
-		return $this->setData('muPracoviste', $muPracoviste, $locale);
+	function setFakulta($muPracoviste) {
+		return $this->setData('muPracoviste', $muPracoviste);
 	}
         
         
@@ -1288,29 +1281,6 @@ abstract class Submission extends DataObject {
 		return $this->setData('cisloVydani', $cisloVydani);
 	}
         
-         /**
-	 * Vraci lokalizovaný typ 02/58
-	 * @return string
-	 */
-	function getLocalizedTypPublikace() {
-		return $this->getLocalizedData('typ_02_58');
-	}
-        /**
-	 * Vrací typ 02/58
-	 * @return string
-	 */
-	function getTypPublikace($locale) {
-		return $this->getData('typ_02_58', $locale);
-        }
-
-	/**
-	 * Nastavuje typ 02/58
-	 * @param $typ_02_58 string
-	 */
-	function setTypPublikace($typ_02_58, $locale) {
-		return $this->setData('typ_02_58', $typ_02_58, $locale);
-	}
-        
         /**
 	 * Vraci lokalizovanou adresu webu
 	 * @return string
@@ -1333,33 +1303,7 @@ abstract class Submission extends DataObject {
 	function setUrlWeb($urlWeb) {
 		return $this->setData('urlWeb', $urlWeb, $locale);
 	}      
-        
-        /**
-	 * Vraci lokalizovanou bibliografickou citaci
-	 * @return string
-	 */
-	function getLocalizedBibliografickaCitace() {
-		return $this->getLocalizedData('bibliografickaCitace');
-	}
-
-	/**
-	 * Vrací bibliografickou citaci
-	 * @param $locale
-	 * @return string
-	 */
-	function getBibliografickaCitace($locale) {
-		return $this->getData('bibliografickaCitace', $locale);
-	}
-
-	/**
-	 * Nastavuje bibliografickou citaci
-	 * @param $bibliografickaCitace string
-	 * @param $locale
-	 */
-	function setBibliografickaCitace($bibliografickaCitace, $locale) {
-		return $this->setData('bibliografickaCitace', $bibliografickaCitace, $locale);
-	}
-        
+              
         /**
 	 * Vraci lokalizovanou poznámku
 	 * @return string
@@ -1413,147 +1357,19 @@ abstract class Submission extends DataObject {
 	}
         
         /**
-	 * Vrací číslo přepínače typu licence (0-Open acces, 1-Munipress, 2-jiné)
-	 * @return int
-	 */
-	function getTypLicencePrepinac() {
-		return $this->getData('licenceTypPrepinac');
-        }
-
-	/**
-	 * Nastavuje číslo přepínače typu licence
-	 * @param $licenceTypPrepinac int
-	 */
-	function setTypLicencePrepinac($licenceTypPrepinac) {
-		return $this->setData('licenceTypPrepinac', $licenceTypPrepinac);
-	}
-        
-	/**
-	 * Get typ licence.
-	 * @return string
-	 */
-	function getLicenceTyp() {
-		return $this->getData('licenceTyp');
-	}
-
-	/**
-	 * Set typ licence.
-	 * @param $licenceTyp string
-	 */
-	function setLicenceTyp($licenceTyp) {
-		return $this->setData('licenceTyp', $licenceTyp);
-	}
-
-	/**
-	 * Get držitele licence.
-	 * @return string
-	 */
-	function getLicenceDrzitel() {
-		return $this->getData('licenceDrzitel');
-	}
-
-	/**
-	 * Set držitele licence.
-	 * @param $licenceDrzitel string
-	 */
-	function setLicenceDrzitel($licenceDrzitel) {
-		return $this->setData('licenceDrzitel', $licenceDrzitel);
-	}
-
-	/**
-	 * Get datum expirace.
+	 * Get datum vydani - obecny.
 	 * @return date
 	 */
-	function getLicenceExpirace() {
-            return $this->getData('licenceExpirace');
+	function getDatumVydani() {
+		return $this->getData('datumVydani');
 	}
 
 	/**
-	 * Set datum expirace.
-	 * @param $licenceExpirace date
+	 * Set datum vydani - obecny.
+	 * @param $datumVydani date
 	 */
-	function setLicenceExpirace($licenceExpirace) {
-		return $this->setData('licenceExpirace', $licenceExpirace);
-	}
-        
-        /**
-	 * Get datum vzniku licence.
-	 * @return date
-	 */
-	function getLicenceVznik() {
-		return $this->getData('licenceVznik');
-	}
-
-	/**
-	 * Set datum vzniku licence.
-	 * @param $licenceVznik date
-	 */
-	function setLicenceVznik($licenceVznik) {
-		return $this->setData('licenceVznik', $licenceVznik);
-	}
-        
-         /**
-	 * Vrací hodnotu moznosti pro zverejneni licence
-	 * @return boolean
-	 */
-	function getLicenceZverejnit() {
-		return $this->getData('licenceZverejnit');
-        }
-
-	/**
-	 * Nastavuje hodnotu moznosti pro zverejneni licence
-	 * @param $licenceZverejnit boolean
-	 */
-	function setLicenceZverejnit($licenceZverejnit) {
-		return $this->setData('licenceZverejnit', $licenceZverejnit);
-	}
-        
-        /**
-	 * Vrací naklad
-	 * @return int
-	 */
-	function getNaklad() {
-		return $this->getData('naklad');
-        }
-
-	/**
-	 * Nastavuje naklad
-	 * @param $naklad int
-	 */
-	function setNaklad($naklad) {
-		return $this->setData('naklad', $naklad);
-	}
-        
-        /**
-	 * Vrací celkovy honorar
-	 * @return int
-	 */
-	function getHonorarCelkem() {
-		return $this->getData('honorarCelkem');
-        }
-
-	/**
-	 * Nastavuje celkovy honorar
-	 * @param $honorarCelkem int
-	 */
-	function setHonorarCelkem($honorarCelkem) {
-		return $this->setData('honorarCelkem', $honorarCelkem);
-	}
-        
-        /**
-	 * Vrací vyplatni honorar
-	 * @return int
-	 */
-	function getHonorarVyplata() {
-		return $this->getData('honorarVyplata');
-        }
-
-	/**
-	 * Nastavuje vyplatni honorar
-	 * @param $honorarVyplata int
-	 */
-	function setHonorarVyplata($honorarVyplata) {
-		return $this->setData('honorarVyplata', $honorarVyplata);
+	function setDatumVydani($datumVydani) {
+		return $this->setData('datumVydani', $datumVydani);
 	}
         
         /**
@@ -1619,6 +1435,8 @@ abstract class Submission extends DataObject {
 	function setPoznamkaAdmin($poznamkaAdmin) {
 		return $this->setData('poznamkaAdmin', $poznamkaAdmin);
 	}
+        
+         
         
 	//
 	// Abstract methods.

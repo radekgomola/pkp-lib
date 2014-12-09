@@ -86,12 +86,6 @@
                 {fbvElement type="text" label="submission.metadata.url.oc.ekniha" name="urlOC_ebook" id="urlOC_ebook" value=$urlOC_ebook maxlength="50" inline=true size=$fbvStyles.size.SMALL}
         {/fbvFormSection}
         
-        {fbvFormSection label="submission.ostatni"}
-		{fbvElement type="text" label="submission.pocetStran" name="pocetStran" id="pocetStran" value=$pocetStran maxlength="40" inline=true size=$fbvStyles.size.SMALL}
-                {fbvElement type="text" label="submission.cisloVydani" name="cisloVydani" id="cisloVydani" value=$cisloVydani maxlength="40" inline=true size=$fbvStyles.size.SMALL}
-                {assign var=pokus value=$typ_02_58}
-                {fbvElement type="text" label="submission.typ_02_58" multilingual="true" value=$typ_02_58 name="typ_02_58" id="typ_02_58"  inline=true size=$fbvStyles.size.SMALL readonly=$readOnly}
-        {/fbvFormSection}  
         {fbvFormSection label="submission.url.web" for="urlWeb"}
 		{fbvElement type="text" name="urlWeb" multilingual="true" id="urlWeb" value=$urlWeb maxlength="255" readonly=$readOnly}
 	{/fbvFormSection}
@@ -109,10 +103,7 @@
 		{fbvElement type="keyword" id="languages" subLabelTranslate=true multilingual=true current=$languages source=$languagesSourceUrl}
         {/fbvFormSection}
         {fbvFormSection label="submission.muPracoviste"}
-		{fbvElement type="text" multilingual=true name="muPracoviste" id="muPracoviste" value=$muPracoviste readonly=$readOnly}
-	{/fbvFormSection}
-        {fbvFormSection title="submission.bibliografickaCitace" for="bibliografickaCitace"}
-		{fbvElement type="textarea" multilingual=true name="bibliografickaCitace" id="bibliografickaCitace" value=$bibliografickaCitace rich=true readonly=$readOnly}
+                {fbvElement type="select" name="muPracoviste" id="muPracoviste" defaultLabel="" defaultValue="" from=$faculties translate="true" selected=$muPracoviste inline=true size=$fbvStyles.size.MEDIUM}
 	{/fbvFormSection}
         {fbvFormSection title="submission.poznamka" for="poznamka"}
 		{fbvElement type="textarea" multilingual=true name="poznamka" id="poznamka" value=$poznamka rich=true readonly=$readOnly}
@@ -136,59 +127,13 @@
                 <span class="sub_label">({translate key="submission.archivace.description"})</span>
                 
         {/fbvFormSection} 
-        
-        {fbvFormSection list="true" title="submission.licence"}
-                        {if $licenceTypPrepinac eq "0"}
-				{assign var="checked" value=true}
-			{else}
-				{assign var="checked" value=false}
-			{/if}
-                        
-                        {fbvElement type="radio" id="licenceTypPrepinac" name="licenceTypPrepinac" required="true" value="0" checked=$checked label="submission.licence.openAccess"}<br /><br />
-                        {if $licenceTypPrepinac eq "1"}
-				{assign var="checked" value=true}
-			{else}
-				{assign var="checked" value=false}
-			{/if}
-			{fbvElement type="radio" id="licenceTypPrepinac" name="licenceTypPrepinac" required="true" value="1" checked=$checked label="submission.licence.munipress"}<br /><br />
-			{if !in_array($licenceTypPrepinac, array("0", "1"))}
-				{assign var="checked" value=true}
-			{else}
-				{assign var="checked" value=false}
-			{/if}
-			{fbvElement type="radio" id="licenceTypPrepinac" name="licenceTypPrepinac" required="true" value="2" checked=$checked label="submission.licence.jinyTyp"}
-        {/fbvFormSection}
-        {fbvFormSection}
-		{fbvElement label="submission.licence.typ" type="text" name="licenceTyp" id="licenceTyp" value=$licenceTyp maxlength="255" inline=true  size=$fbvStyles.size.MEDIUM}
-                {fbvElement label="submission.licence.drzitel" type="text" name="licenceDrzitel" id="licenceDrzitel" value=$licenceDrzitel maxlength="255" inline=true  size=$fbvStyles.size.MEDIUM}
-	{/fbvFormSection}
-        {fbvFormSection}
-        <script>
-            $('input[id^="licenceExpirace"]').datepicker({ldelim} dateFormat: 'yy-mm-dd' {rdelim});
-            $('input[id^="licenceVznik"]').datepicker({ldelim} dateFormat: 'yy-mm-dd' {rdelim});
-        </script>
-		{fbvElement type="text" label="submission.licence.trvani" id="licenceExpirace" name="licenceExpirace" value=$licenceExpirace|date_format:"%Y-%m-%d" inline=true size=$fbvStyles.size.MEDIUM}
-                {fbvElement type="text" label="submission.licence.vznik" id="licenceVznik" name="licenceVznik" value=$licenceVznik|date_format:"%Y-%m-%d" inline=true size=$fbvStyles.size.MEDIUM}
+        {fbvFormSection title="submission.datumVydani"}
+                <script>
+                    $('input[id^="datumVydani"]').datepicker({ldelim} dateFormat: 'yy-mm-dd' {rdelim});
+                </script>
+                {fbvElement type="text" label="submission.datumVydani" id="datumVydani" name="datumVydani" value=$datumVydani|date_format:"%Y-%m-%d" inline=true size=$fbvStyles.size.MEDIUM}
+                
 	{/fbvFormSection} 
-        
-        {fbvFormSection for="licenceZverejnit" list=true}
-        {if $licenceZverejnit}
-		{assign var="checked" value=true}
-        {else}
-                {assign var="checked" value=false}
-        {/if}
-        
-		{fbvElement type="checkbox" label="submission.licence.zverejnit" checked=$checked name="licenceZverejnit" id="licenceZverejnit" translate="true"}
-        {/fbvFormSection} 
-        
-        {fbvFormSection label="submission.naklad"}
-		{fbvElement type="text" name="naklad" id="naklad" value=$naklad maxlength="40" inline=true size=$fbvStyles.size.SMALL}
-        {/fbvFormSection} 
-        
-        {fbvFormSection title="submission.honorar"}
-		{fbvElement type="text" label="submission.honorar.celkem" name="honorarCelkem" id="honorarCelkem" value=$honorarCelkem maxlength="40" inline=true size=$fbvStyles.size.MEDIUM}
-                {fbvElement type="text" label="submission.honorar.vyplata" name="honorarVyplata" id="honorarVyplata" value=$honorarVyplata inline=true maxlength="40" size=$fbvStyles.size.MEDIUM}
-        {/fbvFormSection}         
         
         {fbvFormSection title="submission.povinneVytisky"}
         <script>

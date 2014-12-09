@@ -62,8 +62,7 @@ class SubmissionDAO extends DAO {
 			'discipline', 'subjectClass', 'subject',
 			'coverageGeo', 'coverageChron', 'coverageSample',
 			'type', 'sponsor', 'source', 'rights', 
-                        'dedikace','urlWeb', 'bibliografickaCitace', 'poznamka', 
-                        'typ_02_58', 'muPracoviste', 
+                        'dedikace','urlWeb', 'poznamka',  
 		);
 	}
 
@@ -118,22 +117,13 @@ class SubmissionDAO extends DAO {
                 $submission->setCenaEbook($row['cena_ebook']);
                 $submission->setUrlOC($row['url_oc']);
                 $submission->setUrlOCEbook($row['url_oc_ebook']);
-                $submission->setPocetStran($row['pocet_stran']);
-                $submission->setCisloVydani($row['cislo_vydani']);
                 $submission->setArchivace($row['archiv']);
-                $submission->setTypLicencePrepinac($row['licence_typ_prepinac']);
-                $submission->setLicenceTyp($row['licence_typ']);
-                $submission->setLicenceDrzitel($row['licence_drzitel']);
-                $submission->setLicenceExpirace($this->dateFromDB($row['licence_expirace']));
-                $submission->setLicenceVznik($this->dateFromDB($row['licence_vznik']));
-                $submission->setLicenceZverejnit($row['licence_zverejnit']);
-                $submission->setNaklad($row['naklad_db']);
                 $submission->setTiskarna($row['tiskarna_db']);
                 $submission->setPoznamkaAdmin($row['poznamka_admin']);
-                $submission->setHonorarCelkem($row['honorar_celkem']);
-                $submission->setHonorarVyplata($row['honorar_vyplata']);
                 $submission->setPovVytiskyDosly($this->dateFromDB($row['pov_vytisky_dosly']));
                 $submission->setPovVytiskyOdesly($this->dateFromDB($row['pov_vytisky_odesly']));
+                $submission->setDatumVydani($this->dateFromDB($row['datum_vydani']));
+                $submission->setFakulta($row['mu_pracoviste']);
                                 
                 
                 
@@ -535,6 +525,25 @@ class SubmissionDAO extends DAO {
 	 */
 	protected function _arrayWalkIntCast($value) {
 		return (int) $value;
+	}
+        
+        /**
+	 * Return a list of MU faculties.
+	 * @return array
+	 */
+	function getFaculties() {
+		return array(
+			'ESF' => 'munipress.fakulty.esf',
+			'FI' => 'munipress.fakulty.fi',
+			'FSS' => 'munipress.fakulty.fss',
+                        'FSpS' => 'munipress.fakulty.fsps',
+                        'FF' => 'munipress.fakulty.ff',
+                        'LF' => 'munipress.fakulty.lf',
+                        'PdF' => 'munipress.fakulty.pdf',
+                        'PF' => 'munipress.fakulty.pf',
+                        'PrF' => 'munipress.fakulty.prf',
+                        'REKT' => 'munipress.fakulty.rekt'
+                );
 	}
 }
 

@@ -226,6 +226,38 @@ class PKPAuthor extends Identity {
 	function setZobrazOstatni($zobrazOstatni) {
 		return $this->setData('zobrazOstatni', $zobrazOstatni);
 	}
+        
+        /**
+	 * Get honorar - celkem.
+	 * @return string
+	 */
+	function getHonorarCelkem() {
+		return $this->getData('honorarCelkem');
+	}
+
+	/**
+	 * Set honorar - celkem.
+	 * @param $honorarCelkem string
+	 */
+	function setHonorarCelkem($honorarCelkem) {
+		return $this->setData('honorarCelkem', $honorarCelkem);
+	}
+        
+        /**
+	 * Get honorar - vyplaceno.
+	 * @return date
+	 */
+	function getHonorarVyplaceno() {
+		return $this->getData('honorarVyplaceno');
+	}
+
+	/**
+	 * Set honorar - vyplaceno.
+	 * @param $honorarVyplaceno date
+	 */
+	function setHonorarVyplaceno($honorarVyplaceno) {
+		return $this->setData('honorarVyplaceno', $honorarVyplaceno);
+	}
 }
 
 ?>

@@ -64,18 +64,28 @@
                     
                     {fbvFormSection}
                          {fbvElement type="text" label="author.munipress.druhePrijmeni" name="druhePrijmeni" id="druhePrijmeni" value=$druhePrijmeni inline=true size=$fbvStyles.size.SMALL}
+                    {/fbvFormSection}	
+                    {fbvFormSection}
                          {fbvElement type="text" label="author.munipress.obcanskeJmeno" name="obcanskeJmeno" id="obcanskeJmeno" value=$obcanskeJmeno inline=true size=$fbvStyles.size.SMALL}
 			{fbvElement type="text" label="author.munipress.obcanskePrijmeni" name="obcanskePrijmeni" id="obcanskePrijmeni" value=$obcanskePrijmeni maxlength="24" inline=true size=$fbvStyles.size.SMALL}
                     {/fbvFormSection}	
                     
-                    {fbvFormSection list="true" label="author.munipress.stylZobrazeni"}
-                        {fbvElement type="checkbox" label="author.munipress.zobrazeni.zobrazitVHlavicce" id="zobrazHlavicka" checked=$zobrazHlavicka}
-                        {fbvElement type="checkbox" label="author.munipress.zobrazeni.zobrazitMeziAutory" id="zobrazAutori" checked=$zobrazAutori}
-                        {fbvElement type="checkbox" label="author.munipress.zobrazeni.zobrazitVOstatních" id="zobrazOstatni" checked=$zobrazOstatni}
+                    {fbvFormSection label="author.munipress.honorar"}
+                    <script>
+                        $('input[id^="honorarVyplaceno"]').datepicker({ldelim} dateFormat: 'yy-mm-dd' {rdelim});
+                    </script>
+                         {fbvElement type="text" label="author.munipress.honorar" name="honorarCelkem" id="honorarCelkem" value=$honorarCelkem inline=true size=$fbvStyles.size.SMALL}
+                         {fbvElement type="text" label="author.munipress.honorarVyplaceno" name="honorarVyplaceno" id="honorarVyplaceno" value=$honorarVyplaceno|date_format:"%Y-%m-%d" inline=true size=$fbvStyles.size.SMALL}
                     {/fbvFormSection}
                     
                     {fbvFormSection for="poznamka"}
                             {fbvElement type="textarea" label="author.munipress.poznamka" name="poznamka" id="poznamka" rich=true value=$poznamka inline=true size=$fbvStyles.size.LARGE}
+                    {/fbvFormSection}
+                    
+                    {fbvFormSection list="true" label="author.munipress.stylZobrazeni"}
+                        {fbvElement type="checkbox" label="author.munipress.zobrazeni.zobrazitVHlavicce" id="zobrazHlavicka" checked=$zobrazHlavicka}
+                        {fbvElement type="checkbox" label="author.munipress.zobrazeni.zobrazitMeziAutory" id="zobrazAutori" checked=$zobrazAutori}
+                        {fbvElement type="checkbox" label="author.munipress.zobrazeni.zobrazitVOstatnich" id="zobrazOstatni" checked=$zobrazOstatni}
                     {/fbvFormSection}
             {/fbvFormArea}
         {/if}

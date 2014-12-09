@@ -77,7 +77,9 @@
                 <field name="obcanske_prijmeni" type="C2" size="120" />
                 <field name="zobraz_hlavicka" type="I1" />
                 <field name="zobraz_autori" type="I1" />
-                <field name="zobraz_ostatni" type="I1" />   
+                <field name="zobraz_ostatni" type="I1" /> 
+                <field name="honorar_celkem" type="C2" size="120" />
+                <field name="honorar_vyplaceno" type="D" />  
                 <descr>Munipress metadata for authors.</descr>
 		<index name="munipress_authors_id">
 			<col>author_id</col>
@@ -208,22 +210,14 @@
                 <field name="cena" type="I4" />
                 <field name="cena_ebook" type="I4" />
                 <field name="url_oc" type="I8" />
-                <field name="url_oc_ebook" type="I8" />
-                
+                <field name="url_oc_ebook" type="I8" />                
                 <field name="archiv" type="I1" />
-                <field name="licence_typ_prepinac" type="I1" />
-                <field name="licence_typ" type="C2" size="100" />
-                <field name="licence_drzitel" type="C2" size="100" />
-                <field name="licence_expirace" type="D" />
-                <field name="licence_vznik" type="D" />
-                <field name="licence_zverejnit" type="I1" />
-                <field name="naklad_db" type="I4" />
-                <field name="tiskarna_db" type="C2" size="120"/>
+                <field name="tiskarna_db" type="X"/>
                 <field name="poznamka_admin" type="X" />  
-                <field name="honorar_celkem" type="C2" size="40"/>
-                <field name="honorar_vyplata" type="C2" size="40"/>
                 <field name="pov_vytisky_dosly" type="D"/>
-                <field name="pov_vytisky_odesly" type="D"/>              
+                <field name="pov_vytisky_odesly" type="D"/>    
+                <field name="datum_vydani" type="D" />               
+                <field name="mu_pracoviste" type="C2" size="5" />   
                 
                 <descr>Munipress metadata for submissions.</descr>
 		<index name="munipress_submission_id">
@@ -239,19 +233,15 @@
 		<field name="publication_format_id" type="I8">
 			<NOTNULL/>
 		</field>
-                <field name="pocet_stran" type="I4" />
-                <field name="cislo_vydani" type="I4" />
+                <field name="pocet_stran" type="I4" />                
                 <field name="licence_typ_prepinac" type="I1" />
                 <field name="licence_typ" type="C2" size="100" />
                 <field name="licence_drzitel" type="C2" size="100" />
                 <field name="licence_expirace" type="D" />
                 <field name="licence_vznik" type="D" />
-                <field name="licence_zverejnit" type="I1" />
-                <field name="naklad_db" type="I4" />
-                <field name="poznamka_admin" type="X" />  
-                <field name="honorar_celkem" type="C2" size="40"/>
-                <field name="honorar_vyplata" type="C2" size="40"/>
+                <field name="naklad_db" type="I4" /> 
                 <field name="datum_vydani" type="D" />
+                <field name="poradi_vydani" type="C2" size="120" />
                 <descr>Munipress metadata for publication formats</descr>
 		<index name="munipress_submission_id">
 			<col>publication_format_id</col>

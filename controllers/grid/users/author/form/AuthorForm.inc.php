@@ -128,6 +128,8 @@ class AuthorForm extends Form {
                                 'zobrazHlavicka'=> $author->getZobrazHlavicka(), /*MUNIPRESS*/
                                 'zobrazAutori'=> $author->getZobrazAutori(), /*MUNIPRESS*/
                                 'zobrazOstatni'=> $author->getZobrazOstatni(),/*MUNIPRESS*/
+                                'honorarCelkem'=> $author->getHonorarCelkem(),/*MUNIPRESS*/
+                                'honorarVyplaceno'=> $author->getHonorarVyplaceno(),/*MUNIPRESS*/                                
 				'userGroupId' => $author->getUserGroupId(),			
 				'primaryContact' => $author->getPrimaryContact()
                                 
@@ -189,6 +191,8 @@ class AuthorForm extends Form {
                         'zobrazHlavicka', /*MUNIPRESS*/
                         'zobrazAutori', /*MUNIPRESS*/
                         'zobrazOstatni',/*MUNIPRESS*/
+                        'honorarCelkem',/*MUNIPRESS*/
+                        'honorarVyplaceno',/*MUNIPRESS*/
 			'userGroupId',			
 			'primaryContact',
                         
@@ -241,6 +245,8 @@ class AuthorForm extends Form {
                 $author->setZobrazHlavicka($this->getData('zobrazHlavicka'));
                 $author->setZobrazAutori($this->getData('zobrazAutori'));
                 $author->setZobrazOstatni($this->getData('zobrazOstatni'));
+                $author->setHonorarCelkem($this->getData('honorarCelkem'));
+                $author->setHonorarVyplaceno($this->getData('honorarVyplaceno'));
                 
 		$author->setUserGroupId($this->getData('userGroupId'));                
 		$author->setPrimaryContact(($this->getData('primaryContact') ? true : false));

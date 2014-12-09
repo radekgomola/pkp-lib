@@ -151,6 +151,8 @@ class PKPAuthorDAO extends DAO {
                 $author->setZobrazHlavicka($row['zobraz_hlavicka']);
                 $author->setZobrazAutori($row['zobraz_autori']);
                 $author->setZobrazOstatni($row['zobraz_ostatni']);
+                $author->setHonorarCelkem($row['honorar_celkem']);
+                $author->setHonorarVyplaceno($this->dateFromDB($row['honorar_vyplaceno']));
 
 		$this->getDataObjectSettings('author_settings', 'author_id', $row['author_id'], $author);
 
@@ -190,6 +192,8 @@ class PKPAuthorDAO extends DAO {
                 $author->setZobrazHlavicka($row['zobraz_hlavicka']);
                 $author->setZobrazAutori($row['zobraz_autori']);
                 $author->setZobrazOstatni($row['zobraz_ostatni']);
+                $author->setHonorarCelkem($row['honorar_celkem']);
+                $author->setHonorarVyplaceno($this->dateFromDB($row['honorar_vyplaceno']));
 
 		$author->setAffiliation($row['affiliation_l'], $row['locale']);
 		$author->setAffiliation($row['affiliation_pl'], $row['primary_locale']);
@@ -252,10 +256,11 @@ class PKPAuthorDAO extends DAO {
 		$author->setId($this->getInsertId());
                 
                 $this->update(
-				'INSERT INTO munipress_author_metadata
-				(author_id, uco, mu, tituly_pred, tituly_za, rodne_cislo, poznamka, druhe_prijmeni, obcanske_jmeno, obcanske_prijmeni, zobraz_hlavicka, zobraz_autori, zobraz_ostatni)
+                        sprintf('INSERT INTO munipress_author_metadata
+				(author_id, uco, mu, tituly_pred, tituly_za, rodne_cislo, poznamka, druhe_prijmeni, obcanske_jmeno, obcanske_prijmeni, zobraz_hlavicka, zobraz_autori, zobraz_ostatni, honorar_celkem, honorar_vyplaceno)
 				VALUES
-				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, %s)',
+                                $this->datetimeToDB($author->getHonorarVyplaceno())),
 				array(
 						(int) $author->getId(),
 						(int) $author->getUCO(),
@@ -269,7 +274,8 @@ class PKPAuthorDAO extends DAO {
                                                 $author->getObcanskePrijmeni(), 
                                                 $author->getZobrazHlavicka()? 1:0, 
                                                 $author->getZobrazAutori()? 1:0, 
-                                                $author->getZobrazOstatni()? 1:0
+                                                $author->getZobrazOstatni()? 1:0,
+                                                $author->getHonorarCelkem()
 				)
 		);
                 
@@ -287,7 +293,7 @@ class PKPAuthorDAO extends DAO {
 			$this->resetPrimaryContact($author->getId(), $author->getSubmissionId());
 		}                
 		$returner = $this->update(
-				'UPDATE	authors
+                                'UPDATE	authors
 				SET	first_name = ?,
 					middle_name = ?,
 					last_name = ?,
@@ -315,7 +321,7 @@ class PKPAuthorDAO extends DAO {
 		);
                 
                 $this->update(
-				'UPDATE	munipress_author_metadata
+                        sprintf('UPDATE	munipress_author_metadata
 				SET	uco = ?,
 					mu = ?,
 					tituly_pred = ?,
@@ -327,8 +333,11 @@ class PKPAuthorDAO extends DAO {
                                         obcanske_prijmeni = ?, 
                                         zobraz_hlavicka = ?, 
                                         zobraz_autori = ?, 
-                                        zobraz_ostatni= ?
+                                        zobraz_ostatni= ?,
+                                        honorar_celkem = ?,
+                                        honorar_vyplaceno = %s
 				WHERE	author_id = ?',
+                                $this->datetimeToDB($author->getHonorarVyplaceno())),
 				array(
 						(int) $author->getUCO(),
 						(int) $author->getMU(), 
@@ -342,6 +351,7 @@ class PKPAuthorDAO extends DAO {
                                                 $author->getZobrazHlavicka() ? 1:0, 
                                                 $author->getZobrazAutori() ? 1:0, 
                                                 $author->getZobrazOstatni() ? 1:0,
+                                                $author->getHonorarCelkem(),
 						(int) $author->getId()
 				)
 		);

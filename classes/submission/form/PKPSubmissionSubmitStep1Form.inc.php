@@ -222,14 +222,16 @@ class PKPSubmissionSubmitStep1Form extends SubmissionSubmitForm {
                         $author->setTitulyZa($this->getData('tituly_za'));
                         $author->setRodneCislo($this->getData('rodne_cislo'));
                         $author->setPoznamka($this->getData('poznamka'));  
-                        $author->setDruhePrijmeni($row['druhePrijmeni']);
-                        $author->setObcanskeJmeno($row['obcanskeJmeno']);
-                        $author->setObcanskePrijmeni($row['obcanskePrijmeni']);
-                        $author->setZobrazHlavicka($row['zobrazHlavicka']);
-                        $author->setZobrazAutori($row['zobrazAutori']);
-                        $author->setZobrazOstatni($row['zobrazOstatni']);
+                        $author->setDruhePrijmeni($this->getData('druhePrijmeni'));
+                        $author->setObcanskeJmeno($this->getData('obcanskeJmeno'));
+                        $author->setObcanskePrijmeni($this->getData('obcanskePrijmeni'));
+                        $author->setZobrazHlavicka($this->getData('zobrazHlavicka'));
+                        $author->setZobrazAutori($this->getData('zobrazAutori'));
+                        $author->setZobrazOstatni($this->getData('zobrazOstatni'));
+                        $author->setHonorarCelkem($this->getData('honorarCelkem'));
+                        $author->setHonorarVyplaceno($this->getData('honorarVyplaceno'));
 
-                        
+
                         
 			$author->setSubmissionId($this->submissionId);
 			$authorDao->insertObject($author);
