@@ -229,6 +229,7 @@ abstract class Submission extends DataObject {
 		$lastUserGroupId = null;
 		$author = null;
 		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
+                
 		foreach($authors as $author) {
                     if($author->getZobrazHlavicka() == 1){
 			if (!empty($str)) {
@@ -242,6 +243,9 @@ abstract class Submission extends DataObject {
 			}
 			$str .= $lastOnly ? $author->getLastName() : $author->getFullName();
 			$lastUserGroupId = $author->getUserGroupId();
+                        if ($lastUserGroupId == 14){
+                            $str .= " (ed.)";
+                        }
                     }
 		}
 

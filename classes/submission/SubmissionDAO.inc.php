@@ -542,7 +542,7 @@ class SubmissionDAO extends DAO {
                         'pdf' => 'munipress.fakulty.pdf',
                         'pf' => 'munipress.fakulty.pf',
                         'prf' => 'munipress.fakulty.prf',
-                        'rekt' => 'munipress.fakulty.rekt'
+                        'Rmu' => 'munipress.fakulty.Rmu'
                 );
 	}
 }
