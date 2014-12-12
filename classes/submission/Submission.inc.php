@@ -1377,54 +1377,6 @@ abstract class Submission extends DataObject {
 	}
         
         /**
-	 * Get datum kdy dosly povinne vytisky.
-	 * @return date
-	 */
-	function getPovVytiskyDosly() {
-		return $this->getData('povVytiskyDosly');
-	}
-
-	/**
-	 * Set datum kdy dosly povinne vytisky.
-	 * @param $povVytiskyDosly date
-	 */
-	function setPovVytiskyDosly($povVytiskyDosly) {
-		return $this->setData('povVytiskyDosly', $povVytiskyDosly);
-	}
-        
-        /**
-	 * Get datum kdy odesly povinne vytisky..
-	 * @return date
-	 */
-	function getPovVytiskyOdesly() {
-		return $this->getData('povVytiskyOdesly');
-	}
-
-	/**
-	 * Set datum kdy odesly povinne vytisky.
-	 * @param $povVytiskyOdesly date
-	 */
-	function setPovVytiskyOdesly($povVytiskyOdesly) {
-		return $this->setData('povVytiskyOdesly', $povVytiskyOdesly);
-	}
-        
-        /**
-	 * Get tiskarnu
-	 * @return text
-	 */
-	function getTiskarna() {
-		return $this->getData('tiskarna');
-	}
-
-	/**
-	 * Set tiskarnu.
-	 * @param $tiskarna text
-	 */
-	function setTiskarna($tiskarna) {
-		return $this->setData('tiskarna', $tiskarna);
-	}
-        
-        /**
 	 * Get poznamka neverejna
 	 * @return text
 	 */

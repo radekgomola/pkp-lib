@@ -80,11 +80,8 @@ class PKPSubmissionMetadataFormImplementation {
                                 'cena' => $submission->getCena(), 
                                 'cena_ebook' => $submission->getCenaEbook(), 		
                                 'urlOC' => $submission->getUrlOC(),
-                                'urlOC_ebook' => $submission->getUrlOCEbook(),                                
-                                'tiskarna' => $submission->getTiskarna(),
-                                'poznamkaAdmin' => $submission->getPoznamkaAdmin(),   
-                                'povVytiskyDosly' => $submission->getPovVytiskyDosly(),
-                                'povVytiskyOdesly' => $submission->getPovVytiskyOdesly(),                                                             
+                                'urlOC_ebook' => $submission->getUrlOCEbook(),
+                                'poznamkaAdmin' => $submission->getPoznamkaAdmin(),                             
                                 'datumVydani' => $submission->getDatumVydani(),
                                 'muPracoviste' => $submission->getFakulta(),
                                 
@@ -141,8 +138,8 @@ class PKPSubmissionMetadataFormImplementation {
                                 'coverageChron', 'coverageSample', 'type', 'subjectClass', 
                                 'source', 'rights', 'keywords', 
                                 'archivace', 'a_kol', 'cena', 'cena_ebook', 'urlOC', 'urlOC_ebook', 
-                                'povVytiskyDosly', 'povVytiskyOdesly', 'datumVydani', 'muPracoviste',
-                                'tiskarna', 'poznamkaAdmin', 'urlWeb',
+                                'datumVydani', 'muPracoviste',
+                                'poznamkaAdmin', 'urlWeb',
                                 'poznamka', 'dedikace',
                                 'languages', 'souvisejiciPublikace');
 		$this->_parentForm->readUserVars($userVars);
@@ -185,10 +182,7 @@ class PKPSubmissionMetadataFormImplementation {
                 $submission->setCenaEbook($this->_parentForm->getData('cena_ebook'));
                 $submission->setUrlOC($this->_parentForm->getData('urlOC'));
                 $submission->setUrlOCEbook($this->_parentForm->getData('urlOC_ebook'));
-                $submission->setTiskarna($this->_parentForm->getData('tiskarna'));
-                $submission->setPoznamkaAdmin($this->_parentForm->getData('poznamkaAdmin'));          
-                $submission->setPovVytiskyDosly($this->_parentForm->getData('povVytiskyDosly'));
-                $submission->setPovVytiskyOdesly($this->_parentForm->getData('povVytiskyOdesly')); 
+                $submission->setPoznamkaAdmin($this->_parentForm->getData('poznamkaAdmin'));
                 $submission->setDatumVydani($this->_parentForm->getData('datumVydani')); 
                 $submission->setFakulta($this->_parentForm->getData('muPracoviste'));
 

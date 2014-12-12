@@ -118,10 +118,7 @@ class SubmissionDAO extends DAO {
                 $submission->setUrlOC($row['url_oc']);
                 $submission->setUrlOCEbook($row['url_oc_ebook']);
                 $submission->setArchivace($row['archiv']);
-                $submission->setTiskarna($row['tiskarna_db']);
                 $submission->setPoznamkaAdmin($row['poznamka_admin']);
-                $submission->setPovVytiskyDosly($this->dateFromDB($row['pov_vytisky_dosly']));
-                $submission->setPovVytiskyOdesly($this->dateFromDB($row['pov_vytisky_odesly']));
                 $submission->setDatumVydani($this->dateFromDB($row['datum_vydani']));
                 $submission->setFakulta($row['mu_pracoviste']);
                                 
