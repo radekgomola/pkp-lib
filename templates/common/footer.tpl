@@ -14,6 +14,7 @@
 
 <div class="pkp_structure_foot">
 
+<<<<<<< HEAD
     {if $footerCategories|@count > 0}{* include a subfoot section if there are footer link categories defined *}
             <div class="pkp_structure_subfoot">
                 <div class="pkp_structure_content horniZapati">

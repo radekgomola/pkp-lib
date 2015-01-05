@@ -12,8 +12,8 @@
  * @see NotificationDAO
  * @see Notification
  * @brief Base class for notification manager that implements
- * basic notification operations. Subclasses must implement the
- * NotificationInfoProvider interface.
+ * basic notification operations and default notifications info. 
+ * Subclasses can implement specific information.
  */
 
 
@@ -27,6 +27,64 @@ abstract class PKPNotificationOperationManager implements INotificationInfoProvi
 	function PKPNotificationOperationManager() {
 	}
 
+
+	//
+	// Implement INotificationInfoProvider with default values.
+	//
+	/**
+	 * @copydoc INotificationInfoProvider::getNotificationUrl()
+	 */
+	function getNotificationUrl($request, $notification) {
+		return null;
+	}
+
+	/**
+	 * @copydoc INotificationInfoProvider::getNotificationMessage()
+	 */
+	function getNotificationMessage($request, $notification) {
+		return null;
+	}
+
+	/**
+	 * Provide the notification message as default content.
+	 * @copydoc INotificationInfoProvider::getNotificationContents()
+	 */
+	function getNotificationContents($request, $notification) {
+		return $this->getNotificationMessage($request, $notification);
+	}
+
+	/**
+	 * @copydoc INotificationInfoProvider::getNotificationTitle()
+	 */
+	function getNotificationTitle($notification) {
+		return __('notification.notification');
+	}
+
+	/**
+	 * @copydoc INotificationInfoProvider::getStyleClass()
+	 */
+	function getStyleClass($notification) {
+		return '';
+	}
+
+	/**
+	 * @copydoc INotificationInfoProvider::getIconClass()
+	 */
+	function getIconClass($notification) {
+		return '';
+	}
+
+	/**
+	 * @copydoc INotificationInfoProvider::isVisibleToAllUsers()
+	 */
+	function isVisibleToAllUsers($notificationType, $assocType, $assocId) {
+		return false;
+	}
+
+
+	//
+	// Notification manager operations.
+	//
 	/**
 	 * Construct a set of notifications and return them as a formatted string
 	 * @param $request PKPRequest
@@ -91,9 +149,10 @@ abstract class PKPNotificationOperationManager implements INotificationInfoProvi
 	 * @param $assocId int
 	 * @param $level int
 	 * @param $params array
+	 * @param $suppressEmail boolean Whether or not to suppress the notification email.
 	 * @return Notification object
 	 */
-	public function createNotification($request, $userId = null, $notificationType, $contextId = null, $assocType = null, $assocId = null, $level = NOTIFICATION_LEVEL_NORMAL, $params = null) {
+	public function createNotification($request, $userId = null, $notificationType, $contextId = null, $assocType = null, $assocId = null, $level = NOTIFICATION_LEVEL_NORMAL, $params = null, $suppressEmail = false) {
 		$blockedNotifications = $this->getUserBlockedNotifications($userId, $contextId);
 
 		if(!in_array($notificationType, $blockedNotifications)) {
@@ -109,10 +168,10 @@ abstract class PKPNotificationOperationManager implements INotificationInfoProvi
 			$notificationId = $notificationDao->insertObject($notification);
 
 			// Send notification emails
-			if ($notification->getLevel() != NOTIFICATION_LEVEL_TRIVIAL) {
-				$notificationEmailSettings = $this->getUserBlockedNotifications($userId, $contextId);
+			if ($notification->getLevel() != NOTIFICATION_LEVEL_TRIVIAL && !$suppressEmail) {
+				$blockedEmailedNotifications = $this->getUserBlockedEmailedNotifications($userId, $contextId);
 
-				if(!in_array($notificationType, $notificationEmailSettings)) {
+				if(!in_array($notificationType, $blockedEmailedNotifications)) {
 					$this->sendNotificationEmail($request, $notification);
 				}
 			}
@@ -282,9 +341,9 @@ abstract class PKPNotificationOperationManager implements INotificationInfoProvi
 	 * Get set of notification types user will also be notified by email.
 	 * @return array
 	 */
-	protected function getEmailedNotifications($userId, $contextId) {
+	protected function getUserBlockedEmailedNotifications($userId, $contextId) {
 		$notificationSubscriptionSettingsDao = DAORegistry::getDAO('NotificationSubscriptionSettingsDAO');
-		return $notificationSubscriptionSettingsDao->getNotificationSubscriptionSettings('emailed_notification', $userId, (int) $contextId);
+		return $notificationSubscriptionSettingsDao->getNotificationSubscriptionSettings('blocked_emailed_notification', $userId, (int) $contextId);
 	}
 
 	/**
@@ -295,7 +354,7 @@ abstract class PKPNotificationOperationManager implements INotificationInfoProvi
 	 */
 	protected function getMailTemplate($emailKey = null) {
 		import('lib.pkp.classes.mail.MailTemplate');
-		return new MailTemplate($emailKey);
+		return new MailTemplate($emailKey, null, null, null, false);
 	}
 
 	/**
@@ -371,6 +430,7 @@ abstract class PKPNotificationOperationManager implements INotificationInfoProvi
 	 * @param $notification object Notification
 	 */
 	private function sendNotificationEmail($request, $notification) {
+		
 		$userId = $notification->getUserId();
 		$userDao = DAORegistry::getDAO('UserDAO');
 		$user = $userDao->getById($userId);
@@ -386,7 +446,9 @@ abstract class PKPNotificationOperationManager implements INotificationInfoProvi
 				'siteTitle' => $site->getLocalizedTitle()
 			));
 			$mail->addRecipient($user->getEmail(), $user->getFullName());
-			$mail->send();
+			if (!HookRegistry::call('PKPNotificationOperationManager::sendNotificationEmail', array($notification))) { 
+				$mail->send();
+			}
 		}
 	}
 }

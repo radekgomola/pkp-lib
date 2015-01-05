@@ -33,6 +33,7 @@ define('CACHEABILITY_PROXY_REVALIDATE',	'proxy-revalidate');
 
 define('STYLE_SEQUENCE_CORE', 0);
 define('STYLE_SEQUENCE_NORMAL', 10);
+define('STYLE_SEQUENCE_LATE', 15);
 define('STYLE_SEQUENCE_LAST', 20);
 
 define('CDN_JQUERY_VERSION', '1.4.4');
@@ -118,7 +119,7 @@ class PKPTemplateManager extends Smarty {
 		$this->assign('currentLocale', $locale);
 
 		$dispatcher = $this->request->getDispatcher();
-		$this->addStyleSheet($dispatcher->url($this->request, ROUTE_COMPONENT, null, 'page.PageHandler', 'css'), STYLE_SEQUENCE_CORE);
+		if ($dispatcher) $this->addStyleSheet($dispatcher->url($this->request, ROUTE_COMPONENT, null, 'page.PageHandler', 'css'), STYLE_SEQUENCE_CORE);
 		// If there's a locale-specific stylesheet, add it.
 		if (($localeStyleSheet = AppLocale::getLocaleStyleSheet($locale)) != null) $this->addStyleSheet($this->request->getBaseUrl() . '/' . $localeStyleSheet);
 
@@ -274,6 +275,8 @@ class PKPTemplateManager extends Smarty {
 		ksort($this->styleSheets);
 		$this->assign('stylesheets', $this->styleSheets);
 
+		$result = null;
+		if ($display == false && HookRegistry::call('TemplateManager::fetch', array($this, $resource_name, $cache_id, $compile_id, &$result))) return $result;
 		return parent::fetch($resource_name, $cache_id, $compile_id, $display);
 	}
 

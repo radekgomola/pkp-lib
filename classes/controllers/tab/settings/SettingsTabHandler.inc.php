@@ -95,6 +95,7 @@ class SettingsTabHandler extends Handler {
 			if ($this->_isTabTemplate()) {
 				$this->setupTemplate($request, true);
 				$templateMgr = TemplateManager::getManager($request);
+				$templateMgr->assign('hideClose', $request->getUserVar('hideClose') ? true : false);
 				if ($this->_isManagementHandler()) {
 					// Pass to template if we are in wizard mode.
 					$templateMgr->assign('wizardMode', $this->getWizardMode());
@@ -122,6 +123,7 @@ class SettingsTabHandler extends Handler {
 
 			// Try to save the form data.
 			$tabForm->readInputData($request);
+			$tabForm->addValidationChecks();
 			if($tabForm->validate()) {
 				$result = $tabForm->execute($request);
 				if ($result !== false) {
@@ -130,7 +132,7 @@ class SettingsTabHandler extends Handler {
 					$notificationManager->createTrivialNotification($user->getId());
 				}
 			} else {
-				$json->setStatus(false);
+				$json = new JSONMessage(true);
 			}
 		}
 

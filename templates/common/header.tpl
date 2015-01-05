@@ -8,12 +8,14 @@
  * Common site header.
  *}
 <!DOCTYPE html>
-<html>
+
+<html lang="{$currentLocale|replace:"_":"-"}" xml:lang="{$currentLocale|replace:"_":"-"}">
     {if $pageTitleName}
         {assign var=pageTitleTranslated value=$pageTitleName}
     {else}
         {if !$pageTitleTranslated}{translate|assign:"pageTitleTranslated" key=$pageTitle}{/if}
     {/if}
+
 {include file="core:common/headerHead.tpl"}
 <body>
 	<script type="text/javascript">

@@ -51,8 +51,8 @@
 			pageAnchor = pageUrl.split('#')[1];
 			tabAnchors = $tabs.find('li a');
 			for (i = 0; i < tabAnchors.length; i++) {
-				pattern = new RegExp('[/=]' + pageAnchor + '([?]|$)');
-				if (tabAnchors[i].getAttribute('href').match(pattern)) {
+				if (pageAnchor == tabAnchors[i].getAttribute('name')) {
+					// Matched on anchor name.
 					options.selected = i;
 				}
 			}
@@ -249,10 +249,65 @@
 	 */
 	$.pkp.controllers.TabHandler.prototype.addTab =
 			function(divElement, event, jsonContent) {
+		var $element = this.getHtmlElement(),
+				numTabs = $element.children('ul').children('li').length + 1,
+				$anchorElement = $('<a/>')
+					.text(jsonContent.title)
+					.attr('href', jsonContent.url),
+				$closeSpanElement = $('<span/>')
+					.addClass('ui-icon')
+					.addClass('ui-icon-close')
+					.text($.pkp.locale.common_close)
+					.attr('role', 'presentation'),
+				$liElement = $('<li/>')
+					.append($anchorElement)
+					.append($closeSpanElement);
 
-		var $element = this.getHtmlElement();
-		$element.tabs('add', jsonContent.url, jsonContent.title)
-				.tabs('select', $element.tabs('length') - 1);
+		// Get the "close" button working
+		$closeSpanElement.click(function() {
+			var $liElement = $(this).closest('li'),
+					$divElement = $('#' + $liElement.attr('aria-controls')),
+					thisTabIndex = $liElement.eq(0).index(),
+					unsavedForm;
+
+			// Check to see if any unsaved changes need to be confirmed
+			unsavedForm = false;
+			$divElement.find('form').each(function() {
+				var handler = $.pkp.classes.Handler.getHandler($(this));
+				if (handler.formChangesTracked) {
+					// Confirm before proceeding
+					if (!confirm($.pkp.locale.form_dataHasChanged)) {
+						unsavedForm = true;
+						return false;
+					}
+				}
+			});
+
+			if (!unsavedForm) {
+				$divElement.find('form').each(function() {
+					var handler = $.pkp.classes.Handler.getHandler($(this));
+					if (handler) {
+						handler.unregisterForm();
+					}
+				});
+
+				// If the panel being closed is currently selected, move off first.
+				if ($element.tabs('option', 'selected') == thisTabIndex) {
+					$element.tabs('select', thisTabIndex - 1);
+				}
+
+				$liElement.remove();
+				$divElement.remove();
+
+				$element.tabs('refresh');
+			}
+		});
+
+		// Add the new tab element and refresh the tab set.
+		$element.children('ul').append($liElement);
+		$element.tabs('refresh');
+		$element.tabs('option', 'active', numTabs - 1);
+		$anchorElement.click();
 	};
 
 

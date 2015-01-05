@@ -1,7 +1,4 @@
 /**
- * @defgroup js_controllers_grid_users_reviewer_form
- */
-/**
  * @file js/controllers/grid/users/reviewer/form/AddReviewerFormHandler.js
  *
  * Copyright (c) 2014 Simon Fraser University Library
@@ -15,17 +12,11 @@
  */
 (function($) {
 
-	/** @type {Object} */
-	$.pkp.controllers.grid.users.reviewer =
-			$.pkp.controllers.grid.users.reviewer ||
-			{ form: { } };
-
-
 
 	/**
 	 * @constructor
 	 *
-	 * @extends $.pkp.controllers.form.AjaxFormHandler
+	 * @extends $.pkp.controllers.grid.users.reviewer.form.LimitFilesFormHandler
 	 *
 	 * @param {jQueryObject} $form the wrapped HTML form element.
 	 * @param {Object} options form options.
@@ -40,44 +31,20 @@
 			this.templateUrl_ = options.templateUrl;
 		}
 
-		// Store username suggestion details
-		this.fetchUsernameSuggestionUrl_ = options.fetchUsernameSuggestionUrl;
-		this.usernameSuggestionTextAlert_ = options.usernameSuggestionTextAlert;
-
 		// Attach form elements events.
 		$form.find('#template').change(
 				this.callbackWrapper(this.selectTemplateHandler_));
-		$('[id^="suggestUsernameButton"]', $form).click(
-				this.callbackWrapper(this.generateUsername));
 	};
 	$.pkp.classes.Helper.inherits(
 			$.pkp.controllers.grid.users.reviewer.form.
 					AddReviewerFormHandler,
-			$.pkp.controllers.form.AjaxFormHandler);
+			$.pkp.controllers.grid.users.reviewer.form.
+					LimitFilesFormHandler);
 
 
 	//
 	// Private properties
 	//
-	/**
-	 * The URL to be called to fetch a username suggestion.
-	 * @private
-	 * @type {string}
-	 */
-	$.pkp.controllers.grid.users.reviewer.form.
-			AddReviewerFormHandler.prototype.fetchUsernameSuggestionUrl_ = '';
-
-
-	/**
-	 * The message that will be displayed if users click on suggest
-	 * username button with no data in lastname.
-	 * @private
-	 * @type {string}
-	 */
-	$.pkp.controllers.grid.users.reviewer.form.
-			AddReviewerFormHandler.prototype.usernameSuggestionTextAlert_ = '';
-
-
 	/**
 	 * The URL to use to retrieve template bodies
 	 * @private
@@ -88,53 +55,21 @@
 
 
 	//
-	// Public methods
+	// Protected methods
 	//
 	/**
-	 * Event handler that is called when the suggest username button is clicked.
+	 * Show the "no files" warning.
+	 * @protected
 	 */
-	$.pkp.controllers.grid.users.reviewer.form.
-			AddReviewerFormHandler.prototype.generateUsername = function() {
+	$.pkp.controllers.grid.users.reviewer.form.AddReviewerFormHandler.
+			prototype.showWarning = function() {
+		// Call the parent showWarning to show the warning
+		this.parent('showWarning');
 
-		var $form = this.getHtmlElement(),
-				firstName, lastName, fetchUrl;
-
-		if ($('[id^="lastname"]', $form).val() === '') {
-			// No last name entered; cannot suggest. Complain.
-			alert(this.usernameSuggestionTextAlert_);
-			return;
-		}
-
-		// Fetch entered names
-		firstName = /** @type {string} */ $('[id^="firstname"]', $form).val();
-		lastName = /** @type {string} */ $('[id^="lastname"]', $form).val();
-
-		// Replace dummy values in the URL with entered values
-		fetchUrl = this.fetchUsernameSuggestionUrl_.
-				replace('FIRST_NAME_DUMMY', firstName).
-				replace('LAST_NAME_DUMMY', lastName);
-
-		$.get(fetchUrl, this.callbackWrapper(this.setUsername), 'json');
-	};
-
-
-	/**
-	 * Check JSON message and set it to username, back on form.
-	 * @param {HTMLElement} formElement The Form HTML element.
-	 * @param {JSON} jsonData The jsonData response.
-	 */
-	$.pkp.controllers.grid.users.reviewer.form.
-			AddReviewerFormHandler.prototype.setUsername =
-			function(formElement, jsonData) {
-
-		var processedJsonData = this.handleJson(jsonData),
-				$form = this.getHtmlElement();
-
-		if (processedJsonData === false) {
-			throw new Error('JSON response must be set to true!');
-		}
-
-		$('[id^="username"]', $form).val(processedJsonData.content);
+		// Ask the reviewer form footer handler to expand the file
+		// list extras-on-demand if it isn't already expanded.
+		this.getHtmlElement().find('#reviewerFormFooter')
+				.trigger('expandFileList');
 	};
 
 

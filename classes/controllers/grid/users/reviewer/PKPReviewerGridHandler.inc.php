@@ -114,6 +114,7 @@ class PKPReviewerGridHandler extends GridHandler {
 			LOCALE_COMPONENT_PKP_MANAGER,
 			LOCALE_COMPONENT_PKP_USER,
 			LOCALE_COMPONENT_PKP_EDITOR,
+			LOCALE_COMPONENT_PKP_REVIEWER,
 			LOCALE_COMPONENT_APP_EDITOR
 		);
 
@@ -202,21 +203,6 @@ class PKPReviewerGridHandler extends GridHandler {
 	//
 	// Public actions
 	//
-	/**
-	 * Get a suggested username, making sure it's not already used.
-	 * @param $args array
-	 * @param $request PKPRequest
-	 */
-	function suggestUsername($args, $request) {
-		$suggestion = Validation::suggestUsername(
-			$request->getUserVar('firstName'),
-			$request->getUserVar('lastName')
-		);
-
-		$json = new JSONMessage(true, $suggestion);
-		return $json->getString();
-	}
-
 	/**
 	 * Add a reviewer.
 	 * @param $args array
@@ -737,7 +723,7 @@ class PKPReviewerGridHandler extends GridHandler {
 		// Define operations that need a review round policy.
 		return array(
 			'fetchGrid', 'fetchRow', 'showReviewerForm', 'reloadReviewerForm',
-			'createReviewer', 'enrollReviewer', 'updateReviewer', 'suggestUsername',
+			'createReviewer', 'enrollReviewer', 'updateReviewer',
 			'getReviewersNotAssignedToSubmission', 'getUsersNotAssignedAsReviewers',
 			'fetchTemplateBody'
 		);

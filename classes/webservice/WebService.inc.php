@@ -91,6 +91,10 @@ class WebService {
 		$nullVar = null;
 		if (!$result) return $nullVar;
 
+		if ($this->_lastResponseStatus >= 400 || $this->_lastResponseStatus <= 599) {
+			return $nullVar;
+		}
+
 		// Clean the result
 		$result = stripslashes($result);
 		if ( Config::getVar('i18n', 'charset_normalization') == 'On' && !String::utf8_compliant($result) ) {
@@ -124,7 +128,7 @@ class WebService {
 		curl_setopt($ch, CURLOPT_POST, 1);
 
 		// Bug #8518 safety work-around
-		foreach ($postOptions as $paramValue) {
+		if (is_array($postOptions)) foreach ($postOptions as $paramValue) {
 			if ($paramValue[0] == '@') die('CURL parameters may not begin with @.');
 		}
 

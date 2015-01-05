@@ -96,50 +96,6 @@ class NotificationHandler extends Handler {
 	}
 
 	/**
-	 * View and modify notification settings
-	 * @param $args array
-	 * @param $request Request
-	 */
-	function settings($args, $request) {
-		$this->validate();
-		$this->setupTemplate($request);
-
-
-		$user = $request->getUser();
-		if(isset($user)) {
-			import('classes.notification.form.NotificationSettingsForm');
-			$notificationSettingsForm = new NotificationSettingsForm();
-			$notificationSettingsForm->display($request);
-		} else {
-			$router = $request->getRouter();
-			$request->redirectUrl($router->url($request, null, 'notification'));
-		}
-	}
-
-	/**
-	 * Save user notification settings
-	 * @param $args array
-	 * @param $request Request
-	 */
-	function saveSettings($args, $request) {
-		$this->validate();
-		$this->setupTemplate($request, true);
-
-		import('classes.notification.form.NotificationSettingsForm');
-
-		$notificationSettingsForm = new NotificationSettingsForm();
-		$notificationSettingsForm->readInputData();
-
-		if ($notificationSettingsForm->validate()) {
-			$notificationSettingsForm->execute($request);
-			$router = $request->getRouter();
-			$request->redirectUrl($router->url($request, null, 'notification', 'settings'));
-		} else {
-			$notificationSettingsForm->display($request);
-		}
-	}
-
-	/**
 	 * Fetch the existing or create a new URL for the user's RSS feed
 	 * @param $args array
 	 * @param $request Request
@@ -353,6 +309,7 @@ class NotificationHandler extends Handler {
 	function fetchNotification($args, $request) {
 		$this->setupTemplate($request);
 		$user = $request->getUser();
+		$userId = $user?$user->getId():null;
 		$context = $request->getContext();
 		$notificationDao = DAORegistry::getDAO('NotificationDAO');
 		$notifications = array();
@@ -362,10 +319,10 @@ class NotificationHandler extends Handler {
 
 		if (is_array($notificationOptions)) {
 			// Retrieve the notifications.
-			$notifications = $this->_getNotificationsByOptions($notificationOptions, $context->getId(), $user->getId());
+			$notifications = $this->_getNotificationsByOptions($notificationOptions, $context->getId(), $userId);
 		} else {
 			// No options, get only TRIVIAL notifications.
-			$notifications = $notificationDao->getByUserId($user->getId(), NOTIFICATION_LEVEL_TRIVIAL);
+			$notifications = $notificationDao->getByUserId($userId, NOTIFICATION_LEVEL_TRIVIAL);
 			$notifications = $notifications->toArray();
 		}
 

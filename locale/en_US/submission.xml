@@ -13,6 +13,7 @@
 
 <locale name="en_US" full_name="U.S. English">
 	<!-- Author Submission -->
+	<message key="author.submit.userGroupRequired">Your account does not currently have a role permitting new submissions, such as Author. Please double-check your account; you may be able to add a suitable role yourself by editing your profile.</message>
 	<message key="author.submit.submissionCitations">Provide a formatted list of references for works cited in this submission. Please separate individual references with a blank line.</message>
 	<message key="submission.submit.submissionComplete">Submission complete</message>
 	<message key="submission.submit.submissionCompleteThanks">Thank you for your interest in publishing with {$contextName}.</message>
@@ -426,6 +427,7 @@
 	<message key="submission.submit.selectFile">Select File</message>
 	<message key="submission.submit.fileInformation">File Information</message>
 	<message key="submission.submit.fileAdded">File Added</message>
+	<message key="submission.submit.includeInBrowse">Include this contributor in browse lists?</message>
 	<message key="submission.submit.newFile">Submit a New File</message>
 	<message key="submission.submit.errorDeletingAuthor">There was an error removing the author.</message>
 	<message key="submission.submit.metadataForm">Additional Refinements</message>
@@ -578,7 +580,7 @@
 	<message key="notification.type.editorDecisionTitle">Latest editor decision.</message>
 	<message key="notification.type.editorDecisionAccept">Submission accepted.</message>
 	<message key="notification.type.editorDecisionExternalReview">External review process started.</message>
-	<message key="notification.type.editorDecisionPendingRevisions">Revision requested.</message>
+	<message key="notification.type.editorDecisionPendingRevisions">Revision required.</message>
 	<message key="notification.type.editorDecisionResubmit">Resubmit for review.</message>
 	<message key="notification.type.editorDecisionDecline">Submission declined.</message>
 	<message key="notification.type.editorDecisionSendToProduction">Production process started.</message>

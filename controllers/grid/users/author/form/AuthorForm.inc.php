@@ -131,9 +131,13 @@ class AuthorForm extends Form {
                                 'honorarCelkem'=> $author->getHonorarCelkem(),/*MUNIPRESS*/
                                 'honorarVyplaceno'=> $author->getHonorarVyplaceno(),/*MUNIPRESS*/                                
 				'userGroupId' => $author->getUserGroupId(),			
-				'primaryContact' => $author->getPrimaryContact()
-                                
+				'primaryContact' => $author->getPrimaryContact(),
+                                'includeInBrowse' => $author->getIncludeInBrowse(),
+
 			);
+		} else {
+			// assume authors should be listed unless otherwise specified.
+			$this->_data = array('includeInBrowse' => true);
 		}
 	}
 
@@ -195,7 +199,7 @@ class AuthorForm extends Form {
                         'honorarVyplaceno',/*MUNIPRESS*/
 			'userGroupId',			
 			'primaryContact',
-                        
+			'includeInBrowse',
 		));
 	}
 
@@ -250,6 +254,7 @@ class AuthorForm extends Form {
                 
 		$author->setUserGroupId($this->getData('userGroupId'));                
 		$author->setPrimaryContact(($this->getData('primaryContact') ? true : false));
+                $author->setIncludeInBrowse(($this->getData('includeInBrowse') ? true : false));
                 
                 
                 

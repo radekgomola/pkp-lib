@@ -19,18 +19,34 @@
 	$.pkp.controllers.statistics = $.pkp.controllers.statistics || {};
 
 
+
 	/**
 	 * @constructor
 	 *
 	 * @extends $.pkp.controllers.form.AjaxFormHandler
 	 *
 	 * @param {jQueryObject} $form The wrapped HTML form element.
-	 * @param {Object} options Configuration of the form handler.
+	 * @param {{
+	 *  metricTypeSelectSelector: string,
+	 *  reportTemplateSelectSelector: string,
+	 *  aggregationOptionsSelector: string,
+	 *  currentMonthSelector: string,
+	 *  currentDaySelector: string,
+	 *  rangeByMonthSelector: string,
+	 *  rangeByDaySelector: string,
+	 *  dateRangeWrapperSelector: string,
+	 *  fileTypeSelectSelector: string,
+	 *  objectTypeSelectSelector: string,
+	 *  regionSelectSelector: string,
+	 *  countrySelectSelector: string
+	 *  }} options Configuration of the form handler.
 	 */
-	$.pkp.controllers.statistics.ReportGeneratorFormHandler = function($form, options) {
+	$.pkp.controllers.statistics.ReportGeneratorFormHandler =
+			function($form, options) {
 		var $objectTypeSelectElement, $countrySelectElement,
-			$metricTypeSelectElement, $reportTemplateSelectElement, $currentTimeElements,
-			$rangeTimeElements, $aggregationOptions;
+				$metricTypeSelectElement, $reportTemplateSelectElement,
+				$currentTimeElements, $rangeTimeElements,
+				$aggregationOptions;
 
 		// Configure the form handler.
 		options.trackFormChanges = false;
@@ -76,7 +92,7 @@
 		// Add click handler to current time filter selectors.
 		$currentTimeElements = $(options.currentMonthSelector,
 				this.getHtmlElement()).add(options.currentDaySelector,
-					this.getHtmlElement());
+				this.getHtmlElement()[0]);
 		if ($currentTimeElements.length == 2) {
 			$currentTimeElements.click(this.callbackWrapper(
 					this.currentTimeElementsClickHandler_));
@@ -85,7 +101,7 @@
 		// Add click handler to range time filter selectors.
 		$rangeTimeElements = $(options.rangeByMonthSelector,
 				this.getHtmlElement()).add(options.rangeByDaySelector,
-					this.getHtmlElement());
+				this.getHtmlElement()[0]);
 		if ($rangeTimeElements.length == 2) {
 			$rangeTimeElements.click(this.callbackWrapper(
 					this.rangeTimeElementsClickHandler_));
@@ -109,7 +125,7 @@
 		$objectTypeSelectElement = $(options.objectTypeSelectSelector,
 				this.getHtmlElement());
 		if (this.$fileTypeSelectElement_.length == 1) {
-			this.$fileTypeSelectElement_.attr("disabled", true);
+			this.$fileTypeSelectElement_.attr('disabled', 'disabled');
 			$objectTypeSelectElement.change(this.callbackWrapper(
 					this.updateFileTypeSelectHandler_));
 		}
@@ -133,6 +149,7 @@
 			$.pkp.controllers.statistics.ReportGeneratorFormHandler,
 			$.pkp.controllers.form.AjaxFormHandler);
 
+
 	//
 	// Private properties
 	//
@@ -144,6 +161,7 @@
 	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
 			fetchFormUrl_ = null;
 
+
 	/**
 	 * The fetch articles title and id url.
 	 * @private
@@ -152,6 +170,7 @@
 	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
 			fetchArticlesUrl_ = null;
 
+
 	/**
 	 * Metric type select element.
 	 * @private
@@ -159,6 +178,7 @@
 	 */
 	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
 			$metricTypeSelectElement_ = {};
+
 
 	/**
 	 * Report template select element.
@@ -177,6 +197,7 @@
 	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
 			$regionSelectElement_ = {};
 
+
 	/**
 	 * The fetch regions url.
 	 * @private
@@ -184,6 +205,7 @@
 	 */
 	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
 			fetchRegionsUrl_ = null;
+
 
 	/**
 	 * File assoc types.
@@ -193,6 +215,7 @@
 	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
 			$fileAssocTypes_ = {};
 
+
 	/**
 	 * Date filter range by day element selector.
 	 * @private
@@ -200,6 +223,7 @@
 	 */
 	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
 			rangeByDaySelector_ = null;
+
 
 	/**
 	 * Date filter range by month element selector.
@@ -209,6 +233,7 @@
 	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
 			rangeByMonthSelector_ = null;
 
+
 	/**
 	 * Start day filter input element selector.
 	 * @private
@@ -216,6 +241,7 @@
 	 */
 	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
 			startDayElementSelector_ = null;
+
 
 	/**
 	 * End day filter input element selector.
@@ -225,6 +251,7 @@
 	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
 			endDayElementSelector_ = null;
 
+
 	/**
 	 * Time filter form elements wrapper selector.
 	 * @private
@@ -232,6 +259,7 @@
 	 */
 	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
 			timeFilterWrapperSelector_ = null;
+
 
 	/**
 	 * Columns select element selector.
@@ -248,17 +276,19 @@
 	/**
 	 * @inheritDoc
 	 */
-	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.handleResponse =
-			function(formElement, jsonData) {
-		var data = this.handleJson(jsonData);
+	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
+			handleResponse = function(formElement, jsonData) {
+		var data = /** @type {{reportUrl: string}|boolean|undefined} */
+				(this.handleJson(jsonData));
 		if (data !== false && data.reportUrl !== undefined) {
 			$('#reportUrlFormArea', this.getHtmlElement()).show().
-				find(':input').val(data.reportUrl);
+					find(':input').val(data.reportUrl);
 
 			window.location = data.reportUrl;
 		}
 
 		this.parent('handleResponse', formElement, jsonData);
+		return false;
 	};
 
 
@@ -269,16 +299,17 @@
 	 * Callback called by components that needs to
 	 * refresh the form when changed (metric type and report
 	 * template selectors).
+	 * @private
 	 *
 	 * @param {Object} callingContext The calling element or object.
 	 * @param {Event=} opt_event The triggering event (e.g. a click on
 	 *  a button.
 	 * @return {boolean} Should return false to stop event processing.
 	 */
-	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.fetchFormHandler_ =
-			function(callingContext, opt_event) {
+	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
+			fetchFormHandler_ = function(callingContext, opt_event) {
 		var $metricTypeSelectedOption, $reportTemplateSelectedOption,
-			$timeFilterElements, timeFilterValues, args = {};
+				$timeFilterElements, timeFilterValues, args = {};
 
 		// Serialize time filter values, so the form can be refreshed
 		// with the same values.
@@ -289,14 +320,14 @@
 			args[element.name] = element.value;
 		});
 
-		$metricTypeSelectedOption = $("option:selected",
+		$metricTypeSelectedOption = $('option:selected',
 				this.$metricTypeSelectElement_);
 		if ($metricTypeSelectedOption[0] !== undefined &&
 				$metricTypeSelectedOption[0].value !== undefined) {
 			args.metricType = $metricTypeSelectedOption[0].value;
 		}
 
-		$reportTemplateSelectedOption = $("option:selected",
+		$reportTemplateSelectedOption = $('option:selected',
 				this.$reportTemplateSelectElement_);
 		if ($reportTemplateSelectedOption[0] !== undefined &&
 				$reportTemplateSelectedOption[0].value !== undefined) {
@@ -314,6 +345,7 @@
 
 	/**
 	 * Callback called after object type select is changed.
+	 * @private
 	 *
 	 * @param {Object} callingContext The calling element or object.
 	 * @param {Event=} opt_event The triggering event (e.g. a click on
@@ -325,18 +357,18 @@
 		var $objectTypeElement, $objectTypeSelectedOptions, assocType, i;
 
 		$objectTypeElement = $(callingContext);
-		$objectTypeSelectedOptions = $("option:selected", $objectTypeElement);
+		$objectTypeSelectedOptions = $('option:selected', $objectTypeElement);
 		if ($objectTypeSelectedOptions.length == 1) {
 			assocType = $objectTypeSelectedOptions[0].value;
 			for (i in this.fileAssocTypes_) {
 				if (this.fileAssocTypes_[i] == assocType) {
-					this.$fileTypeSelectElement_.attr("disabled", false);
+					this.$fileTypeSelectElement_.removeAttr('disabled');
 					return false;
 				}
 			}
 		}
 
-		this.$fileTypeSelectElement_.attr("disabled", true);
+		this.$fileTypeSelectElement_.attr('disabled', 'disabled');
 		return false;
 	};
 
@@ -344,20 +376,21 @@
 	/**
 	 * Callback called after country select is changed to fetch
 	 * related region info.
+	 * @private
 	 *
 	 * @param {Object} callingContext The calling element or object.
 	 * @param {Event=} opt_event The triggering event (e.g. a click on
 	 *  a button.
 	 * @return {boolean} Should return false to stop event processing.
 	 */
-	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.fetchRegionHandler_ =
-			function(callingContext, opt_event) {
+	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
+			fetchRegionHandler_ = function(callingContext, opt_event) {
 		var $countrySelectElement, $countrySelectedOptions, countryId;
 
 		this.$regionSelectElement_.empty();
 
 		$countrySelectElement = $(callingContext);
-		$countrySelectedOptions = $("option:selected", $countrySelectElement);
+		$countrySelectedOptions = $('option:selected', $countrySelectElement);
 		if ($countrySelectedOptions.length == 1) {
 			countryId = $countrySelectedOptions[0].label;
 			$.get(this.fetchRegionsUrl_, {countryId: countryId},
@@ -380,51 +413,54 @@
 	 */
 	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
 			updateRegionSelectCallback_ = function(ajaxContext, jsonData) {
-		var $regionSelectElement, limit, content;
+		var $regionSelectElement, limit, content, i, processedJsonData;
 		$regionSelectElement = this.$regionSelectElement_;
 
 		$regionSelectElement.empty();
 
-		jsonData = this.handleJson(jsonData);
-		if (jsonData !== false) {
-			content = jsonData.content;
+		processedJsonData = this.handleJson(jsonData);
+		if (processedJsonData !== false) {
+			content = processedJsonData.content;
 			for (i = 0, limit = content.length; i < limit; i++) {
 				$regionSelectElement.append(
-						$("<option />").val(content[i].id).text(content[i].name));
+						$('<option />').val(content[i].id).text(content[i].name));
 			}
 		}
 
 		return false;
 	};
 
+
 	/**
 	 * Callback called when current time selectors are clicked.
+	 * @private
 	 *
 	 * @param {Object} callingContext The calling element or object.
 	 * @param {Event=} opt_event The triggering event (e.g. a click on
 	 *  a button.
-	 * @return {boolean} Should return false to stop event processing.
+	 * @return {boolean} Should return true to continue event processing.
 	 */
 	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
 			currentTimeElementsClickHandler_ =
-				function(callingContext, opt_event) {
+			function(callingContext, opt_event) {
 		this.dateRangeElementsWrapper_.hide();
+		return true;
 	};
 
 
 	/**
 	 * Callback called when range time selectors are clicked.
+	 * @private
 	 *
 	 * @param {Object} callingContext The calling element or object.
 	 * @param {Event=} opt_event The triggering event (e.g. a click on
 	 *  a button.
-	 * @return {boolean} Should return false to stop event processing.
+	 * @return {boolean} Should return true to continue event processing.
 	 */
 	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
-			rangeTimeElementsClickHandler_ =
-				function(callingContext, opt_event) {
+			rangeTimeElementsClickHandler_ = function(callingContext, opt_event) {
 		var $dayElements = $(this.startDayElementSelector_).
-			add(this.endDayElementSelector_);
+				add(this.endDayElementSelector_);
 
 		this.dateRangeElementsWrapper_.show();
 		if ('#' + $(callingContext).attr('id') == this.rangeByDaySelector_) {
@@ -434,11 +470,14 @@
 		if ('#' + $(callingContext).attr('id') == this.rangeByMonthSelector_) {
 			$dayElements.hide();
 		}
+
+		return true;
 	};
 
 
 	/**
 	 * Callback called when aggregation options are changed.
+	 * @private
 	 *
 	 * @param {Object} callingContext The calling element or object.
 	 * @param {Event=} opt_event The triggering event (e.g. a click on
@@ -447,7 +486,7 @@
 	 */
 	$.pkp.controllers.statistics.ReportGeneratorFormHandler.prototype.
 			aggregationOptionsChangeHandler_ =
-				function(callingContext, opt_event) {
+			function(callingContext, opt_event) {
 		var $aggregationOption, $columns, $column;
 		$columns = $(this.columnsSelector_);
 		$aggregationOption = $(callingContext);

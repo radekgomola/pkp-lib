@@ -8,11 +8,13 @@
  * Import symbols into the closure compiler that are not defined
  * within the compiled files.
  *
- * See https://code.google.com/p/closure-compiler/source/browse/trunk/contrib/externs
+ * See https://github.com/google/closure-compiler/tree/master/externs
  * for pre-extracted extern files, e.g. for jQuery.
  *
  * @externs
  */
+
+jQueryObject.prototype.browser = { msie: false };
 
 /**
  * @param {Object} arg1
@@ -133,16 +135,23 @@ jQuery.validator.prototype.defaultShowErrors = function() {};
 jQuery.validator.prototype.settings = {};
 
 /**
- * @constructor
- * @param {Object=} options
- */
-jQuery.pnotify = function(options) {};
-
-/**
  * @param {Object=} userDefinedSettings
  * @return {jQueryObject}
  */
 jQueryObject.prototype.imgPreview = function(userDefinedSettings) {};
+
+/**
+ * @param {string} param1
+ * @param {string|Object=} param2
+ */
+jQueryObject.prototype.prop = function(param1, param2) {};
+
+jQueryObject.prototype.panel = null;
+jQueryObject.prototype.newTab = null;
+jQueryObject.prototype.newTab.index = function() {};
+jQueryObject.prototype.newTab.find = function() {};
+jQueryObject.prototype.newPanel = null;
+jQueryObject.prototype.ajaxSettings = null;
 
 /**
  * @constructor
@@ -158,6 +167,42 @@ tinyMCEObject.prototype.triggerSave = function() {};
  * @param {string} v
  */
 tinyMCEObject.prototype.execCommand = function(c, u, v) {};
+
+tinyMCEObject.prototype.activeEditor = { dom: {}, id: '' };
+
+/**
+ * @param {string} param1
+ */
+tinyMCEObject.prototype.activeEditor.dom.get = function(param1) {};
+
+tinyMCEObject.prototype.activeEditor.dom.getRoot = function() {};
+
+tinyMCEObject.prototype.onActivate = {};
+
+tinyMCEObject.prototype.onDeactivate = {};
+
+tinyMCEObject.prototype.onActive = {};
+
+tinyMCEObject.prototype.onInit = {};
+
+tinyMCEObject.prototype.editor = { dom: {}, id: '' };
+
+tinyMCEObject.prototype.editor.getContent = function() {};
+
+tinyMCEObject.prototype.editor.getRoot = function() {};
+
+tinyMCEObject.prototype.dom = {};
+
+tinyMCEObject.prototype.editor.dom.getRoot = function() {};
+
+tinyMCEObject.prototype.dom.Event = {};
+
+/**
+ * @param {Object} param1
+ * @param {string} param2
+ * @param {Object} param3
+ */
+tinyMCEObject.prototype.dom.Event.add = function(param1, param2, param3) {};
 
 /**
  * @type {string} c
@@ -190,7 +235,8 @@ var tinyMCE;
 
 $.pkp.locale = {
 	search_noKeywordError: '',
-	form_dataHasChanged: ''
+	form_dataHasChanged: '',
+	common_close: ''
 };
 
 $.pkp.cons = {
@@ -213,3 +259,9 @@ $.pkp.cons = {
  * @return {jQueryObject}
  */
 jQueryObject.prototype.scrollabletab = function(param1) {};
+
+/**
+ * @param {Object} param1
+ * @return {jQueryObject}
+ */
+jQueryObject.prototype.pnotify = function(param1) {};

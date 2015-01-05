@@ -420,6 +420,7 @@ class SubmissionDAO extends DAO {
 	function getUnpublishedByUserId($userId, $contextId = null, $rangeInfo = null) {
 		$params = $this->_getFetchParameters();
 		$params[] = (int) $userId;
+
 		if ($contextId) $params[] = (int) $contextId;
 
 		$result = $this->retrieveRange(

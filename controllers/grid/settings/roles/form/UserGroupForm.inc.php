@@ -83,6 +83,12 @@ class UserGroupForm extends Form {
 		$this->setData('stages', $stages);
 		$this->setData('assignedStages', array()); // sensible default
 
+		$roleDao = DAORegistry::getDAO('RoleDAO'); /* @var $roleDao RoleDAO */
+		import('lib.pkp.classes.core.JSONMessage');
+		$jsonMessage = new JSONMessage();
+		$jsonMessage->setContent($roleDao->getForbiddenStages());
+		$this->setData('roleForbiddenStagesJSON', $jsonMessage->getString());
+
 		if ($userGroup) {
 			$assignedStages = $userGroupDao->getAssignedStagesByUserGroupId($this->getContextId(), $userGroup->getId());
 
@@ -190,6 +196,15 @@ class UserGroupForm extends Form {
 
 		foreach ($userAssignedStages as $stageId) {
 
+			// Make sure we don't assign forbidden stages based on
+			// user groups role id.
+			$roleId = $this->getData('roleId');
+			$roleDao = DAORegistry::getDAO('RoleDAO'); /* @var $roleDao RoleDAO */
+			$forbiddenStages = $roleDao->getForbiddenStages($roleId);
+			if (in_array($stageId, $forbiddenStages)) {
+				continue;
+			}
+
 			// Check if is a valid stage.
 			if (in_array($stageId, array_keys($stages))) {
 				$userGroupDao->assignGroupToStage($contextId, $userGroupId, $stageId);
@@ -214,8 +229,8 @@ class UserGroupForm extends Form {
 			foreach ($context->getSupportedLocaleNames() as $localeKey => $localeName) {
 				$name = $this->getData('name');
 				$abbrev = $this->getData('abbrev');
-				$userGroup->setName($name[$localeKey], $localeKey);
-				$userGroup->setAbbrev($abbrev[$localeKey], $localeKey);
+				if (isset($name[$localeKey])) $userGroup->setName($name[$localeKey], $localeKey);
+				if (isset($abbrev[$localeKey])) $userGroup->setAbbrev($abbrev[$localeKey], $localeKey);
 			}
 		} else {
 			$localeKey = AppLocale::getLocale();

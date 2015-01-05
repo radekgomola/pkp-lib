@@ -59,17 +59,18 @@ class ControlledVocabDAO extends DAO {
 	 * @return $controlledVocab
 	 */
 	function build($symbolic, $assocType = 0, $assocId = 0) {
-		// If one exists, fetch and return.
-		$controlledVocab = $this->getBySymbolic($symbolic, $assocType, $assocId);
-		if ($controlledVocab) return $controlledVocab;
-
-		// Otherwise, build one.
+		// Attempt to build a new controlled vocabulary.
 		$controlledVocab = $this->newDataObject();
 		$controlledVocab->setSymbolic($symbolic);
 		$controlledVocab->setAssocType($assocType);
 		$controlledVocab->setAssocId($assocId);
-		$this->insertObject($controlledVocab);
-		return $controlledVocab;
+		$id = $this->insertObject($controlledVocab, false);
+		if ($id !== null) return $controlledVocab;
+
+		// Presume that an error was a duplicate insert.
+		// In this case, try to fetch an existing controlled
+		// vocabulary.
+		return $this->getBySymbolic($symbolic, $assocType, $assocId);
 	}
 
 	/**
@@ -98,10 +99,10 @@ class ControlledVocabDAO extends DAO {
 	/**
 	 * Insert a new ControlledVocab.
 	 * @param $controlledVocab ControlledVocab
-	 * @return int
+	 * @return int? New insert ID on insert, or null on error
 	 */
-	function insertObject(&$controlledVocab) {
-		$this->update(
+	function insertObject($controlledVocab, $dieOnError = true) {
+		$success = $this->update(
 			sprintf('INSERT INTO controlled_vocabs
 				(symbolic, assoc_type, assoc_id)
 				VALUES
@@ -110,10 +111,15 @@ class ControlledVocabDAO extends DAO {
 				$controlledVocab->getSymbolic(),
 				(int) $controlledVocab->getAssocType(),
 				(int) $controlledVocab->getAssocId()
-			)
+			),
+			true, // callHooks
+			$dieOnError
 		);
-		$controlledVocab->setId($this->getInsertId());
-		return $controlledVocab->getId();
+		if ($success) {
+			$controlledVocab->setId($this->getInsertId());
+			return $controlledVocab->getId();
+		}
+		else return null; // An error occurred on insert
 	}
 
 	/**
@@ -244,6 +250,56 @@ class ControlledVocabDAO extends DAO {
 	 */
 	function getInsertId() {
 		return parent::_getInsertId('controlled_vocabs', 'controlled_vocab_id');
+	}
+
+	/**
+	 * Parse and install a controlled vocabulary from an XML file.
+	 * @param $filename string Filename (including path) of XML file to install.
+	 * @return array Array of parsed controlled vocabularies
+	 */
+	function installXML($filename) {
+		$controlledVocabs = array();
+		$controlledVocabEntryDao = $this->getEntryDAO();
+		$controlledVocabEntrySettingsDao = $controlledVocabEntryDao->getSettingsDAO();
+		$parser = new XMLParser();
+		$tree = $parser->parse($filename);
+		foreach ($tree->getChildren() as $controlledVocabNode) {
+			assert($controlledVocabNode->getName() == 'controlled_vocab');
+
+			// Try to fetch an existing controlled vocabulary
+			$controlledVocab = $this->getBySymbolic(
+				$symbolic = $controlledVocabNode->getAttribute('symbolic'),
+				$assocType = (int) $controlledVocabNode->getAttribute('assoc-type'),
+				$assocId = (int) $controlledVocabNode->getAttribute('assoc-id')
+			);
+			if ($controlledVocab) {
+				$controlledVocabs[] = $controlledVocab;
+				continue;
+			}
+
+			// It doesn't exist; create a new one.
+			$controlledVocabs[] = $controlledVocab = $this->build($symbolic, $assocType, $assocId);
+			foreach ($controlledVocabNode->getChildren() as $entryNode) {
+				$seq = $entryNode->getAttribute('seq');
+				if ($seq !== null) $seq = (float) $seq;
+
+				$controlledVocabEntry = $controlledVocabEntryDao->newDataObject();
+				$controlledVocabEntry->setControlledVocabId($controlledVocab->getId());
+				$controlledVocabEntry->setSequence($seq);
+				$controlledVocabEntryDao->insertObject($controlledVocabEntry);
+
+				foreach ($entryNode->getChildren() as $settingNode) {
+					$controlledVocabEntrySettingsDao->updateSetting(
+						$controlledVocabEntry->getId(),
+						$settingNode->getAttribute('name'),
+						$settingNode->getValue(),
+						$settingNode->getAttribute('type'),
+						false // Not localized
+					);
+				}
+			}
+		}
+		return $controlledVocabs;
 	}
 }
 
