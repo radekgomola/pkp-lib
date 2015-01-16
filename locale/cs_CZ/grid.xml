@@ -267,4 +267,5 @@
 	<message key="grid.action.viewSignoffNotes">Prohlédnou poznámku ke zrušení</message>
 	<message key="grid.action.fileUnconsider">Korekce byly provedeny. Nejspíše jste ještě tuto úlohu neuvažoval</message>
 
+        <message key="author.users.contributor.includeInBrowse">Vložit do prohledávání</message>
 </locale>

@@ -135,8 +135,6 @@ class PKPUserUserXmlFilter extends NativeExportFilter {
 			$this->createOptionalNode($doc, $userNode, 'disabled_reason', $user->getDisabledReason());
 		}
 
-                $this->createOptionalNode($doc, $userNode, 'uco', $user->getUCO());
-                
 		$userGroupAssignmentDao = DAORegistry::getDAO('UserGroupAssignmentDAO');
 		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
 		$assignedGroups = $userGroupAssignmentDao->getByUserId($user->getId(), $context->getId());

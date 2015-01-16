@@ -106,9 +106,7 @@ class UserXmlPKPUserFilter extends NativeImportFilter {
 			case 'auth_string': $user->setAuthString($n->textContent); break;
 			case 'disabled_reason': $user->setDisabledReason($n->textContent); break;
 			case 'locales': $user->setLocales(preg_split('/:/', $n->textContent)); break;
-                    
-                        case 'uco': $user->setUCO($n->textContent); break;
-                    
+
 			case 'password':
 				if ($n->getAttribute('must_change') == 'true') {
 					$user->setMustChangePassword(true);

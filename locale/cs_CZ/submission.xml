@@ -267,7 +267,7 @@
 	<message key="submission.dueDate">Termín splnění</message>
 	<message key="submission.due">Termín</message>
 	<message key="submission.editing">Editování</message>
-  <message key="submission.editorial">Úvodník</message>
+        <message key="submission.editorial">Redigování</message>
 	<message key="submission.editMetadata">Editovat metadata</message>
 	<message key="submission.email.backToEmailLog">Zpět k protokolu emailů</message>
 	<message key="submission.email.confirmClearLog">Jste si jistý, že chcete vyčistit protokol emailů pro tento příspěvek?</message>

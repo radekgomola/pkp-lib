@@ -97,6 +97,24 @@ class NativeXmlPKPAuthorFilter extends NativeImportFilter {
 			case 'email': $author->setEmail($n->textContent); break;
 			case 'url': $author->setUrl($n->textContent); break;
 			case 'biography': $author->setBiography($n->textContent, $n->getAttribute('locale')); break;
+                        
+                        /**************
+                         * MUNIPRESS
+                        ***************/
+                        case 'mu': $author->setMU($n->textContent); break;
+                        case 'uco': $author->setUCO($n->textContent); break;                        
+                        case 'tituly_pred': $author->setTitulyPred($n->textContent); break;
+                        case 'tituly_za': $author->setTitulyZa($n->textContent); break;
+                        case 'rodne_cislo': $author->setRodneCislo($n->textContent); break;
+                        case 'poznamka': $author->setPoznamka($n->textContent);   break;
+                        case 'druhePrijmeni': $author->setDruhePrijmeni($n->textContent); break;
+                        case 'obcanskeJmeno': $author->setObcanskeJmeno($n->textContent); break;
+                        case 'obcanskePrijmeni': $author->setObcanskePrijmeni($n->textContent); break;
+                        case 'honorarCelkem': $author->setHonorarCelkem($n->textContent); break;
+                        case 'honorarVyplaceno': $author->setHonorarVyplaceno($n->textContent); break;
+                        case 'zobrazHlavicka': $author->setZobrazHlavicka($n->textContent); break;
+                        case 'zobrazAutori': $author->setZobrazAutori($n->textContent); break;
+                        case 'zobrazOstatni': $author->setZobrazOstatni($n->textContent); break;
 		}
 
 		$authorDao->insertObject($author);

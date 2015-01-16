@@ -67,7 +67,7 @@ class PKPAuthorDAO extends DAO {
 		if ($useIncludeInBrowse) $params[] = 1;
 
 		$result = $this->retrieve(
-			'SELECT	a.*, munia.uco, munia.zobraz_hlavicka, munia.zobraz_autori, munia.zobraz_ostatni,ug.show_title
+			'SELECT	a.*, munia.*,ug.show_title
 			FROM	authors a
                                 LEFT JOIN munipress_author_metadata munia ON (a.author_id = munia.author_id)
 				JOIN user_groups ug ON (a.user_group_id=ug.user_group_id)
