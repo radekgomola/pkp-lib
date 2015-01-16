@@ -162,15 +162,15 @@ class PKPAuthorGridHandler extends GridHandler {
 				$cellProvider
 			)
 		);
-		$this->addColumn(
-			new GridColumn(
-				'includeInBrowse',
-				'author.users.contributor.includeInBrowse',
-				null,
-				'controllers/grid/users/author/includeInBrowse.tpl',
-				$cellProvider
-			)
-		);
+//		$this->addColumn(
+//			new GridColumn(
+//				'includeInBrowse',
+//				'author.users.contributor.includeInBrowse',
+//				null,
+//				'controllers/grid/users/author/includeInBrowse.tpl',
+//				$cellProvider
+//			)
+//		);
 	}
 
 

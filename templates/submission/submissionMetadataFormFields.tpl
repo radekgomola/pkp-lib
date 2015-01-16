@@ -86,26 +86,31 @@
                 {fbvElement type="text" label="submission.metadata.url.oc.ekniha" name="urlOC_ebook" id="urlOC_ebook" value=$urlOC_ebook maxlength="50" inline=true size=$fbvStyles.size.SMALL}
         {/fbvFormSection}
         
+        {fbvFormSection title="submission.manazer.datumVydani"}
+                <script>
+                    $('input[id^="datumVydani"]').datepicker({ldelim} dateFormat: 'yy-mm-dd' {rdelim});
+                </script>
+                {fbvElement type="text" label="submission.manazer.datumVydani.description" id="datumVydani" name="datumVydani" value=$datumVydani|date_format:"%Y-%m-%d" inline=true size=$fbvStyles.size.MEDIUM}
+                
+	{/fbvFormSection} 
+        
         {fbvFormSection label="submission.url.web" for="urlWeb"}
 		{fbvElement type="text" name="urlWeb" multilingual="true" id="urlWeb" value=$urlWeb maxlength="255" readonly=$readOnly}
 	{/fbvFormSection}
             
-        {fbvFormSection label="submission.souvisejiciPublikace" description="submission.submit.metadataForm.tip"}
+        {*{fbvFormSection label="submission.souvisejiciPublikace" description="submission.submit.metadataForm.tip"}
                 {fbvElement type="keyword" name="souvisejiciPublikace" id="souvisejiciPublikace" current=$souvisejiciPublikace maxlength="500"}
-        {/fbvFormSection} 
+        {/fbvFormSection} *}
         
         {fbvFormSection label="submission.klicovaSlova" description="submission.submit.metadataForm.tip"}
 		{fbvElement type="keyword" id="keyword" multilingual=true current=$keywords size=$fbvStyles.size.BIG}
 	{/fbvFormSection}
         
-        {fbvFormSection  label="submission.jazyky" description="submission.submit.metadataForm.tip"}
+        {fbvFormSection  label="submission.jazyky" description="submission.jazyky.description"}
 		{url|assign:languagesSourceUrl router=$smarty.const.ROUTE_PAGE page="submission" op="fetchChoices" codeList="74"}
 		{fbvElement type="keyword" id="languages" subLabelTranslate=true multilingual=true current=$languages source=$languagesSourceUrl}
         {/fbvFormSection}
-        {fbvFormSection label="submission.muPracoviste"}
-                {fbvElement type="select" name="muPracoviste" id="muPracoviste" defaultLabel="" defaultValue="" from=$faculties translate="true" selected=$muPracoviste inline=true size=$fbvStyles.size.MEDIUM}
-	{/fbvFormSection}
-        {fbvFormSection title="submission.poznamka" for="poznamka"}
+        {fbvFormSection title="submission.poznamka" for="poznamka" description="submission.poznamka.description"}
 		{fbvElement type="textarea" multilingual=true name="poznamka" id="poznamka" value=$poznamka rich=true readonly=$readOnly}
 	{/fbvFormSection}
         {fbvFormSection title="submission.dedikace" for="dedikace"}
@@ -127,14 +132,11 @@
                 <span class="sub_label">({translate key="submission.archivace.description"})</span>
                 
         {/fbvFormSection} 
-        {fbvFormSection title="submission.datumVydani"}
-                <script>
-                    $('input[id^="datumVydani"]').datepicker({ldelim} dateFormat: 'yy-mm-dd' {rdelim});
-                </script>
-                {fbvElement type="text" label="submission.datumVydani" id="datumVydani" name="datumVydani" value=$datumVydani|date_format:"%Y-%m-%d" inline=true size=$fbvStyles.size.MEDIUM}
-                
-	{/fbvFormSection} 
          
+        {fbvFormSection label="submission.muPracoviste"}
+                {fbvElement type="text" name="muPracoviste" id="muPracoviste" value=$muPracoviste inline=true size=$fbvStyles.size.MEDIUM}
+	{/fbvFormSection}
+        
         {fbvFormSection title="submission.poznamka.admin"}
 		{fbvElement type="textarea" name="poznamkaAdmin" id="poznamkaAdmin" value=$poznamkaAdmin rich=true}
 	{/fbvFormSection}         

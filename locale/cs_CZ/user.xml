@@ -29,7 +29,7 @@
 	<message key="user.authorization.roleBasedAccessDenied">Stávající role nemá přístup k této operaci.</message>
 	<message key="user.authorization.userGroupRequired">Musíte nastavit platnou skupinu uživatelů pro přístup k této operaci.</message>
 	<message key="user.authorization.managerRequired">Uživatel s rolí šéfredaktora(resp. Produkčního redaktora) musí být přiřazen, aby bylo možné pokračovat.</message>
-	<message key="user.biography">Biografické údaje</message>
+	<message key="user.biography">Biografické údaje (veřejné)</message>
 	<message key="user.biography.description">(Např. pracoviště a pozice)</message>
 	<message key="user.changeMyPassword">Změnit moje heslo</message>
 	<message key="user.changePassword">Změnit heslo</message>

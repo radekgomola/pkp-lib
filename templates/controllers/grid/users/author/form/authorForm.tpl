@@ -59,7 +59,7 @@
                     {fbvFormSection}
                          {fbvElement type="text" label="author.munipress.rodneCislo" name="rodne_cislo" id="rodne_cislo" value=$rodne_cislo inline=true size=$fbvStyles.size.SMALL}
                          {fbvElement type="text" label="author.munipress.mu" name="mu" id="mu" value=$mu inline=true size=$fbvStyles.size.SMALL}
-			{fbvElement type="text" label="user.uco" name="uco" id="uco" value=$uco maxlength="24" inline=true size=$fbvStyles.size.SMALL}
+			{fbvElement type="text" label="author.munipress.uco" name="uco" id="uco" value=$uco maxlength="24" inline=true size=$fbvStyles.size.SMALL}
                     {/fbvFormSection}
                     
                     {fbvFormSection}
@@ -100,10 +100,11 @@
 		{/fbvFormSection}
 		{fbvFormSection list="true"}
 			{fbvElement type="checkbox" label="submission.submit.selectPrincipalContact" id="primaryContact" checked=$primaryContact}
-			{fbvElement type="checkbox" label="submission.submit.includeInBrowse" id="includeInBrowse" checked=$includeInBrowse}
+			{*{fbvElement type="checkbox" label="submission.submit.includeInBrowse" id="includeInBrowse" checked=$includeInBrowse}*}
 		{/fbvFormSection}
 	{/fbvFormArea}
 
+        <input type="hidden" name="includeInBrowse" value="true" />
 	{if $submissionId}
 		<input type="hidden" name="submissionId" value="{$submissionId|escape}" />
 	{/if}
