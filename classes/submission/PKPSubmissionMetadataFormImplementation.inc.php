@@ -89,7 +89,6 @@ class PKPSubmissionMetadataFormImplementation {
                                 'poznamka' => $submission->getPoznamka(null), // Localized
                                 'dedikace' => $submission->getDedikace(null), // Localized
                                 
-                                
 			); 
 			foreach ($formData as $key => $data) {
 				$this->_parentForm->setData($key, $data);
@@ -114,12 +113,18 @@ class PKPSubmissionMetadataFormImplementation {
 			$this->_parentForm->setData('keywords', $submissionKeywordDao->getKeywords($submission->getId(), $locales));
                         $this->_parentForm->setData('languages', $submissionLanguageDao->getLanguages($submission->getId(), $locales));
                         
+                        /***********
+                         * MUNIPRESS - použito pro souvisejici publikace
+                         **********/
+                        $this->_parentForm->setData('subjects', $submissionSubjectDao->getSubjects($submission->getId(), $locales));
+                        
                         /*MUNIPRESS*/
 //                        $this->_parentForm->setData('souvisejiciPublikace', $submissionSouvisejiciPublikaceDao->getSouvisejiciPublikace($submission->getId(), $locales));
 
                         
                         
-                        $this->_parentForm->setData('subjects', $submissionSubjectDao->getSubjects($submission->getId(), $locales));
+                        
+                        
 			$this->_parentForm->setData('disciplines', $submissionDisciplineDao->getDisciplines($submission->getId(), $locales));
 			$this->_parentForm->setData('agencies', $submissionAgencyDao->getAgencies($submission->getId(), $locales));
 			

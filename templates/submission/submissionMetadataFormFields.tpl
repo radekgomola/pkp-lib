@@ -97,7 +97,10 @@
         {fbvFormSection label="submission.url.web" for="urlWeb"}
 		{fbvElement type="text" name="urlWeb" multilingual="true" id="urlWeb" value=$urlWeb maxlength="255" readonly=$readOnly}
 	{/fbvFormSection}
-            
+        
+        {fbvFormSection label="submission.souvisejiciPublikace" description="submission.submit.metadataForm.tip"}
+                {fbvElement type="keyword" id="subjects" subLabelTranslate=true multilingual=true current=$subjects disabled=$readOnly}
+        {/fbvFormSection}
         {*{fbvFormSection label="submission.souvisejiciPublikace" description="submission.submit.metadataForm.tip"}
                 {fbvElement type="keyword" name="souvisejiciPublikace" id="souvisejiciPublikace" current=$souvisejiciPublikace maxlength="500"}
         {/fbvFormSection} *}
