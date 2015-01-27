@@ -41,11 +41,10 @@
         <div class="pkp_structure_subfoot">
             <div class="pkp_structure_content">
                 <div style="float:left; width: 680px">
-                    <a href="http://www.muni.cz/press?lang=cs" target="_self" title="MUNIPRESS"> <img src="{$baseUrl}/images/design/{translate key="footer.publisher.logo"}.png" /></a>
+                    <a href="http://www.muni.cz/press?lang=cs" target="_self" title="MUNIPRESS"> <img src="{$baseUrl}/images/design/{translate key="footer.publisher.logo"}.png" alt="Munipress"/></a>
                     
                     <div style="width: 400px;">
                         <h4 style="float:left;">{translate key="footer.contacts"}</h4>
-                        <!--<a href="http://www.muni.cz/people/24294" target="_blank" title="PhDr. Alena Mizerová" style="font-weight:bold"> PhDr.&nbsp;Alena&nbsp;Mizerová</a>&nbsp;<em>(ředitelka)</em>,-->
                         <div class="footer_contacts">
                             <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;%6d%75%6e%69%70%72%65%73%73@%70%72%65%73%73%2e%6d%75%6e%69%2e%63%7a" target="_blank" title="munipress">munipress@press.muni.cz</a>
                         </div>
@@ -57,10 +56,10 @@
                             <tr>
                                 <td>
                                     <a href="{translate key='footer.muni.link'}" title="{translate key='footer.muni'}" target="_blank">
-                                        <img src="{$baseUrl}/images/mu_logo_small.png" alt="" class="link_img"/>
+                                        <img src="{$baseUrl}/images/mu_logo_small.png" alt="Masaryk university" class="link_img"/>
                                     </a>
                                 </td>
-                                <td align="right">
+                                <td style="float: right;">
                                     <a href="{translate key='footer.uvt.link'}" title="{translate key='footer.uvt'}" target="_blank">
                                         <img src="{$baseUrl}/images/uvt_logo_small.png" alt="{translate key='footer.uvt'}" class="link_img"/>
                                     </a>

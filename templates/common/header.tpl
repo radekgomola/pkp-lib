@@ -34,8 +34,7 @@
 				{rdelim});
 		{rdelim});
 	</script>
-	<div class="pkp_structure_page">
-            <a name="kotva2"></a> 
+	<div class="pkp_structure_page" id="kotva2">
 		{url|assign:fetchHeaderUrl router=$smarty.const.ROUTE_COMPONENT component="page.PageHandler" op="header" escape=false}
 		{load_url_in_div class="pkp_structure_head" id="headerContainer" url=$fetchHeaderUrl}
 		<div class="pkp_structure_body">
@@ -57,7 +56,7 @@
 						$('div.pkp_structure_main').pkpHandler('$.pkp.controllers.PageHandler');
 					{rdelim});
 				</script>
-
+                                <div class="sidebar_help"></div>
 				<div class="pkp_structure_main">
 					{** allow pages to provide their own titles **}
 					{if !$suppressPageTitle}
