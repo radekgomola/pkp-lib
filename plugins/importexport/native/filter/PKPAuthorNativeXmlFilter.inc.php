@@ -101,17 +101,17 @@ class PKPAuthorNativeXmlFilter extends NativeExportFilter {
                 /***********
                  * MUNIPRESS
                  ***********/
-                $this->createOptionalNode($doc, $authorNode, 'mu', $author->getMU());
-                $this->createOptionalNode($doc, $authorNode, 'uco', $author->getUCO());               
-                $this->createOptionalNode($doc, $authorNode, 'tituly_pred', $author->getTitulyPred());
-                $this->createOptionalNode($doc, $authorNode, 'tituly_za', $author->getTitulyZa());
-                $this->createOptionalNode($doc, $authorNode, 'rodne_cislo', $author->getRodneCislo());
-                $this->createOptionalNode($doc, $authorNode, 'poznamka', $author->getPoznamka());
+                $this->createOptionalNode($doc, $authorNode, 'mu_number', $author->getMU());
+                $this->createOptionalNode($doc, $authorNode, 'uco_numbers', $author->getUCO());               
+                $this->createOptionalNode($doc, $authorNode, 'titulyPred', $author->getTitulyPred());
+                $this->createOptionalNode($doc, $authorNode, 'titulyZa', $author->getTitulyZa());
+                $this->createOptionalNode($doc, $authorNode, 'rodneCislo', $author->getRodneCislo());
+                $this->createOptionalNode($doc, $authorNode, 'poznamka_xml', $author->getPoznamka());
                 $this->createOptionalNode($doc, $authorNode, 'druhePrijmeni', $author->getDruhePrijmeni());
                 $this->createOptionalNode($doc, $authorNode, 'obcanskeJmeno', $author->getObcanskeJmeno());
                 $this->createOptionalNode($doc, $authorNode, 'obcanskePrijmeni', $author->getObcanskePrijmeni());
                 $this->createOptionalNode($doc, $authorNode, 'honorarCelkem', $author->getHonorarCelkem());
-                $this->createOptionalNode($doc, $authorNode, 'honorarVyplaceno', $author->getHonorarVyplaceno());   
+                $this->createOptionalNode($doc, $authorNode, 'honorarVyplaceno', $author->getHonorarVyplaceno());
                 $this->createOptionalNode($doc, $authorNode, 'zobrazHlavicka', $author->getZobrazHlavicka());   
                 $this->createOptionalNode($doc, $authorNode, 'zobrazAutori', $author->getZobrazAutori());   
                 $this->createOptionalNode($doc, $authorNode, 'zobrazOstatni', $author->getZobrazOstatni());  

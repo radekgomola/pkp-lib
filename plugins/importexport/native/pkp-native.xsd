@@ -180,29 +180,29 @@
 			<element name="country" type="string" minOccurs="0" maxOccurs="1" />
 			<element name="email" type="string" />
 			<element name="url" type="anyURI" minOccurs="0" maxOccurs="1" />
-			<element name="biography" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded" />
-                        
-                        <!--MUNIPRESS-->
-                        <element name="mu" type="int" minOccurs="0" maxOccurs="1"/>
-                        <element name="uco" type="int" minOccurs="0" maxOccurs="1" />
-                        <element name="tituly_pred" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="tituly_za" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="rodne_cislo" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="poznamka" type="string" minOccurs="0" maxOccurs="unbounded"/>
-                        <element name="druhePrijmeni" type="string" minOccurs="0" maxOccurs="unbounded"/>
-                        <element name="obcanskeJmeno" type="string" minOccurs="0" maxOccurs="unbounded"/>
-                        <element name="obcanskePrijmeni" type="string" minOccurs="0" maxOccurs="unbounded"/>
-                        <element name="honorarCelkem" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="honorarVyplaceno" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="zobrazHlavicka" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="zobrazAutori" type="string" minOccurs="0" maxOccurs="1"/>
-                        
+			<element name="biography" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded" />                        
 		</sequence>
 	</complexType>
 
 	<complexType name="author">
 		<complexContent>
 			<extension base="pkp:identity">
+                                <sequence>
+                                    <!--MUNIPRESS-->
+                                        <element name="mu_number" type="int" minOccurs="0" maxOccurs="1"/>
+                                        <element name="uco_number" type="int" minOccurs="0" maxOccurs="1" />
+                                        <element name="titulyPred" type="string" minOccurs="0" maxOccurs="1"/>
+                                        <element name="titulyZa" type="string" minOccurs="0" maxOccurs="1"/>
+                                        <element name="rodneCislo" type="string" minOccurs="0" maxOccurs="1"/>
+                                        <element name="poznamka_xml" type="string" minOccurs="0" maxOccurs="unbounded"/>
+                                        <element name="druhePrijmeni" type="string" minOccurs="0" maxOccurs="unbounded"/>
+                                        <element name="obcanskeJmeno" type="string" minOccurs="0" maxOccurs="unbounded"/>
+                                        <element name="obcanskePrijmeni" type="string" minOccurs="0" maxOccurs="unbounded"/>
+                                        <element name="honorarCelkem" type="string" minOccurs="0" maxOccurs="1"/>
+                                        <element name="honorarVyplaceno" type="string" minOccurs="0" maxOccurs="1"/>
+                                        <element name="zobrazHlavicka" type="string" minOccurs="0" maxOccurs="1"/>
+                                        <element name="zobrazAutori" type="string" minOccurs="0" maxOccurs="1"/>
+                                </sequence>
 				<attribute name="primary_contact" type="boolean" default="false" />
 				<attribute name="user_group_ref" type="pkp:user_group_ref" use="required" />
 				<attribute name="include_in_browse" type="boolean" default="true" />
@@ -216,34 +216,32 @@
 
 	<complexType name="representation">
 		<sequence>
+                        <!--Other data-->
+                            <element name="width_mp" type="int" minOccurs="0" maxOccurs="1"/>
+                            <element name="widthUnitCode_mp" type="string" minOccurs="0" maxOccurs="1"/>
+                            <element name="height_mp" type="int" minOccurs="0" maxOccurs="1"/>
+                            <element name="heightUnitCode_mp" type="string" minOccurs="0" maxOccurs="1"/>
+                            <element name="thickness_mp" type="int" minOccurs="0" maxOccurs="1"/>
+                            <element name="thicknessUnitCode_mp" type="string" minOccurs="0" maxOccurs="1"/>
+                            <element name="weight_mp" type="string" minOccurs="0" maxOccurs="1"/>
+                            <element name="weightUnitCode_mp" type="string" minOccurs="0" maxOccurs="1"/>
+                            <element name="file_size_mp" type="string" minOccurs="0" maxOccurs="1"/>
+
+                            <!--MUNIPRESS-->
+                            <element name="pocet_stran" type="int" minOccurs="0" maxOccurs="unbounded"/>
+                            <element name="datum_vydani" type="date" minOccurs="0" maxOccurs="1"/>
+                            <element name="poradi_vydani" type="string" minOccurs="0" maxOccurs="1"/>
+                            <element name="naklad" type="int" minOccurs="0" maxOccurs="1"/>
+                            <element name="povVytiskyDosly" type="date" minOccurs="0" maxOccurs="1"/>
+                            <element name="povVytiskyOdesly" type="date" minOccurs="0" maxOccurs="1"/>
+                            <element name="tiskarna" type="string" minOccurs="0" maxOccurs="unbounded"/>
+                            <element name="biblio_citace" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded"/>
+                            <element name="url_stazeni" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded"/>
+                            <element name="calameo_hash" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="name" type="pkp:localizedNode" minOccurs="1" maxOccurs="unbounded" />
 			<element name="seq" type="int" minOccurs="1" maxOccurs="1" />
-			<element name="submission_file_ref" type="pkp:submission_file_ref" minOccurs="0" maxOccurs="unbounded" />
+                        <element name="submission_file_ref" type="pkp:submission_file_ref" minOccurs="0" maxOccurs="unbounded" />
                         
-                        <!--Other data-->
-                        <element name="width_mp" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="widthUnitCode_mp" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="height_mp" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="heightUnitCode_mp" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="thickness_mp" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="thicknessUnitCode_mp" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="weight_mp" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="weightUnitCode_mp" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="file_size_mp" type="string" minOccurs="0" maxOccurs="1"/>
-                        
-                        <!--MUNIPRESS-->
-                        <element name="pocet_stran" type="int" minOccurs="0" maxOccurs="unbounded"/>
-                        <element name="datum_vydani" type="date" minOccurs="0" maxOccurs="1"/>
-                        <element name="poradi_vydani" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="naklad" type="int" minOccurs="0" maxOccurs="1"/>
-                        <element name="povVytiskyDosly" type="date" minOccurs="0" maxOccurs="1"/>
-                        <element name="povVytiskyOdesly" type="date" minOccurs="0" maxOccurs="1"/>
-                        <element name="tiskarna" type="string" minOccurs="0" maxOccurs="unbounded"/>
-                        <element name="biblio_citace" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded"/>
-                        <element name="url_stazeni" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded"/>
-                        <element name="calameo_hash" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded"/>
-                        
-                        <!--MUNIPRESS END-->  
 		</sequence>
 	</complexType>
 

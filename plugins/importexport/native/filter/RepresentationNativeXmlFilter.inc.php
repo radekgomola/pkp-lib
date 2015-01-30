@@ -73,11 +73,6 @@ class RepresentationNativeXmlFilter extends NativeExportFilter {
 		// Create the representation node
 		$representationNode = $doc->createElementNS($deployment->getNamespace(), $deployment->getRepresentationNodeName());
 
-		// Add metadata
-		$this->createLocalizedNodes($doc, $representationNode, 'name', $representation->getName(null));
-		$sequenceNode = $doc->createElementNS($deployment->getNamespace(), 'seq');
-		$sequenceNode->appendChild($doc->createTextNode($representation->getSeq()));
-		$representationNode->appendChild($sequenceNode);
                 
                 
                 /****************
@@ -108,14 +103,21 @@ class RepresentationNativeXmlFilter extends NativeExportFilter {
                 $this->createLocalizedNodes($doc, $representationNode, 'url_stazeni', $representation->getUrlStazeni(null));
                 $this->createLocalizedNodes($doc, $representationNode, 'calameo_hash', $representation->getCalameoHash(null));
                 
+                
+		// Add metadata
+		$this->createLocalizedNodes($doc, $representationNode, 'name', $representation->getName(null));
+		$sequenceNode = $doc->createElementNS($deployment->getNamespace(), 'seq');
+		$sequenceNode->appendChild($doc->createTextNode($representation->getSeq()));
+		$representationNode->appendChild($sequenceNode);
+                
 
 		// Add files
-//		foreach ($this->getFiles($representation) as $submissionFile) {
-//			$fileRefNode = $doc->createElementNS($deployment->getNamespace(), 'submission_file_ref');
-//			$fileRefNode->setAttribute('id', $submissionFile->getFileId());
-//			$fileRefNode->setAttribute('revision', $submissionFile->getRevision());
-//			$representationNode->appendChild($fileRefNode);
-//		}
+		foreach ($this->getFiles($representation) as $submissionFile) {
+			$fileRefNode = $doc->createElementNS($deployment->getNamespace(), 'submission_file_ref');
+			$fileRefNode->setAttribute('id', $submissionFile->getFileId());
+			$fileRefNode->setAttribute('revision', $submissionFile->getRevision());
+			$representationNode->appendChild($fileRefNode);
+		}
                 
                 return $representationNode;
 	}

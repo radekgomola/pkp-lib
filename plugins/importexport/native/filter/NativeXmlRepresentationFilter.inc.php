@@ -57,10 +57,7 @@ class NativeXmlRepresentationFilter extends NativeImportFilter {
 		// Handle metadata in subelements.  Look for the 'name' and 'seq' elements.
 		// All other elements are handled by subclasses.
 		for ($n = $node->firstChild; $n !== null; $n=$n->nextSibling) if (is_a($n, 'DOMElement')) switch($n->tagName) {
-			case 'name': $representation->setName($n->textContent, $n->getAttribute('locale')); break;
-			case 'seq': $representation->setSeq($n->textContent); break;
                         //Other data
-                    
                         case 'width_mp': $representation->setWidth($n->textContent); break;
                         case 'widthUnitCode_mp': $representation->setWidthUnitCode($n->textContent); break;
                         case 'height_mp': $representation->setHeight($n->textContent); break;
@@ -82,6 +79,11 @@ class NativeXmlRepresentationFilter extends NativeImportFilter {
                         case 'biblio_citace': $representation->setBibliografickaCitace($n->textContent, $n->getAttribute('locale')); break;
                         case 'url_stazeni': $representation->setUrlStazeni($n->textContent, $n->getAttribute('locale')); break;
                         case 'calameo_hash': $representation->setCalameoHash($n->textContent, $n->getAttribute('locale')); break;
+                        
+                    
+			case 'name': $representation->setName($n->textContent, $n->getAttribute('locale')); break;
+			case 'seq': $representation->setSeq($n->textContent); break;                 
+                        
                         default:
 				fatalError('Unknown element ' . $n->tagName);
 

@@ -101,12 +101,12 @@ class NativeXmlPKPAuthorFilter extends NativeImportFilter {
                         /**************
                          * MUNIPRESS
                         ***************/
-                        case 'mu': $author->setMU($n->textContent); break;
-                        case 'uco': $author->setUCO($n->textContent); break;                        
-                        case 'tituly_pred': $author->setTitulyPred($n->textContent); break;
-                        case 'tituly_za': $author->setTitulyZa($n->textContent); break;
-                        case 'rodne_cislo': $author->setRodneCislo($n->textContent); break;
-                        case 'poznamka': $author->setPoznamka($n->textContent);   break;
+                        case 'mu_number': $author->setMU($n->textContent); break;
+                        case 'uco_number': $author->setUCO($n->textContent); break;                        
+                        case 'titulyPred': $author->setTitulyPred($n->textContent); break;
+                        case 'titulyZa': $author->setTitulyZa($n->textContent); break;
+                        case 'rodneCislo': $author->setRodneCislo($n->textContent); break;
+                        case 'poznamka_xml': $author->setPoznamka($n->textContent);   break;
                         case 'druhePrijmeni': $author->setDruhePrijmeni($n->textContent); break;
                         case 'obcanskeJmeno': $author->setObcanskeJmeno($n->textContent); break;
                         case 'obcanskePrijmeni': $author->setObcanskePrijmeni($n->textContent); break;
