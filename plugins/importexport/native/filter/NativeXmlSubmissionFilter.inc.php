@@ -140,30 +140,6 @@ class NativeXmlSubmissionFilter extends NativeImportFilter {
 			case 'comments_to_editor':
 				$submission->setCommentsToEditor($n->textContent);
 				break;
-                            
-                        /***********
-                         * MUNIPRESS
-                         **********/
-                        case 'archivace':
-                                $submission->setArchivace($n->textContent);
-				break;
-                        case 'a_kol':
-                                $submission->setAKolektiv($n->textContent);
-				break;
-                        case 'cena': $submission->setCena($n->textContent);
-				break; 
-                        case 'cena_ebook': $submission->setCenaEbook($n->textContent);
-				break; 		
-                        case 'urlOC': $submission->setUrlOC($n->textContent);
-				break;
-                        case 'urlOC_ebook': $submission->setUrlOCEbook($n->textContent);
-				break;                                                   
-                        case 'datumVydani': $submission->setDatumVydani($n->textContent);
-				break;
-                        case 'muPracoviste': $submission->setFakulta($n->textContent);
-				break;
-                        case 'poznamkaAdmin': $submission->setPoznamkaAdmin($n->textContent);
-				break;  
 			default:
 				fatalError('Unknown element ' . $n->tagName);
 		}
@@ -255,13 +231,6 @@ class NativeXmlSubmissionFilter extends NativeImportFilter {
 			'coverage_sample' => 'setCoverageSample',
 			'source' => 'setSource',
 			'rights' => 'setRights',
-                    
-                        'languages' => 'setLanguages',
-                    
-                        //MUNIPRESS
-                        'urlWeb' => 'setUrlWeb',                               
-                        'poznamka' => 'setPoznamka',
-                        'dedikace' => 'setDedikace',
 		);
 	}
 

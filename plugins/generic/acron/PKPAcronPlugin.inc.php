@@ -101,7 +101,7 @@ class PKPAcronPlugin extends GenericPlugin {
 	/**
 	 * @see GenericPlugin::manage()
 	 */
-	function manage($verb, $args, &$message) {
+	function manage($verb, $args, &$message, &$messageParams, &$pluginModalContent = NULL) {
 		switch ($verb) {
 			case 'enable':
 				$this->updateSetting(0, 'enabled', true);

@@ -30,7 +30,7 @@ class PageHandler extends Handler {
 	/**
 	 * @copydoc PKPHandler::authorize()
 	 */
-	function authorize($request, &$args, $roleAssignments) {
+	function authorize($request, &$args, $roleAssignments, $enforceRestrictedSite = false) {
 		import('lib.pkp.classes.security.authorization.PKPSiteAccessPolicy');
 		$this->addPolicy(new PKPSiteAccessPolicy(
 			$request,

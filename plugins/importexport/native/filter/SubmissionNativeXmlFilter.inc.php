@@ -90,7 +90,7 @@ class SubmissionNativeXmlFilter extends NativeExportFilter {
 		$this->addIdentifiers($doc, $submissionNode, $submission);
 		$this->addMetadata($doc, $submissionNode, $submission);
 		$this->addAuthors($doc, $submissionNode, $submission);
-		//$this->addFiles($doc, $submissionNode, $submission);
+		$this->addFiles($doc, $submissionNode, $submission);
 		$this->addRepresentations($doc, $submissionNode, $submission);
 
 		return $submissionNode;
@@ -159,23 +159,6 @@ class SubmissionNativeXmlFilter extends NativeExportFilter {
 		$this->createLocalizedNodes($doc, $submissionNode, 'source', $submission->getSource(null));
 		$this->createLocalizedNodes($doc, $submissionNode, 'rights', $submission->getRights(null));
 		$this->createOptionalNode($doc, $submissionNode, 'comments_to_editor', $submission->getCommentsToEditor());
-                
-                /***********
-                 * MUNIPRESS
-                 ***********/
-                $this->createOptionalNode($doc, $submissionNode, 'archivace', $submission->getArchivace());
-                $this->createOptionalNode($doc, $submissionNode, 'a_kol', $submission->getAKolektiv());
-                $this->createOptionalNode($doc, $submissionNode, 'cena', $submission->getCena()); 
-                $this->createOptionalNode($doc, $submissionNode, 'cena_ebook', $submission->getCenaEbook()); 		
-                $this->createOptionalNode($doc, $submissionNode, 'urlOC', $submission->getUrlOC());
-                $this->createOptionalNode($doc, $submissionNode, 'urlOC_ebook', $submission->getUrlOCEbook());
-                $this->createOptionalNode($doc, $submissionNode, 'poznamkaAdmin', $submission->getPoznamkaAdmin());                             
-                $this->createOptionalNode($doc, $submissionNode, 'datumVydani', $submission->getDatumVydani());
-                $this->createOptionalNode($doc, $submissionNode, 'muPracoviste', $submission->getFakulta());
-                
-                $this->createLocalizedNodes($doc, $submissionNode, 'urlWeb', $submission->getUrlWeb(null));
-                $this->createLocalizedNodes($doc, $submissionNode, 'poznamka', $submission->getPoznamka(null));
-                $this->createLocalizedNodes($doc, $submissionNode, 'dedikace', $submission->getDedikace(null));
 	}
 
 	/**
