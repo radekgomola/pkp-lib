@@ -104,7 +104,7 @@
 	<message key="user.profile.publicProfile">Profil uživatele</message>
 	<message key="user.profile.repeatNewPassword">Nové heslo znovu</message>
   <!-- Login -->
-	<message key="user.login.registerNewAccount">Nejse uživatelem? Registrujte se</message>
+	<message key="user.login.registerNewAccount">Nejste uživatelem? Registrujte se</message>
 	<message key="user.login.resetPasswordInstructions"><![CDATA[Z bezpěčnostních důvodů zasílá systém resetované hestlo na email uživatel, spíše než zadávání 
 e-mailu níže pro resetování hesla. Potvrzení příjde na tuto e-mailovou adresu.]]></message>
 

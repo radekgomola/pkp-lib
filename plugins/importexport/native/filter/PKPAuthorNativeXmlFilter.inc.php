@@ -97,6 +97,24 @@ class PKPAuthorNativeXmlFilter extends NativeExportFilter {
 		$this->createOptionalNode($doc, $authorNode, 'url', $author->getUrl());
 
 		$this->createLocalizedNodes($doc, $authorNode, 'biography', $author->getBiography(null));
+                
+                /***********
+                 * MUNIPRESS
+                 ***********/
+                $this->createOptionalNode($doc, $authorNode, 'mu', $author->getMU());
+                $this->createOptionalNode($doc, $authorNode, 'uco', $author->getUCO());               
+                $this->createOptionalNode($doc, $authorNode, 'titulyPred', $author->getTitulyPred());
+                $this->createOptionalNode($doc, $authorNode, 'titulyZa', $author->getTitulyZa());
+                $this->createOptionalNode($doc, $authorNode, 'rodneCislo', $author->getRodneCislo());
+                $this->createOptionalNode($doc, $authorNode, 'poznamka', $author->getPoznamka());
+                $this->createOptionalNode($doc, $authorNode, 'druhePrijmeni', $author->getDruhePrijmeni());
+                $this->createOptionalNode($doc, $authorNode, 'obcanskeJmeno', $author->getObcanskeJmeno());
+                $this->createOptionalNode($doc, $authorNode, 'obcanskePrijmeni', $author->getObcanskePrijmeni());
+                $this->createOptionalNode($doc, $authorNode, 'honorarCelkem', $author->getHonorarCelkem());
+                $this->createOptionalNode($doc, $authorNode, 'honorarVyplaceno', $author->getHonorarVyplaceno());
+                $this->createOptionalNode($doc, $authorNode, 'zobrazHlavicka', $author->getZobrazHlavicka());   
+                $this->createOptionalNode($doc, $authorNode, 'zobrazAutori', $author->getZobrazAutori());   
+                $this->createOptionalNode($doc, $authorNode, 'zobrazOstatni', $author->getZobrazOstatni());
 
 		return $authorNode;
 	}

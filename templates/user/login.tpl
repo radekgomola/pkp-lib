@@ -59,12 +59,13 @@
 			{/fbvFormSection}
 		{/if}{* $showRemember *}
 		{if !$hideRegisterLink}
-			{if $source}
+			{*{if $source}
 				{url|assign:cancelUrl page="user" op="register" source=$source}
 			{else}
 				{url|assign:cancelUrl page="user" op="register"}
 			{/if}
-			{fbvFormButtons cancelUrl=$cancelUrl cancelText="user.login.registerNewAccount" submitText="user.login"}
+			{fbvFormButtons cancelUrl=$cancelUrl cancelText="user.login.registerNewAccount" submitText="user.login"}*}
+                        {fbvFormButtons cancelText="login.bezRegistrace" submitText="user.login"}
 		{else}
 			{fbvFormButtons hideCancel=true submitText="user.login.resetPassword"}
 		{/if}
