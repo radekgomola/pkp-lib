@@ -252,7 +252,7 @@
                         <element name="poznamkaAdmin" type="string" minOccurs="0" maxOccurs="1"/>
                         <element name="datumVydani" type="date" minOccurs="0" maxOccurs="1"/>
                         <element name="muPracoviste" type="string" minOccurs="0" maxOccurs="1"/>
-                        <element name="url_Web" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded"/>
+                        <element name="urlWeb" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded"/>
                         <element name="poznamka" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded"/>
                         <element name="dedikace" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded"/>                  
                         

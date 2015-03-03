@@ -258,7 +258,7 @@ class NativeXmlSubmissionFilter extends NativeImportFilter {
 //                        'languages' => 'setLanguages',
                     
                         //MUNIPRESS
-                        'url_Web' => 'setUrlWeb',                               
+                        'urlWeb' => 'setUrlWeb',                               
                         'poznamka' => 'setPoznamka',
                         'dedikace' => 'setDedikace',
 		);

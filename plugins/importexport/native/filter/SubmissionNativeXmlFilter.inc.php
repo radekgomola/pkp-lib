@@ -172,7 +172,7 @@ class SubmissionNativeXmlFilter extends NativeExportFilter {
                 $this->createOptionalNode($doc, $submissionNode, 'poznamkaAdmin', $submission->getPoznamkaAdmin());                             
                 $this->createOptionalNode($doc, $submissionNode, 'datumVydani', $submission->getDatumVydani());
                 $this->createOptionalNode($doc, $submissionNode, 'muPracoviste', $submission->getFakulta());                
-                $this->createLocalizedNodes($doc, $submissionNode, 'url_Web', $submission->getUrlWeb(null));
+                $this->createLocalizedNodes($doc, $submissionNode, 'urlWeb', $submission->getUrlWeb(null));
                 $this->createLocalizedNodes($doc, $submissionNode, 'poznamka', $submission->getPoznamka(null));
                 $this->createLocalizedNodes($doc, $submissionNode, 'dedikace', $submission->getDedikace(null));
 	}

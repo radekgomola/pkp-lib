@@ -1308,7 +1308,7 @@ abstract class Submission extends DataObject {
 	 * Nastavuje url webu
 	 * @param $urlWeb string
 	 */
-	function setUrlWeb($urlWeb) {
+	function setUrlWeb($urlWeb, $locale) {
 		return $this->setData('urlWeb', $urlWeb, $locale);
 	}      
               
