@@ -727,7 +727,8 @@ class String {
 		if (in_array(substr($fields[0], -1, 1), $avoidColonChars)) {
 			$fullTitle = join(' ', $fields);
 		} else {
-			$fullTitle = join(': ', $fields);
+			//$fullTitle = join(': ', $fields);
+                        $fullTitle = join('. ', $fields);
 		}
 
 		return $fullTitle;
