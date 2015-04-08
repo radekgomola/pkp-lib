@@ -3,8 +3,8 @@
 /**
  * @file tests/classes/scheduledTask/ScheduledTaskHelperTest.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2000-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ScheduledTaskHelperTest
@@ -26,7 +26,7 @@ class ScheduledTaskHelperTest extends PKPTestCase {
 	 * @param $taskName string
 	 * @param $message string
 	 * @dataProvider notifyExecutionResultTestsDataProvider
-	 * @covers notifyExecutionResult
+	 * @covers ScheduledTaskHelper::notifyExecutionResult
 	 */
 	function testNotifyExecutionResultError($taskId, $taskName, $message) {
 		$taskResult = false;
@@ -53,7 +53,7 @@ class ScheduledTaskHelperTest extends PKPTestCase {
 	 * @param $taskName string
 	 * @param $message string
 	 * @dataProvider notifyExecutionResultTestsDataProvider
-	 * @covers notifyExecutionResult
+	 * @covers ScheduledTaskHelper::notifyExecutionResult
 	 */
 	function testNotifyExecutionResultSuccess($taskId, $taskName, $message) {
 		$taskResult = true;
@@ -93,7 +93,10 @@ class ScheduledTaskHelperTest extends PKPTestCase {
 	 * @return ScheduledTaskHelper
 	 */
 	private function _getHelper($expectedSubject, $message) {
-		$helperMock = $this->getMock('ScheduledTaskHelper', array('getMail'), array('some@email.com', 'Contact name'));
+		$helperMock = $this->getMock('ScheduledTaskHelper', array('getMail', 'getMessage'), array('some@email.com', 'Contact name'));
+		$helperMock->expects($this->any())
+				->method('getMessage')
+				->will($this->returnValue($message));
 
 		// Helper will use the Mail::send() method. Mock it.
 		import('lib.pkp.classes.mail.Mail');

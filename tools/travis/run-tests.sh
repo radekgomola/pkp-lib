@@ -2,8 +2,8 @@
 
 # @file tools/travis/run-tests.sh
 #
-# Copyright (c) 2014 Simon Fraser University Library
-# Copyright (c) 2010-2014 John Willinsky
+# Copyright (c) 2014-2015 Simon Fraser University Library
+# Copyright (c) 2010-2015 John Willinsky
 # Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
 #
 # Script to run data build, unit, and integration tests.
@@ -42,6 +42,7 @@ fi
 
 # Prep files
 cp config.TEMPLATE.inc.php config.inc.php
+sed -i -e "s/enable_cdn = On/enable_cdn = Off/" config.inc.php # Disable CDN use
 mkdir ${FILESDIR}
 sudo chown -R travis:www-data .
 

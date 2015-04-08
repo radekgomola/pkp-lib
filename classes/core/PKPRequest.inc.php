@@ -3,8 +3,8 @@
 /**
  * @file classes/core/PKPRequest.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2000-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPRequest
@@ -105,8 +105,10 @@ class PKPRequest {
 	function redirectSSL() {
 		$_this =& PKPRequest::_checkThis();
 
-		$url = 'https://' . $_this->getServerHost() . $_this->getRequestPath();
-		$queryString = $_this->getQueryString();
+		// Note that we are intentionally skipping PKP processing of REQUEST_URI and QUERY_STRING for a protocol redirect
+		// This processing is deferred to the redirected (target) URI
+		$url = 'https://' . $_this->getServerHost() . $_SERVER['REQUEST_URI'];
+		$queryString = $_SERVER['QUERY_STRING'];
 		if (!empty($queryString)) $url .= "?$queryString";
 		$_this->redirectUrl($url);
 	}
@@ -117,8 +119,10 @@ class PKPRequest {
 	function redirectNonSSL() {
 		$_this =& PKPRequest::_checkThis();
 
-		$url = 'http://' . $_this->getServerHost() . $_this->getRequestPath();
-		$queryString = $_this->getQueryString();
+		// Note that we are intentionally skipping PKP processing of REQUEST_URI and QUERY_STRING for a protocol redirect
+		// This processing is deferred to the redirected (target) URI
+		$url = 'http://' . $_this->getServerHost() . $_SERVER['REQUEST_URI'];
+		$queryString = $_SERVER['QUERY_STRING'];
 		if (!empty($queryString)) $url .= "?$queryString";
 		$_this->redirectUrl($url);
 	}
@@ -331,16 +335,15 @@ class PKPRequest {
 				: null));
 			HookRegistry::call('Request::getServerHost', array(&$_this->_serverHost, &$default, &$includePort));
 		}
-                
 
-                $host = $_this->_serverHost === null ? $default : $_this->_serverHost;
+		$host = $_this->_serverHost === null ? $default : $_this->_serverHost;
 
 		if (!$includePort) {
 			// Strip the port number, if one is included. (#3912)
 			return preg_replace("/:\d*$/", '', $host);
 		}
-		
-                return $host;
+
+		return $host;
 	}
 
 	/**

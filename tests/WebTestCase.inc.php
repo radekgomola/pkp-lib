@@ -3,8 +3,8 @@
 /**
  * @file lib/pkp/tests/WebTestCase.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2000-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class WebTestCase
@@ -42,7 +42,7 @@ class WebTestCase extends PHPUnit_Extensions_SeleniumTestCase {
 		// Retrieve and check configuration.
 		self::$baseUrl = getenv('BASEURL');
 		self::$timeout = (int) getenv('TIMEOUT');
-		if (!self::$timeout) self::$timeout = 30; // Default 30 seconds
+		if (!self::$timeout) self::$timeout = 60; // Default 60 seconds
 		parent::setUpBeforeClass();
 	}
 

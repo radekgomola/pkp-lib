@@ -3,8 +3,8 @@
 /**
  * @file classes/session/SessionManager.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2000-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SessionManager
@@ -219,6 +219,11 @@ class SessionManager {
 		$domain = ini_get('session.cookie_domain');
 		// Specific domains must contain at least one '.' (e.g. Chrome)
 		if (strpos($domain, '.') === false) $domain = false;
+
+		// Clear cookies with no domain #8921
+		if ($domain) {
+			setcookie(session_name(), "", 0, ini_get('session.cookie_path'), false);
+		}
 
 		return setcookie(
 			session_name(),
