@@ -295,6 +295,36 @@ class PKPTemplateManager extends Smarty {
 		}
 		return parent::fetch($resource_name, $cache_id, $compile_id, $display);
 	}
+        
+        function fetchMessageMunipress($resource_name, $cache_id = null, $compile_id = null, $display = false, $message = "") {
+		if (!$this->initialized) {
+			$this->initialize();
+		}
+                if(!empty($message)){
+                    $this->assign('message', $message);
+                }
+		// Add additional java script URLs
+		if (!empty($this->javaScripts)) {
+			$baseUrl = $this->get_template_vars('baseUrl');
+			$scriptOpen = '	<script type="text/javascript" src="';
+			$scriptClose = '"></script>';
+			$javaScript = '';
+			foreach ($this->javaScripts as $script) {
+				$javaScript .= $scriptOpen . $baseUrl . '/' . $script . $scriptClose . "\n";
+			}
+
+			$additionalHeadData = $this->get_template_vars('additionalHeadData');
+			$this->assign('additionalHeadData', $additionalHeadData."\n".$javaScript);
+
+			// Empty the java scripts array so that we don't include
+			// the same scripts twice in case the template manager is called again.
+			$this->javaScripts = array();
+                        
+                        
+		}
+               
+		return parent::fetch($resource_name, $cache_id, $compile_id, $display);
+	}
 
 	/**
 	 * Returns the template results as a JSON message.
@@ -1268,7 +1298,32 @@ class PKPTemplateManager extends Smarty {
 	 * @param $smarty Smarty
 	 * @return string of HTML/Javascript
 	 */
-	function smartyLoadUrlInDiv($params, &$smarty) {
+//	function smartyLoadUrlInDiv($params, &$smarty) {
+//		// Required Params
+//		if (!isset($params['url'])) {
+//			$smarty->trigger_error("url parameter is missing from load_url_in_div");
+//		}
+//		if (!isset($params['id'])) {
+//			$smarty->trigger_error("id parameter is missing from load_url_in_div");
+//		}
+//		// clear this variable, since it appears to carry over from previous load_url_in_div template assignments.
+//		$this->clear_assign(array('inDivClass'));
+//
+//		$this->assign('inDivUrl', $params['url']);
+//		$this->assign('inDivDivId', $params['id']);
+//		if (isset($params['class'])) $this->assign('inDivClass', $params['class']);
+//
+//		if (isset($params['loadMessageId'])) {
+//			$loadMessageId = $params['loadMessageId'];
+//			unset($params['url'], $params['id'], $params['loadMessageId'], $params['class']);
+//			$this->assign('inDivLoadMessage', __($loadMessageId, $params));
+//		}  else {
+//			$this->assign('inDivLoadMessage', $this->fetch('common/loadingContainer.tpl'));
+//		}
+//
+//		return $this->fetch('common/urlInDiv.tpl');
+//	}
+        function smartyLoadUrlInDiv($params, &$smarty) {
 		// Required Params
 		if (!isset($params['url'])) {
 			$smarty->trigger_error("url parameter is missing from load_url_in_div");
@@ -1287,13 +1342,17 @@ class PKPTemplateManager extends Smarty {
 			$loadMessageId = $params['loadMessageId'];
 			unset($params['url'], $params['id'], $params['loadMessageId'], $params['class']);
 			$this->assign('inDivLoadMessage', __($loadMessageId, $params));
-		} else {
+		} elseif (isset($params['munipressLoadMessage'])){
+                    
+                        $munipressLoadMessage = $params['munipressLoadMessage'];
+                        $this->assign('inDivLoadMessage', $this->fetchMessageMunipress('common/loadingContainerMessage.tpl', null, null,false, $munipressLoadMessage));
+                } else {
 			$this->assign('inDivLoadMessage', $this->fetch('common/loadingContainer.tpl'));
 		}
 
 		return $this->fetch('common/urlInDiv.tpl');
 	}
-
+  
 	/**
 	 * Smarty usage: {modal url=$dialogUrl actOnId="#gridName" button="#dialogButton"}
 	 *

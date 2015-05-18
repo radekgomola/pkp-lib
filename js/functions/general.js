@@ -43,6 +43,15 @@ function openWindow(url) {
 }
 
 /**
+ * Open window for preview.
+ */
+function openWindowDoi(url, width, height) {
+        var settings = 'width='.concat(width, ', height=',height,',screenX=100,screenY=100,toolbar=0,resizable=1,scrollbars=1');
+	window.open(url, 'Window', settings);
+}
+
+
+/**
  * Open window for reading tools.
  */
 function openRTWindow(url) {

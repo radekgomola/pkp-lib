@@ -32,12 +32,12 @@
 	<message key="announcement.moreAnnouncements">Více oznámení...</message>
 	<message key="announcement.noneExist">Nebyla vydána žádná oznámení.</message>
 	<message key="announcement.posted">Publikováno</message>
-  <message key="announcement.postedOn">Publikováno {$postDate}</message>
+  <message key="announcement.postedOn">Zasláno dne {$postDate}</message>
 	<message key="announcement.viewLink">Více...</message>
 	<message key="announcement.view">Zobrazit oznámení</message>
 	<message key="common.refresh">Obnovit</message>
-  <message key="common.accepted">Schváleno</message>
-	<message key="common.acknowledged">Potvrzený</message>
+  <message key="common.accepted">Přijato</message>
+	<message key="common.acknowledged">Oznámeno</message>
   <message key="common.activate">Aktivovat</message>
 	<message key="common.action">Akce</message>
 	<message key="common.active">Aktivní</message>
