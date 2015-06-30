@@ -18,7 +18,7 @@
 	<message key="grid.noItems">Žádné položky</message>
 	<message key="grid.settings">Nastavení</message>
   <message key="grid.noAuditors">Žádní auditoři</message>
-
+        <message key="grid.user.allPermissionLevels">Všechny úrovně oprávnění</message>
 	<message key="grid.action.manageAccess">Spravovat přístup</message>
 	<message key="grid.action.sort">Sort</message>
 	<message key="grid.action.addItem">Přidat položku</message>

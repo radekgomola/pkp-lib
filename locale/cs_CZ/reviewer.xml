@@ -9,7 +9,7 @@
     <message key="reviewer.step1.request">Žádost o posudek</message>
     <message key="reviewer.step1.requestBoilerplate">Byl/a jste vybrán/a jako případný recenzent následujícího příspěvku. Níže najdete informace o rukopisu a časový rozvrh recenzního řízení. Doufáme, že se budete moci zúčastnit.</message>
     <message key="reviewer.step1.viewAllDetails">Zobrazit všechny podrobnosti o rukopisu</message>
-    <message key="reviewer.submission.reviewerFiles">Soubory pro recenzenta</message>
+    <message key="reviewer.submission.reviewerFiles">Soubory recenzenta</message>
     <message key="reviewer.submission.declineReview">Odmítnout účast v recenzním řízení</message>
     <message key="reviewer.submission.declineReviewMessage">V poli níže můžete redaktorovi sdělit jakékoli důvody, které Vám v účasti brání.</message>
     <message key="reviewer.submission.acceptReview">2</message>

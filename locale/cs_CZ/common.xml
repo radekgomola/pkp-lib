@@ -15,6 +15,7 @@
   -->
 
 <locale name="cs_CZ" full_name = "Čeština">
+    <message key="editor.submissionReview.uploadAttachment">Přidat soubor</message>
      <message key="user.hello">Ahoj, </message>
   <message key="common.publicKnowledgeProject">Public Knowledge Project</message>
 	<message key="common.currentStyleSheet">Stávající šablona stylů</message>
