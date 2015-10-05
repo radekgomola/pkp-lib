@@ -8,7 +8,7 @@
  * Common site header.
  *}
 {strip}
-<!-- vytváří záplatu pro chybu menu, kdy se nezobrazuje správně nadpis-->
+ {*vytváří záplatu pro chybu menu, kdy se nezobrazuje správně nadpis*}
 {if $pageTitle == "common.openJournalSystems"}
 {if $requestedPage=="user"}
   {assign var=pageTitle value='user.register'}
@@ -16,7 +16,7 @@
 {assign var=pageTitle value='journal.currentIssue'}
 {/if}
 {/if}
-<!--jenom po sem-->
+{*jenom po sem*}
 
 {if !$pageTitleTranslated}{translate|assign:"pageTitleTranslated" key=$pageTitle}{/if}
 {if $pageCrumbTitle}

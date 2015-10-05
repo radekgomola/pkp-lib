@@ -647,7 +647,7 @@ class PKPUser extends DataObject {
 		if ($lastFirst) {
 			return "$lastName, " . ($salutation != ''?"$salutation ":'') . "$firstName" . ($middleName != ''?" $middleName":'');
 		} else {
-			return ($titleBefore != ''?"$titleBefore ":'') . ($salutation != ''?"$salutation ":'') . "$firstName " . ($middleName != ''?"$middleName ":'') . $lastName . ($suffix != ''?", $suffix":'') . ($titleAfter != ''?", $titleAfter":'');
+			return ($salutation != ''?"$salutation ":'') . ($titleBefore != ''?"$titleBefore ":'') . "$firstName " . ($middleName != ''?"$middleName ":'') . $lastName . ($suffix != ''?", $suffix":'') . ($titleAfter != ''?", $titleAfter":'');
 		}
 	}
 
