@@ -33,15 +33,19 @@ class Identity extends DataObject {
 	 * 	If true: Lastname, Firstname Middlename
 	 * @return string
 	 */
-	function getFullName($lastFirst = false) {
+	function getFullName($lastFirst = false, $tituly = false) {
 		$salutation = $this->getData('salutation');
 		$firstName = $this->getData('firstName');
 		$middleName = $this->getData('middleName');
 		$lastName = $this->getData('lastName');
 		$suffix = $this->getData('suffix');
+                $titulyPred = $this->getData('tituly_pred');
+                $titulyZa = $this->getData('tituly_za');
 		if ($lastFirst) {
 			return $lastName.", "  . $firstName . ($middleName != ''?" $middleName":'');
-		} else {
+		} elseif ($tituly) {
+                        return ($titulyPred != ''?"$titulyPred ":'') . "$firstName " . ($middleName != ''?"$middleName ":'') . $lastName . ($titulyZa != ''?", $titulyZa":'');
+                }else {
 			return ($salutation != ''?"$salutation ":'') . "$firstName " . ($middleName != ''?"$middleName ":'') . $lastName . ($suffix != ''?", $suffix":'');
 		}
 	}
