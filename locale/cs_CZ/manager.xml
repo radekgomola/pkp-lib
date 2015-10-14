@@ -126,7 +126,7 @@
 	<message key="manager.people.enrollment">Zapsání</message>
 	<message key="manager.people.enrollSelected">Zapsat vybrané uživatele</message>
 	<message key="manager.people.enrollSyncRole">Synchronizovat roli</message>
-	<message key="manager.people.enrollSync">Synchronizovat s jinou konferencí</message>
+	<message key="manager.people.enrollSync">Synchronizovat s jiným časopisem</message>
 	<message key="manager.people.enrollUserAsDescription">Uživateli může být kdykoli přiřazena nebo odejmuta role.</message>
 	<message key="manager.people.enrollUserAs">Zapsat uživatele jako</message>
 	<message key="manager.people.invalidUser">Promiňte, požadovaný uživatel neexistuje.</message>
