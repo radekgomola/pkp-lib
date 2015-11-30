@@ -32,14 +32,33 @@ class GroupDAO extends DAO {
 	 * @param $assocId int optional
 	 * @return Group
 	 */
-	function &getById($groupId, $assocType = null, $assocId = null) {
+//	function &getById($groupId, $assocType = null, $assocId = null) {
+//		$params = array((int) $groupId);
+//		if ($assocType !== null) {
+//			$params[] = (int) $assocType;
+//			$params[] = (int) $assocId;
+//		}
+//		$result =& $this->retrieve(
+//			'SELECT * FROM groups WHERE group_id = ?' . ($assocType !== null?' AND assoc_type = ? AND assoc_id = ?':''), $params
+//		);
+//
+//		$returner = null;
+//		if ($result->RecordCount() != 0) {
+//			$returner =& $this->_returnGroupFromRow($result->GetRowAssoc(false));
+//		}
+//		$result->Close();
+//		unset($result);
+//		return $returner;
+//	}
+        
+        function &getById($groupId, $assocType = null, $assocId = null) {
 		$params = array((int) $groupId);
 		if ($assocType !== null) {
 			$params[] = (int) $assocType;
 			$params[] = (int) $assocId;
 		}
 		$result =& $this->retrieve(
-			'SELECT * FROM groups WHERE group_id = ?' . ($assocType !== null?' AND assoc_type = ? AND assoc_id = ?':''), $params
+			'SELECT * FROM groups g LEFT JOIN groups_munipress gm ON g.group_id = gm.group_id WHERE g.group_id = ?' . ($assocType !== null?' AND g.assoc_type = ? AND g.assoc_id = ?':''), $params
 		);
 
 		$returner = null;
@@ -77,7 +96,7 @@ class GroupDAO extends DAO {
 		$returner = new DAOResultFactory($result, $this, '_returnGroupFromRow', array('id'));
 		return $returner;
 	}
-
+        
 	/**
 	 * Get the list of fields for which locale data is stored.
 	 * @return array
@@ -104,6 +123,8 @@ class GroupDAO extends DAO {
 		$group->setId($row['group_id']);
 		$group->setAboutDisplayed($row['about_displayed']);
 		$group->setPublishEmail($row['publish_email']);
+                $group->setPublishEmailList($row['publish_email_list']);
+                $group->setAllowMedailon($row['allow_medailon']);
 		$group->setSequence($row['seq']);
 		$group->setContext($row['context']);
 		$group->setAssocType($row['assoc_type']);
@@ -144,9 +165,23 @@ class GroupDAO extends DAO {
 				(int) $group->getPublishEmail()
 			)
 		);
-
+                
+                
 		$group->setId($this->getInsertGroupId());
 		$this->updateLocaleFields($group);
+                
+                $this->update(
+			'INSERT INTO groups_munipress
+				(group_id, publish_email_list, allow_medailon)
+				VALUES
+				(?, ?, ?)',
+			array(
+				(int) $group->getId(),
+				(int) $group->getPublishEmailList(),
+				(int) $group->getAllowMedailon()
+			)
+		);
+                
 		return $group->getId();
 	}
 
@@ -174,6 +209,19 @@ class GroupDAO extends DAO {
 				(int) $group->getId()
 			)
 		);
+                
+                $this->update(
+			'UPDATE groups_munipress
+				SET	publish_email_list = ?,
+					allow_medailon = ?
+				WHERE	group_id = ?',
+			array(
+				(int) $group->getPublishEmailList(),
+				(int) $group->getAllowMedailon(),
+                                (int) $group->getId()
+			)
+		);
+                
 		$this->updateLocaleFields($group);
 		return $returner;
 	}
@@ -204,6 +252,7 @@ class GroupDAO extends DAO {
 		$groupMembershipDao =& DAORegistry::getDAO('GroupMembershipDAO');
 		$groupMembershipDao->deleteMembershipByGroupId($groupId);
 		$this->update('DELETE FROM group_settings WHERE group_id = ?', $groupId);
+                $this->update('DELETE FROM group_munipress WHERE group_id = ?', $groupId);
 		return $this->update('DELETE FROM groups WHERE group_id = ?', $groupId);
 	}
 

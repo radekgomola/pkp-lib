@@ -25,8 +25,7 @@
 			<td class="more">&nbsp;</td>
 		</tr>
 		<tr class="description">
-			<td class="description">{$announcement->getLocalizedDescriptionShort()|nl2br}</td>
-			<td class="more">&nbsp;</td>
+			<td class="description" colspan="2">{$announcement->getLocalizedDescriptionShort()|nl2br}</td>
 		</tr>
 		<tr class="details">
 			<td class="posted">{translate key="announcement.posted"}: {$announcement->getDatePosted()}</td>

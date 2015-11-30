@@ -64,6 +64,21 @@ class GroupMembershipDAO extends DAO {
 		$returner = new DAOResultFactory($result, $this, '_returnMembershipFromRow');
 		return $returner;
 	}
+        
+        /**
+	 * Retrieve memberships by group ID lexicographically sorted.
+	 * @param $groupId int
+	 * @return ItemIterator
+	 */
+	function &getMembershipsLexicographically($groupId) {
+		$result =& $this->retrieveRange(
+			'SELECT * FROM group_memberships m, users u WHERE group_id = ? AND u.user_id = m.user_id ORDER BY u.last_name',
+			$groupId
+		);
+
+		$returner = new DAOResultFactory($result, $this, '_returnMembershipFromRow');
+		return $returner;
+	}
 
 	/**
 	 * Instantiate a new data object.
@@ -138,6 +153,29 @@ class GroupMembershipDAO extends DAO {
 				$membership->getAboutDisplayed(),
 				$membership->getGroupId(),
 				$membership->getUserId()
+			)
+		);
+	}
+        
+        /**
+	 * Update an existing group membership.
+	 * @param $membership GroupMembership
+	 */
+	function updateObjectSeq(&$member, $seq) {
+                $seq = isset($seq)?(int)$seq:0;
+		return $this->update(
+			'UPDATE group_memberships
+				SET
+					seq = ?,
+					about_displayed = ?
+				WHERE
+					group_id = ? AND
+					user_id = ?',
+			array(
+				$seq,
+				$member->getAboutDisplayed(),
+				$member->getGroupId(),
+				$member->getUserId()
 			)
 		);
 	}

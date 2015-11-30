@@ -96,6 +96,38 @@ class Group extends DataObject {
 		return $this->setData('publishEmail',$publishEmail);
 	}
 
+        /**
+	 * Get publish email in members' list
+	 * @return int
+	 */
+	function getPublishEmailList() {
+		return $this->getData('publishEmailList');
+	}
+
+	/**
+	 * Set publish email in members' list
+	 * @param $context int
+	 */
+	function setPublishEmailList($publishEmailList) {
+		return $this->setData('publishEmailList',$publishEmailList);
+	}
+        
+        /**
+	 * Get medailon link
+	 * @return int
+	 */
+	function getAllowMedailon() {
+		return $this->getData('allowMedailon');
+	}
+
+	/**
+	 * Set publish email in members' list
+	 * @param $context int
+	 */
+	function setAllowMedailon($allowMedailon) {
+		return $this->setData('allowMedailon',$allowMedailon);
+	}
+        
 	/**
 	 * Get flag indicating whether or not the group is displayed in "About"
 	 * @return boolean

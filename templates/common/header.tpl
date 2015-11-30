@@ -85,7 +85,7 @@
   	{if !$currentJournal->getSetting('useMuniStyle') && $leftSidebarCode && $rightSidebarCode}<link rel="stylesheet" href="{$baseUrl}/styles/bothSidebars.css" type="text/css" />{/if}
   {/if}
 	
-  <!--použitelné pouze pro muni press. Upravuje to zapínání a vypínání korporátního designu-->
+{*  použitelné pouze pro muni press. Upravuje to zapínání a vypínání korporátního designu*}
   {foreach from=$stylesheets item=cssUrl}
     
     {if $currentJournal} 
@@ -203,12 +203,13 @@
 	{$additionalHeadData}
 </head>
 <body id="pkp-{$pageTitle|replace:'.':'-'}">
+<div id="headerPanel">&nbsp;</div>
 <div id="container">
     {translate|assign:"help" key="languages.help"}
     <span id="{if $help == "cestina"}help_cz{else}help_en{/if}"></span>
 <div id="header">
 <div id="headerTitle">
-<!--přídán odkaz v hlavičce a upraveno zobrazování loga-->
+{*přídán odkaz v hlavičce a upraveno zobrazování loga*}
 <h1>
 <a href="{url page="index"}" class="header_link" style="text-decoration:none; outline:none;">
 
@@ -233,10 +234,9 @@
 </h1>
 </div>
 </div>
-
 <div id="body">
-
-<!-- upraveno aby se nezobrazoval levý blok ve chvíli, kdy jej někdo použije s korporátním designem-->
+    
+{*upraveno aby se nezobrazoval levý blok ve chvíli, kdy jej někdo použije s korporátním designem*}
 {if $currentJournal}
   	<div id="sidebar">
       {assign var=blok value="0"} 
@@ -267,12 +267,12 @@
   {/if}
 {/if}
 
-<div id="main">
+<div id="main" {if $homePage}class="homepage"{/if}>
 {include file="common/navbar2.tpl"}
 
 {include file="common/breadcrumbs.tpl"}
 <div class="headTitle">
-<h2>{$pageTitleTranslated}</h2>
+<h2 {if $homePage}class="homepageNadpis"{/if}>{$pageTitleTranslated}</h2>
 
 {if $pageSubtitle && !$pageSubtitleTranslated}{translate|assign:"pageSubtitleTranslated" key=$pageSubtitle}{/if}
 </div>

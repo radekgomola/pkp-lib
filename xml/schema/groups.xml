@@ -102,4 +102,23 @@
 			<UNIQUE/>
 		</index>
 	</table>
+        
+        <!--
+	  *
+	  * TABLE groups_munipress
+	  *
+	  -->
+	<table name="groups_munipress">
+		<field name="group_id" type="I8">
+			<KEY />
+			<AUTOINCREMENT/>
+		</field>
+		<field name="publish_email_list" type="I2">
+		</field>
+		<field name="allow_medailon" type="I2" />
+		<index name="group_munipress_pkey">
+			<col>group_id</col>
+			<UNIQUE />
+		</index>
+	</table>
 </schema>
