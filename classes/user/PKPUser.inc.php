@@ -388,14 +388,17 @@ class PKPUser extends DataObject {
 		return $this->getLocalizedBiography();
 	}
 
-  function getTitleBefore() {
+        function getTitleBefore() {
 		return $this->getData('titleBefore');
 	}
   
-  function getTitleAfter() {
+        function getTitleAfter() {
 		return $this->getData('titleAfter');
 	}
 
+        function getAllowPublishingEmail() {
+		return $this->getData('allowPublishingEmail');
+	}
 	/**
 	 * Get user biography.
 	 * @param $locale string
@@ -414,12 +417,16 @@ class PKPUser extends DataObject {
 		return $this->setData('biography', $biography, $locale);
 	}
   
-  function setTitleBefore($titleBefore) {
+        function setTitleBefore($titleBefore) {
 		return $this->setData('titleBefore', $titleBefore);
 	}
   
-  function setTitleAfter($titleAfter) {
+        function setTitleAfter($titleAfter) {
 		return $this->setData('titleAfter', $titleAfter);
+	}
+        
+        function setAllowPublishingEmail($allowPublishingEmail) {
+		return $this->setData('allowPublishingEmail', $allowPublishingEmail);
 	}
 
 	/**

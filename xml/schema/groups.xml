@@ -110,12 +110,13 @@
 	  -->
 	<table name="groups_munipress">
 		<field name="group_id" type="I8">
-			<KEY />
-			<AUTOINCREMENT/>
+			<NOTNULL />
 		</field>
-		<field name="publish_email_list" type="I2">
-		</field>
+		<field name="publish_email_list" type="I2" />
 		<field name="allow_medailon" type="I2" />
+                <field name="publish_url_list" type="I2" />
+		<field name="reverse_name" type="I2" />
+                <field name="full_profile" type="I2" />
 		<index name="group_munipress_pkey">
 			<col>group_id</col>
 			<UNIQUE />

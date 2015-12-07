@@ -43,7 +43,7 @@ class PKPUserDAO extends DAO {
 	 */
 	function &getById($userId, $allowDisabled = true) {
 		$result =& $this->retrieve(
-			'SELECT * FROM users WHERE user_id = ?' . ($allowDisabled?'':' AND disabled = 0'),
+			'SELECT u.*, um.* FROM users u LEFT JOIN user_munipress um ON u.user_id = um.user_id WHERE u.user_id = ?' . ($allowDisabled?'':' AND u.disabled = 0'),
 			array((int) $userId)
 		);
 
@@ -70,7 +70,7 @@ class PKPUserDAO extends DAO {
 	 */
 	function &getByUsername($username, $allowDisabled = true) {
 		$result =& $this->retrieve(
-			'SELECT * FROM users WHERE username = ?' . ($allowDisabled?'':' AND disabled = 0'),
+			'SELECT u.*, um.* FROM users u LEFT JOIN user_munipress um ON u.user_id = um.user_id WHERE u.username = ?' . ($allowDisabled?'':' AND u.disabled = 0'),
 			array($username)
 		);
 
@@ -97,7 +97,7 @@ class PKPUserDAO extends DAO {
 	 */
 	function &getUserByAuthStr($authstr, $allowDisabled = true) {
 		$result =& $this->retrieve(
-			'SELECT * FROM users WHERE auth_str = ?' . ($allowDisabled?'':' AND disabled = 0'),
+			'SELECT u.*, um.* FROM users u LEFT JOIN user_munipress um ON u.user_id = um.user_id WHERE u.auth_str = ?' . ($allowDisabled?'':' AND u.disabled = 0'),
 			array($authstr)
 		);
 
@@ -118,7 +118,7 @@ class PKPUserDAO extends DAO {
 	 */
 	function &getUserByEmail($email, $allowDisabled = true) {
 		$result =& $this->retrieve(
-			'SELECT * FROM users WHERE email = ?' . ($allowDisabled?'':' AND disabled = 0'),
+			'SELECT u.*, um.* FROM users u LEFT JOIN user_munipress um ON u.user_id = um.user_id WHERE u.email = ?' . ($allowDisabled?'':' AND u.disabled = 0'),
 			array($email)
 		);
 
@@ -140,7 +140,7 @@ class PKPUserDAO extends DAO {
 	 */
 	function &getUserByCredentials($username, $password, $allowDisabled = true) {
 		$result =& $this->retrieve(
-			'SELECT * FROM users WHERE username = ? AND password = ?' . ($allowDisabled?'':' AND disabled = 0'),
+			'SELECT u.*, um.* FROM users u LEFT JOIN user_munipress ON u.user_id = um.user_id WHERE u.username = ? AND u.password = ?' . ($allowDisabled?'':' AND u.disabled = 0'),
 			array($username, $password)
 		);
 
@@ -200,7 +200,7 @@ class PKPUserDAO extends DAO {
 		$user->setInlineHelp($row['inline_help']);
                 $user->setTitleBefore($row['title_before']);
                 $user->setTitleAfter($row['title_after']);
-                $user->setAllowPublishingEmail($row['allow_publish_email']);
+                $user->setAllowPublishingEmail($row['allowPublishingEmail']);
 
 		if ($callHook) HookRegistry::call('UserDAO::_returnUserFromRow', array(&$user, &$row));
 
@@ -220,9 +220,9 @@ class PKPUserDAO extends DAO {
 		}
 		$this->update(
 			sprintf('INSERT INTO users
-				(username, password, salutation, first_name, middle_name, initials, last_name, suffix, gender, email, url, phone, fax, mailing_address, billing_address, country, locales, date_last_email, date_registered, date_validated, date_last_login, must_change_password, disabled, disabled_reason, auth_id, auth_str, inline_help, title_before, title_after, allow_publish_email)
+				(username, password, salutation, first_name, middle_name, initials, last_name, suffix, gender, email, url, phone, fax, mailing_address, billing_address, country, locales, date_last_email, date_registered, date_validated, date_last_login, must_change_password, disabled, disabled_reason, auth_id, auth_str, inline_help)
 				VALUES
-				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, %s, %s, %s, %s, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, %s, %s, %s, %s, ?, ?, ?, ?, ?, ?)',
 				$this->datetimeToDB($user->getDateLastEmail()), $this->datetimeToDB($user->getDateRegistered()), $this->datetimeToDB($user->getDateValidated()), $this->datetimeToDB($user->getDateLastLogin())),
 			array(
 				$user->getUsername(),
@@ -248,13 +248,23 @@ class PKPUserDAO extends DAO {
 				$user->getAuthId()=='' ? null : (int) $user->getAuthId(),
 				$user->getAuthStr(),
 				(int) $user->getInlineHelp(),
+			)
+		);
+                
+                $user->setId($this->getInsertUserId());
+                
+                $this->update('INSERT INTO user_munipress
+				(user_id, title_before, title_after, allow_publish_email)
+				VALUES
+				(?, ?, ?, ?)',
+			array(  (int) $user->getId(),
                                 $user->getTitleBefore(),
                                 $user->getTitleAfter(),
                                 $user->getAllowPublishingEmail()
 			)
 		);
 
-		$user->setId($this->getInsertUserId());
+		
 		$this->updateLocaleFields($user);
 		return $user->getId();
 	}
@@ -280,7 +290,7 @@ class PKPUserDAO extends DAO {
 
 		$this->updateLocaleFields($user);
 
-		return $this->update(
+		$returner = $this->update(
 			sprintf('UPDATE	users
 				SET	username = ?,
 					password = ?,
@@ -307,10 +317,7 @@ class PKPUserDAO extends DAO {
 					disabled_reason = ?,
 					auth_id = ?,
 					auth_str = ?,
-					inline_help = ?,
-                                        title_before = ?,
-                                        title_after = ?,
-                                        allow_publish_email = ?
+					inline_help = ?
 				WHERE	user_id = ?',
 				$this->datetimeToDB($user->getDateLastEmail()), $this->datetimeToDB($user->getDateValidated()), $this->datetimeToDB($user->getDateLastLogin())),
 			array(
@@ -337,12 +344,24 @@ class PKPUserDAO extends DAO {
 				$user->getAuthId()=='' ? null : (int) $user->getAuthId(),
 				$user->getAuthStr(),
 				(int) $user->getInlineHelp(),
+				(int) $user->getId()
+			)
+		);
+                
+                $this->update(  'UPDATE	user_munipress
+				SET	title_before = ?,
+                                        title_after = ?,
+                                        allow_publish_email = ?
+				WHERE	user_id = ?',
+			array(  
                                 $user->getTitleBefore(),
                                 $user->getTitleAfter(),
                                 $user->getAllowPublishingEmail(),
-				(int) $user->getId(),
+				(int) $user->getId()
 			)
 		);
+                
+                return $returner;
 	}
 
 	function updateUser(&$user) {
@@ -369,6 +388,7 @@ class PKPUserDAO extends DAO {
 	 */
 	function deleteUserById($userId) {
 		$this->update('DELETE FROM user_settings WHERE user_id = ?', array((int) $userId));
+                $this->update('DELETE FROM user_munipress WHERE user_id = ?', array((int) $userId));
 		return $this->update('DELETE FROM users WHERE user_id = ?', array((int) $userId));
 	}
 
@@ -380,7 +400,7 @@ class PKPUserDAO extends DAO {
 	 */
 	function getUserFullName($userId, $allowDisabled = true) {
 		$result =& $this->retrieve(
-			'SELECT title_before, first_name, middle_name, last_name, title_after FROM users WHERE user_id = ?' . ($allowDisabled?'':' AND disabled = 0'),
+			'SELECT um.title_before, u.first_name, u.middle_name, u.last_name, um.title_after FROM users u LEFT JOIN user_munipress um ON (u.user_id = um.user_id) WHERE u.user_id = ?' . ($allowDisabled?'':' AND disabled = 0'),
 			array((int) $userId)
 		);
 
@@ -432,7 +452,7 @@ class PKPUserDAO extends DAO {
 	 */
 
 	function &getUsersByField($field = USER_FIELD_NONE, $match = null, $value = null, $allowDisabled = true, $dbResultRange = null, $sortBy = null, $sortDirection = SORT_DIRECTION_ASC) {
-		$sql = 'SELECT DISTINCT u.* FROM users u';
+		$sql = 'SELECT DISTINCT u.*, um.* FROM users u LEFT JOIN user_munipress um ON (u.user_id = um.user_id';
 		switch ($field) {
 			case USER_FIELD_USERID:
 				$sql .= ' WHERE u.user_id = ?';
@@ -488,7 +508,7 @@ class PKPUserDAO extends DAO {
 	 * @return array matching Users
 	 */
 	function &getUsersWithNoRole($allowDisabled = true, $dbResultRange = null) {
-		$sql = 'SELECT u.* FROM users u LEFT JOIN roles r ON u.user_id=r.user_id WHERE r.role_id IS NULL';
+		$sql = 'SELECT u.*, um.* FROM users u LEFT JOIN roles r ON u.user_id=r.user_id LEFT JOIN user_munipress um ON u.user_id = um.user_id WHERE r.role_id IS NULL';
 
 		$orderSql = ' ORDER BY u.last_name, u.first_name'; // FIXME Add "sort field" parameter?
 

@@ -152,7 +152,8 @@ class PKPTemplateManager extends Smarty {
 		$this->register_function('sort_search', array(&$this, 'smartySortSearch'));
 		$this->register_function('get_debug_info', array(&$this, 'smartyGetDebugInfo'));
 		$this->register_function('assign_mailto', array(&$this, 'smartyAssignMailto'));
-		$this->register_function('display_template', array(&$this, 'smartyDisplayTemplate'));
+                $this->register_function('assign_mail_address', array(&$this, 'smartyAssignMailAddress'));
+		$this->register_function('display_templtolate', array(&$this, 'smartyDisplayTemplate'));
 		$this->register_modifier('truncate', array(&$this, 'smartyTruncate'));
 		// JS UI components
 		$this->register_function('modal', array(&$this, 'smartyModal'));
@@ -567,6 +568,32 @@ class PKPTemplateManager extends Smarty {
 
 			$mailto = "&#109;&#97;&#105;&#108;&#116;&#111;&#58;";
 			$smarty->assign($params['var'], $mailto . $address_encode);
+		}
+	}
+        
+        /**
+	 * Smarty usage: {assign_mailto var="varName" address="email@address.com" ...]}
+	 *
+	 * Generates a hex-encoded mailto address and assigns it to the variable name specified..
+	 */
+	function smartyAssignMailAddress($params, &$smarty) {
+		if (isset($params['var']) && isset($params['address'])) {
+			// Password encoding code taken from Smarty's mailto
+			// function.
+			$address = $params['address'];
+			$address_encode = '';
+			for ($x=0; $x < strlen($address); $x++) {
+				if(preg_match('!\w!',$address[$x])) {
+					$address_encode .= '&#x' . bin2hex($address[$x]).';';
+				} else {
+					$address_encode .= $address[$x];
+				}
+			}
+			$text_encode = '';
+			for ($x=0; $x < strlen($text); $x++) {
+				$text_encode .= '&#x' . bin2hex($text[$x]).';';
+			}
+			$smarty->assign($params['var'], $address_encode);
 		}
 	}
 

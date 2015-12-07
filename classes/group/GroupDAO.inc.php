@@ -58,7 +58,7 @@ class GroupDAO extends DAO {
 			$params[] = (int) $assocId;
 		}
 		$result =& $this->retrieve(
-			'SELECT * FROM groups g LEFT JOIN groups_munipress gm ON g.group_id = gm.group_id WHERE g.group_id = ?' . ($assocType !== null?' AND g.assoc_type = ? AND g.assoc_id = ?':''), $params
+			'SELECT g.*, gm.publish_email_list, gm.allow_medailon, gm.publish_url_list, gm.reverse_name, gm.full_profile FROM groups g LEFT JOIN groups_munipress gm ON (g.group_id = gm.group_id) WHERE g.group_id = ?' . ($assocType !== null?' AND g.assoc_type = ? AND g.assoc_id = ?':''), $params
 		);
 
 		$returner = null;
@@ -89,7 +89,7 @@ class GroupDAO extends DAO {
 		if ($context !== null) $params[] = (int) $context;
 
 		$result =& $this->retrieveRange(
-			'SELECT * FROM groups WHERE assoc_type = ? AND assoc_id = ?' . ($context!==null?' AND context = ?':'') . ' ORDER BY context, seq',
+			'SELECT g.*, gm.publish_email_list, gm.allow_medailon, gm.publish_url_list, gm.reverse_name, gm.full_profile FROM groups g LEFT JOIN groups_munipress gm ON (g.group_id = gm.group_id)  WHERE g.assoc_type = ? AND g.assoc_id = ?' . ($context!==null?' AND g.context = ?':'') . ' ORDER BY g.context, g.seq',
 			$params, $rangeInfo
 		);
 
@@ -124,7 +124,10 @@ class GroupDAO extends DAO {
 		$group->setAboutDisplayed($row['about_displayed']);
 		$group->setPublishEmail($row['publish_email']);
                 $group->setPublishEmailList($row['publish_email_list']);
+                $group->setPublishUrlList($row['publish_url_list']);
                 $group->setAllowMedailon($row['allow_medailon']);
+                $group->setOpacnyTvarJmena($row['reverse_name']);
+                $group->setFullProfile($row['full_profile']);
 		$group->setSequence($row['seq']);
 		$group->setContext($row['context']);
 		$group->setAssocType($row['assoc_type']);
@@ -168,20 +171,25 @@ class GroupDAO extends DAO {
                 
                 
 		$group->setId($this->getInsertGroupId());
-		$this->updateLocaleFields($group);
+		
                 
                 $this->update(
 			'INSERT INTO groups_munipress
-				(group_id, publish_email_list, allow_medailon)
+				(group_id, publish_email_list, allow_medailon, publish_url_list, reverse_name, full_profile)
 				VALUES
-				(?, ?, ?)',
+				(?, ?, ?, ?, ?)',
 			array(
 				(int) $group->getId(),
 				(int) $group->getPublishEmailList(),
-				(int) $group->getAllowMedailon()
+				(int) $group->getAllowMedailon(),
+                                (int) $group->getPublishUrlList(),
+                                (int) $group->getOpacnyTvarJmena(),
+                                (int) $group->getFullProfile()
+                            
 			)
 		);
                 
+                $this->updateLocaleFields($group);
 		return $group->getId();
 	}
 
@@ -213,11 +221,17 @@ class GroupDAO extends DAO {
                 $this->update(
 			'UPDATE groups_munipress
 				SET	publish_email_list = ?,
-					allow_medailon = ?
+					allow_medailon = ?,
+                                        publish_url_list = ?,
+                                        reverse_name = ?,
+                                        full_profile = ?
 				WHERE	group_id = ?',
 			array(
 				(int) $group->getPublishEmailList(),
 				(int) $group->getAllowMedailon(),
+                                (int) $group->getPublishUrlList(),
+                                (int) $group->getOpacnyTvarJmena(),
+                                (int) $group->getFullProfile(),
                                 (int) $group->getId()
 			)
 		);
@@ -252,7 +266,7 @@ class GroupDAO extends DAO {
 		$groupMembershipDao =& DAORegistry::getDAO('GroupMembershipDAO');
 		$groupMembershipDao->deleteMembershipByGroupId($groupId);
 		$this->update('DELETE FROM group_settings WHERE group_id = ?', $groupId);
-                $this->update('DELETE FROM group_munipress WHERE group_id = ?', $groupId);
+                $this->update('DELETE FROM groups_munipress WHERE group_id = ?', $groupId);
 		return $this->update('DELETE FROM groups WHERE group_id = ?', $groupId);
 	}
 

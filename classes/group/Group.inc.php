@@ -112,6 +112,22 @@ class Group extends DataObject {
 		return $this->setData('publishEmailList',$publishEmailList);
 	}
         
+         /**
+	 * Get publish email in members' list
+	 * @return int
+	 */
+	function getPublishUrlList() {
+		return $this->getData('publishUrlList');
+	}
+
+	/**
+	 * Set publish email in members' list
+	 * @param $context int
+	 */
+	function setPublishUrlList($publishUrlList) {
+		return $this->setData('publishUrlList',$publishUrlList);
+	}
+        
         /**
 	 * Get medailon link
 	 * @return int
@@ -126,6 +142,38 @@ class Group extends DataObject {
 	 */
 	function setAllowMedailon($allowMedailon) {
 		return $this->setData('allowMedailon',$allowMedailon);
+	}
+        
+        /**
+	 * Get name format
+	 * @return int
+	 */
+	function getOpacnyTvarJmena() {
+		return $this->getData('opacnyTvarJmena');
+	}
+
+	/**
+	 * Set name format
+	 * @param $context int
+	 */
+	function setOpacnyTvarJmena($opacnyTvarJmena) {
+		return $this->setData('opacnyTvarJmena',$opacnyTvarJmena);
+	}
+        
+         /**
+	 * Get type of showing profile
+	 * @return int
+	 */
+	function getFullProfile() {
+		return $this->getData('fullProfile');
+	}
+
+	/**
+	 * Set type of showing profile
+	 * @param $context int
+	 */
+	function setFullProfile($fullProfile) {
+		return $this->setData('fullProfile',$fullProfile);
 	}
         
 	/**
