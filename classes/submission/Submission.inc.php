@@ -952,7 +952,7 @@ class Submission extends DataObject {
 	function setPages($pages) {
 		return $this->setData('pages',$pages);
 	}
-
+        
 	/**
 	 * Return submission RT comments status.
 	 * @return int
@@ -967,6 +967,24 @@ class Submission extends DataObject {
 	 */
 	function setCommentsStatus($commentsStatus) {
 		return $this->setData('commentsStatus', $commentsStatus);
+	}
+        
+        /*Munipress*/
+        
+        /**
+	 * get article number
+	 * @return string
+	 */
+	function getArticleNumber() {
+		return $this->getData('articleNumber');
+	}
+
+	/**
+	 * set article number
+	 * @param $pages string
+	 */
+	function setArticleNumber($articleNumber) {
+		return $this->setData('articleNumber',$articleNumber);
 	}
 }
 
