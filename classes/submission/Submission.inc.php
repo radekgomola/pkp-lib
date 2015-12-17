@@ -972,6 +972,38 @@ class Submission extends DataObject {
         /*Munipress*/
         
         /**
+	 * get skip landing page
+	 * @return string
+	 */
+	function getSkipLandingPage() {
+		return $this->getData('skipLandingPage');
+	}
+
+	/**
+	 * set article number
+	 * @param $pages string
+	 */
+	function setSkipLandingPage($skipLandingPage) {
+		return $this->setData('skipLandingPage',$skipLandingPage);
+	}
+        
+        /**
+	 * get article number
+	 * @return string
+	 */
+	function getSkipGalleyId() {
+		return $this->getData('skipGalleyId');
+	}
+
+	/**
+	 * set article number
+	 * @param $pages string
+	 */
+	function setSkipGalleyId($skipGalleyId) {
+		return $this->setData('skipGalleyId',$skipGalleyId);
+	}
+        
+        /**
 	 * get article number
 	 * @return string
 	 */
