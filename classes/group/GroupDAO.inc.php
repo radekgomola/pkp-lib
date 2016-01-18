@@ -177,7 +177,7 @@ class GroupDAO extends DAO {
 			'INSERT INTO groups_munipress
 				(group_id, publish_email_list, allow_medailon, publish_url_list, reverse_name, full_profile)
 				VALUES
-				(?, ?, ?, ?, ?)',
+				(?, ?, ?, ?, ?, ?)',
 			array(
 				(int) $group->getId(),
 				(int) $group->getPublishEmailList(),

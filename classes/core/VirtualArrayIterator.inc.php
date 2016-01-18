@@ -129,10 +129,15 @@ class VirtualArrayIterator extends ItemIterator {
 	 * Get the total number of pages in the virtual array
 	 * @return int
 	 */
-	function getPageCount() {
-		return max(1, ceil($this->count / $this->itemsPerPage));
-	}
+//	function getPageCount() {
+//		return max(1, ceil($this->count / $this->itemsPerPage));
+//	}
 
+        function getPageCount() {
+                $pocet = 0;
+                if ($this->itemsPerPage > 0) $pocet = ceil($this->count / $this->itemsPerPage);
+		return max(1, $pocet);
+	}
 	/**
 	 * Return a boolean indicating whether or not we've reached the end of results
 	 * Note: This implementation requires that next() be called before every eof() will

@@ -250,7 +250,7 @@ class PKPUserDAO extends DAO {
 				(int) $user->getInlineHelp(),
                                 $user->getTitleBefore(),
                                 $user->getTitleAfter(),
-                                $user->getAllowPublishingEmail()
+                                $user->getAllowPublishingEmail() ? 1 : 0
 			)
 		);
 
@@ -339,7 +339,7 @@ class PKPUserDAO extends DAO {
 				(int) $user->getInlineHelp(),
                                 $user->getTitleBefore(),
                                 $user->getTitleAfter(),
-                                $user->getAllowPublishingEmail(),
+                                $user->getAllowPublishingEmail() ? 1 : 0,
 				(int) $user->getId(),
 			)
 		);

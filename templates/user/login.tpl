@@ -42,25 +42,34 @@
 
 {if ! $implicitAuth}
 	<table id="signinTable" class="data">
-	<tr>
+	<tr class="loginUsername">
 		<td class="label"><label for="loginUsername">{translate key="user.username"}</label></td>
-		<td class="value"><input type="text" id="loginUsername" name="username" value="{$username|escape}" size="20" maxlength="32" class="textField" /></td>
+		<td class="value"><input type="text" id="loginUsername" name="username" value="{$username|escape}" size="20" maxlength="32" class="textField" placeholder="{translate key=login.hint.username}"/></td>
 	</tr>
-	<tr>
+	<tr class="loginPassword">
 		<td class="label"><label for="loginPassword">{translate key="user.password"}</label></td>
-		<td class="value"><input type="password" id="loginPassword" name="password" value="{$password|escape}" size="20" class="textField" /></td>
+		<td class="value"><input type="password" id="loginPassword" name="password" value="{$password|escape}" size="20" class="textField" placeholder="{translate key=login.hint.password}"/></td>
 	</tr>
-	{if $showRemember}
-	<tr valign="middle">
-		<td></td>
-		<td class="value"><input type="checkbox" id="loginRemember" name="remember" value="1"{if $remember} checked="checked"{/if} /> <label for="loginRemember">{translate key="user.login.rememberUsernameAndPassword"}</label></td>
+	
+	<tr valign="middle" class="loginButton">
+                
+		<td class="navic"></td>
+		<td class="value">
+                    {if $showRemember}
+                        <div class="showRemember">
+                            <input type="checkbox" id="loginRemember" name="remember" value="1"{if $remember} checked="checked"{/if} /> <label for="loginRemember">{translate key="user.login.rememberUsernameAndPassword"}</label>
+                        </div>
+                    {/if}{* $showRemember *}
+                    <input type="submit" value="{translate key="user.login"}" class="button defaultButton" />
+                </td>
+                
 	</tr>
-	{/if}{* $showRemember *}
+{*	
 
 	<tr>
 		<td></td>
-		<td><input type="submit" value="{translate key="user.login"}" class="button" /></td>
-	</tr>
+		<td><input type="submit" value="{translate key="user.login"}" class="button defaultButton" /></td>
+	</tr>*}
 	</table>
 
 	<ul>

@@ -113,6 +113,7 @@ class PKPTemplateManager extends Smarty {
 		$this->assign('useMinifiedJavaScript', Config::getVar('general', 'enable_minified'));
 		$this->assign('toggleHelpOnText', __('help.toggleInlineHelpOn'));
 		$this->assign('toggleHelpOffText', __('help.toggleInlineHelpOff'));
+                $this->assign('navId',$this->request->getUserVar('navItem'));
 
 		$locale = AppLocale::getLocale();
 		$this->assign('currentLocale', $locale);

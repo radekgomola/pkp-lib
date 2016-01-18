@@ -77,7 +77,7 @@
 	{call_hook|assign:"leftSidebarCode" name="Templates::Common::LeftSidebar"}
 	{call_hook|assign:"rightSidebarCode" name="Templates::Common::RightSidebar"}
 	
-  <!-- upravuji používání korporátního designu. ve chvíli kdy je použit korporátní design, tak není povolen levý blok -->
+ {*upravuji používání korporátního designu. ve chvíli kdy je použit korporátní design, tak není povolen levý blok*}
   {if $leftSidebarCode || $rightSidebarCode}<link rel="stylesheet" href="{$baseUrl}/styles/sidebar.css" type="text/css" />{/if}
   {if $rightSidebarCode}<link rel="stylesheet" href="{$baseUrl}/styles/rightSidebar.css" type="text/css" />{/if}
   {if $currentJournal}
@@ -176,6 +176,14 @@
                         document.write(vypis);
                     }
                 }
+
+                function toggle_visibility(id) {
+                    var e = document.getElementById(id);
+                    if(e.style.display == 'block')
+                       e.style.display = 'none';
+                    else
+                       e.style.display = 'block';
+               }    
             {/literal}
         </script>
         
@@ -277,6 +285,7 @@
 {if $pageSubtitle && !$pageSubtitleTranslated}{translate|assign:"pageSubtitleTranslated" key=$pageSubtitle}{/if}
 </div>
 <div id="content">
+    <div id="hlavniObsah">
 {if $pageSubtitleTranslated}
 	<h3>{$pageSubtitleTranslated}</h3>
   <br />

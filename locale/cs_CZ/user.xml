@@ -124,7 +124,7 @@
 	<message key="user.title">Titul</message>
 	<message key="user.url">URL</message>
 	<message key="user.userHome">Uživatel</message>
-	<message key="user.username">Uživatelské jméno</message>
+	<message key="user.username"><![CDATA[Uživatelské&nbsp;jméno]]></message>
 	<message key="user.workingLanguages">Pracovní jazyky</message>
 	<message key="user.register.completeForm">Pro zaregistrování do tohoto systému vyplňte tento formulář.</message>
 

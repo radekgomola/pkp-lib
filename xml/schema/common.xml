@@ -201,7 +201,10 @@
 		<field name="inline_help" type="I1" />
                 <field name="title_before" type="C2" size="50"/>
                 <field name="title_after" type="C2" size="50"/>
-                <field name="allow_publish_email" type="I2" />
+                <field name="allow_publish_email" type="I2">
+                    <NOTNULL/>
+			<DEFAULT VALUE="0"/>
+		</field>
 		<descr>User authentication credentials and profile data.</descr>
 		<index name="users_username">
 			<col>username</col>

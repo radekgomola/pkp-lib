@@ -140,7 +140,7 @@
 	<message key="manager.people">Lidé</message>
 	<message key="manager.people.remove">Odstranit</message>
 	<message key="manager.people.saveAndCreateAnotherUser">Uložit a vytvořit dalšího</message>
-	<message key="manager.people.signInAs">Přihlásit se jako</message>
+	<message key="manager.people.signInAs"><![CDATA[Přihlásit&nbsp;se&nbsp;jako]]></message>
 	<message key="manager.people.signInAsUser">Přihlásit se jako uživatel</message>
 	<message key="manager.people.syncUsers">Synchronizovat zapsání uživatelů</message>
 	<message key="manager.people.unenroll">Odejmout roli</message>

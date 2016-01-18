@@ -129,8 +129,14 @@ class ArrayItemIterator extends ItemIterator {
 	 * Get the number of pages
 	 * @return int
 	 */
-	function getPageCount() {
-		return max(1, ceil($this->count / $this->itemsPerPage));
+//	function getPageCount() {
+//		return max(1, ceil($this->count / $this->itemsPerPage));
+//	}
+        
+        function getPageCount() {
+                $pocet = 0;
+                if ($this->itemsPerPage > 0) $pocet = ceil($this->count / $this->itemsPerPage);
+		return max(1, $pocet);
 	}
 
 	/**

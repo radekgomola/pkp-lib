@@ -1,7 +1,6 @@
 {**
  *Munipress footer
  *}
-  
 <div class="footer" style="padding-top:15px;">
   <div style="float:left; padding-right:20px;">
     <a href="{translate key='footer.muni.link'}" title="{translate key='footer.muni'}" target="_blank">
