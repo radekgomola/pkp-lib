@@ -54,7 +54,11 @@
 	<link rel="stylesheet" href="{$baseUrl}/styles/compiled.css" type="text/css" />
   <link rel="stylesheet" href="{$baseUrl}/styles/pdfView.css" type="text/css" />
   <link rel="stylesheet" href="{$baseUrl}/styles/grafika.css" type="text/css" />
-  
+
+  <script id="cookie1"
+        type="text/javascript"
+        src="https://cdn.muni.cz/mvcscripts/libs/cookiebar/1.0/cookie1.js?cp=/js/cookiebar/jmc_cookies.json">            
+  </script>
 	<!-- Base Jquery -->
 	{if $allowCDN}<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 		<script type="text/javascript">{literal}
