@@ -37,6 +37,9 @@ define('CDN_JQUERY_UI_VERSION', '1.8.6');
 class PKPTemplateManager extends Smarty {
 	/** @var $styleSheets array of URLs to stylesheets */
 	var $styleSheets;
+        
+        /** @var $printStyleSheets array of URLs to stylesheets */
+	var $printStyleSheets;
 
 	/** @var $javaScripts array of URLs to javascript files */
 	var $javaScripts;
@@ -92,6 +95,10 @@ class PKPTemplateManager extends Smarty {
 		// Assign common variables
 		$this->styleSheets = array();
 		$this->assign_by_ref('stylesheets', $this->styleSheets);
+                
+                // munipress print style sheet
+		$this->printStyleSheets = array();
+		$this->assign_by_ref('printstylesheets', $this->printStyleSheets);
 
 		$this->javaScripts = array();
 
@@ -260,6 +267,14 @@ class PKPTemplateManager extends Smarty {
 	 */
 	function addStyleSheet($url) {
 		array_push($this->styleSheets, $url);
+	}
+        
+        /**
+	 * Add a page-specific style sheet.
+	 * @param $url string the URL to the print style sheet
+	 */
+	function addPrintStyleSheet($url) {
+		array_push($this->printStyleSheets, $url);
 	}
 
 	/**

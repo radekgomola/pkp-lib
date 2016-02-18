@@ -54,6 +54,7 @@
 	<link rel="stylesheet" href="{$baseUrl}/styles/compiled.css" type="text/css" />
   <link rel="stylesheet" href="{$baseUrl}/styles/pdfView.css" type="text/css" />
   <link rel="stylesheet" href="{$baseUrl}/styles/grafika.css" type="text/css" />
+  <link rel="stylesheet" href="{$baseUrl}/styles/fontAwesome/css/font-awesome.css" type="text/css" />
 
   <script id="cookie1"
         type="text/javascript"
@@ -109,6 +110,13 @@
       {/if}
     {/if}
 	{/foreach}
+    {if $currentJournal}    
+        {foreach from=$printstylesheets item=cssUrl}
+
+            <link rel="stylesheet" href="{$cssUrl}" type="text/css" media="print"/>
+
+	{/foreach}
+     {/if}
 
 	<!-- Default global locale keys for JavaScript -->
 	{include file="common/jsLocaleKeys.tpl" }
