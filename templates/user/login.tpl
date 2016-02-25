@@ -16,7 +16,8 @@
 {if !$registerOp}
 	{assign var="registerOp" value="register"}
 {/if}
-{if !$registerLocaleKey}
+
+{if !$registerLocaleKey}   
 	{assign var="registerLocaleKey" value="user.login.registerNewAccount"}
 {/if}
 
@@ -80,7 +81,7 @@
 	</table>
 
 	<ul>
-		{if !$hideRegisterLink}<li><a href="{url page="user" op=$registerOp}">{translate key=$registerLocaleKey}</a></li>{/if}
+		{if !$hideRegisterLink}<li>{translate key="user.login.registerNewAccount.before"} <a href="{url page="user" op=$registerOp}">{translate key=$registerLocaleKey}</a></li>{/if}
 		<li><a href="{url page="login" op="lostPassword"}">{translate key="user.login.forgotPassword"}</a></li>
 	</ul>
 
