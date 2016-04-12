@@ -56,10 +56,10 @@
   <link rel="stylesheet" href="{$baseUrl}/styles/grafika.css" type="text/css" />
   <link rel="stylesheet" href="{$baseUrl}/styles/fontAwesome/css/font-awesome.css" type="text/css" />
 
-  <script id="cookie1"
+ {* <script id="cookie1"
         type="text/javascript"
         src="https://cdn.muni.cz/mvcscripts/libs/cookiebar/1.0/cookie1.js?cp=/js/cookiebar/jmc_cookies.json">            
-  </script>
+  </script>*}
 	<!-- Base Jquery -->
 	{if $allowCDN}<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 		<script type="text/javascript">{literal}
@@ -222,6 +222,22 @@
 
 	{$additionalHeadData}
 </head>
+{*<!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['disableCookies']);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {ldelim}
+    var u="//journals.muni.cz/analytics/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 13]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  {rdelim})();
+</script>
+<noscript><p><img src="//journals.muni.cz/analytics/piwik.php?idsite=13" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->*}
 <body id="pkp-{$pageTitle|replace:'.':'-'}">
 <div id="headerPanel">&nbsp;</div>
 <div id="container">

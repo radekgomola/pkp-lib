@@ -257,6 +257,47 @@ class Group extends DataObject {
 	function setSequence($sequence) {
 		return $this->setData('sequence', $sequence);
 	}
+        
+        /**
+	 * Get localized description of group.
+	 */
+	function getLocalizedGroupDescription() {
+		return $this->getLocalizedData('groupDescription');
+	}
+
+	/**
+	 * Get description of group (primary locale)
+	 * @param $locale string
+	 * @return string
+	 */
+	function getGroupDescription($locale) {
+		return $this->getData('groupDescription', $locale);
+	}
+
+	/**
+	 * Set description of group
+	 * @param $groupDescription string
+	 * @param $locale string
+	 */
+	function setGroupDescription($groupDescription, $locale) {
+		return $this->setData('groupDescription', $groupDescription, $locale);
+	}
+        
+        /**
+	 * Get sequence of group.
+	 * @return float
+	 */
+	function getGroupSetupTopDown() {
+		return $this->getData('groupSetupTopDown');
+	}
+
+	/**
+	 * Set sequence of group.
+	 * @param $sequence float
+	 */
+	function setGroupSetupTopDown($groupSetupTopDown) {
+		return $this->setData('groupSetupTopDown', $groupSetupTopDown);
+	}
 }
 
 ?>

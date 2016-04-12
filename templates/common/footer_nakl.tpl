@@ -22,9 +22,10 @@
     <br /><br />
     <strong>&copy;</strong><a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;%70%61%76%65%6c.%6b%72%65%70%65%6c%61@%67%6d%61%69%6c.%63%6f%6d" title="e-mail">Mgr. Pavel Křepela / Line&amp;Curve </a>
   </div>
-{*  <!-- Piwik -->
+<!-- Piwik -->
 <script type="text/javascript">
   var _paq = _paq || [];
+  _paq.push(['disableCookies']);
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
   (function() {ldelim}
@@ -36,7 +37,7 @@
   {rdelim})();
 </script>
 <noscript><p><img src="//journals.muni.cz/analytics/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
-<!-- End Piwik Code -->*}
+<!-- End Piwik Code -->
 
 </div>
 

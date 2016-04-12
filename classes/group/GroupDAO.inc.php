@@ -58,7 +58,7 @@ class GroupDAO extends DAO {
 			$params[] = (int) $assocId;
 		}
 		$result =& $this->retrieve(
-			'SELECT g.*, gm.publish_email_list, gm.allow_medailon, gm.publish_url_list, gm.reverse_name, gm.full_profile FROM groups g LEFT JOIN groups_munipress gm ON (g.group_id = gm.group_id) WHERE g.group_id = ?' . ($assocType !== null?' AND g.assoc_type = ? AND g.assoc_id = ?':''), $params
+			'SELECT g.*, gm.publish_email_list, gm.allow_medailon, gm.publish_url_list, gm.reverse_name, gm.full_profile, gm.top_down_description FROM groups g LEFT JOIN groups_munipress gm ON (g.group_id = gm.group_id) WHERE g.group_id = ?' . ($assocType !== null?' AND g.assoc_type = ? AND g.assoc_id = ?':''), $params
 		);
 
 		$returner = null;
@@ -89,7 +89,7 @@ class GroupDAO extends DAO {
 		if ($context !== null) $params[] = (int) $context;
 
 		$result =& $this->retrieveRange(
-			'SELECT g.*, gm.publish_email_list, gm.allow_medailon, gm.publish_url_list, gm.reverse_name, gm.full_profile FROM groups g LEFT JOIN groups_munipress gm ON (g.group_id = gm.group_id)  WHERE g.assoc_type = ? AND g.assoc_id = ?' . ($context!==null?' AND g.context = ?':'') . ' ORDER BY g.context, g.seq',
+			'SELECT g.*, gm.publish_email_list, gm.allow_medailon, gm.publish_url_list, gm.reverse_name, gm.full_profile, gm.top_down_description FROM groups g LEFT JOIN groups_munipress gm ON (g.group_id = gm.group_id)  WHERE g.assoc_type = ? AND g.assoc_id = ?' . ($context!==null?' AND g.context = ?':'') . ' ORDER BY g.context, g.seq',
 			$params, $rangeInfo
 		);
 
@@ -102,7 +102,7 @@ class GroupDAO extends DAO {
 	 * @return array
 	 */
 	function getLocaleFieldNames() {
-		return array_merge(parent::getLocaleFieldNames(), array('title'));
+		return array_merge(parent::getLocaleFieldNames(), array('title', 'groupDescription'));
 	}
 
 	/**
@@ -128,6 +128,7 @@ class GroupDAO extends DAO {
                 $group->setAllowMedailon($row['allow_medailon']);
                 $group->setOpacnyTvarJmena($row['reverse_name']);
                 $group->setFullProfile($row['full_profile']);
+                $group->setGroupSetupTopDown($row['top_down_description']);
 		$group->setSequence($row['seq']);
 		$group->setContext($row['context']);
 		$group->setAssocType($row['assoc_type']);
@@ -175,16 +176,17 @@ class GroupDAO extends DAO {
                 
                 $this->update(
 			'INSERT INTO groups_munipress
-				(group_id, publish_email_list, allow_medailon, publish_url_list, reverse_name, full_profile)
+				(group_id, publish_email_list, allow_medailon, publish_url_list, reverse_name, full_profile, top_down_description)
 				VALUES
-				(?, ?, ?, ?, ?, ?)',
+				(?, ?, ?, ?, ?, ?, ?)',
 			array(
 				(int) $group->getId(),
 				(int) $group->getPublishEmailList(),
 				(int) $group->getAllowMedailon(),
                                 (int) $group->getPublishUrlList(),
                                 (int) $group->getOpacnyTvarJmena(),
-                                (int) $group->getFullProfile()
+                                (int) $group->getFullProfile(),
+                                (int) $group->getGroupSetupTopDown()
                             
 			)
 		);
@@ -224,7 +226,8 @@ class GroupDAO extends DAO {
 					allow_medailon = ?,
                                         publish_url_list = ?,
                                         reverse_name = ?,
-                                        full_profile = ?
+                                        full_profile = ?,
+                                        top_down_description = ?
 				WHERE	group_id = ?',
 			array(
 				(int) $group->getPublishEmailList(),
@@ -232,6 +235,7 @@ class GroupDAO extends DAO {
                                 (int) $group->getPublishUrlList(),
                                 (int) $group->getOpacnyTvarJmena(),
                                 (int) $group->getFullProfile(),
+                                (int) $group->getGroupSetupTopDown(),
                                 (int) $group->getId()
 			)
 		);

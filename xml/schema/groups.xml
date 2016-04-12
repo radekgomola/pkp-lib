@@ -117,6 +117,9 @@
                 <field name="publish_url_list" type="I2" />
 		<field name="reverse_name" type="I2" />
                 <field name="full_profile" type="I2" />
+                <field name="top_down_description" type="I2">
+                    <NOTNULL />
+                </field>
 		<index name="group_munipress_pkey">
 			<col>group_id</col>
 			<UNIQUE />
