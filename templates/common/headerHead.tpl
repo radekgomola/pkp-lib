@@ -13,6 +13,9 @@
 	<meta name="description" content="{$metaSearchDescription|escape}" />
 	<meta name="keywords" content="{$metaSearchKeywords|escape}" />
 	<meta name="generator" content="{$applicationName} {$currentVersionString|escape}" />
+        {*<meta name="viewport" content="width=device-width, initial-scale=1.0" />*}
+        <meta name="author" content="Masaryk University Press" />
+        <meta name="robots" content="all,follow" />
 	{$metaCustomHeaders}
 	{if $displayFavicon}<link rel="icon" href="{$faviconDir}/{$displayFavicon.uploadName|escape:"url"}" type="{$displayFavicon.mimeType|escape}" />{/if}
 
@@ -33,21 +36,9 @@
 		<script src="{$baseUrl}/lib/pkp/js/lib/jquery/jquery.min.js"></script>
 		<script src="{$baseUrl}/lib/pkp/js/lib/jquery/plugins/jqueryUi.min.js"></script>
 	{/if}
-
-        <!--Google analytics -->
-        <script>
-            {literal}
-                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-                ga('create', 'UA-50159706-10', 'auto');
-                ga('require', 'displayfeatures');
-                ga('send', 'pageview');
-            {/literal}
-        </script>
         
+{*            Počítání velikosti sloupců v divech.*}
+        <script src="{$baseUrl}/js/munipress/divSize.js"></script>
 
 	<!-- UI elements (menus, forms, etc) -->
 	<script src="{$baseUrl}/lib/pkp/js/lib/superfish/hoverIntent.js"></script>
@@ -75,10 +66,7 @@
 		{include file="common/minifiedScripts.tpl"}
 	{/if}
 
-        {*<!-- fancy zoom -->
-        <script src="{$baseUrl}/lightboxy/FancyZoom_1.1/js-global/FancyZoom.js" type="text/javascript"></script>
-        <script src="{$baseUrl}/lightboxy/FancyZoom_1.1/js-global/FancyZoomHTML.js" type="text/javascript"></script>
-      *}
+        
         <!--Highslide-->
 {*        <script type="text/javascript" src="{$baseUrl}/lightboxy/highslide/highslide/highslide.js"></script>*}
         <script type="text/javascript" src="{$baseUrl}/lightboxy/highslide/highslide/highslide-full.js"></script>

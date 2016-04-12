@@ -27,7 +27,8 @@
 {translate|assign:"langCzEn" key="jazyk.vyber"}
 <div class="pkp_structure_head_siteNav">
     <div class="pkp_helpers_flatlist pkp_helpers_align_left zahlavi_munipress">
-         <img src="{$baseUrl}/images/design/zahlavi_{if $langCzEn == "cs_CZ"}cz{else}en{/if}.png" alt="MUNIPRESS"/>
+         {*<img src="{$baseUrl}/images/design/zahlavi_{if $langCzEn == "cs_CZ"}cz{else}en{/if}.png" alt="MUNIPRESS" class="zahlavi_obrazek"/>*}
+         <h1 id="mainTitle">{translate key=munipress.citarna.header}</h1>             
     </div>
     <div class="pkp_helpers_flatlist pkp_helpers_align_right">
         <table>
@@ -37,7 +38,7 @@
                 
                 {if $langCzEn == "cs_CZ"}
                     <td>
-                        <img src="{$baseUrl}/images/vlajky/cz_square_small_grey.png" style="float:left;"/>
+                        <img src="{$baseUrl}/images/vlajky/cz_square_small_grey.png" style="float:left;" class="vlajka_img_gray"/>
                     </td><td>
                         <input id="tlacitko" type="submit" class="lang_cz_en_small en_small" value="en_US" onclick="changeLanguageCzEn();
                             return false;" />
@@ -48,7 +49,7 @@
                         <input id="tlacitko" type="button" class="lang_cz_en_small cz_small" value="cs_CZ" onclick="changeLanguageCzEn();
                             return false;"/>
                     </td><td>
-                        <img src="{$baseUrl}/images/vlajky/en_square_small_grey.png" />
+                        <img src="{$baseUrl}/images/vlajky/en_square_small_grey.png" class="vlajka_img_gray"/>
                     </td>
                 {/if}                    
             </form>

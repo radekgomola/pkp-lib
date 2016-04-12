@@ -40,17 +40,17 @@
         {/if}
         <div class="pkp_structure_subfoot">
             <div class="pkp_structure_content">
-                <div style="float:left; width: 680px">
+                <div class="munipress_block">
                     <a href="http://www.muni.cz/press?lang=cs" target="_self" title="MUNIPRESS"> <img src="{$baseUrl}/images/design/{translate key="footer.publisher.logo"}.png" alt="Munipress"/></a>
                     
-                    <div style="width: 400px;">
-                        <h4 style="float:left;">{translate key="footer.contacts"}</h4>
+                    <div class="contact_block">
+                        <h4>{translate key="footer.contacts"}</h4>
                         <div class="footer_contacts">
                             <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;%6d%75%6e%69%70%72%65%73%73@%70%72%65%73%73%2e%6d%75%6e%69%2e%63%7a" target="_blank" title="munipress">munipress@press.muni.cz</a>
                         </div>
                     </div>
                 </div>
-                <div style="float:right;">
+                <div class="support_block">
                     <table class="tabulkaZapati">
                         <tbody>
                             <tr>
@@ -84,5 +84,23 @@
 </div><!-- pkp_structure_page -->
 
 {$additionalFooterData}
+<!-- Piwik disabled cookies-->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['disableCookies']);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  _paq.push([‘setLinkTrackingTimer’, 750]);
+  (function() {ldelim}
+    var u="https://journals.muni.cz/analytics/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 12]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  {rdelim})();
+</script>
+<noscript><p><img src="https://journals.muni.cz/analytics/piwik.php?idsite=12" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+
 </body>
 </html>
