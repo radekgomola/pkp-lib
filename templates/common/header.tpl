@@ -47,6 +47,17 @@
 	<meta name="keywords" content="{if $metaSearchKeywords!=''}{$metaSearchKeywords|escape}{else}{translate key=journals.munipress.keywords}{/if}" />
 	<meta name="generator" content="{$applicationName} {$currentVersionString|escape}" />
 	{$metaCustomHeaders}
+        {if $currentJournal} 
+            {if $currentJournal->getSetting('externiCasopis')}
+                {if $requestedPage== "issue" && $currentJournal->getSetting('odkazCislo') && $currentJournal->getSetting('odkazCislo') != ""}
+                    <meta http-equiv="refresh" content="0;url={$currentJournal->getSetting('odkazCislo')}" />
+                    <script> window.location.replace("{$currentJournal->getSetting('odkazCislo')}"); </script>
+                {elseif $currentJournal->getSetting('odkazCasopis') && $currentJournal->getSetting('odkazCasopis') != ""}
+                    <meta http-equiv="refresh" content="0;url={$currentJournal->getSetting('odkazCasopis')}" />
+                    <script> window.location.replace("{$currentJournal->getSetting('odkazCasopis')}"); </script>
+                {/if}
+           {/if}
+        {/if}
 	{if $displayFavicon}<link rel="icon" href="{$faviconDir}/{$displayFavicon.uploadName|escape:"url"}" type="{$displayFavicon.mimeType|escape}" />{/if}
 	<link rel="stylesheet" href="{$baseUrl}/lib/pkp/styles/pkp.css" type="text/css" />
 	<link rel="stylesheet" href="{$baseUrl}/lib/pkp/styles/common.css" type="text/css" />
@@ -222,22 +233,6 @@
 
 	{$additionalHeadData}
 </head>
-{*<!-- Piwik -->
-<script type="text/javascript">
-  var _paq = _paq || [];
-  _paq.push(['disableCookies']);
-  _paq.push(['trackPageView']);
-  _paq.push(['enableLinkTracking']);
-  (function() {ldelim}
-    var u="//journals.muni.cz/analytics/";
-    _paq.push(['setTrackerUrl', u+'piwik.php']);
-    _paq.push(['setSiteId', 13]);
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-  {rdelim})();
-</script>
-<noscript><p><img src="//journals.muni.cz/analytics/piwik.php?idsite=13" style="border:0;" alt="" /></p></noscript>
-<!-- End Piwik Code -->*}
 <body id="pkp-{$pageTitle|replace:'.':'-'}">
 <div id="headerPanel">&nbsp;</div>
 <div id="container">
