@@ -2,10 +2,10 @@
 <!DOCTYPE locale SYSTEM "../../dtd/locale.dtd">
 
 <!--
-  * locale/en_US/default.xml
+  * locale/de_DE/default.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
   * Please contact Marco Tullney, marco.tullney@fu-berlin.de, with any questions regarding this translation.
@@ -56,7 +56,6 @@
 	<message key="default.groups.abbrev.reader">Read</message>
 
 	<!--  common app genre defaults -->
-	<message key="default.genres.submission">Einreichung</message>
 	<message key="default.genres.other">Andere/s</message>
 	<message key="default.genres.multimedia">Multimedia</message>
 	<message key="default.genres.image">Bild</message>

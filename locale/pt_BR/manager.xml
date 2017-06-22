@@ -4,15 +4,20 @@
 <!--
   * locale/pt_BR/manager.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
-  *
-  * Localization strings for the pt_BR (Português (Brasil)) locale.
-  *
+  * Locale information: https://pkp.sfu.ca/wiki/index.php?title=OMP:_Portuguese_(pt_BR)
+  * Localization strings.
   -->
 
-<locale name="pt_BR" full_name = "Português (Brasil)">
+<locale name="pt_BR" full_name="Português (Brasil)">
+	<!-- Website settings -->
+	<message key="manager.website.information">Informação</message>
+	<message key="manager.website.appearance">Aparência</message>
+	<message key="manager.website.imageFileRequired">Um arquivo de imagem é requerido. Certifique-se de que escolheu e enviou um arquivo.</message>
+
+
 	<message key="manager.announcements">Notícias</message>
 	<message key="manager.announcements.confirmDelete">Deseja realmente excluir permanentemente esta notícia?</message>
 	<message key="manager.announcements.create">Criar nova notícia</message>
@@ -52,6 +57,13 @@
 	<message key="manager.announcementTypes.form.typeNameRequired">Nome do tipo de notícia obrigatório.</message>
 	<message key="manager.announcementTypes.noneCreated">Não há tipos de notícia.</message>
 	<message key="manager.announcementTypes.typeName">Tipo de Notícia</message>
+
+	<!-- Publication Process settings -->
+	<message key="manager.publication.submissionStage">Submissão</message>
+	<message key="manager.publication.reviewStage">Revisão</message>
+	<message key="manager.publication.editorialStage">Editorial</message>
+	<message key="manager.publication.productionStage">Produção</message>
+	<message key="manager.publication.emails">Emails</message>
 	<message key="manager.emails.confirmDelete">Deseja realmente excluir esta mensagem padrão?</message>
 	<message key="manager.emails.confirmReset">Deseja realmente restaurar este e-mail para o padrão original?</message>
 	<message key="manager.emails.createEmail">Criar e-mail</message>
@@ -116,7 +128,7 @@
 	<message key="manager.people.enrollUserAs">Cadastrar usuário como</message>
 	<message key="manager.people.invalidUser">Usuário não existe.</message>
 	<message key="manager.people.mergeUser">Mesclar cadastro</message>
-	<message key="manager.people.mergeUsers.confirm">Deseja realmente mesclar os "{$oldAccountCount}" cadastros com o cadastro do usuário "{$newUsername}"? Os "{$oldAccountCount}" cadastros serão excluídos permanentemente. Esta ação NÃO é reversível!</message>
+	<message key="manager.people.mergeUsers.confirm">Deseja realmente mesclar o(s) {$oldAccountCount} cadastro(s) com o cadastro do usuário "{$newUsername}"? O(s) {$oldAccountCount} cadastro(s) será(ão) excluído(s) permanentemente. Esta ação NÃO é reversível!</message>
 	<message key="manager.people.mergeUsers">Mesclar cadastros</message>
 	<message key="manager.people.mustChooseRole">Escolha um papel editorial antes de confirmar</message>
 	<message key="manager.people.mustProvideName">Informe pelo menos o sobrenome do usuário.</message>
@@ -131,12 +143,6 @@
 	<message key="manager.people.unenroll">Remover papel</message>
 	<message key="manager.people.userCreatedSuccessfully">Usuário incluído com sucesso.</message>
 	<message key="manager.people.userMustChangePassword">Solicitar alteração de senha no próximo acesso ao sistema.</message>
-	<message key="manager.plugins.action">Ação:</message>
-	<message key="manager.plugins.disable">Desabilitar</message>
-	<message key="manager.plugins.enable">Habilitar</message>
-	<message key="manager.plugins.pluginManagement">Administração de Plugins</message>
-	<message key="manager.plugins.sitePlugin">Este é um plugin de uso geral. Somente o Administrador do Portal possui permissão de administração.</message>
-	<message key="manager.plugins">Plugins do Sistema</message>
 	<message key="manager.readingTools">Ferramentas para Leitura</message>
 	<message key="manager.roles">Papéis</message>
 	<message key="manager.setup.homeHeaderImageInvalid">Formato de imagem inválido para o logo no cabeçalho da página inicial. Formatos aceitáveis são .gif, .jpg ou .png. Verifique as configurações de mime_type, permissão e dono de pasta, e tamanho de arquivo permitido.</message>
@@ -147,7 +153,6 @@
 	<message key="manager.setup.layout.unselected">Não marcados</message>
 	<message key="manager.setup.loggingAndAuditing">Controle e Auditoria</message>
 	<message key="manager.setup.pageHeaderLogoImageInvalid">Formato de imagem inválido ou falha no envio para logo no cabeçalho de páginas internas. Formatos aceitáveis são .gif, .jpg ou .png. Verifique as configurações de mime_type, permissão e dono de pasta, e tamanho de arquivo permitido.</message>
-	<message key="manager.setup.pageHeaderTitleImageInvalid">Formato de imagem inválido ou falha no envio para imagem no cabeçalho de páginas internas. Formatos aceitáveis são .gif, .jpg ou .png. Verifique as configurações de mime_type, permissão e dono de pasta, e tamanho de arquivo permitido.</message>
 	<message key="manager.setup.selectOne">Escolha uma opção</message>
 	<message key="manager.statistics"><![CDATA[Estatísticas &amp; Relatórios]]></message>
 	<message key="manager.statistics.reports">Gerador de Relatórios</message>
@@ -172,12 +177,11 @@
 	<message key="plugins.categories.themes">Plugins de Visual</message>
 	<message key="manager.emails.form.emailKeyRequired">É necessária uma chave única para o e-mail.</message>
 	<message key="manager.setup.errorDeletingItem">Ocorreu um erro ao tentar excluir o item.</message>
-	<message key="manager.reviewerSearch.advancedSearch">Busca avançada de avaliadores</message>
 	<message key="manager.reviewerSearch.searchByName">Buscar por nome do avaliador</message>
-	<message key="manager.reviewerSearch.doneAmount">Total de avaliações concluídas</message>
-	<message key="manager.reviewerSearch.avgAmount">Média de dias para avaliar</message>
-	<message key="manager.reviewerSearch.lastAmount">Dias desde a última avaliação</message>
-	<message key="manager.reviewerSearch.activeAmount">Total de avalições ativas</message>
+	<message key="manager.reviewerSearch.doneAmount">Avaliações concluídas: {$current}</message>
+	<message key="manager.reviewerSearch.avgAmount">Média de dias para avaliar: {$current}</message>
+	<message key="manager.reviewerSearch.lastAmount">Dias desde a última avaliação: {$current}</message>
+	<message key="manager.reviewerSearch.activeAmount">Total de avalições ativas: {$current}</message>
 	<message key="manager.reviewerSearch.interests">Área de interesse para avaliação</message>
 	<message key="manager.setup.citationAssistant">Assistente de marcação de citações</message>
 	<message key="manager.setup.citationFilterParser">Extração de citações</message>
@@ -204,13 +208,13 @@
 	<message key="manager.setup.filter.grid.errorDeletingFilter">Ocorreu um erro ao tentar remover este filtro. Encaminhe este problema como erro de sistema.</message>
 	<message key="manager.setup.filter.lookup.grid.descriptionConfirm">A base {$filterDisplayName} está sendo incluída. Clique em 'ok' para confirmar.</message>
 	<message key="manager.setup.filter.lookup.grid.description.iSBNdb"><![CDATA[<p>Este filtro se conecta à base de livros e ISBNs <a href="http://isbndb.com/" target="_blank">ISBNdb.com</a>.</p>
-<p>Uma chave de API ISBNdb é obrigatória. Para mais informações sobre como gerar uma chave, acesse a <a href="http://isbndb.com/docs/api/30-keys.html" target="_blank">documentação online</a>.</p>]]></message>
+<p>Uma chave de API ISBNdb é obrigatória. Para mais informações sobre como gerar uma chave, acesse a <a href="http://isbndb.com/api/v1/docs/keys" target="_blank">documentação online</a>.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.crossRef"><![CDATA[<p>Este filtro se conecta à base de citações CrossRef usando sua <a href="http://www.crossref.org/02publishers/openurl_info.html" target="_blank">Interface de Query OpenURL</a>.</p> 
 <p>Para usar este filtro, use seu cadastro no sistema CrossRef, ou cadastre um e-mail válido junto ao CrossRef <a href="http://www.crossref.org/requestaccount/" target="_blank">aqui</a>.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.pubMed"><![CDATA[<p>Este filtro se conecta ao <a href="http://www.ncbi.nlm.nih.gov/gquery/gquery.fcgi" target="_blank">Entrez</a>, mecanismo de busca em bases cruzadas do PubMed.</p>
 <p>Um e-mail de cadastro não é obrigatório, mas pode ser necessário caso encontre problemas de conectividade. Veja mais informações sobre o Entrez na documentação disponível no <a href="http://www.be-md.ncbi.nlm.nih.gov/bookshelf/br.fcgi?book=helpeutils&part=chapter2#chapter2.Usage_Guidelines_and_Requiremen" target="_blank">Guia de Uso e Requisitos</a>.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.worldCat"><![CDATA[<p>Este filtro se conecta aos serviços OCLC <a href="http://www.worldcat.org/affiliate/webservices/xisbn/app.jsp" target="_blank">xISBN</a> e <a href="http://www.worldcat.org/" target="_blank">Worldcat</a> (opcional).</p>
-<p>Caso possua uma <a href="http://www.worldcat.org/devnet/wiki/SearchAPIWhoCanUse" target="_blank">chave de API </a> Worldcat, poderá se conectar informando a chave a seguir.</p>]]></message>
+<p>Caso possua uma <a href="http://oclc.org/developer/develop/web-services.html" target="_blank">chave de API </a> Worldcat, poderá se conectar informando a chave a seguir.</p>]]></message>
 	<message key="manager.setup.filter.noMoreTemplates">Todas as informações disponíveis já foram incluídas. Clique no botão 'Cancelar' para voltar à página de configuração.</message>
 	<message key="manager.setup.filter.parser.grid.descriptionConfirm">O analisador {$filterDisplayName} está incluído. Clique em 'OK' para confirmar.</message>
 	<message key="manager.setup.filter.parser.grid.description.freeCite"><![CDATA[<p>Este filtro de extração se conecta ao web service <a href="http://freecite.library.brown.edu/" target="_blank">FreeCite</a>.</p>]]></message>
@@ -228,8 +232,6 @@
 	<message key="manager.emails.resetAll.message">Caso restaure todos os modelos, todas as alterações aos modelos de mensagem serão perdidas. Deseja confirmar a operação?</message>
 	<message key="manager.emails.reset.message">Caso restaure este modelo, todos os dados da mensagem retornarão ao valor original, perdendo todas as alterações. Deseja confirmar esta operação?</message>
 	<message key="manager.masthead.title">Expediente</message>
-	<message key="manager.navigation">Navegação</message>
-	<message key="manager.reviewerSearch.advancedSearch.short">Busca avançada</message>
 	<message key="manager.reviewerSearch.searchByName.short">Buscar por nome</message>
 	<message key="manager.reviewerSearch.form.instructions">Use o formulário a seguir para definir os valores máximos para os termos pelos quais deseja buscar. O formulário está preenchido previamente com médias calculadas dos campos.</message>
 	<message key="manager.reviewerSearch.form.interests.instructions">Informe as áreas de interesse para avaliação, separadas por vírgula...</message>
@@ -245,15 +247,6 @@
 	<message key="plugins.categories.oaiMetadataFormats">Plugins de Formatos de Metadados OAI</message>
 	<message key="plugins.categories.oaiMetadataFormats.description">Os plugins de formato geram metadados para comunicação via protocolo OAI.</message>
 	<message key="grid.action.addGenre">Incluir gênero</message>
-	<message key="manager.website">Website</message>
-	<message key="manager.website.information">Informação</message>
-	<message key="manager.website.appearance">Aparência</message>
-	<message key="manager.website.imageFileRequired">Um arquivo de imagem é requerido. Certifique-se de que escolheu e enviou um arquivo.</message>
-	<message key="manager.publication.submissionStage">Submissão</message>
-	<message key="manager.publication.reviewStage">Revisão</message>
-	<message key="manager.publication.editorialStage">Editorial</message>
-	<message key="manager.publication.productionStage">Produção</message>
-	<message key="manager.publication.emails">Emails</message>
 	<message key="manager.language.ui">IU</message>
 	<message key="manager.language.submissions">Submissões</message>
 	<message key="manager.language.forms">Formulários</message>
@@ -314,17 +307,22 @@ Há casos em que uma única estatística de uso devem ser utilizada, por exemplo
 	<message key="manager.siteAccessOptions.siteAccessOptions">Opções de Acesso ao Site</message>
 	<message key="plugins.categories.pubIds">Plugins de Identificação Pública</message>
 	<message key="plugins.categories.pubIds.description">Estes plugins implementam o suporte para identificadores públicos.</message>
+	<message key="manager.plugins.action">Ação:</message>
+	<message key="manager.plugins.disable">Desabilitar</message>
+	<message key="manager.plugins.enable">Habilitar</message>
+	<message key="manager.plugins.pluginManagement">Administração de Plugins</message>
+	<message key="manager.plugins.sitePlugin">Este é um plugin de uso geral. Somente o Administrador do Portal possui permissão de administração.</message>
+	<message key="manager.plugins">Plugins do Sistema</message>
 	<message key="manager.plugins.copyError">Plugin não foi copiado com sucesso. Isso pode ser um problema de permissões. Por favor, certifique-se de que o servidor web é capaz de escrever no diretório plugins (incluindo subdiretórios), mas não se esqueça de torná-lo seguro novamente mais tarde.</message>
 	<message key="manager.plugins.delete">Apagar Plugin</message>
 	<message key="manager.plugins.deleteConfirm">Tem certeza que deseja apagar este plugin do sistema?</message>
 	<message key="manager.plugins.deleteDescription">Ao clicar em 'apagar', o plugin será apagado do sistema de arquivos do servidor.</message>
-	<message key="manager.plugins.deleteError">O plugin "{$ pluginName}" não pôde ser excluído do sistema de arquivos. Isso pode ser um problema de permissões. Por favor, certifique-se de que o servidor web é capaz de escrever no diretório plugins (incluindo subdiretórios), mas não se esqueça de torná-lo seguro novamente mais tarde.</message>
-	<message key="manager.plugins.deleteSuccess">O plugin "{$ pluginName}" eliminado com sucesso</message>
+	<message key="manager.plugins.deleteError">O plugin "{$pluginName}" não pôde ser excluído do sistema de arquivos. Isso pode ser um problema de permissões. Por favor, certifique-se de que o servidor web é capaz de escrever no diretório plugins (incluindo subdiretórios), mas não se esqueça de torná-lo seguro novamente mais tarde.</message>
+	<message key="manager.plugins.deleteSuccess">O plugin "{$pluginName}" eliminado com sucesso</message>
 	<message key="manager.plugins.description">Esta página permite que o gerente revise e configure os plugins que estão instalados atualmente. Plugins são divididos em categorias, de acordo com a sua função. As categorias estão listados abaixo, e dentro de cada categoria, o seu atual conjunto de plugins.</message>
-	<message key="manager.plugins.doesNotExist">O plugin "{$ pluginName}" não existe</message>
+	<message key="manager.plugins.doesNotExist">O plugin "{$pluginName}" não existe</message>
 	<message key="manager.plugins.fileSelectError">Por favor, primeiro selecione um arquivo</message>
-	<message key="manager.plugins.install">Instalar um novo plugin</message>
-	<message key="manager.plugins.installDescription">Este formulário permite que você faça o upload e instale um novo plugin. Certifique-se o plugin está compactado como um arquivo tar.gz.</message>
+	<message key="manager.plugins.installed">Plugins instalados</message>
 	<message key="manager.plugins.installedVersionNewer">O plugin já existe, e é mais novo ou igual a versão instalada</message>
 	<message key="manager.plugins.installedVersionOlder">O plugin já existe, e é mais antigo ou igual à versão instalada</message>
 	<message key="manager.plugins.installFailed">Falha na instalação. {$errorString}</message>
@@ -334,8 +332,24 @@ Há casos em que uma única estatística de uso devem ser utilizada, por exemplo
 	<message key="manager.plugins.wrongName">O version.xml no plugin carregado contém um nome de plugin que não se encaixa no nome do plugin atualizado.</message>
 	<message key="manager.plugins.pleaseInstall">Plugin não existe. Por favor instale-o</message>
 	<message key="manager.plugins.pleaseUpgrade">Plugin já existe, mas é mais recente do que a versão instalada. Por favor, atualize</message>
+	<message key="manager.plugins.pluginGallery">Galeria de plugins</message>
+	<message key="manager.plugins.pluginGallery.overview">Overview</message>
+	<message key="manager.plugins.pluginGallery.installation">Instalação</message>
+	<message key="manager.plugins.pluginGallery.latestCompatible">Ultima versão compativel</message>
+	<message key="manager.plugins.pluginGallery.certifications.official">Oficial</message>
+	<message key="manager.plugins.pluginGallery.certifications.reviewed">Revisado</message>
+	<message key="manager.plugins.pluginGallery.certifications.partner">Parceiro</message>
+	<message key="manager.plugins.pluginGallery.maintainer">Mantenedor</message>
+	<message key="manager.plugins.pluginGallery.version">Versão: {$version}</message>
+	<message key="manager.plugins.pluginGallery.date">Data de lançamento: {$date}</message>
+	<message key="manager.plugins.pluginGallery.homepage">Homepage</message>
+	<message key="manager.plugins.pluginGallery.summary">Resumo</message>
+	<message key="manager.plugins.pluginGallery.status">Status</message>
 	<message key="manager.plugins.settings">Configurações</message>
 	<message key="manager.plugins.tarCommandNotFound">O comando tar não está disponível. Por favor, configure-o corretamente em seu "config.inc.php".</message>
+	<message key="manager.plugins.upload">Enviar novo plugin</message>
+	<message key="manager.plugins.uploadDescription">Este formulário permite enviar e instalar um novo plugin. Assegure que o arquivo do plugin esteja no formato .tar.gz.</message>
+	<message key="manager.plugins.uploadFailed">Please ensure a file was selected for upload.</message>
 	<message key="manager.plugins.upgrade">Atualizar plugin</message>
 	<message key="manager.plugins.upgradeDescription">Este formulário permite a você atualizar um plugin. Certifique-se o plugin está compactado como um arquivo tar.gz..</message>
 	<message key="manager.plugins.upgradeFailed">Falha na atualização. {$errorString}</message>
@@ -375,37 +389,8 @@ Há casos em que uma única estatística de uso devem ser utilizada, por exemplo
 	<message key="settings.roles.uniqueAbbrev">Defina uma abreviatura única para o papel.</message>
 	<message key="settings.roles.roleIdRequired">Defina um nível de permissão para o papel.</message>
 	<message key="settings.roles.stageIdRequired">Defina um estágio a ser associado.</message>
-	<message key="grid.content.navigation.footer">Rodapé</message>
-	<message key="grid.content.navigation.footer.noneExist">Não existem rodapés atualmente.</message>
-	<message key="grid.content.navigation.footer.addCategory">Adicionar Categoria</message>
-	<message key="grid.action.deleteFooterCategory">Apagar Categoria de Rodapé</message>
-	<message key="grid.content.navigation.footer.FooterLink">Links de Rodapé</message>
-	<message key="grid.content.navigation.footer.editCategory">Editar Categoria</message>
-	<message key="grid.content.navigation.footer.deleteCategory">Apagar Categoria</message>
-	<message key="grid.content.navigation.footer.titleRequired">Um título é necessário.</message>
-	<message key="grid.content.navigation.footer.descriptionRequired">Uma descrição é necessária.</message>
-	<message key="grid.content.navigation.footer.pathRequired">O caminha é necessário e deve ser único.</message>
-	<message key="grid.content.navigation.footer.pathInUse">O caminho já é utilizado em outra categoria.</message>
-	<message key="grid.action.addFooterCategoryLink">Adicionar nova categoria de rodapé</message>
-	<message key="grid.action.editFooterCategory">Editar essa categoria de rodapé</message>
-	<message key="grid.content.navigation.socialMedia.platform">Plataforma</message>
-	<message key="grid.content.navigation.socialMedia.addSocialLink">Adicionar Link Social</message>
-	<message key="grid.content.navigation.socialMedia.includeInCatalog">Usar para cada item publicado no catálogo?</message>
-	<message key="grid.content.navigation.socialMedia.inCatalog">Usado no Catálogo</message>
 	<message key="manager.paymentMethod.currency.description">Os pagamentos feitos diretamente através deste site serão denominadas na moeda selecionada.</message>
 	<message key="settings.roles.removeText">Você está prestes a remover este papel deste contexto. Esta operação também vai apagar as definições relacionadas e todas as atribuições de usuários para este papel. Você quer continuar?</message>
-	<message key="grid.content.navigation.footer.deleteCategoryConfirm">Tem certeza de que deseja apagar esta categoria? A ação não pode ser desfeita, e os links nesta categoria também serão removidos.</message>
-	<message key="grid.content.navigation.socialMedia">Mídia Social</message>
-	<message key="grid.content.navigation.socialMedia.code">Bloco de Código de Compartilhamento Social</message>
-	<message key="grid.content.navigation.socialMedia.platformRequired">Você deve digitar um nome de plataforma (Facebook, Google+, etc).</message>
-	<message key="grid.content.navigation.socialMedia.codeRequired">Você deve inserir o código que você deseja usar para exibir esta rede social.</message>
-	<message key="grid.action.addMedia">Adicionar um novo tipo de mídia social</message>
-	<message key="notification.addedFooterCategory">Categoria adicionada.</message>
-	<message key="notification.editedFooterCategory">Categoria editada.</message>
-	<message key="notification.removedFooterCategory">Categoria removida.</message>
-	<message key="notification.addedSocialMedia">Rede Social adicionada.</message>
-	<message key="notification.editedSocialMedia">Rede Social editada.</message>
-	<message key="notification.removedSocialMedia">Rede Social removida.</message>
 	<message key="settings.libraryFiles.fileRequired">Um arquivo de biblioteca é necessária. Certifique-se que você escolheu e enviou um arquivo.</message>
 	<message key="settings.libraryFiles.nameRequired">Um nome é necessário para este arquivo de biblioteca.</message>
 	<message key="settings.libraryFiles.typeRequired">Um tipo de arquivo é necessário para este arquivo de biblioteca.</message>
@@ -417,13 +402,89 @@ Há casos em que uma única estatística de uso devem ser utilizada, por exemplo
 	<message key="grid.action.editGenre">Editar este Gênero</message>
 	<message key="grid.action.deleteGenre">Apagar este Gênero</message>
 	<message key="grid.action.restoreGenres">Restaurar os gêneros para as configurações padrão</message>
-	<message key="manager.setup.genres.sortable">Permitir que os arquivos deste tipo para ser classificados por componente (por exemplo, por capítulo)</message>
+
 	<message key="manager.settings.wizard">Assistente de Configurações</message>
 	<message key="manager.users.roleRequired">Você precisa selecionar pelo menos um papel a ser associado a este usuário.</message>
+	<message key="manager.website">Website</message>
 	<message key="manager.website.title">Configurações do Site</message>
 	<message key="manager.workflow">Fluxo de Trabalho</message>
 	<message key="manager.distribution">Distribuição</message>
 	<message key="manager.distribution.title">Configurações da Distribuição</message>
-	<message key="manager.setup.genres.dependent">Marque os arquivos deste tipo como arquivos dependentes (por exemplo, não submissões primárias)</message>
 	<message key="manager.workflow.title">Definições de Fluxo de Trabalho</message>
+
+	<!-- Review forms -->
+	<message key="manager.reviewForms">Formulários de avaliação</message>
+	<message key="manager.reviewForms.completed">Concluído</message>
+	<message key="manager.reviewForms.create">Criar formulário de avaliação</message>
+	<message key="manager.reviewForms.description">Detalhes e instruções</message>
+	<message key="manager.reviewForms.edit">Forumlário de avaliação</message>
+	<message key="manager.reviewForms.form.titleRequired">É necessário informar o título do formulário.</message>
+	<message key="manager.reviewForms.inReview">Em avaliação</message>
+	<message key="manager.reviewForms.list.description">Os formulários de avaliação pelos pares criados aqui serão apresentados aos avaliadores para seu preenchimento, em vez do formulário padrão que consiste de dois campos de texto aberto, sendo o primeiro "para autor editor," e o segundo "para editor." Formulários de avaliação podem ser designados a seções específicas, e editores poderão escolher qual formulário designar durante a avaliação. Em todos os casos, os editores poderão optar por incluir as avaliações ao se comunicarem com o autor.</message>
+	<message key="manager.reviewForms.noneChosen">Nenhum / Formulário aberto de avaliação</message>
+	<message key="manager.reviewForms.noneCreated">Nenhum formulário de avaliação criado.</message>
+	<message key="manager.reviewForms.noneUsed">Nenhum formulário de avaliação usado.</message>
+	<message key="manager.reviewForms.preview">Prévia do formulário</message>
+	<message key="manager.reviewForms.reviewFormData">Dados do formulário de avaliação</message>
+	<message key="manager.reviewForms.title">Título</message>
+	<message key="manager.reviewFormElement.changeType">Alterando o tipo de item do formulário...</message>
+	<message key="manager.reviewFormElements">Itens do formulário</message>
+	<message key="manager.reviewFormElements.addResponseItem">Incliur seleção</message>
+	<message key="manager.reviewFormElements.checkboxes">Checkboxes (permite escolher mais de uma opção)</message>
+	<message key="manager.reviewFormElements.chooseType">Escolher tipo de item</message>
+	<message key="manager.reviewFormElements.confirmDelete">Confirmar a exclusão de item de formulário publicado...</message>
+	<message key="manager.reviewFormElements.copyTo">Copiar para:</message>
+	<message key="manager.reviewFormElements.create">Criar novo item</message>
+	<message key="manager.reviewFormElements.dropdownbox">Menu dropdown</message>
+	<message key="manager.reviewFormElements.edit">Editar item</message>
+	<message key="manager.reviewFormElements.elementType">Tipo de item</message>
+	<message key="manager.reviewFormElements.form.elementTypeRequired">É necessário definir o tipo para o item de formulário.</message>
+	<message key="manager.reviewFormElements.form.questionRequired">A pergunta é obrigatório para o item.</message>
+	<message key="manager.reviewFormElements.noneCreated">Nenhum item de formulário criado.</message>
+	<message key="manager.reviewFormElements.possibleResponse">Escolha</message>
+	<message key="manager.reviewFormElements.question">Item</message>
+	<message key="manager.reviewFormElements.radiobuttons">Botões rádio (permite escolher apenas uma opção)</message>
+	<message key="manager.reviewFormElements.required">Preenchimento obrigatório para avaliadores</message>
+	<message key="manager.reviewFormElements.smalltextfield">Caixa de texto de uma palavra</message>
+	<message key="manager.reviewFormElements.textarea">Caixa de texto extendida</message>
+	<message key="manager.reviewFormElements.textfield">Caixa de texto de uma linha</message>
+	<message key="manager.reviewFormElements.viewable">Visível (para autores)</message>
+	<message key="grid.action.createReviewForm">Create a new Review Form</message>
+	<message key="manager.setup.reviewerCompetingInterestsRequired.description">Reviewer Competing Interest statement</message>
+	<message key="manager.setup.competingInterests.required">Request a Competing Interest statement during the peer review.</message>
+
+	<message key="manager.setup.includeCopyrightStatement">Display the copyright statement with content (advisable for asserting an author-held copyright).</message>
+	<message key="manager.setup.includeLicense">Display the license with published work.</message>
+	<message key="manager.setup.licenseURLDescription">Provide URL for license webpage, if available.</message>
+
+	<message key="manager.setup.metadata.submission">Submission Form</message>
+	<message key="manager.setup.genres.sortable">Permitir que os arquivos deste tipo para ser classificados por componente (por exemplo, por capítulo)</message>
+	<message key="manager.setup.genres.dependent">Marque os arquivos deste tipo como arquivos dependentes (por exemplo, não submissões primárias)</message>
+	
+	<message key="manager.reviewerSearch.change">Mudar</message>
+	<message key="manager.reviewerSearch.doneAmountToggle">Habilitar/desabilitar o filtro para avaliações concluídas.</message>
+	<message key="manager.reviewerSearch.avgAmountToggle">Habilitar/desabilitar o filtro para média de dias para completar uma avaliação.</message>
+	<message key="manager.setup.genres.supplementary">Marcar arquivos deste tipo como arquivos suplementares (por exemplo conteúdos que não sejam primários à submissão)</message>
+	<message key="manager.reviewForms.confirmActivate">Ter certeza que deseja ativar este formulário de avaliação? Uma vez designado a um avaliador você não poderá mais desativa-lo.</message>
+	<message key="manager.reviewForms.confirmDeactivate">Ter certeza que deseja desativar este formulário de avaliação? Ele não estará mais disponível para novas avaliações.</message>
+	<message key="manager.reviewForms.confirmCopy">Tem certeza que deseja criar uma cópia desse formulário de avaliação?</message>
+	<message key="manager.reviewForms.confirmDelete">Tem certeza que deseja apagar este formulário de avaliação?</message>
+	<message key="manager.reviewFormElements.included">Incluído na mensagem ao autor</message>
+	<message key="manager.reviewerSearch.lastAmountToggle">Habilitar/desabilitar o filtro para dias desde a última avaliação.</message>
+	<message key="manager.reviewerSearch.activeAmountToggle">Habilitar/desabilitar o filtro para avaliações atualmente ativas.</message>
+	<message key="manager.reviewerSearch.form.previousReviewRounds">Avaliadores desta submissão em rodadas anteriores</message>
+	<message key="manager.statistics.reports.optinoalColumns.description">Itens em itálico e marcados com * representam dados opcionais para a atual forma de contar as estatísticas no sistema (tipo de métrica). Você pode ter os dados ou não, dependendo da sua configuração do plugin de estatísticas.</message>
+	<message key="manager.statistics.reports.advancedOptions.hide">Ocultar Opções Avançadas</message>
+	<message key="manager.statistics.reports.objectNotFound">Objeto não encontrado na base de dados</message>
+	<message key="manager.statistics.reports.yesterday">Ontem</message>
+	<message key="manager.plugins.installConfirm">Tem certeza que deseja instalar este plugin?</message>
+	<message key="manager.plugins.upgradeConfirm">Tem certeza que deseja atualizar este plugin?</message>
+	<message key="grid.action.installPlugin">Instalar ou atualizar este plugin</message>
+	<message key="manager.plugins.noInstalledVersion">O plugin ainda não foi instalado.</message>
+	<message key="manager.plugins.noCompatibleVersion">Atualmente não há versão compatível com este plugin.</message>
+	<message key="manager.plugins.installedVersionNewest">Plugin já instalado e atualizado.</message>
+	<message key="manager.plugins.installedVersionNewer.short">Mais novo do que a versão disponível</message>
+	<message key="manager.plugins.installedVersionOlder.short">Pode ser atualizado</message>
+	<message key="manager.plugins.installedVersionNewest.short">Atualizado</message>
+	<message key="manager.plugins.noCompatibleVersion.short">Não disponível</message>
 </locale>

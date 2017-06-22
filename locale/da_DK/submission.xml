@@ -4,11 +4,11 @@
 <!--
   * locale/da_DK/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the da_DK (Danish) locale.
+  * Localization strings for the da_DK (Dansk) locale.
   *
   -->
 
@@ -131,7 +131,7 @@
 	<message key="submission.page.review">#{$id} Bedømmelse</message>
 	<message key="submission.page.summary">#{$id} Resumé</message>
 	<message key="submission.peerReview">Peer review</message>
-	<message key="submission.recommendation">Anbefaling</message>
+	<message key="submission.recommendation">Anbefaling: {$recommendation}</message>
 	<message key="submission.rejected">Afvist</message>
 	<message key="submission.request">Forespørgsel</message>
 	<message key="submission.response">Svar</message>
@@ -347,8 +347,6 @@
 		<p>Eksperimentelle eksportalternativer for tekst omfatter ABNT, APA, MLA samt Vancouver output styles. Disse alternativer giver et tekst-output, som kan kopieres og indsættes i en tekstbaseret artikelsatsskib (for eksempel i Microsoft Word eller OpenOffice, Adobe InDesign etc.). Hver reference indeholder et indlejret link til en automatisk søgning efter den pågældende reference i Google Scholar.</p></li>
 	</ul>]]></message>
 	<message key="submission.citations.editor.loadMessage">Vent, til citationsredigeringsværktøjet er indlæst.</message>
-	<message key="submission.citations.editor.pleaseAddParserFilter"><![CDATA[Please ask your journal manager to <a href="{$citationSetupUrl}">add at least one citation extraction service</a> before you can use the citation markup assistant.]]></message>
-	<message key="submission.citations.editor.pleaseConfigureOutputStyle"><![CDATA[Din tidsskriftschef skal <a href="{$citationSetupUrl}">konfigurere en citationseksportstil</a>, inden du kan begynde at anvende citationsmarkeringsværktøjet.]]></message>
 	<message key="submission.citations.editor.pleaseImportCitationsFirst"><![CDATA[<p>Der er ingen referencer til denne artikel.</p><p>Gå til artiklens <a href="{$articleMetadataUrl}">metadataside</a>, og indtast en litteraturhenvisning, eller tilføj referencer manuelt ved hjælp af knappen "Tilføj element" i redigeringsprogrammet.</p>]]></message>
 	<message key="submission.citations.editor.pleaseSelect">Vælg …</message>
 	<message key="submission.citations.editor.pleaseSetup"><![CDATA[Din tidsskriftschef skal <a href="{$citationSetupUrl}">aktivere citationsredigering</a>, inden du kan få adgang til citationsredigeringsværktøjet.]]></message>
@@ -357,7 +355,7 @@
 	<message key="submission.citations.editor.unprocessedCitationsButtonTitle">Klik for at opdatere litteraturlisten.</message>
 	<message key="submission.citations.filter.invalidMetadata">Der opstod en fejl i {$filterName}: Et af de dataelementer, der kom tilbage fra datakilden (dvs. en webtjeneste) stemte ikke overens med det interne metadataformat. Datakildens resultater blev derfor afvist. Rapporter dette som en fejl.</message>
 	<message key="submission.citations.filter.noResultFromFilterError">Flere af citationstjenesterne fandt ingen resultater. Du kan forsøge at redigere referencefelterne manuelt og derefter sende en ny forespørgsel til citationstjenesterne for at få et bedre resultat. Hvis det ikke hjælper, findes referencen ikke i nogen af de databaser, der er opkoblet.</message>
-	<message key="submission.citations.filter.unsupportedPublicationType">Udgivelsestype mangler eller understøttes ikke. Rediger referencen manuelt, og indtast en udgivelsestype (tilladte typer er 'bog', tidsskrift', 'afhandling' og 'conf-proc').</message>
+	<message key="submission.citations.filter.unsupportedPublicationType">Udgivelsestype mangler eller understøttes ikke. Rediger referencen manuelt, og indtast en udgivelsestype (tilladte typer er 'book', 'journal', 'thesis' og 'conf-proc').</message>
 	<message key="submission.citations.filter.webserviceError">Webtjenesteopkaldet fra {$filterName} gav en fejl, når følgende URL blev kaldt: {$webserviceUrl}. Det er muligt, at webtjenesten er midlertidigt utilgængelig. Du kan stadig benytte de øvrige tjenester og gemme dine resultater. Du kan også forsøge igen senere. Hvis fejlen ikke forsvinder, skal du bede tidsskriftschefen om at deaktivere denne tjeneste og oprette en fejlrapport.</message>
 	<message key="submission.citations.filter.webserviceResultTransformationError">Der opstod en fejl i {$filterName}: Transformationen af XML-resultater (dvs. fra en webtjeneste) til feltbaserede metadata mislykkedes. Det skyldes sandsynligvis, at webtjenesten sendte ugyldige eller ufuldstændige data. Angiv dette som en fejl.</message>
 	<message key="submission.citations.metadata.changeWarning">Er du sikker på, at du vil opdatere din litteraturliste? Hvis du klikker på OK, vil alle de ændringer, som redaktørerne har foretaget, blive overskrevet. Hvis du ikke er sikker på, om du skal foretage ændringer i litteraturlisten, skal du kontakte den redaktør, der har ansvaret for dit indleverede manuskript.</message>
@@ -384,4 +382,6 @@
 	<message key="submission.form.name">Giv denne fil et sigendenavn</message>
 	<message key="submission.form.replaceExisting">Erstat en eksisterende fil?</message>
 	<message key="log.review.reviewerAssigned">{$reviewerName} er blevet tildelt til at bedømme manuskriptet {$submissionId} for bedømmelsesrunde {$round}.</message>
+	<message key="submission.reviewForm">Review formular</message>
+	<message key="submission.reviewFormResponse">Review formular respons</message>
 </locale>

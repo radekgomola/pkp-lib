@@ -2,13 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../dtd/locale.dtd">
 
 <!--
-  * submission.xml
+  * locale/ro_RO/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the ro_RO (Romanian) locale.
+  * Localization strings for the ro_RO (Limba Română) locale.
   * Provided by Constantinescu Nicolaie. 
   *
   -->
@@ -131,7 +131,7 @@
 	<message key="submission.page.review">#{$id} Evaluare</message>
 	<message key="submission.page.summary">#{$id} Sumar</message>
 	<message key="submission.peerReview">Evaluare Peer&amp;nbsp;Review</message>
-	<message key="submission.recommendation">Recomandare</message>
+	<message key="submission.recommendation">Recomandare: {$recommendation}</message>
 	<message key="submission.rejected">Respins</message>
 	<message key="submission.request">Solicitare</message>
 	<message key="submission.response">Răspuns</message>
@@ -330,8 +330,6 @@
 		<p>Opțiunile experimentale pentru export includ ABNT, APA, MLA și Vancouver. Aceste opțiuni generează un rezultat de text care poate fi copiat și inserat într-o asamblare bazată pe text a unui articol (de exemplu în Microsoft Word sau OpenOffice; Adobe InDesign; etc.). Fiecare referință bibliografică include un link pentru a căuta automat acea referință bibliografică în Google Scholar.</p></li>
 	</ul>]]></message>
 	<message key="submission.citations.editor.loadMessage">Așteaptă până la încărcarea asistentului pentru markup-ul referințelor bibliografice</message>
-	<message key="submission.citations.editor.pleaseAddParserFilter"><![CDATA[Cere managerului revistei să <a href="{$citationSetupUrl}">adauge cel puțin un serviciu pentru extragerea referințelor bibliografice</a> înainte de a utiliza asistentul pentru extragerea referințelor bibliografice.]]></message>
-	<message key="submission.citations.editor.pleaseConfigureOutputStyle"><![CDATA[Cere managerului revistei să <a href="{$citationSetupUrl}">configureze un stil pentru exportul referințelor</a> înainte de a utiliza asistentul pentru extragerea referințelor bibliografice.]]></message>
 	<message key="submission.citations.editor.pleaseImportCitationsFirst"><![CDATA[<p>Nu există referințe bibliografice pentru acest articol.</p><p>Mergi la pagina <a href="{$articleMetadataUrl}">metadatelor</a> și introdu a listă cu referințe bibliografice sau adaugă referințele manual utilizând butonul pentru adăugare al editorului.</p>]]></message>
 	<message key="submission.citations.editor.pleaseSelect">Selectează...</message>
 	<message key="submission.citations.editor.pleaseSetup"><![CDATA[Cere managerului revistei să <a href="{$citationSetupUrl}">activeze editarea referințelor</a> înainte de a accesa asistentul pentru markup pentru referințele bibliografice.]]></message>
@@ -340,7 +338,7 @@
 	<message key="submission.citations.editor.unprocessedCitationsButtonTitle">Clic pentru a actualiza lista referințelor bibliografice.</message>
 	<message key="submission.citations.filter.invalidMetadata">A apărut o eroare în {$filterName}: Unu din elementele de date adus de la o sursă de date (de ex. un serviciu web) nu se conformează formatului de metadate intern. Astfel, rezultatele datelor sursă au fost respinse. Trimite ca fiind bug.</message>
 	<message key="submission.citations.filter.noResultFromFilterError">Câteva servicii pentru referințe bibliografice nu au adus rezultate. Poți încerca să editezi manual câmpurile pentru referințe bibliografice iar apoi poți interoga serviciile pentru referințe din nou pentru a îmbunătăți rezultatele. Dacă acest lucru nu este de ajutor, atunci citările nu există în niciuna din bazele de date conectate.</message>
-	<message key="submission.citations.filter.unsupportedPublicationType">Tip nesuportat sau lipsă. Editează manual referința și introduceți un tip de publicare (tipurile permise sunt „carte”, „revistă”, „teză” și „conf-proc”).</message>
+	<message key="submission.citations.filter.unsupportedPublicationType">Tip nesuportat sau lipsă. Editează manual referința și introduceți un tip de publicare (tipurile permise sunt „book”, „journal”, „thesis” și „conf-proc”).</message>
 	<message key="submission.page.citations">#{$id} Referințe bibliografice</message>
 	<message key="submission.currentAgencies">Agențiile existente</message>
 	<message key="submission.indexingInformation">Informații pentru indexare</message>
@@ -360,4 +358,8 @@
 	<message key="submission.citations.editor.details.googleScholar">Google Scholar</message>
 	<message key="submission.citations.editor.details.manualEditing">Redactare manuală</message>
 	<message key="log.review.reviewerAssigned">{$reviewerName} a fost angajat în evaluarea propunerii {$submissionId} pentru sesiunea de evaluare {$round}.</message>
+
+	<!--  peer review -->
+	<message key="submission.reviewForm">Formular de Evaluare</message>
+	<message key="submission.reviewFormResponse">Formular de răspuns la evaluare</message>
 </locale>

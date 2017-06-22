@@ -6,7 +6,8 @@
 /**
  * @file lib/pkp/classes/statistics/PKPMetricsDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPMetricsDAO
@@ -160,7 +161,7 @@ class PKPMetricsDAO extends DAO {
 		// Replace the current time constant by time values
 		// inside the parameters array.
 		$currentTime = array(
-			STATISTICS_CURRENT_DAY => date('Ymd', time()),
+			STATISTICS_YESTERDAY => date('Ymd', strtotime('-1 day', time())),
 			STATISTICS_CURRENT_MONTH => date('Ym', time()));
 		foreach ($currentTime as $constant => $time) {
 			$currentTimeKeys = array_keys($params, $constant);
@@ -292,7 +293,7 @@ class PKPMetricsDAO extends DAO {
 
 		// We require either month or day in the time dimension.
 		if (isset($record['day'])) {
-			if (!String::regexp_match('/[0-9]{8}/', $record['day'])) {
+			if (!PKPString::regexp_match('/[0-9]{8}/', $record['day'])) {
 				throw new Exception('Cannot load record: invalid date.');
 			}
 			$recordToStore['day'] = $record['day'];
@@ -301,7 +302,7 @@ class PKPMetricsDAO extends DAO {
 				throw new Exception('Cannot load record: invalid month.');
 			}
 		} elseif (isset($record['month'])) {
-			if (!String::regexp_match('/[0-9]{6}/', $record['month'])) {
+			if (!PKPString::regexp_match('/[0-9]{6}/', $record['month'])) {
 				throw new Exception('Cannot load record: invalid month.');
 			}
 			$recordToStore['month'] = $record['month'];
@@ -343,7 +344,7 @@ class PKPMetricsDAO extends DAO {
 	 * and representation.
 	 */
 	protected function foreignKeyLookup($assocType, $assocId) {
-		$contextId = $sectionId = $submissionId = $representationId = null;
+		$contextId = $sectionId = $submissionId = $assocObjectType = $assocObjectId = $representationId = null;
 
 		$isFile = false;
 		$isRepresentation = false;
@@ -388,6 +389,7 @@ class PKPMetricsDAO extends DAO {
 				} else {
 					throw new Exception('Cannot load record: invalid submission id.');
 				}
+				list($assocObjectType, $assocObjectId) = $this->getAssocObjectInfo($submissionId, $contextId);
 				break;
 			case ASSOC_TYPE_SECTION:
 				$sectionDao = Application::getSectionDAO();
@@ -409,7 +411,20 @@ class PKPMetricsDAO extends DAO {
 				break;
 		}
 
-		return array($contextId, $sectionId, null, null, $submissionId, $representationId);
+		return array($contextId, $sectionId, $assocObjectType, $assocObjectId, $submissionId, $representationId);
+	}
+
+	/**
+	 * Get the id and type of the object that
+	 * the passed submission info is associated with.
+	 * Default implementation returns null, subclasses
+	 * have to implement it.
+	 * @param $submissionId Submission id.
+	 * @param $contextId The submission context id.
+	 * @return array Assoc type and id of the object.
+	 */
+	protected function getAssocObjectInfo($submissionId, $contextId) {
+		return array(null, null);
 	}
 }
 ?>

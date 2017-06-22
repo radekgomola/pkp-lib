@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/settings/roles/UserGroupGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserGroupGridHandler
@@ -16,6 +16,7 @@
 // Import the base GridHandler.
 import('lib.pkp.classes.controllers.grid.GridHandler');
 import('lib.pkp.classes.controllers.grid.DataObjectGridCellProvider');
+import('lib.pkp.classes.workflow.WorkflowStageDAO');
 
 // Link action & modal classes
 import('lib.pkp.classes.linkAction.request.AjaxModal');
@@ -58,8 +59,8 @@ class UserGroupGridHandler extends GridHandler {
 	 * @copydoc PKPHandler::authorize()
 	 */
 	function authorize($request, &$args, $roleAssignments) {
-		import('lib.pkp.classes.security.authorization.PkpContextAccessPolicy');
-		$this->addPolicy(new PkpContextAccessPolicy($request, $roleAssignments));
+		import('lib.pkp.classes.security.authorization.ContextAccessPolicy');
+		$this->addPolicy(new ContextAccessPolicy($request, $roleAssignments));
 
 		$operation = $request->getRequestedOp();
 		$workflowStageRequiredOps = array('assignStage', 'unassignStage');
@@ -104,7 +105,6 @@ class UserGroupGridHandler extends GridHandler {
 
 		// Basic grid configuration.
 		$this->setTitle('grid.roles.currentRoles');
-		$this->setInstructions('settings.roles.gridDescription');
 
 		// Add grid-level actions.
 		$router = $request->getRouter();
@@ -124,13 +124,12 @@ class UserGroupGridHandler extends GridHandler {
 		import('lib.pkp.controllers.grid.settings.roles.UserGroupGridCellProvider');
 		$cellProvider = new UserGroupGridCellProvider();
 
-		$userGroupDao = DAORegistry::getDAO('UserGroupDAO'); /* @var $userGroupDao UserGroupDAO */
-		$workflowStagesLocales = $userGroupDao->getWorkflowStageTranslationKeys();
+		$workflowStagesLocales = WorkflowStageDAO::getWorkflowStageTranslationKeys();
 
 		// Set array containing the columns info with the same cell provider.
 		$columnsInfo = array(
-			1 => array('id' => 'name', 'title' => 'settings.roles.roleName', 'template' => 'controllers/grid/gridCell.tpl'),
-			2 => array('id' => 'abbrev', 'title' => 'settings.roles.roleAbbrev', 'template' => 'controllers/grid/gridCell.tpl')
+			1 => array('id' => 'name', 'title' => 'settings.roles.roleName', 'template' => null),
+			2 => array('id' => 'abbrev', 'title' => 'settings.roles.roleAbbrev', 'template' => null)
 		);
 
 		foreach ($workflowStagesLocales as $stageId => $stageTitleKey) {
@@ -151,7 +150,7 @@ class UserGroupGridHandler extends GridHandler {
 	/**
 	 * @copydoc GridHandler::loadData()
 	 */
-	function loadData($request, $filter) {
+	protected function loadData($request, $filter) {
 		$contextId = $this->_getContextId();
 		$userGroupDao = DAORegistry::getDAO('UserGroupDAO'); /* @var $userGroupDao UserGroupDAO */
 
@@ -173,21 +172,19 @@ class UserGroupGridHandler extends GridHandler {
 		$rangeInfo = $this->getGridRangeInfo($request, $this->getId());
 
 		if ($stageIdFilter && $stageIdFilter != 0) {
-			$userGroups = $userGroupDao->getUserGroupsByStage($contextId, $stageIdFilter, false, false, $roleIdFilter, $rangeInfo);
+			return $userGroupDao->getUserGroupsByStage($contextId, $stageIdFilter, false, false, $roleIdFilter, $rangeInfo);
 		} else if ($roleIdFilter && $roleIdFilter != 0) {
-			$userGroups = $userGroupDao->getByRoleId($contextId, $roleIdFilter, false, $rangeInfo);
+			return $userGroupDao->getByRoleId($contextId, $roleIdFilter, false, $rangeInfo);
 		} else {
-			$userGroups = $userGroupDao->getByContextId($contextId, $rangeInfo);
+			return $userGroupDao->getByContextId($contextId, $rangeInfo);
 		}
-
-		return $userGroups;
 	}
 
 	/**
 	 * @copydoc GridHandler::getRowInstance()
 	 * @return UserGroupGridRow
 	 */
-	function getRowInstance() {
+	protected function getRowInstance() {
 		import('lib.pkp.controllers.grid.settings.roles.UserGroupGridRow');
 		return new UserGroupGridRow();
 	}
@@ -207,7 +204,7 @@ class UserGroupGridHandler extends GridHandler {
 
 		$filterData = array('roleOptions' => $roleOptions);
 
-		$workflowStages = array(0 => 'grid.userGroup.allStages') + UserGroupDao::getWorkflowStageTranslationKeys();
+		$workflowStages = array(0 => 'grid.userGroup.allStages') + WorkflowStageDAO::getWorkflowStageTranslationKeys();
 		$filterData['stageOptions'] = $workflowStages;
 
 		return parent::renderFilter($request, $filterData);
@@ -232,7 +229,7 @@ class UserGroupGridHandler extends GridHandler {
 	 * @see GridHandler::getFilterForm()
 	 * @return string Filter template.
 	 */
-	function getFilterForm() {
+	protected function getFilterForm() {
 		return 'controllers/grid/settings/roles/userGroupsGridFilter.tpl';
 	}
 
@@ -260,21 +257,21 @@ class UserGroupGridHandler extends GridHandler {
 	/**
 	 * Handle the edit user group operation.
 	 * @param $args array
-	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function editUserGroup($args, $request) {
 		$userGroupForm = $this->_getUserGroupForm($request);
 
 		$userGroupForm->initData();
 
-		$json = new JSONMessage(true, $userGroupForm->fetch($request));
-		return $json->getString();
+		return new JSONMessage(true, $userGroupForm->fetch($request));
 	}
 
 	/**
 	 * Update user group data on database and grid.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function updateUserGroup($args, $request) {
 		$userGroupForm = $this->_getUserGroupForm($request);
@@ -284,8 +281,7 @@ class UserGroupGridHandler extends GridHandler {
 			$userGroupForm->execute($request);
 			return DAO::getDataChangedEvent();
 		} else {
-			$json = new JSONMessage(true, $userGroupForm->fetch($request));
-			return $json->getString();
+			return new JSONMessage(true, $userGroupForm->fetch($request));
 		}
 	}
 
@@ -293,6 +289,7 @@ class UserGroupGridHandler extends GridHandler {
 	 * Remove user group.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function removeUserGroup($args, $request) {
 		$user = $request->getUser();
@@ -356,6 +353,7 @@ class UserGroupGridHandler extends GridHandler {
 	 * Toggle user group stage assignment.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	private function _toggleAssignment($args, $request) {
 		$userGroup = $this->_userGroup;
@@ -378,8 +376,7 @@ class UserGroupGridHandler extends GridHandler {
 
 		$notificationMgr = new NotificationManager();
 		$user = $request->getUser();
-
-		$stageLocaleKeys = UserGroupDao::getWorkflowStageTranslationKeys();
+		$stageLocaleKeys = WorkflowStageDAO::getWorkflowStageTranslationKeys();
 
 		$notificationMgr->createTrivialNotification($user->getId(), NOTIFICATION_TYPE_SUCCESS,
 			array('contents' => __($messageKey,

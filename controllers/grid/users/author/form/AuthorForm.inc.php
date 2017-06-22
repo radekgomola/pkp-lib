@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/users/author/form/AuthorForm.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthorForm
@@ -38,8 +38,9 @@ class AuthorForm extends Form {
 		$this->addCheck(new FormValidator($this, 'firstName', 'required', 'submission.submit.form.authorRequiredFields'));
 		$this->addCheck(new FormValidator($this, 'lastName', 'required', 'submission.submit.form.authorRequiredFields'));
 		$this->addCheck(new FormValidatorEmail($this, 'email', 'required', 'form.emailRequired'));
-		$this->addCheck(new FormValidatorUrl($this, 'url', 'optional', 'user.profile.form.urlInvalid'));
+		$this->addCheck(new FormValidatorUrl($this, 'userUrl', 'optional', 'user.profile.form.urlInvalid'));
 		$this->addCheck(new FormValidator($this, 'userGroupId', 'required', 'submission.submit.form.contributorRoleRequired'));
+		$this->addCheck(new FormValidatorORCID($this, 'orcid', 'optional', 'user.orcid.orcidInvalid'));
 		$this->addCheck(new FormValidatorPost($this));
 	}
 
@@ -111,11 +112,16 @@ class AuthorForm extends Form {
 				'middleName' => $author->getMiddleName(),
 				'lastName' => $author->getLastName(),
 				'suffix' => $author->getSuffix(),
+                                'affiliation' => $author->getAffiliation(null), // Localized
 				'country' => $author->getCountry(),
 				'email' => $author->getEmail(),
-				'url' => $author->getUrl(),
-                                'affiliation' => $author->getAffiliation(NULL),
-                                'biography' => $author->getBiography(NULL),
+				'userUrl' => $author->getUrl(),
+				'orcid' => $author->getOrcid(),
+				'userGroupId' => $author->getUserGroupId(),
+				'biography' => $author->getBiography(null),
+				'primaryContact' => $author->getPrimaryContact(),
+				'includeInBrowse' => $author->getIncludeInBrowse(),
+				
                                 'uco' => $author->getUCO(), /*MUNIPRESS*/
                                 'mu' => $author->getMU(), /*MUNIPRESS*/
                                 'tituly_pred' => $author->getTitulyPred(), /*MUNIPRESS*/
@@ -129,16 +135,14 @@ class AuthorForm extends Form {
                                 'zobrazAutori'=> $author->getZobrazAutori(), /*MUNIPRESS*/
                                 'zobrazOstatni'=> $author->getZobrazOstatni(),/*MUNIPRESS*/
                                 'honorarCelkem'=> $author->getHonorarCelkem(),/*MUNIPRESS*/
-                                'honorarVyplaceno'=> $author->getHonorarVyplaceno(),/*MUNIPRESS*/                                
-				'userGroupId' => $author->getUserGroupId(),			
-				'primaryContact' => $author->getPrimaryContact(),
-                                'includeInBrowse' => $author->getIncludeInBrowse(),
-
+                                'honorarVyplaceno'=> $author->getHonorarVyplaceno(),/*MUNIPRESS*/        
 			);
 		} else {
 			// assume authors should be listed unless otherwise specified.
 			$this->_data = array('includeInBrowse' => true);
 		}
+		// in order to be able to use the hook
+		return parent::initData();
 	}
 
 	/**
@@ -180,9 +184,13 @@ class AuthorForm extends Form {
                         'suffix',
 			'country',
 			'email',
-			'url',
-                        'affiliation',
-                        'biography',
+                        'userUrl',
+			'orcid',
+			'userGroupId',
+			'biography',
+			'primaryContact',
+			'includeInBrowse',
+                    
                         'uco', /*MUNIPRESS*/
                         'mu', /*MUNIPRESS*/
                         'tituly_pred', /*MUNIPRESS*/
@@ -197,9 +205,7 @@ class AuthorForm extends Form {
                         'zobrazOstatni',/*MUNIPRESS*/
                         'honorarCelkem',/*MUNIPRESS*/
                         'honorarVyplaceno',/*MUNIPRESS*/
-			'userGroupId',			
-			'primaryContact',
-			'includeInBrowse',
+					
 		));
 	}
 
@@ -226,17 +232,23 @@ class AuthorForm extends Form {
 		$author->setFirstName($this->getData('firstName'));
 		$author->setMiddleName($this->getData('middleName'));
 		$author->setLastName($this->getData('lastName'));
-//		$author->setSuffix($this->getData('suffix'));		
+		$author->setSuffix($this->getData('suffix'));
+		$author->setAffiliation($this->getData('affiliation'), null); // localized
 		$author->setCountry($this->getData('country'));
 		$author->setEmail($this->getData('email'));
-		$author->setUrl($this->getData('url'));
-                $author->setAffiliation($this->getData('affiliation'), null); // localized
-                $author->setBiography($this->getData('biography'), null); // localized
+		$author->setUrl($this->getData('userUrl'));
+		$author->setOrcid($this->getData('orcid'));
+		$author->setUserGroupId($this->getData('userGroupId'));
+		$author->setBiography($this->getData('biography'), null); // localized
+		$author->setPrimaryContact(($this->getData('primaryContact') ? true : false));
+		$author->setIncludeInBrowse(($this->getData('includeInBrowse') ? true : false));
+        
+                // in order to be able to use the hook
+		parent::execute();
                 
                 /**
                  * MUNIPRESS
                  */
-
                 $author->setUCO($this->getData('uco'));
                 $author->setMU($this->getData('mu'));
                 $author->setTitulyPred($this->getData('tituly_pred'));
@@ -250,13 +262,7 @@ class AuthorForm extends Form {
                 $author->setZobrazAutori($this->getData('zobrazAutori'));
                 $author->setZobrazOstatni($this->getData('zobrazOstatni'));
                 $author->setHonorarCelkem($this->getData('honorarCelkem'));
-                $author->setHonorarVyplaceno($this->getData('honorarVyplaceno'));
-                
-		$author->setUserGroupId($this->getData('userGroupId'));                
-		$author->setPrimaryContact(($this->getData('primaryContact') ? true : false));
-                $author->setIncludeInBrowse(($this->getData('includeInBrowse') ? true : false));
-                
-                
+                $author->setHonorarVyplaceno($this->getData('honorarVyplaceno'));                
                 
 		if ($existingAuthor) {
 			$authorDao->updateObject($author);

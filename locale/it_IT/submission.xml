@@ -4,8 +4,8 @@
 <!--
   * locale/it_IT/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the it_IT (Italiano) locale.
@@ -130,7 +130,7 @@
 	<message key="submission.page.review">#{$id} Revisione</message>
 	<message key="submission.page.summary">#{$id} Riassunto</message>
 	<message key="submission.peerReview">Peer review</message>
-	<message key="submission.recommendation">Parere</message>
+	<message key="submission.recommendation">Parere: {$recommendation}</message>
 	<message key="submission.rejected">Rifiutato</message>
 	<message key="submission.request">Richiesta</message>
 	<message key="submission.response">Risposta</message>
@@ -311,8 +311,6 @@
 	<message key="submission.citations.editor.export.filterSelectionError">Non hai selezionato nessuna opzione.</message>
 	<message key="submission.citations.filter.webserviceResultTransformationError">Si è verificato un errore in {$filterName}: La trasformazione dei risultati da XML (es. da un webservice) a metadati su campi è fallita. La ragione, probabilmente, è che il webservice ha restituito un XML non valido o incompleto. Segnala il problema.</message>
 	<message key="submission.citations.metadata.changeWarning">Sei sicuro di voler aggiornare la lista dei riferimenti bibliografici? Se clicchi su OK, ogni modifica fatta dagli editor verrà sovrascritta. Se non sei sicuro di poter fare tali modifiche alla bibliografia, contatta l'editor che ha in carico la tua proposta.</message>
-	<message key="submission.citations.editor.pleaseAddParserFilter"><![CDATA[Chiedi all'amministratore della rivista di <a href="{$citationSetupUrl}">aggiungere almeno un servizio di recupero delle citazioni</a> per usare l'assistente bibliografico.]]></message>
-	<message key="submission.citations.editor.pleaseConfigureOutputStyle"><![CDATA[Chiedi all'amministratore della rivista di <a href="{$citationSetupUrl}">configurare uno stile di esportazione delle citazioni</a> per usare l'assistente bibliografico.]]></message>
 	<message key="submission.citations.editor.pleaseSetup"><![CDATA[Chiedi all'amministratore della rivista di <a href="{$citationSetupUrl}">aggiungere almeno un servizio di recupero delle citazioni</a> per usare l'assistente bibliografico.]]></message>
 	<message key="submission.citations.filter.webserviceError">Una chiamata al webservice di {$filterName} ha restituito un errore chiamando questa URL: {$webserviceUrl}. Il webservice potrebbe essere temporaneamente non disponibile. Puoi riprovare più tardi. Se l'errore persiste, chiedi all'amministratore della rivista di disattivare questo servizio e di segnalare il problema.</message>
 	<message key="submission.currentAgencies">Agenzie correnti</message>
@@ -376,4 +374,7 @@
 	<message key="submission.form.replaceExisting">Sostituire un file esistente?</message>
 	<message key="submission.addFile">Carica file</message>
 	<message key="log.review.reviewerAssigned">A {$reviewerName} è stato assegnato il compito di revisionare la proposta #{$submissionId} per il {$round} ciclo di revisione.</message>
+
+	<message key="submission.reviewForm">Modulo di revisione</message>
+	<message key="submission.reviewFormResponse">Risposta del modulo di revisione</message>
 </locale>

@@ -10,8 +10,8 @@
 /**
  * @file classes/form/Form.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Form
@@ -31,6 +31,7 @@ import('lib.pkp.classes.form.validation.FormValidatorBoolean');
 import('lib.pkp.classes.form.validation.FormValidatorControlledVocab');
 import('lib.pkp.classes.form.validation.FormValidatorCustom');
 import('lib.pkp.classes.form.validation.FormValidatorReCaptcha');
+import('lib.pkp.classes.form.validation.FormValidatorDate');
 import('lib.pkp.classes.form.validation.FormValidatorEmail');
 import('lib.pkp.classes.form.validation.FormValidatorInSet');
 import('lib.pkp.classes.form.validation.FormValidatorLength');
@@ -43,6 +44,7 @@ import('lib.pkp.classes.form.validation.FormValidatorUri');
 import('lib.pkp.classes.form.validation.FormValidatorUrl');
 import('lib.pkp.classes.form.validation.FormValidatorLocaleUrl');
 import('lib.pkp.classes.form.validation.FormValidatorISSN');
+import('lib.pkp.classes.form.validation.FormValidatorORCID');
 
 class Form {
 

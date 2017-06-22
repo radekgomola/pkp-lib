@@ -3,8 +3,8 @@
 /**
  * @file classes/search/SubmissionSearchIndex.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionSearchIndex
@@ -39,21 +39,21 @@ class SubmissionSearchIndex {
 		$cleanText = Core::cleanVar($text);
 
 		// Remove punctuation
-		$cleanText = String::regexp_replace('/[!"\#\$%\'\(\)\.\?@\[\]\^`\{\}~]/', '', $cleanText);
-		$cleanText = String::regexp_replace('/[\+,:;&\/<=>\|\\\]/', ' ', $cleanText);
-		$cleanText = String::regexp_replace('/[\*]/', $allowWildcards ? '%' : ' ', $cleanText);
-		$cleanText = String::strtolower($cleanText);
+		$cleanText = PKPString::regexp_replace('/[!"\#\$%\'\(\)\.\?@\[\]\^`\{\}~]/', '', $cleanText);
+		$cleanText = PKPString::regexp_replace('/[\+,:;&\/<=>\|\\\]/', ' ', $cleanText);
+		$cleanText = PKPString::regexp_replace('/[\*]/', $allowWildcards ? '%' : ' ', $cleanText);
+		$cleanText = PKPString::strtolower($cleanText);
 
 		// Split into words
-		$words = String::regexp_split('/\s+/', $cleanText);
+		$words = PKPString::regexp_split('/\s+/', $cleanText);
 
 		// FIXME Do not perform further filtering for some fields, e.g., author names?
 
 		// Remove stopwords
 		$keywords = array();
 		foreach ($words as $k) {
-			if (!isset($stopwords[$k]) && String::strlen($k) >= $minLength && !is_numeric($k)) {
-				$keywords[] = String::substr($k, 0, SEARCH_KEYWORD_MAX_LENGTH);
+			if (!isset($stopwords[$k]) && PKPString::strlen($k) >= $minLength && !is_numeric($k)) {
+				$keywords[] = PKPString::substr($k, 0, SEARCH_KEYWORD_MAX_LENGTH);
 			}
 		}
 		return $keywords;

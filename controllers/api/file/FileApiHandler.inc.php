@@ -6,8 +6,8 @@
 /**
  * @file controllers/api/file/FileApiHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FileApiHandler
@@ -20,7 +20,7 @@
 import('classes.handler.Handler');
 import('lib.pkp.classes.core.JSONMessage');
 import('lib.pkp.classes.file.SubmissionFileManager');
-import('classes.security.authorization.SubmissionFileAccessPolicy');
+import('lib.pkp.classes.security.authorization.SubmissionFileAccessPolicy');
 
 class FileApiHandler extends Handler {
 
@@ -63,8 +63,8 @@ class FileApiHandler extends Handler {
 			}
 			$this->addPolicy($multipleSubmissionFileAccessPolicy);
 		} else if (is_numeric($libraryFileId)) {
-			import('lib.pkp.classes.security.authorization.PkpContextAccessPolicy');
-			$this->addPolicy(new PkpContextAccessPolicy($request, $roleAssignments));
+			import('lib.pkp.classes.security.authorization.ContextAccessPolicy');
+			$this->addPolicy(new ContextAccessPolicy($request, $roleAssignments));
 		} else {
 			// IDs will be specified using the default parameters.
 			$this->addPolicy($this->_getAccessPolicy($request, $args, $roleAssignments));
@@ -103,10 +103,16 @@ class FileApiHandler extends Handler {
 		if ($libraryFile) {
 
 			// If this file has a submission ID, ensure that the current
-			// user is assigned to that submission.
+			// user has access to that submission.
 			if ($libraryFile->getSubmissionId()) {
-				$user = $request->getUser();
 				$allowedAccess = false;
+
+				// Managers are always allowed access.
+				$userRoles = $this->getAuthorizedContextObject(ASSOC_TYPE_USER_ROLES);
+				if (array_intersect($userRoles, array(ROLE_ID_MANAGER))) $allowedAccess = true;
+
+				// Check for specific assignments.
+				$user = $request->getUser();
 				$userStageAssignmentDao = DAORegistry::getDAO('UserStageAssignmentDAO');
 				$assignedUsers = $userStageAssignmentDao->getUsersBySubmissionAndStageId($libraryFile->getSubmissionId(), WORKFLOW_STAGE_ID_SUBMISSION);
 				if (!$assignedUsers->wasEmpty()) {
@@ -209,7 +215,7 @@ class FileApiHandler extends Handler {
 	 *  different context.
 	 * @param $args aray
 	 * @param $request Request
-	 * @return string
+	 * @return JSONMessage JSON object
 	 */
 	function enableLinkAction($args, $request) {
 		return DAO::getDataChangedEvent();
@@ -231,7 +237,7 @@ class FileApiHandler extends Handler {
 	 * @param $args
 	 * @param $roleAssignments array
 	 * @param $fileIdAndRevision array optional
-	 * @return SubmissionAccessPolicy
+	 * @return SubmissionFileAccessPolicy
 	 */
 	function _getAccessPolicy($request, $args, $roleAssignments, $fileIdAndRevision = null) {
 		return new SubmissionFileAccessPolicy($request, $args, $roleAssignments, SUBMISSION_FILE_ACCESS_READ, $fileIdAndRevision);

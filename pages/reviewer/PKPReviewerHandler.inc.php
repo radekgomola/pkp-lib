@@ -3,8 +3,8 @@
 /**
  * @file pages/reviewer/PKPReviewerHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPReviewerHandler
@@ -41,8 +41,12 @@ class PKPReviewerHandler extends Handler {
 		$templateMgr = TemplateManager::getManager($request);
 		$templateMgr->assign('submission', $reviewerSubmission);
 		$reviewStep = max($reviewerSubmission->getStep(), 1);
+		$userStep = (int) $request->getUserVar('step');
+		$step = (int) (!empty($userStep) ? $userStep: $reviewStep);
+		if ($step > $reviewStep) $step = $reviewStep; // Reviewer can't go past incomplete steps
+		if ($step < 1 || $step > 4) fatalError('Invalid step!');
 		$templateMgr->assign('reviewStep', $reviewStep);
-		$templateMgr->assign('selected', $reviewStep - 1);
+		$templateMgr->assign('selected', $step - 1);
 
 		$templateMgr->display('reviewer/review/reviewStepHeader.tpl');
 	}
@@ -51,6 +55,7 @@ class PKPReviewerHandler extends Handler {
 	 * Display a step tab contents in the submission review page.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function step($args, $request) {
 		$reviewAssignment = $this->getAuthorizedContextObject(ASSOC_TYPE_REVIEW_ASSIGNMENT); /* @var $reviewAssignment ReviewAssignment */
@@ -80,8 +85,7 @@ class PKPReviewerHandler extends Handler {
 			} else {
 				$reviewerForm->initData();
 			}
-			$json = new JSONMessage(true, $reviewerForm->fetch($request));
-			return $json->getString();
+			return new JSONMessage(true, $reviewerForm->fetch($request));
 		} else {
 			$templateMgr = TemplateManager::getManager($request);
 			$templateMgr->assign('submission', $reviewerSubmission);
@@ -94,6 +98,7 @@ class PKPReviewerHandler extends Handler {
 	 * Save a review step.
 	 * @param $args array first parameter is the step being saved
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function saveStep($args, $request) {
 		$step = (int)$request->getUserVar('step');
@@ -116,16 +121,17 @@ class PKPReviewerHandler extends Handler {
 			$reviewerForm->execute($request);
 			$json = new JSONMessage(true);
 			$json->setEvent('setStep', $step+1);
+			return $json;
 		} else {
-			$json = new JSONMessage(true, $reviewerForm->fetch($request));
+			return new JSONMessage(true, $reviewerForm->fetch($request));
 		}
-		return $json->getString();
 	}
 
 	/**
 	 * Show a form for the reviewer to enter regrets into.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function showDeclineReview($args, $request) {
 		$reviewAssignment = $this->getAuthorizedContextObject(ASSOC_TYPE_REVIEW_ASSIGNMENT); /* @var $reviewAssignment ReviewAssignment */

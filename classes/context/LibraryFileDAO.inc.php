@@ -3,8 +3,8 @@
 /**
  * @file classes/context/LibraryFileDAO.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class LibraryFileDAO
@@ -88,7 +88,7 @@ class LibraryFileDAO extends DAO {
 
 	/**
 	 * Construct a new data object corresponding to this DAO.
-	 * @return SignoffEntry
+	 * @return LibraryFile
 	 */
 	function newDataObject() {
 		return new LibraryFile();

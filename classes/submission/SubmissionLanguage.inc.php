@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/SubmissionLanguage.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionLanguage
@@ -38,6 +38,9 @@ class SubmissionLanguage extends ControlledVocabEntry {
 		$this->setData('submissionLanguage', $language, $locale);
 	}
 
+	/**
+	 * @copydoc ControlledVocabEntry::getLocaleMetadataFieldNames()
+	 */
 	function getLocaleMetadataFieldNames() {
 		return array('submissionLanguage');
 	}

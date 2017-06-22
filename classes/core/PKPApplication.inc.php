@@ -3,8 +3,8 @@
 /**
  * @file classes/core/PKPApplication.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPApplication
@@ -13,9 +13,6 @@
  * @brief Class describing this application.
  *
  */
-
-define_exposed('REALLY_BIG_NUMBER', 10000);
-define_exposed('UPLOAD_MAX_FILESIZE', ini_get('upload_max_filesize'));
 
 define('ROUTE_COMPONENT', 'component');
 define('ROUTE_PAGE', 'page');
@@ -37,23 +34,16 @@ define('ASSOC_TYPE_REVIEW_ROUND',		0x000020B);
 define('ASSOC_TYPE_SUBMISSION_FILES',		0x000020F);
 define('ASSOC_TYPE_PUBLISHED_SUBMISSION',	0x0000210);
 define('ASSOC_TYPE_PLUGIN',			0x0000211);
-define('ASSOC_TYPE_SECTION',		0x0000212);
+define('ASSOC_TYPE_SECTION',			0x0000212);
 define('ASSOC_TYPE_USER',			0x0001000); // This value used because of bug #6068
 define('ASSOC_TYPE_USER_GROUP',			0x0100002);
 define('ASSOC_TYPE_CITATION',			0x0100003);
 define('ASSOC_TYPE_AUTHOR',			0x0100004);
 define('ASSOC_TYPE_EDITOR',			0x0100005);
-define('ASSOC_TYPE_SIGNOFF',			0x0100006);
 define('ASSOC_TYPE_USER_ROLES',			0x0100007);
 define('ASSOC_TYPE_ACCESSIBLE_WORKFLOW_STAGES',	0x0100008);
 define('ASSOC_TYPE_SUBMISSION',			0x0100009);
-
-define_exposed('WORKFLOW_STAGE_ID_PUBLISHED', 0); // FIXME? See bug #6463.
-define_exposed('WORKFLOW_STAGE_ID_SUBMISSION', 1);
-define_exposed('WORKFLOW_STAGE_ID_INTERNAL_REVIEW', 2);
-define_exposed('WORKFLOW_STAGE_ID_EXTERNAL_REVIEW', 3);
-define_exposed('WORKFLOW_STAGE_ID_EDITING', 4);
-define_exposed('WORKFLOW_STAGE_ID_PRODUCTION', 5);
+define('ASSOC_TYPE_QUERY',			0x010000a);
 
 // FIXME: these were defined in userGroup. they need to be moved somewhere with classes that do mapping.
 define('WORKFLOW_STAGE_PATH_SUBMISSION', 'submission');
@@ -62,31 +52,79 @@ define('WORKFLOW_STAGE_PATH_EXTERNAL_REVIEW', 'externalReview');
 define('WORKFLOW_STAGE_PATH_EDITING', 'editorial');
 define('WORKFLOW_STAGE_PATH_PRODUCTION', 'production');
 
-// To expose LISTBUILDER_SOURCE_TYPE_... constants via JS
-import('lib.pkp.classes.controllers.listbuilder.ListbuilderHandler');
+interface iPKPApplicationInfoProvider {
+	/**
+	 * Get the top-level context DAO.
+	 */
+	static function getContextDAO();
 
-// To expose ORDER_CATEGORY_GRID_... constants via JS
-import('lib.pkp.classes.controllers.grid.feature.OrderCategoryGridItemsFeature');
+	/**
+	 * Get the section DAO.
+	 * @return DAO
+	 */
+	static function getSectionDAO();
 
-class PKPApplication {
+	/**
+	 * Get the submission DAO.
+	 */
+	static function getSubmissionDAO();
+
+	/**
+	 * Get the representation DAO.
+	 */
+	static function getRepresentationDAO();
+
+	/**
+	 * Returns the name of the context column in plugin_settings.
+	 * This is necessary to prevent a column name mismatch during
+	 * the upgrade process when the codebase and the database are out
+	 * of sync.
+	 * See:  http://pkp.sfu.ca/bugzilla/show_bug.cgi?id=8265
+	 *
+	 * The 'generic' category of plugin is loaded before the schema
+	 * is reconciled.  Subclasses of PKPApplication perform a check
+	 * against their various schemas to determine which column is
+	 * present when an upgrade is being performed so the plugin
+	 * category can be initially be loaded correctly.
+	 * @return string
+	 */
+	static function getPluginSettingsContextColumnName();
+
+	/**
+	 * Get the stages used by the application.
+	 */
+	static function getApplicationStages();
+
+	/**
+	 * Get the file directory array map used by the application.
+	 * should return array('context' => ..., 'submission' => ...)
+	 */
+	static function getFileDirectories();
+
+	/**
+	 * Returns the context type for this application.
+	 */
+	static function getContextAssocType();
+}
+
+abstract class PKPApplication implements iPKPApplicationInfoProvider {
 	var $enabledProducts;
 	var $allProducts;
 
+	/**
+	 * Constructor
+	 */
 	function PKPApplication() {
 		// Seed random number generator
 		mt_srand(((double) microtime()) * 1000000);
 
 		import('lib.pkp.classes.core.Core');
-		import('lib.pkp.classes.core.String');
+		import('lib.pkp.classes.core.PKPString');
 		import('lib.pkp.classes.core.Registry');
 
 		import('lib.pkp.classes.config.Config');
 
-		if (Config::getVar('debug', 'display_errors')) {
-			// Try to switch off normal error display when error display
-			// is being managed by us.
-			ini_set('display_errors', false);
-		}
+		ini_set('display_errors', Config::getVar('debug', 'display_errors', ini_get('display_errors')));
 
 		Registry::set('application', $this);
 
@@ -95,7 +133,8 @@ class PKPApplication {
 
 		import('lib.pkp.classes.cache.CacheManager');
 
-		import('classes.security.Validation');
+		import('classes.security.RoleDAO');
+		import('lib.pkp.classes.security.Validation');
 		import('lib.pkp.classes.session.SessionManager');
 		import('classes.template.TemplateManager');
 		import('classes.notification.NotificationManager');
@@ -106,15 +145,7 @@ class PKPApplication {
 
 		import('classes.i18n.AppLocale');
 
-		// Set site time zone
-		// Starting from PHP 5.3.0 PHP will throw an E_WARNING if the default
-		// time zone is not set and date/time functions are used
-		// http://pl.php.net/manual/en/function.date-default-timezone-set.php
-		$timeZone = AppLocale::getTimeZone();
-		date_default_timezone_set($timeZone);
-
-		String::init();
-		set_error_handler(array($this, 'errorHandler'));
+		PKPString::init();
 
 		$microTime = Core::microtime();
 		Registry::set('system.debug.startTime', $microTime);
@@ -141,17 +172,16 @@ class PKPApplication {
 	 * Get the current application object
 	 * @return Application
 	 */
-	static function &getApplication() {
-		$application =& Registry::get('application');
-		return $application;
+	static function getApplication() {
+		return Registry::get('application');
 	}
 
 	/**
 	 * Get the request implementation singleton
 	 * @return Request
 	 */
-	static function &getRequest() {
-		$request =& Registry::get('request', true, null);
+	static function getRequest() {
+		$request =& Registry::get('request', true, null); // Ref req'd
 
 		if (is_null($request)) {
 			import('classes.core.Request');
@@ -167,8 +197,8 @@ class PKPApplication {
 	 * Get the dispatcher implementation singleton
 	 * @return Dispatcher
 	 */
-	static function &getDispatcher() {
-		$dispatcher =& Registry::get('dispatcher', true, null);
+	static function getDispatcher() {
+		$dispatcher =& Registry::get('dispatcher', true, null); // Ref req'd
 
 		if (is_null($dispatcher)) {
 			import('lib.pkp.classes.core.Dispatcher');
@@ -209,10 +239,7 @@ class PKPApplication {
 	 * Get the locale key for the name of this application.
 	 * @return string
 	 */
-	function getNameKey() {
-		// must be implemented by sub-classes
-		assert(false);
-	}
+	abstract function getNameKey();
 
 	/**
 	 * Get the "context depth" of this application, i.e. the number of
@@ -221,10 +248,7 @@ class PKPApplication {
 	 * Scheduled Conference [2]).
 	 * @return int
 	 */
-	function getContextDepth() {
-		// must be implemented by sub-classes
-		assert(false);
-	}
+	abstract function getContextDepth();
 
 	/**
 	 * Get the list of the contexts available for this application
@@ -232,20 +256,14 @@ class PKPApplication {
 	 * (e.g. array('journal') or array('conference', 'schedConf'))
 	 * @return Array
 	 */
-	function getContextList() {
-		// must be implemented by sub-classes
-		assert(false);
-	}
+	abstract function getContextList();
 
 	/**
 	 * Get the URL to the XML descriptor for the current version of this
 	 * application.
 	 * @return string
 	 */
-	function getVersionDescriptorUrl() {
-		// must be implemented by sub-classes
-		assert(false);
-	}
+	abstract function getVersionDescriptorUrl();
 
 	/**
 	 * This function retrieves all enabled product versions once
@@ -295,11 +313,9 @@ class PKPApplication {
 
 	/**
 	 * Get the list of plugin categories for this application.
+	 * @return array
 	 */
-	function getPluginCategories() {
-		// To be implemented by sub-classes
-		assert(false);
-	}
+	abstract function getPluginCategories();
 
 	/**
 	 * Return the current version of the application.
@@ -318,6 +334,8 @@ class PKPApplication {
 	function getDAOMap() {
 		return array(
 			'AccessKeyDAO' => 'lib.pkp.classes.security.AccessKeyDAO',
+			'AnnouncementDAO' => 'lib.pkp.classes.announcement.AnnouncementDAO',
+			'AnnouncementTypeDAO' => 'lib.pkp.classes.announcement.AnnouncementTypeDAO',
 			'AuthSourceDAO' => 'lib.pkp.classes.security.AuthSourceDAO',
 			'CitationDAO' => 'lib.pkp.classes.citation.CitationDAO',
 			'ControlledVocabDAO' => 'lib.pkp.classes.controlledVocab.ControlledVocabDAO',
@@ -336,26 +354,31 @@ class PKPApplication {
 			'LanguageDAO' => 'lib.pkp.classes.language.LanguageDAO',
 			'LibraryFileDAO' => 'lib.pkp.classes.context.LibraryFileDAO',
 			'MetadataDescriptionDAO' => 'lib.pkp.classes.metadata.MetadataDescriptionDAO',
+			'NoteDAO' => 'lib.pkp.classes.note.NoteDAO',
 			'NotificationDAO' => 'lib.pkp.classes.notification.NotificationDAO',
 			'NotificationMailListDAO' => 'lib.pkp.classes.notification.NotificationMailListDAO',
 			'NotificationSettingsDAO' => 'lib.pkp.classes.notification.NotificationSettingsDAO',
 			'NotificationSubscriptionSettingsDAO' => 'lib.pkp.classes.notification.NotificationSubscriptionSettingsDAO',
+			'PluginGalleryDAO' => 'lib.pkp.classes.plugins.PluginGalleryDAO',
 			'PluginSettingsDAO' => 'lib.pkp.classes.plugins.PluginSettingsDAO',
 			'ProcessDAO' => 'lib.pkp.classes.process.ProcessDAO',
 			'ReviewFilesDAO' => 'lib.pkp.classes.submission.ReviewFilesDAO',
+			'ReviewFormDAO' => 'lib.pkp.classes.reviewForm.ReviewFormDAO',
+			'ReviewFormElementDAO' => 'lib.pkp.classes.reviewForm.ReviewFormElementDAO',
+			'ReviewFormResponseDAO' => 'lib.pkp.classes.reviewForm.ReviewFormResponseDAO',
 			'ReviewRoundDAO' => 'lib.pkp.classes.submission.reviewRound.ReviewRoundDAO',
 			'ScheduledTaskDAO' => 'lib.pkp.classes.scheduledTask.ScheduledTaskDAO',
 			'SessionDAO' => 'lib.pkp.classes.session.SessionDAO',
-			'SignoffDAO' => 'lib.pkp.classes.signoff.SignoffDAO',
 			'SiteDAO' => 'lib.pkp.classes.site.SiteDAO',
 			'SiteSettingsDAO' => 'lib.pkp.classes.site.SiteSettingsDAO',
+			'SubEditorsDAO' => 'lib.pkp.classes.context.SubEditorsDAO',
 			'SubmissionAgencyDAO' => 'lib.pkp.classes.submission.SubmissionAgencyDAO',
 			'SubmissionAgencyEntryDAO' => 'lib.pkp.classes.submission.SubmissionAgencyEntryDAO',
 			'SubmissionDisciplineDAO' => 'lib.pkp.classes.submission.SubmissionDisciplineDAO',
 			'SubmissionDisciplineEntryDAO' => 'lib.pkp.classes.submission.SubmissionDisciplineEntryDAO',
 			'SubmissionEmailLogDAO' => 'lib.pkp.classes.log.SubmissionEmailLogDAO',
 			'SubmissionFileEventLogDAO' => 'lib.pkp.classes.log.SubmissionFileEventLogDAO',
-			'SubmissionFileSignoffDAO' => 'lib.pkp.classes.submission.SubmissionFileSignoffDAO',
+			'QueryDAO' => 'lib.pkp.classes.query.QueryDAO',
 			'SubmissionLanguageDAO' => 'lib.pkp.classes.submission.SubmissionLanguageDAO',
 			'SubmissionLanguageEntryDAO' => 'lib.pkp.classes.submission.SubmissionLanguageEntryDAO',
 			'SubmissionKeywordDAO' => 'lib.pkp.classes.submission.SubmissionKeywordDAO',
@@ -370,6 +393,7 @@ class PKPApplication {
 			'UserStageAssignmentDAO' => 'lib.pkp.classes.user.UserStageAssignmentDAO',
 			'VersionDAO' => 'lib.pkp.classes.site.VersionDAO',
 			'ViewsDAO' => 'lib.pkp.classes.views.ViewsDAO',
+			'WorkflowStageDAO' => 'lib.pkp.classes.workflow.WorkflowStageDAO',
 			'XMLDAO' => 'lib.pkp.classes.db.XMLDAO'
 		);
 	}
@@ -381,153 +405,9 @@ class PKPApplication {
 	 * @return string
 	 */
 	function getQualifiedDAOName($name) {
-		$map =& Registry::get('daoMap', true, $this->getDAOMap());
+		$map =& Registry::get('daoMap', true, $this->getDAOMap()); // Ref req'd
 		if (isset($map[$name])) return $map[$name];
 		return null;
-	}
-
-	/**
-	 * Custom error handler
-	 *
-	 * NB: Custom error handlers are called for all error levels
-	 * independent of the error_reporting parameter.
-	 * @param $errorno string
-	 * @param $errstr string
-	 * @param $errfile string
-	 * @param $errline string
-	 */
-	function errorHandler($errorno, $errstr, $errfile, $errline) {
-		// We only report/log errors if their corresponding
-		// error level bit is set in error_reporting.
-		// We have to check error_reporting() each time as
-		// some application parts change the setting (e.g.
-		// smarty, adodb, certain plugins).
-		if(error_reporting() & $errorno) {
-			if ($errorno == E_ERROR) {
-				echo 'An error has occurred.  Please check your PHP log file.';
-			} elseif (Config::getVar('debug', 'display_errors')) {
-				echo $this->buildErrorMessage($errorno, $errstr, $errfile, $errline) . "<br/>\n";
-			}
-
-			error_log($this->buildErrorMessage($errorno, $errstr, $errfile, $errline), 0);
-		}
-	}
-
-	/**
-	 * Auxiliary function to errorHandler that returns a formatted error message.
-	 * Error type formatting code adapted from ash, http://ca3.php.net/manual/en/function.set-error-handler.php
-	 * @param $errorno string
-	 * @param $errstr string
-	 * @param $errfile string
-	 * @param $errline string
-	 * @return $message string
-	 */
-	function buildErrorMessage($errorno, $errstr, $errfile, $errline) {
-		$message = array();
-		$errorType = array (
-			E_ERROR			=> 'ERROR',
-			E_WARNING		=> 'WARNING',
-			E_PARSE			=> 'PARSING ERROR',
-			E_NOTICE		=> 'NOTICE',
-			E_CORE_ERROR		=> 'CORE ERROR',
-			E_CORE_WARNING		=> 'CORE WARNING',
-			E_COMPILE_ERROR		=> 'COMPILE ERROR',
-			E_COMPILE_WARNING	=> 'COMPILE WARNING',
-			E_USER_ERROR		=> 'USER ERROR',
-			E_USER_WARNING		=> 'USER WARNING',
-			E_USER_NOTICE		=> 'USER NOTICE',
-		);
-
-		if (array_key_exists($errorno, $errorType)) {
-			$type = $errorType[$errorno];
-		} else {
-			$type = 'CAUGHT EXCEPTION';
-		}
-
-		// Return abridged message if strict error or notice (since they are more common)
-		// This also avoids infinite loops when E_STRICT (=deprecation level) error
-		// reporting is switched on.
-		$shortErrors = E_NOTICE;
-		if (defined('E_STRICT')) $shortErrors |= E_STRICT;
-		if (defined('E_DEPRECATED')) $shortErrors |= E_DEPRECATED;
-		if ($errorno & $shortErrors) {
-			return $type . ': ' . $errstr . ' (' . $errfile . ':' . $errline . ')';
-		}
-
-		$message[] = $this->getName() . ' has produced an error';
-		$message[] = '  Message: ' . $type . ': ' . $errstr;
-		$message[] = '  In file: ' . $errfile;
-		$message[] = '  At line: ' . $errline;
-		$message[] = '  Stacktrace: ';
-
-		if(Config::getVar('debug', 'show_stacktrace')) {
-			$trace = debug_backtrace();
-			// Remove the call to fatalError from the call trace.
-			array_shift($trace);
-
-			// Back-trace pretty-printer adapted from the following URL:
-			// http://ca3.php.net/manual/en/function.debug-backtrace.php
-			// Thanks to diz at ysagoon dot com
-
-			foreach ($trace as $bt) {
-				$args = '';
-				if (isset($bt['args'])) foreach ($bt['args'] as $a) {
-					if (!empty($args)) {
-						$args .= ', ';
-					}
-					switch (gettype($a)) {
-						case 'integer':
-						case 'double':
-							$args .= $a;
-							break;
-						case 'string':
-							$a = htmlspecialchars($a);
-							$args .= "\"$a\"";
-							break;
-						case 'array':
-							$args .= 'Array('.count($a).')';
-							break;
-						case 'object':
-							$args .= 'Object('.get_class($a).')';
-							break;
-						case 'resource':
-							$args .= 'Resource()';
-							break;
-						case 'boolean':
-							$args .= $a ? 'True' : 'False';
-							break;
-						case 'NULL':
-							$args .= 'Null';
-							break;
-						default:
-							$args .= 'Unknown';
-					}
-				}
-				$class = isset($bt['class'])?$bt['class']:'';
-				$type = isset($bt['type'])?$bt['type']:'';
-				$function = isset($bt['function'])?$bt['function']:'';
-				$file = isset($bt['file'])?$bt['file']:'(unknown)';
-				$line = isset($bt['line'])?$bt['line']:'(unknown)';
-
-				$message[] = "   File: {$file} line {$line}";
-				$message[] = "     Function: {$class}{$type}{$function}($args)";
-			}
-		}
-
-		static $dbServerInfo;
-		if (!isset($dbServerInfo) && Config::getVar('general', 'installed')) {
-			$dbconn =& DBConnection::getConn();
-			$dbServerInfo = $dbconn->ServerInfo();
-		}
-
-		$message[] = "  Server info:";
-		$message[] = "   OS: " . Core::serverPHPOS();
-		$message[] = "   PHP Version: " . Core::serverPHPVersion();
-		$message[] = "   Apache Version: " . (function_exists('apache_get_version') ? apache_get_version() : 'N/A');
-		$message[] = "   DB Driver: " . Config::getVar('database', 'driver');
-		if (isset($dbServerInfo)) $message[] = "   DB server version: " . (empty($dbServerInfo['description']) ? $dbServerInfo['version'] : $dbServerInfo['description']);
-
-		return implode("\n", $message);
 	}
 
 	/**
@@ -538,7 +418,7 @@ class PKPApplication {
 	static function defineExposedConstant($name, $value) {
 		define($name, $value);
 		assert(preg_match('/^[a-zA-Z_]+$/', $name));
-		$constants =& PKPApplication::getExposedConstants();
+		$constants =& PKPApplication::getExposedConstants(); // Ref req'd
 		$constants[$name] = $value;
 	}
 
@@ -564,80 +444,6 @@ class PKPApplication {
 		);
 	}
 
-	/**
-	 * Get the top-level context DAO.
-	 */
-	static function getContextDAO() {
-		assert(false); // Must be implemented by subclasses
-	}
-
-	/**
-	 * Get the section DAO.
-	 * @return DAO
-	 */
-	static function getSectionDAO() {
-		assert(false);
-	}
-
-	/**
-	 * Get the submission DAO.
-	 */
-	static function getSubmissionDAO() {
-		assert(false); // Must be implemented by subclasses
-	}
-
-	/**
-	 * Get the representation DAO.
-	 */
-	static function getRepresentationDAO() {
-		assert(false); // Must be implemented by subclasses
-	}
-
-	/**
-	 * returns the name of the context column in plugin_settings.
-	 * This is necessary to prevent a column name mismatch during
-	 * the upgrade process when the codebase and the database are out
-	 * of sync.
-	 * See:  http://pkp.sfu.ca/bugzilla/show_bug.cgi?id=8265
-	 *
-	 * The 'generic' category of plugin is loaded before the schema
-	 * is reconciled.  Subclasses of PKPApplication perform a check
-	 * against their various schemas to determine which column is
-	 * present when an upgrade is being performed so the plugin
-	 * category can be initially be loaded correctly.
-	 */
-	static function getPluginSettingsContextColumnName() {
-		assert(false); // Must be implemented by subclasses
-	}
-
-	/**
-	 * Get the DAO for ROLE_ID_SUB_EDITOR roles.
-	 */
-	static function getSubEditorDAO() {
-		assert(false); // Must be implemented by subclasses
-	}
-
-	/**
-	 * Get the stages used by the application.
-	 */
-	static function getApplicationStages() {
-		assert(false); // Must be implemented by subclasses
-	}
-
-	/**
-	 * Get the file directory array map used by the application.
-	 * should return array('context' => ..., 'submission' => ...)
-	 */
-	static function getFileDirectories() {
-		assert(false); // Must be implemented by subclasses.
-	}
-
-	/**
-	 * Returns the context type for this application.
-	 */
-	static function getContextAssocType() {
-		assert(false); // Must be implemented by subclasses.
-	}
 
 	//
 	// Statistics API
@@ -699,23 +505,23 @@ class PKPApplication {
 	}
 
 	/**
-	* Main entry point for PKP statistics reports.
-	*
-	* @see <http://pkp.sfu.ca/wiki/index.php/OJSdeStatisticsConcept#Input_and_Output_Formats_.28Aggregation.2C_Filters.2C_Metrics_Data.29>
-	* for a full specification of the input and output format of this method.
-	*
-	* @param $metricType null|string|array metrics selection
-	*   NB: If you want to use the default metric on journal level then you must
-	*   set $metricType = null and add an explicit filter on a single journal ID.
-	*   Otherwise the default site-level metric will be used.
-	* @param $columns string|array column (aggregation level) selection
-	* @param $filters array report-level filter selection
-	* @param $orderBy array order criteria
-	* @param $range null|DBResultRange paging specification
-	*
-	* @return null|array The selected data as a simple tabular result set or
-	*   null if the given parameter combination is not supported.
-	*/
+	 * Main entry point for PKP statistics reports.
+	 *
+	 * @see <http://pkp.sfu.ca/wiki/index.php/OJSdeStatisticsConcept#Input_and_Output_Formats_.28Aggregation.2C_Filters.2C_Metrics_Data.29>
+	 * for a full specification of the input and output format of this method.
+	 *
+	 * @param $metricType null|string|array metrics selection
+	 *   NB: If you want to use the default metric on journal level then you must
+	 *   set $metricType = null and add an explicit filter on a single journal ID.
+	 *   Otherwise the default site-level metric will be used.
+	 * @param $columns string|array column (aggregation level) selection
+	 * @param $filters array report-level filter selection
+	 * @param $orderBy array order criteria
+	 * @param $range null|DBResultRange paging specification
+	 *
+	 * @return null|array The selected data as a simple tabular result set or
+	 *   null if the given parameter combination is not supported.
+	 */
 	function getMetrics($metricType = null, $columns = array(), $filter = array(), $orderBy = array(), $range = null) {
 		import('classes.statistics.StatisticsHelper');
 		$statsHelper = new StatisticsHelper();
@@ -784,12 +590,12 @@ class PKPApplication {
 	}
 
 	/**
-	* Return metric in the primary metric type
-	* for the passed associated object.
-	* @param $assocType int
-	* @param $assocId int
-	* @return int
-	*/
+	 * Return metric in the primary metric type
+	 * for the passed associated object.
+	 * @param $assocType int
+	 * @param $assocId int
+	 * @return int
+	 */
 	function getPrimaryMetricByAssoc($assocType, $assocId) {
 		$filter = array(
 			STATISTICS_DIMENSION_ASSOC_ID => $assocId,
@@ -809,6 +615,44 @@ class PKPApplication {
 
 		return 0;
 	}
+
+	/**
+	 * Get a mapping of license URL to license locale key for common
+	 * creative commons licenses.
+	 * @return array
+	 */
+	function getCCLicenseOptions() {
+		return array(
+			'http://creativecommons.org/licenses/by-nc-nd/4.0' => 'submission.license.cc.by-nc-nd4',
+			'http://creativecommons.org/licenses/by-nc/4.0' => 'submission.license.cc.by-nc4',
+			'http://creativecommons.org/licenses/by-nc-sa/4.0' => 'submission.license.cc.by-nc-sa4',
+			'http://creativecommons.org/licenses/by-nd/4.0' => 'submission.license.cc.by-nd4',
+			'http://creativecommons.org/licenses/by/4.0' => 'submission.license.cc.by4',
+			'http://creativecommons.org/licenses/by-sa/4.0' => 'submission.license.cc.by-sa4'
+		);
+	}
+
+	/**
+	 * Get the Creative Commons license badge associated with a given
+	 * license URL.
+	 * @param $ccLicenseURL URL to creative commons license
+	 * @return string HTML code for CC license
+	 */
+	function getCCLicenseBadge($ccLicenseURL) {
+		$licenseKeyMap = array(
+			'http://creativecommons.org/licenses/by-nc-nd/4.0' => 'submission.license.cc.by-nc-nd4.footer',
+			'http://creativecommons.org/licenses/by-nc/4.0' => 'submission.license.cc.by-nc4.footer',
+			'http://creativecommons.org/licenses/by-nc-sa/4.0' => 'submission.license.cc.by-nc-sa4.footer',
+			'http://creativecommons.org/licenses/by-nd/4.0' => 'submission.license.cc.by-nd4.footer',
+			'http://creativecommons.org/licenses/by/4.0' => 'submission.license.cc.by4.footer',
+			'http://creativecommons.org/licenses/by-sa/4.0' => 'submission.license.cc.by-sa4.footer'
+		);
+
+		if (isset($licenseKeyMap[$ccLicenseURL])) {
+			return __($licenseKeyMap[$ccLicenseURL]);
+		}
+		return null;
+	}
 }
 
 /**
@@ -817,5 +661,21 @@ class PKPApplication {
 function define_exposed($name, $value) {
 	PKPApplication::defineExposedConstant($name, $value);
 }
+
+define_exposed('REALLY_BIG_NUMBER', 10000);
+define_exposed('UPLOAD_MAX_FILESIZE', ini_get('upload_max_filesize'));
+
+define_exposed('WORKFLOW_STAGE_ID_PUBLISHED', 0); // FIXME? See bug #6463.
+define_exposed('WORKFLOW_STAGE_ID_SUBMISSION', 1);
+define_exposed('WORKFLOW_STAGE_ID_INTERNAL_REVIEW', 2);
+define_exposed('WORKFLOW_STAGE_ID_EXTERNAL_REVIEW', 3);
+define_exposed('WORKFLOW_STAGE_ID_EDITING', 4);
+define_exposed('WORKFLOW_STAGE_ID_PRODUCTION', 5);
+
+// To expose LISTBUILDER_SOURCE_TYPE_... constants via JS
+import('lib.pkp.classes.controllers.listbuilder.ListbuilderHandler');
+
+// To expose ORDER_CATEGORY_GRID_... constants via JS
+import('lib.pkp.classes.controllers.grid.feature.OrderCategoryGridItemsFeature');
 
 ?>

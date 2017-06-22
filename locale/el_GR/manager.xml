@@ -4,11 +4,11 @@
 <!--
   * locale/el_GR/manager.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the el_GR (Greek) locale.
+  * Localization strings for the el_GR (ελληνικά) locale.
   *
   -->
 
@@ -147,7 +147,6 @@
 	<message key="manager.setup.layout.unselected">Μη επιλεγμένο</message>
 	<message key="manager.setup.loggingAndAuditing">Σύνδεση και έλεγχος</message>
 	<message key="manager.setup.pageHeaderLogoImageInvalid"> Μη έγκυρη μορφή εικόνας λογοτύπου της κεφαλίδας της σελίδας. Έγκυρες μορφές είναι .gif, .jpg, ή .png.</message>
-	<message key="manager.setup.pageHeaderTitleImageInvalid"> Μη έγκυρη μορφή εικόνας τίτλου της κεφαλίδας της σελίδας. Έγκυρες μορφές είναι .gif, .jpg, ή .png.</message>
 	<message key="manager.setup.selectOne">Επιλέξτε ένα</message>
 	<message key="manager.statistics"><![CDATA[Στατιστικά &amp; Αναφορές]]></message>
 	<message key="manager.statistics.reports.description">Το σύστημα παράγει τις εκθέσεις που παρακολουθούν τις λεπτομέρειες που σχετίζονται με τη χρήση της ιστοσελίδας και οι παρατηρήσεις σε μια δεδομένη χρονική περίοδο. Οι εκθέσεις που δημιουργούνται σε μορφή CSV που απαιτεί μια εφαρμογή λογιστικών φύλλων για να το δείτε.</message>
@@ -171,7 +170,6 @@
 	<message key="plugins.categories.themes.description">Τα Theme Plugins μπορούν να χρησιμοποιηθούν για να αλλάξει η εμφάνιση του συστήματος.</message>
 	<message key="plugins.categories.themes">Θεματικά (Theme) Plugins</message>
 	<message key="manager.emails.form.emailKeyRequired">Απαιτείτα ένα μοναδικό κλειδί email για το email.</message>
-	<message key="manager.reviewerSearch.advancedSearch">Προχωρημένη Αναζήτηση Αξιολογητή</message>
 	<message key="manager.reviewerSearch.searchByName">Αναζήτηση Αξιολογητή κατά Όνομα</message>
 	<message key="manager.reviewerSearch.doneAmount">Αριθμός ολοκληρωμένης αξιολογήσεων</message>
 	<message key="manager.reviewerSearch.avgAmount">Μέσος αριθμός ημερών ανά αξιολόγηση</message>
@@ -198,13 +196,13 @@
 	<message key="manager.setup.filter.grid.filterDisplayName">Σύνδεσμος (Connector)</message>
 	<message key="manager.setup.filter.lookup.grid.descriptionTemplate">Παρακαλούμε επιλέξτε μια βάση δεδομένων</message>
 	<message key="manager.setup.filter.lookup.grid.description.iSBNdb"><![CDATA[<p>Το φίλτρο αυτό συνδέεται στην βάση βιβλίων και ISBN  <a href="http://isbndb.com/" target="_blank">ISBNdb.com</a> .</p>
-	<p>Ένα ISBNdb API κλειδό είναι υποχρεωτικό. Πληροφορίες για την δημιιουργία ενός τέτοιου κλειδιού, μπορείτε να βρείτε στη <a href="http://isbndb.com/docs/api/30-keys.html" target="_blank">σχετική ιστοσελίδα τεκμηρίωσης</a>.</p>]]></message>
+	<p>Ένα ISBNdb API κλειδό είναι υποχρεωτικό. Πληροφορίες για την δημιιουργία ενός τέτοιου κλειδιού, μπορείτε να βρείτε στη <a href="http://isbndb.com/api/v1/docs/keys" target="_blank">σχετική ιστοσελίδα τεκμηρίωσης</a>.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.crossRef"><![CDATA[<p>Το φίλτρο αυτό συνδέεται με την βάση CrossRef χρησιμοποιώντας το  <a href="http://www.crossref.org/02publishers/openurl_info.html" target="_blank">OpenURL Query Interface</a>.</p> 
 	<p>Για να χρησιμοποιήσετε αυτό το φίλτρο, μπορείτε είτε να χρησιμοποιήσετε τον λογαριασμό σας στο CrossRef, ή να εγγραφείτε στο CrossRef <a href="http://www.crossref.org/requestaccount/" target="_blank">ακολουθώντας τη σχετική διαδικασία</a>.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.pubMed"><![CDATA[<p>Το φίλτρο αυτό συνδέεται στη βάση <a href="http://www.ncbi.nlm.nih.gov/gquery/gquery.fcgi" target="_blank">PubMed's Entrez</a> </p>
 	<p>Η εγγραφή δεν είναι υποχρεωτική, αλλά μπορεί να είναι χρήσιμη σε περίπτωση προβλημάτων σύνδεσης. Δείτε τη σχετική ενότητα στις <a href="http://www.be-md.ncbi.nlm.nih.gov/bookshelf/br.fcgi?book=helpeutils&part=chapter2#chapter2.Usage_Guidelines_and_Requiremen" target="_blank">Οδηγίες και Απαιτήσεις Χρήσης </a> για περισσότερες πληροφορίες.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.worldCat"><![CDATA[<p>Το φίλτρο αυτό συνδέεται με τις υπηρεσίες της OCLC  <a href="http://www.worldcat.org/affiliate/webservices/xisbn/app.jsp" target="_blank">xISBN</a> και <a href="http://www.worldcat.org/" target="_blank">Worldcat</a> (optional).</p>
-	<p>Αν έχετε ένα <a href="http://www.worldcat.org/devnet/wiki/SearchAPIWhoCanUse" target="_blank">Worldcat API κλειδί</a> μπορείτε να συνδεθείτε στη βάση εισάγοντας το κλειδί παρακάτω.</p>]]></message>
+	<p>Αν έχετε ένα <a href="http://oclc.org/developer/develop/web-services.html" target="_blank">Worldcat API κλειδί</a> μπορείτε να συνδεθείτε στη βάση εισάγοντας το κλειδί παρακάτω.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.loadMessage">Σας παρακαλούμε περιμένετε μέχρι να φορτωθεί το πλέγμα ρυθμίσεων της βάσης...</message>
 	<message key="manager.setup.filter.lookup.grid.title">Σύνδεσμοι (Connectosrs) Βάσεων Αναφορών/Παραπομπών</message>
 	<message key="manager.setup.filter.noMoreTemplates">Όλες οι διαθεσιμες μετατροπές έχουν ολοκλήρωθεί. Παρακαλούμε πατήσετ "Ακύρωση" για να επιστρέψετε στη σελίδα ρυθμίσεων.</message>
@@ -222,4 +220,43 @@
 	<message key="plugins.categories.oaiMetadataFormats">OAI Metadata Format Plugins</message>
 	<message key="plugins.categories.oaiMetadataFormats.description">Αυτοί οι τύποι Plugins μεταφέρους τα μεταδεδομένα στις ΟΑΙ επικοινωνίας.</message>
 	<message key="grid.action.addGenre">Προσθήκη Μέρος Βιβλίου</message>
+
+	<!-- Review forms -->
+	<message key="manager.reviewForms">Φόρμες αξιολόγησης</message>
+	<message key="manager.reviewForms.completed">Ολοκληρωμένη</message>
+	<message key="manager.reviewForms.create">Δημιουργία Φόρμας Αξιολόγησης</message>
+	<message key="manager.reviewForms.description">Περιγραφή και Οδηγίες</message>
+	<message key="manager.reviewForms.edit">Φόρμα Αξιολόγησης</message>
+	<message key="manager.reviewForms.form.titleRequired">Ένας τίτλος απαιτείται για τη φόρμα αξιολόγησης.</message>
+	<message key="manager.reviewForms.inReview">Σε αξιολόγηση</message>
+	<message key="manager.reviewForms.list.description">Οι φόρμες αξιολόγησης που δημιουργήθηκαν εδώ, θα εμφανιστούν στους αξιολογητές για να συμπληρωθούν, αντί για τις εξ΄ορισμού φόρμες που συνίστανται από δύο ανοικτά πλαίσια κειμένου, το πρώτο "για τον συγγραφέα και τον επιμελητή" και το δεύτερο "για τον επιμελητή". Οι φόρμες αξιολόγησης μπορούν να χρησιμοποιηθούν σε μια συγκεκριμένη ενότητα της έκδοσης, και οι επιμελητές θα έχουν τη δυνατότητα να επιλέξουν ποια φόρμα θα χρησιμοποιήσουν για την αξιολόγηση. Σε κάθε περίπτωση, οι επιμελητές θα έχουν την επιλογή να συμπεριλάβουν τις αξιολογήσεις στην επικοινωνία τους με τους συγγραφείς.</message>
+	<message key="manager.reviewForms.noneChosen">Καμία/ Ελεύθερη Φόρμα Αξιολόγησης</message>
+	<message key="manager.reviewForms.noneCreated">Καμία φόρμα αξιολόγησης δεν έχει δημιουργηθεί.</message>
+	<message key="manager.reviewForms.noneUsed">Καμία φόρμα αξιολόγησης δεν έχει χρησιμοποιηθεί.</message>
+	<message key="manager.reviewForms.preview">Φόρμα Προεπισκόπησης</message>
+	<message key="manager.reviewForms.reviewFormData">Δεδομένα Φόρμας Αξιολόγησης</message>
+	<message key="manager.reviewForms.title">Τίτλος</message>
+	<message key="manager.reviewFormElement.changeType">Αλλάζοντας τον τύπο πεδίου της φόρμας...</message>
+	<message key="manager.reviewFormElements">Πεδία Φόρμας</message>
+	<message key="manager.reviewFormElements.addResponseItem">Προσθήκη Επιλογής</message>
+	<message key="manager.reviewFormElements.checkboxes">Checkboxes (επιλέξτε ένα ή περισσότερα)</message>
+	<message key="manager.reviewFormElements.chooseType">Επιλέξτε τύπο πεδίου</message>
+	<message key="manager.reviewFormElements.confirmDelete">Είστε σίγουροι ότι επιθυμείτε να διαγράψετε ένα στοιχείο μιας δημοσιευμένης φόρμας αξιολόγησης?</message>
+	<message key="manager.reviewFormElements.copyTo">Αντιγραφή σε:</message>
+	<message key="manager.reviewFormElements.create">Δημιουργία νέου πεδίου</message>
+	<message key="manager.reviewFormElements.dropdownbox">Drop-down box</message>
+	<message key="manager.reviewFormElements.edit">Επεξεργασία Πεδίου Φόρμας</message>
+	<message key="manager.reviewFormElements.elementType">Τύπος πεδίου</message>
+	<message key="manager.reviewFormElements.form.elementTypeRequired">Απαιτείται ένα τύπος πεδίου για το πεδίο της φόρμας.</message>
+	<message key="manager.reviewFormElements.form.questionRequired">Απαιτείται μια ερώτηση για το πεδίο της φόρμας.</message>
+	<message key="manager.reviewFormElements.noneCreated">Δεν έχει δημιουργηθεί πεδίο.</message>
+	<message key="manager.reviewFormElements.possibleResponse">Επιλογή</message>
+	<message key="manager.reviewFormElements.question">Πεδίο</message>
+	<message key="manager.reviewFormElements.radiobuttons">Radio buttons (επιλέξτε ένα ή περισσότερα)</message>
+	<message key="manager.reviewFormElements.required">Απαιτείται οι αξιολογητές να συμπληρώσουν το πεδίο</message>
+	<message key="manager.reviewFormElements.smalltextfield">Πλαίσιο κειμένου μονής λέξης</message>
+	<message key="manager.reviewFormElements.textarea">Εκτεταμένο πλαίσιο κειμένου</message>
+	<message key="manager.reviewFormElements.textfield">Πλαίσιο κειμένου μονής γραμμής</message>
+	<message key="manager.reviewFormElements.viewable">Ορατό (για συγγραφείς)</message>
+
 </locale>

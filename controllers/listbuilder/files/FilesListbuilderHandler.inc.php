@@ -3,8 +3,8 @@
 /**
  * @file controllers/listbuilder/files/FilesListbuilderHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FilesListbuilderHandler
@@ -17,13 +17,14 @@ import('lib.pkp.classes.controllers.listbuilder.ListbuilderHandler');
 
 class FilesListbuilderHandler extends ListbuilderHandler {
 
-	/** File stage **/
+	/** @var int|null File stage **/
 	var $_fileStage;
 
 	/**
 	 * Constructor
+	 * @param $fileStage int File stage (or null for any)
 	 */
-	function FilesListbuilderHandler($fileStage) {
+	function FilesListbuilderHandler($fileStage = null) {
 		parent::ListbuilderHandler();
 
 		$this->_fileStage = $fileStage;
@@ -36,7 +37,7 @@ class FilesListbuilderHandler extends ListbuilderHandler {
 
 	/**
 	 * Get file stage.
-	 * @return int
+	 * @return int|null
 	 */
 	function getFileStage() {
 		return $this->_fileStage;
@@ -49,9 +50,12 @@ class FilesListbuilderHandler extends ListbuilderHandler {
 	/**
 	 * @copydoc PKPHandler::authorize()
 	 */
-	function authorize($request, &$args, $roleAssignments, $stageId) {
-		import('classes.security.authorization.WorkflowStageAccessPolicy'); // context-specific.
-		$this->addPolicy(new WorkflowStageAccessPolicy($request, $args, $roleAssignments, 'submissionId', $stageId), true);
+	function authorize($request, &$args, $roleAssignments, $stageId = null) {
+		import('lib.pkp.classes.security.authorization.WorkflowStageAccessPolicy'); // context-specific.
+		import('lib.pkp.classes.security.authorization.SubmissionAccessPolicy'); // context-specific.
+		if ($stageId !== null) $this->addPolicy(new WorkflowStageAccessPolicy($request, $args, $roleAssignments, 'submissionId', $stageId), true);
+		else $this->addPolicy(new SubmissionAccessPolicy($request, $args, $roleAssignments));
+
 		return parent::authorize($request, $args, $roleAssignments);
 	}
 
@@ -68,7 +72,7 @@ class FilesListbuilderHandler extends ListbuilderHandler {
 		$this->setSaveFieldName('files');
 
 		// Add the file column
-		$itemColumn = new ListbuilderGridColumn($this, 'name', 'common.name');
+		$itemColumn = new ListbuilderGridColumn($this, 'name', 'common.name', null, null, null, array('anyhtml' => true));
 		import('lib.pkp.controllers.listbuilder.files.FileListbuilderGridCellProvider');
 		$itemColumn->setCellProvider(new FileListbuilderGridCellProvider());
 		$this->addColumn($itemColumn);
@@ -87,7 +91,7 @@ class FilesListbuilderHandler extends ListbuilderHandler {
 	function getOptions($submissionFiles) {
 		$itemList = array();
 		foreach ($submissionFiles as $submissionFile) {
-			$itemList[$submissionFile->getFileId()] = $submissionFile->getFileLabel();
+			$itemList[$submissionFile->getFileId()] = $submissionFile->getFileId() . '-' . $submissionFile->getRevision() . ' ' . $submissionFile->getFileLabel();
 		}
 		return array($itemList);
 	}
@@ -118,9 +122,9 @@ class FilesListbuilderHandler extends ListbuilderHandler {
 	/**
 	 * @copydoc GridHandler::getRowDataElement()
 	 */
-	function getRowDataElement($request, &$rowId) {
+	protected function getRowDataElement($request, &$rowId) {
 		// fallback on the parent if a rowId is found
-		if ( !empty($rowId) ) {
+		if (!empty($rowId)) {
 			return parent::getRowDataElement($request, $rowId);
 		}
 

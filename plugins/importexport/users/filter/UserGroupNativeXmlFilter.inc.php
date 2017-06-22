@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/users/filter/UserGroupNativeXmlFilter.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserGroupNativeXmlFilter
@@ -80,7 +80,6 @@ class UserGroupNativeXmlFilter extends NativeExportFilter {
 
 		// Add metadata
 		$userGroupNode->appendChild($doc->createElementNS($deployment->getNamespace(), 'role_id', $userGroup->getRoleId()));
-		$userGroupNode->appendChild($doc->createElementNS($deployment->getNamespace(), 'path', $userGroup->getPath()));
 		$userGroupNode->appendChild($doc->createElementNS($deployment->getNamespace(), 'context_id', $userGroup->getContextId()));
 		$userGroupNode->appendChild($doc->createElementNS($deployment->getNamespace(), 'is_default', $userGroup->getDefault() ? 'true' : 'false'));
 		$userGroupNode->appendChild($doc->createElementNS($deployment->getNamespace(), 'show_title', $userGroup->getShowTitle() ? 'true' : 'false'));

@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/admin/context/ContextGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ContextGridHandler
@@ -92,7 +92,7 @@ class ContextGridHandler extends GridHandler {
 				'name',
 				'common.name',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$contextGridCellProvider
 			)
 		);
@@ -103,7 +103,7 @@ class ContextGridHandler extends GridHandler {
 				'path',
 				'context.path',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$contextGridCellProvider
 			)
 		);
@@ -117,7 +117,7 @@ class ContextGridHandler extends GridHandler {
 	 * @copydoc GridHandler::getRowInstance()
 	 * @return UserGridRow
 	 */
-	function getRowInstance() {
+	protected function getRowInstance() {
 		return new ContextGridRow();
 	}
 
@@ -126,7 +126,7 @@ class ContextGridHandler extends GridHandler {
 	 * @param $request PKPRequest
 	 * @return array Grid data.
 	 */
-	function loadData($request) {
+	protected function loadData($request) {
 		// Get all contexts.
 		$contextDao = Application::getContextDAO();
 		$contexts = $contextDao->getAll();
@@ -146,8 +146,8 @@ class ContextGridHandler extends GridHandler {
 	/**
 	 * @copydoc GridHandler::getDataElementSequence()
 	 */
-	function getDataElementSequence($context) {
-		return $context->getSequence();
+	function getDataElementSequence($gridDataElement) {
+		return $gridDataElement->getSequence();
 	}
 
 	/**

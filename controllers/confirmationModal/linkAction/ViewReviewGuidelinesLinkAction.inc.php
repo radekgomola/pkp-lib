@@ -6,8 +6,8 @@
 /**
  * @file controllers/confirmationModal/linkAction/ViewReviewGuidelinesLinkAction.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ViewReviewGuidelinesLinkAction
@@ -19,6 +19,11 @@
 import('lib.pkp.classes.linkAction.LinkAction');
 
 class ViewReviewGuidelinesLinkAction extends LinkAction {
+	/** @var Context */
+	var $_context;
+
+	/** @var int WORKFLOW_STAGE_ID_... */
+	var $_stageId;
 
 	/**
 	 * Constructor
@@ -26,13 +31,12 @@ class ViewReviewGuidelinesLinkAction extends LinkAction {
 	 * @param $stageId int Stage ID of review assignment
 	 */
 	function ViewReviewGuidelinesLinkAction($request, $stageId) {
-		$context = $request->getContext();
-		// Instantiate the view review guidelines confirmation modal.
+		$this->_context = $request->getContext();
+		$this->_stageId = $stageId;
+
 		import('lib.pkp.classes.linkAction.request.ConfirmationModal');
 		$viewGuidelinesModal = new ConfirmationModal(
-			$context->getLocalizedSetting(
-				$stageId==WORKFLOW_STAGE_ID_EXTERNAL_REVIEW?'reviewGuidelines':'internalReviewGuidelines'
-			),
+			$this->getGuidelines(),
 			__('reviewer.submission.guidelines'),
 			null, null,
 			false
@@ -40,6 +44,16 @@ class ViewReviewGuidelinesLinkAction extends LinkAction {
 
 		// Configure the link action.
 		parent::LinkAction('viewReviewGuidelines', $viewGuidelinesModal, __('reviewer.submission.guidelines'));
+	}
+
+	/**
+	 * Get the guidelines for the specified stage.
+	 * @return string?
+	 */
+	function getGuidelines() {
+		return $this->_context->getLocalizedSetting(
+			$this->_stageId==WORKFLOW_STAGE_ID_EXTERNAL_REVIEW?'reviewGuidelines':'internalReviewGuidelines'
+		);
 	}
 }
 

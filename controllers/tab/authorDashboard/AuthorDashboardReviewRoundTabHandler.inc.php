@@ -3,8 +3,8 @@
 /**
  * @file controllers/tab/authorDashboard/AuthorDashboardReviewRoundTabHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthorDashboardReviewRoundTabHandler
@@ -24,7 +24,7 @@ class AuthorDashboardReviewRoundTabHandler extends AuthorDashboardHandler {
 	 */
 	function AuthorDashboardReviewRoundTabHandler() {
 		parent::Handler();
-		$this->addRoleAssignment($this->_getAssignmentRoles(), array('fetchReviewRoundInfo'));
+		$this->addRoleAssignment(array(ROLE_ID_AUTHOR), array('fetchReviewRoundInfo'));
 	}
 
 
@@ -56,7 +56,7 @@ class AuthorDashboardReviewRoundTabHandler extends AuthorDashboardHandler {
 	 * Fetch information for the author on the specified review round
 	 * @param $args array
 	 * @param $request Request
-	 * @return string
+	 * @return JSONMessage JSON object
 	 */
 	function fetchReviewRoundInfo($args, $request) {
 		$this->setupTemplate($request);

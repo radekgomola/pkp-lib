@@ -3,8 +3,8 @@
 /**
  * @file classes/controllers/grid/CategoryGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CategoryGridHandler
@@ -25,8 +25,12 @@ class CategoryGridHandler extends GridHandler {
 	/** @var string empty category row locale key */
 	var $_emptyCategoryRowText = 'grid.noItems';
 
+	/** @var array The category grid's data source. */
+	var $_categoryData;
+
 	/** @var string The category id that this grid is currently rendering. */
 	var $_currentCategoryId = null;
+
 
 	/**
 	 * Constructor.
@@ -36,7 +40,7 @@ class CategoryGridHandler extends GridHandler {
 
 		import('lib.pkp.classes.controllers.grid.NullGridCellProvider');
 		$this->addColumn(new GridColumn('indent', null, null, null,
-			new NullGridCellProvider(), array('indent' => true)));
+			new NullGridCellProvider(), array('indent' => true, 'width' => 2)));
 	}
 
 
@@ -57,20 +61,6 @@ class CategoryGridHandler extends GridHandler {
 	 */
 	function setEmptyCategoryRowText($translationKey) {
 		$this->_emptyCategoryRowText = $translationKey;
-	}
-
-	/**
-	 * Check whether the passed category has grid rows.
-	 * @param $categoryDataElement mixed The category data element
-	 * that will be checked.
-	 * @param $request PKPRequest
-	 * @return boolean
-	 */
-	function hasGridDataElementsInCategory($categoryDataElement, $request) {
-		$filter = $this->getFilterSelectionData($request);
-		$data =& $this->getCategoryData($categoryDataElement, $filter);
-		assert (is_array($data));
-		return (boolean) count($data);
 	}
 
 	/**
@@ -115,6 +105,84 @@ class CategoryGridHandler extends GridHandler {
 		assert(false);
 	}
 
+	/**
+	 * Get the grid category data.
+	 * @param $request PKPRequest
+	 * @param $categoryElement mixed The category element.
+	 * @return array
+	 */
+	function &getGridCategoryDataElements($request, $categoryElement) {
+		$filter = $this->getFilterSelectionData($request);
+
+		// Get the category element id.
+		$categories = $this->getGridDataElements($request);
+		$categoryElementId = array_search($categoryElement, $categories);
+		assert($categoryElementId !== false);
+
+		// Try to load data if it has not yet been loaded.
+		if (!is_array($this->_categoryData) || !array_key_exists($categoryElementId, $this->_categoryData)) {
+			$data = $this->loadCategoryData($request, $categoryElement, $filter);
+
+			if (is_null($data)) {
+				// Initialize data to an empty array.
+				$data = array();
+			}
+
+			$this->setGridCategoryDataElements($request, $categoryElementId, $data);
+		}
+
+		return $this->_categoryData[$categoryElementId];
+	}
+
+	/**
+	 * Check whether the passed category has grid rows.
+	 * @param $categoryElement mixed The category data element
+	 * that will be checked.
+	 * @param $request PKPRequest
+	 * @return boolean
+	 */
+	function hasGridDataElementsInCategory($categoryElement, $request) {
+		$data =& $this->getGridCategoryDataElements($request, $categoryElement);
+		assert (is_array($data));
+		return (boolean) count($data);
+	}
+
+	/**
+	 * Get the number of elements inside the passed category element.
+	 * @param $categoryElement mixed
+	 * @param $request PKPRequest
+	 * @return int 
+	 */
+	function getCategoryItemsCount($categoryElement, $request) {
+		$data = $this->getGridCategoryDataElements($request, $categoryElement);
+		assert(is_array($data));
+		return count($data);
+	}
+
+	/**
+	 * Set the grid category data.
+	 * @param $categoryElementId string The category element id.
+	 * @param $data mixed an array or ItemIterator with category elements data.
+	 */
+	function setGridCategoryDataElements($request, $categoryElementId, $data) {
+		// Make sure we have an array to store all categories elements data.
+		if (!is_array($this->_categoryData)) {
+			$this->_categoryData = array();
+		}
+
+		// FIXME: We go to arrays for all types of iterators because
+		// iterators cannot be re-used, see #6498.
+		if (is_array($data)) {
+			$this->_categoryData[$categoryElementId] = $data;
+		} elseif(is_a($data, 'DAOResultFactory')) {
+			$this->_categoryData[$categoryElementId] = $data->toAssociativeArray();
+		} elseif(is_a($data, 'ItemIterator')) {
+			$this->_categoryData[$categoryElementId] = $data->toArray();
+		} else {
+			assert(false);
+		}
+	}
+
 
 	//
 	// Public handler methods
@@ -140,15 +208,16 @@ class CategoryGridHandler extends GridHandler {
 			$this->setFirstDataColumn();
 			$json->setContent($this->_renderCategoryInternally($request, $row));
 		}
-
-		// Render and return the JSON message.
-		return $json->getString();
+		return $json;
 	}
 
 
 	//
 	// Extended methods from GridHandler
 	//
+	/**
+	 * @copydoc GridHandler::initialize()
+	 */
 	function initialize($request) {
 		parent::initialize($request);
 
@@ -196,8 +265,7 @@ class CategoryGridHandler extends GridHandler {
 	 * @see GridHandler::getRowsSequence()
 	 */
 	protected function getRowsSequence($request) {
-		$filter = $this->getFilterSelectionData($request);
-		return array_keys($this->getCategoryData($this->getCurrentCategoryId(), $filter));
+		return array_keys($this->getGridCategoryDataElements($request, $this->getCurrentCategoryId()));
 	}
 
 	/**
@@ -220,7 +288,7 @@ class CategoryGridHandler extends GridHandler {
 			// Try to get row data inside category.
 			$categoryRowData = parent::getRowDataElement($request, $rowCategoryId);
 			if (!is_null($categoryRowData)) {
-				$categoryElements = $this->getCategoryData($categoryRowData, null);
+				$categoryElements = $this->getGridCategoryDataElements($request, $categoryRowData);
 
 				assert(is_array($categoryElements));
 				if (!isset($categoryElements[$rowId])) return null;
@@ -319,17 +387,19 @@ class CategoryGridHandler extends GridHandler {
 	}
 
 	/**
-	 * Fetch the contents of a category.
+	 * Implement this method to load category data into the grid.
+	 * @param $request PKPRequest
 	 * @param $categoryDataElement mixed
+	 * @param $filter mixed
 	 * @return array
 	 */
-	protected function &getCategoryData(&$categoryDataElement, $filter = null) {
+	protected function loadCategoryData($request, &$categoryDataElement, $filter = null) {
 		$gridData = array();
 		$dataProvider = $this->getDataProvider();
 		if (is_a($dataProvider, 'CategoryGridDataProvider')) {
 			// Populate the grid with data from the
 			// data provider.
-			$gridData =& $dataProvider->getCategoryData($categoryDataElement, $filter);
+			$gridData = $dataProvider->loadCategoryData($request, $categoryDataElement, $filter);
 		}
 		return $gridData;
 	}
@@ -400,8 +470,7 @@ class CategoryGridHandler extends GridHandler {
 		$templateMgr->assign('columns', $columns);
 
 		$categoryDataElement = $categoryRow->getData();
-		$filter = $this->getFilterSelectionData($request);
-		$rowData = $this->getCategoryData($categoryDataElement, $filter);
+		$rowData = $this->getGridCategoryDataElements($request, $categoryDataElement);
 
 		// Render the data rows
 		$templateMgr->assign('categoryRow', $categoryRow);

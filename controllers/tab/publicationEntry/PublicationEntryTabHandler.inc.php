@@ -3,8 +3,8 @@
 /**
  * @file controllers/tab/publicationEntry/PublicationEntryTabHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PublicationEntryTabHandler
@@ -77,8 +77,8 @@ class PublicationEntryTabHandler extends Handler {
 	 */
 	function initialize($request) {
 		$this->setCurrentTab($request->getUserVar('tab'));
-		$this->_submission =& $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION);
-		$this->_stageId =& $this->getAuthorizedContextObject(ASSOC_TYPE_WORKFLOW_STAGE);
+		$this->_submission = $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION);
+		$this->_stageId = $this->getAuthorizedContextObject(ASSOC_TYPE_WORKFLOW_STAGE);
 		$this->_tabPosition = (int) $request->getUserVar('tabPos');
 
 		AppLocale::requireComponents(LOCALE_COMPONENT_APP_COMMON, LOCALE_COMPONENT_APP_SUBMISSION);
@@ -90,7 +90,7 @@ class PublicationEntryTabHandler extends Handler {
 	 */
 	function authorize($request, &$args, $roleAssignments) {
 		$stageId = (int) $request->getUserVar('stageId');
-		import('classes.security.authorization.WorkflowStageAccessPolicy');
+		import('lib.pkp.classes.security.authorization.WorkflowStageAccessPolicy');
 		$this->addPolicy(new WorkflowStageAccessPolicy($request, $args, $roleAssignments, 'submissionId', $stageId));
 		return parent::authorize($request, $args, $roleAssignments);
 	}
@@ -103,15 +103,14 @@ class PublicationEntryTabHandler extends Handler {
 	 * Show the original submission metadata form.
 	 * @param $request Request
 	 * @param $args array
-	 * @return string JSON message
+	 * @return JSONMessage JSON object
 	 */
 	function submissionMetadata($args, $request) {
 
 		$publicationEntrySubmissionReviewForm = $this->_getPublicationEntrySubmissionReviewForm();
 
 		$publicationEntrySubmissionReviewForm->initData($args, $request);
-		$json = new JSONMessage(true, $publicationEntrySubmissionReviewForm->fetch($request));
-		return $json->getString();
+		return new JSONMessage(true, $publicationEntrySubmissionReviewForm->fetch($request));
 	}
 
 	/**
@@ -154,7 +153,7 @@ class PublicationEntryTabHandler extends Handler {
 
 		if ($form) { // null if we didn't have a valid tab
 			$form->readInputData();
-			if($form->validate()) {
+			if($form->validate($request)) {
 				$form->execute($request);
 				// Create trivial notification in place on the form
 				$notificationManager = new NotificationManager();
@@ -172,10 +171,8 @@ class PublicationEntryTabHandler extends Handler {
 				$url = $dispatcher->url($request, ROUTE_COMPONENT, null, $this->_getHandlerClassPath(), 'fetch', null, array('submissionId' => $submission->getId(), 'stageId' => $stageId, 'tabPos' => $this->getTabPosition(), 'hideHelp' => true));
 				$json->setAdditionalAttributes(array('reloadContainer' => true, 'tabsUrl' => $url));
 				$json->setContent(true); // prevents modal closure
-				return $json->getString();
-			} else {
-				return $json->getString(); // closes the modal
 			}
+			return $json;
 		} else {
 			fatalError('Unknown or unassigned format id!');
 		}

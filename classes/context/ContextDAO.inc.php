@@ -3,8 +3,8 @@
 /**
  * @file classes/context/ContextDAO.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ContextDAO
@@ -14,7 +14,7 @@
  * @brief Operations for retrieving and modifying context objects.
  */
 
-class ContextDAO extends DAO {
+abstract class ContextDAO extends DAO {
 	/**
 	 * Constructor
 	 */
@@ -78,6 +78,52 @@ class ContextDAO extends DAO {
 	}
 
 	/**
+	 * Insert a new context.
+	 * @param $context Context
+	 * @return int Inserted context ID
+	 */
+	function insertObject($context) {
+		$this->update(
+			'INSERT INTO ' . $this->_getTableName() . '
+				(path, seq, enabled, primary_locale)
+				VALUES
+				(?, ?, ?, ?)',
+			array(
+				$context->getPath(),
+				(int) $context->getSequence(),
+				(int) $context->getEnabled(),
+				$context->getPrimaryLocale()
+			)
+		);
+
+		$context->setId($this->getInsertId());
+		return $context->getId();
+	}
+
+	/**
+	 * Update an existing context.
+	 * @param $press Press
+	 */
+	function updateObject($context) {
+		return $this->update(
+			'UPDATE ' . $this->_getTableName() . '
+				SET
+					path = ?,
+					seq = ?,
+					enabled = ?,
+					primary_locale = ?
+				WHERE ' . $this->_getPrimaryKeyColumn() . ' = ?',
+			array(
+				$context->getPath(),
+				(int) $context->getSequence(),
+				(int) $context->getEnabled(),
+				$context->getPrimaryLocale(),
+				(int) $context->getId()
+			)
+		);
+	}
+
+	/**
 	 * Check if a context exists with a specified path.
 	 * @param $path string the path for the context
 	 * @return boolean
@@ -128,6 +174,34 @@ class ContextDAO extends DAO {
 	}
 
 	/**
+	 * Retrieve available contexts.
+	 * @param $userId int Optional user ID to find available contexts for
+	 * @param $rangeInfo Object optional
+	 * @return DAOResultFactory containing matching Contexts
+	 */
+	function getAvailable($userId = null, $rangeInfo = null) {
+		$params = array();
+		if ($userId) $params = array_merge(
+			$params,
+			array((int) $userId, (int) $userId, (int) ROLE_ID_SITE_ADMIN)
+		);
+
+		$result = $this->retrieveRange(
+			'SELECT c.* FROM ' . $this->_getTableName() . ' c
+			WHERE	c.enabled = 1 ' .
+				($userId?
+					'OR c.' . $this->_getPrimaryKeyColumn() . ' IN (SELECT DISTINCT ug.context_id FROM user_groups ug JOIN user_user_groups uug ON (ug.user_group_id = uug.user_group_id) WHERE uug.user_id = ?)
+					OR ? IN (SELECT user_id FROM user_groups ug JOIN user_user_groups uug ON (ug.user_group_id = uug.user_group_id) WHERE ug.role_id = ?) '
+				:'') .
+			'ORDER BY seq',
+			$params,
+			$rangeInfo
+		);
+
+		return new DAOResultFactory($result, $this, '_fromRow');
+	}
+
+	/**
 	 * Get journals by setting.
 	 * @param $settingName string
 	 * @param $settingValue mixed
@@ -139,10 +213,10 @@ class ContextDAO extends DAO {
 		if ($contextId) $params[] = $contextId;
 
 		$result = $this->retrieve(
-			'SELECT * FROM ' . $this->_getTableName() . 'AS c
-			LEFT JOIN ' . $this->_getSettingsTableName() . 'AS cs
+			'SELECT * FROM ' . $this->_getTableName() . ' AS c
+			LEFT JOIN ' . $this->_getSettingsTableName() . ' AS cs
 			ON c.' . $this->_getPrimaryKeyColumn() . ' = cs.' . $this->_getPrimaryKeyColumn() .
-			'WHERE cs.setting_name = ? AND cs.setting_value = ?' .
+			' WHERE cs.setting_name = ? AND cs.setting_value = ?' .
 			($contextId?' AND c.' . $this->_getPrimaryKeyColumn() . ' = ?':''),
 			$params
 		);
@@ -215,25 +289,19 @@ class ContextDAO extends DAO {
 	 * Get the table name for this context.
 	 * @return string
 	 */
-	protected function _getTableName() {
-		assert(false); // Must be overridden by subclasses.
-	}
+	abstract protected function _getTableName();
 
 	/**
 	 * Get the table name for this context's settings table.
 	 * @return string
 	 */
-	protected function _getSettingsTableName() {
-		assert(false); // Must be overridden by subclasses.
-	}
+	abstract protected function _getSettingsTableName();
 
 	/**
 	 * Get the name of the primary key column for this context.
 	 * @return string
 	 */
-	protected function _getPrimaryKeyColumn() {
-		assert(false); // Must be overridden by subclasses
-	}
+	abstract protected function _getPrimaryKeyColumn();
 }
 
 ?>

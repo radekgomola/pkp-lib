@@ -4,8 +4,8 @@
 <!--
   * locale/nl_NL/manager.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the nl_NL (Nederlands) locale.
@@ -147,7 +147,6 @@
 	<message key="manager.setup.layout.unselected">Niet geselecteerd</message>
 	<message key="manager.setup.loggingAndAuditing">Logboek en controle</message>
 	<message key="manager.setup.pageHeaderLogoImageInvalid">Onbruikbaar bestandsformaat voor het paginakop-logo. Bruikbaar zijn .gif, .jpg of .png.</message>
-	<message key="manager.setup.pageHeaderTitleImageInvalid">Onbruikbaar bestandsformaat voor de pagina-koptitel. Bruikbaar zijn .gif, .jpg of .png.</message>
 	<message key="manager.setup.selectOne">Kies er een</message>
 	<message key="manager.statistics"><![CDATA[Statistieken & rapporten]]></message>
 	<message key="manager.statistics.statistics.count.value">{$count} ({$percentage}%)</message>
@@ -176,7 +175,6 @@
 	<message key="manager.setup.filter.grid.filterTemplateRequired">Kies een van de transformaties uit het menu.</message>
 	<message key="manager.setup.filter.grid.confirmDelete">Wilt u het {$filterName} filter echt verwijderen?</message>
 	<message key="manager.emails.form.emailKeyRequired">Er is een unieke e-mail sleutel nodig voor de e-mail</message>
-	<message key="manager.reviewerSearch.advancedSearch">Geavanceerd zoeken naar reviewer</message>
 	<message key="manager.reviewerSearch.searchByName">Zoek een reviewer op naam</message>
 	<message key="manager.reviewerSearch.doneAmount">Aantal voltooide reviews</message>
 	<message key="manager.reviewerSearch.avgAmount">Gemiddeld aantal dagen per review</message>
@@ -198,7 +196,7 @@
 	<message key="manager.setup.citationOutput">Citatie uitvoer</message>
 	<message key="manager.setup.citationOutputStyleDescription">Kies de citatiestijl die wordt gebruikt in de inzendingen van uw tijdschrift. De citatie markeringsassistent laat u de auteursversie van de citatie vergelijken met de versie die gegenereerd is uit de XML die u maakt zodat u fouten eenvoudig kunt herkennen:</message>
 	<message key="manager.setup.filter.lookup.grid.description.iSBNdb"><![CDATA[<p>Dit filter maakt verbinding met de <a href="http://isbndb.com/" target="_blank">ISBNdb.com</a> boek en ISBN databank.</p>
-	<p>Een ISBNdb API sleutel is een vereiste. Voor meer informatie over het genereren van een sleutel zie de <a href="http://isbndb.com/docs/api/30-keys.html" target="_blank">online documentatie</a>.</p>]]></message>
+	<p>Een ISBNdb API sleutel is een vereiste. Voor meer informatie over het genereren van een sleutel zie de <a href="http://isbndb.com/api/v1/docs/keys" target="_blank">online documentatie</a>.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.crossRef"><![CDATA[<p>Dit filter maakt verbinding met de CrossRef citatiedatabank middels CrossRef's <a href="http://www.crossref.org/02publishers/openurl_info.html" target="_blank">OpenURL Query Interface</a>.</p> 
 	<p>Om dit filter te gebruiken kunt u uw CrossRef systeem account gebruiken. u kunt ook een geldig e-mail adres registreren bij CrossRef <a href="http://www.crossref.org/requestaccount/" target="_blank">hier</a>.</p>]]></message>
 	<message key="manager.setup.filter.parser.grid.description.regEx">Het RegEx extractiefilter gebruikt een reeks reguliere expressies om citaties te parseren.</message>
@@ -213,7 +211,7 @@
 	<message key="manager.setup.filter.parser.grid.description.freeCite"><![CDATA[<p>Dit extractiefilter verbindt met de <a href="http://freecite.library.brown.edu/" target="_blank">FreeCite</a> web service.</p>]]></message>
 	<message key="manager.setup.filter.parser.grid.description.parsCit"><![CDATA[<p>Dit extractiefilter gebruikt de <a href="http://aye.comp.nus.edu.sg/parsCit/" target="_blank">ParsCit</a> webservice.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.worldCat"><![CDATA[<p>Dit filter gebruikt OCLC services <a href="http://www.worldcat.org/affiliate/webservices/xisbn/app.jsp" target="_blank">xISBN</a> en <a href="http://www.worldcat.org/" target="_blank">Worldcat</a> (optioneel).</p>
-	<p>Als u een Worldcat <a href="http://www.worldcat.org/devnet/wiki/SearchAPIWhoCanUse" target="_blank">API sleutel</a> heeft kunt uWorldCat gebruiken door de sleutel hieronder in  te voeren.</p>]]></message>
+	<p>Als u een Worldcat <a href="http://oclc.org/developer/develop/web-services.html" target="_blank">API sleutel</a> heeft kunt uWorldCat gebruiken door de sleutel hieronder in  te voeren.</p>]]></message>
 	<message key="manager.setup.metaCitationsDescription">Kruis het volgende vak aan om het bewerken van citaties en referenties in te schakelen. Dit maakt het mogelijk dat auteurs ruwe citaties in hun inzendingen opnemen. Redacteurs krijgen een citatie-markering assistent tot hun beschikking die de ruwe citaties kan controleren bij externe databanken zoals WorldCat, ISBNdb, PubMed en anderen. Goedgekeurde citaties kunnen geëxporteerd worden naar de proeven.</message>
 	<message key="manager.setup.filter.parser.grid.description.paraCite"><![CDATA[<p>Dit extractiefilter gebruikt de <a href="http://paracite.eprints.org/developers/" target="_blank">ParaTools</a> Perl modules om de <a href="http://paracite.eprints.org" target="_blank">ParaCite</a> citatie parsering te leveren. Om dit naar behoren te laten werken moet u Perl geïnstalleerd hebben, samen met de <a href="http://search.cpan.org/~mjewell/Biblio-Citation-Parser-1.10/" target="_blank">Biblio::Citation::Parser</a> en <a href="http://search.cpan.org/~sburke/Text-Unidecode-0.04/" target="_blank">Text::Unidecode</a> CPAN modules. U moet ook de <tt>perl</tt> instelling configureren in uw configuratiebestand. Deze instelling vindt u in de External Commands sectie van <tt>config.inc.php</tt>.</p>
 	<p>U kun kiezen welke parser-module ParaTools moet gebruiken. U kunt kiezen tussen de standaard, <a href="http://search.cpan.org/~mjewell/Biblio-Citation-Parser-1.10/lib/Biblio/Citation/Parser/Jiao.pm" target="_blank">Jiao</a>, en <a href="http://search.cpan.org/~mjewell/Biblio-Citation-Parser-1.10/lib/Biblio/Citation/Parser/Citebase.pm" target="_blank">Citebase</a> parser modules.</p>]]></message>
@@ -223,8 +221,6 @@
 	<message key="manager.emails.disable.message">U staat op het punt dit sjabloon uit te schakelen. Als er systeemprocessen zijn die dit sjabloon gebruiken, zullen ze het niet meer gebruiken. Wilt u deze bewerking bevestigen?</message>
 	<message key="manager.emails.enable.message">U staat op het punt deze e-mail in te schakelen. Wilt u deze bewerking bevestigen?</message>
 	<message key="manager.emails.resetAll.message">Als u de sjablonen herstelt gaan alle modificaties aan de sjablonen verloren. Wilt deze bewerking bevestigen?</message>
-	<message key="manager.navigation">Navigatie</message>
-	<message key="manager.reviewerSearch.advancedSearch.short">Geavanceerd zoeken</message>
 	<message key="manager.reviewerSearch.searchByName.short">Zoeken op naam</message>
 	<message key="manager.setup.layout.blockManagement">Beheer van de sidebar</message>
 	<message key="plugins.categories.metadata">Metadata plugins</message>
@@ -243,4 +239,39 @@
 	<message key="plugins.categories.oaiMetadataFormats">OAI Metadata formaat plugins</message>
 	<message key="subscriptions.individualDescription">Bij individuele abonnementen is inloggen nodig om teogang te krijgen tot de inhoud.</message>
 	<message key="manager.website">Website</message>
+
+	<!-- Review forms -->
+	<message key="manager.reviewFormElement.changeType">Waarschuwing: Het veranderen van elementtype van het reviewformulier van multiple-choice naar open vraag zal resulteren in het verwijderen van de multiple-choice opties.</message>
+	<message key="manager.reviewFormElements">Formulieritems</message>
+	<message key="manager.reviewFormElements.addResponseItem">Selectie toevoegen</message>
+	<message key="manager.reviewFormElements.checkboxes">Aankruisvelden (u kunt één of meer velden aankruisen)</message>
+	<message key="manager.reviewFormElements.chooseType">Kies itemtype</message>
+	<message key="manager.reviewFormElements.confirmDelete">Bevestig het verwijderen van een gepubliceerd item...</message>
+	<message key="manager.reviewFormElements.copyTo">Kopieer naar</message>
+	<message key="manager.reviewFormElements.create">Maak nieuw item</message>
+	<message key="manager.reviewFormElements.dropdownbox">Uitklapmenu</message>
+	<message key="manager.reviewFormElements.edit">Bewerk formulieritem</message>
+	<message key="manager.reviewFormElements.elementType">Elementtype</message>
+	<message key="manager.reviewFormElements.form.elementTypeRequired">Een elementtype is verplicht voor een formulierelement</message>
+	<message key="manager.reviewFormElements.form.questionRequired">En vraag is verplicht bij een formulierelement</message>
+	<message key="manager.reviewFormElements.noneCreated">Er zijn geen items aangemaakt</message>
+	<message key="manager.reviewFormElements.possibleResponse">Selectie</message>
+	<message key="manager.reviewFormElements.question">Item</message>
+	<message key="manager.reviewFormElements.radiobuttons">Radioknoppen (u kunt er slechts één kiezen)</message>
+	<message key="manager.reviewFormElements.required">Reviewers moeten dit item afronden</message>
+	<message key="manager.reviewFormElements.smalltextfield">Tekstveld voor één woord</message>
+	<message key="manager.reviewFormElements.textarea">Uitgebreid tekstveld</message>
+	<message key="manager.reviewFormElements.textfield">Tekstveld voor één regel</message>
+	<message key="manager.reviewForms">Reviewformulieren</message>
+	<message key="manager.reviewForms.completed">Afgerond</message>
+	<message key="manager.reviewForms.create">Maak reviewformulier aan</message>
+	<message key="manager.reviewForms.description">Beschrijving en instructies</message>
+	<message key="manager.reviewForms.edit">Reviewformulier</message>
+	<message key="manager.reviewForms.form.titleRequired">Een titel is verplicht voor het reviewformulier</message>
+	<message key="manager.reviewForms.inReview">Onder review</message>
+	<message key="manager.reviewForms.list.description">Hier aangemaakte reviewformulieren worden aangeboden aan reviewers om verder in te vullen. Ze komen in de plaats van het standaardformulier dat uit twee tekstvelden bestaat, het eerste "voor auteur en redacteur"  en het tweede "voor redacteur". Reviewformulieren kunnen ontworpen worden voor een specifieke sectie van het tijdschrift. Redacteuren kunnen kiezen welk formulier gebruikt moet worden bij het toekennen van de review. In alle gevallen hebben redacteuren de mogelijkheid om de reviews op te nemen in de correspondentie met de auteur.</message>
+	<message key="manager.reviewForms.noneChosen">Geen / Vrije vorm review</message>
+	<message key="manager.reviewForms.noneCreated">Er zijn geen reviewformulieren aangemaakt</message>
+	<message key="manager.reviewForms.preview">Voorvertoningsformulier</message>
+	<message key="manager.reviewForms.title">Titel</message>
 </locale>

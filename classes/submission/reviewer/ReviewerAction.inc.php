@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/reviewer/ReviewerAction.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReviewerAction
@@ -16,15 +16,13 @@
 
 // Access decision actions constants.
 import('classes.workflow.EditorDecisionActionsManager');
-import('lib.pkp.classes.submission.action.PKPAction');
 
-class ReviewerAction extends PKPAction {
+class ReviewerAction {
 
 	/**
 	 * Constructor
 	 */
 	function ReviewerAction() {
-		parent::PKPAction();
 	}
 
 	//
@@ -99,9 +97,22 @@ class ReviewerAction extends PKPAction {
 		$reviewer = $userDao->getById($reviewAssignment->getReviewerId());
 
 		// Get editorial contact name
-		$context = $request->getContext();
-		$email->addRecipient($context->getSetting('contactEmail'), $context->getSetting('contactName'));
-		$editorialContactName = $context->getSetting('contactName');
+		$stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
+		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
+		$userDao = DAORegistry::getDAO('UserDAO');
+		$stageAssignments = $stageAssignmentDao->getBySubmissionAndStageId($submission->getId(), $reviewAssignment->getStageId());
+		$recipient = null;
+		while ($stageAssignment = $stageAssignments->next()) {
+			$userGroup = $userGroupDao->getById($stageAssignment->getUserGroupId());
+			if (!in_array($userGroup->getRoleId(), array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR))) continue;
+
+			$recipient = $userDao->getById($stageAssignment->getUserId());
+			$email->addRecipient($recipient->getEmail(), $recipient->getFullName());
+		}
+		if (!$recipient) {
+			$context = $request->getContext();
+			$email->addRecipient($context->getSetting('contactEmail'), $context->getSetting('contactName'));
+		}
 
 		// Get due date
 		$reviewDueDate = strtotime($reviewAssignment->getDateDue());
@@ -112,10 +123,10 @@ class ReviewerAction extends PKPAction {
 		$email->setReplyTo($reviewer->getEmail(), $reviewer->getFullName());
 
 		$email->assignParams(array(
-			'editorialContactName' => $editorialContactName,
 			'reviewerName' => $reviewer->getFullName(),
 			'reviewDueDate' => $reviewDueDate
 		));
+		$email->replaceParams();
 
 		return $email;
 	}

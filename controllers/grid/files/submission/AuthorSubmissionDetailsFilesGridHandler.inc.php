@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/files/submission/AuthorSubmissionDetailsFilesGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthorSubmissionDetailsFilesGridHandler
@@ -23,12 +23,15 @@ class AuthorSubmissionDetailsFilesGridHandler extends FileListGridHandler {
 	function AuthorSubmissionDetailsFilesGridHandler() {
 		import('lib.pkp.controllers.grid.files.SubmissionFilesGridDataProvider');
 		$dataProvider = new SubmissionFilesGridDataProvider(SUBMISSION_FILE_SUBMISSION);
-		parent::FileListGridHandler($dataProvider, WORKFLOW_STAGE_ID_SUBMISSION, FILE_GRID_DOWNLOAD_ALL);
+		parent::FileListGridHandler($dataProvider, WORKFLOW_STAGE_ID_SUBMISSION, FILE_GRID_DOWNLOAD_ALL|FILE_GRID_EDIT);
 
 		$this->addRoleAssignment(
 			array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT, ROLE_ID_AUTHOR),
 			array('fetchGrid', 'fetchRow')
 		);
+
+		// Grid title.
+		$this->setTitle('submission.submit.submissionFiles');
 	}
 }
 

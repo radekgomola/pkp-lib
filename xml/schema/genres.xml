@@ -4,8 +4,8 @@
 <!--
   * xml/schema/genres.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Genre list schema in XML.
@@ -42,6 +42,10 @@
 		</field>
 		<field name="dependent" type="I1">
 			<NOTNULL/>
+			<DEFAULT VALUE="0"/>
+		</field>
+		<field name="supplementary" type="I1">
+			<!-- NOTNULL/ --><!-- Commented for upgrade purposes -->
 			<DEFAULT VALUE="0"/>
 		</field>
 		<field name="entry_key" type="C2" size="30"/>

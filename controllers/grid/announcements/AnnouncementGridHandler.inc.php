@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/announcements/AnnouncementGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AnnouncementGridHandler
@@ -77,7 +77,7 @@ class AnnouncementGridHandler extends GridHandler {
 			new GridColumn('title',
 				'common.title',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$announcementCellProvider,
 				array('width' => 60)
 			)
@@ -87,7 +87,7 @@ class AnnouncementGridHandler extends GridHandler {
 			new GridColumn('type',
 				'common.type',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$announcementCellProvider
 			)
 		);
@@ -101,7 +101,7 @@ class AnnouncementGridHandler extends GridHandler {
 				'datePosted',
 				'announcement.posted',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$dateCellProvider
 			)
 		);
@@ -110,13 +110,11 @@ class AnnouncementGridHandler extends GridHandler {
 	/**
 	 * @copydoc GridHandler::loadData()
 	 */
-	function loadData($request, $filter) {
+	protected function loadData($request, $filter) {
 		$context = $request->getContext();
 		$announcementDao = DAORegistry::getDAO('AnnouncementDAO');
 		$rangeInfo = $this->getGridRangeInfo($request, $this->getId());
-		$announcements = $announcementDao->getAnnouncementsNotExpiredByAssocId($context->getAssocType(), $context->getId(), $rangeInfo);
-
-		return $announcements;
+		return $announcementDao->getAnnouncementsNotExpiredByAssocId($context->getAssocType(), $context->getId(), $rangeInfo);
 	}
 
 
@@ -127,20 +125,19 @@ class AnnouncementGridHandler extends GridHandler {
 	 * Load and fetch the announcement form in read-only mode.
 	 * @param $args array
 	 * @param $request Request
-	 * @return string
+	 * @return JSONMessage JSON object
 	 */
 	function moreInformation($args, $request) {
 		$announcementId = (int)$request->getUserVar('announcementId');
 		$context = $request->getContext();
 		$contextId = $context->getId();
 
-		import('controllers.grid.announcements.form.AnnouncementForm');
+		import('lib.pkp.controllers.grid.announcements.form.AnnouncementForm');
 		$announcementForm = new AnnouncementForm($contextId, $announcementId, true);
 
 		$announcementForm->initData($args, $request);
 
-		$json = new JSONMessage(true, $announcementForm->fetch($request));
-		return $json->getString();
+		return new JSONMessage(true, $announcementForm->fetch($request));
 	}
 }
 

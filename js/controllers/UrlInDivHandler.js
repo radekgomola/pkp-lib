@@ -1,8 +1,8 @@
 /**
  * @file js/controllers/UrlInDivHandler.js
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UrlInDivHandler
@@ -57,6 +57,24 @@
 	};
 
 
+	/**
+	 * Fetches the progress bar URL.
+	 * @return {?string} the source URL.
+	 */
+	$.pkp.controllers.UrlInDivHandler.prototype.getSourceUrl = function() {
+		return this.sourceUrl_;
+	};
+
+
+	/**
+	 * Sets the progress bar URL.
+	 * @param {string} sourceUrl the new source URL.
+	 */
+	$.pkp.controllers.UrlInDivHandler.prototype.setSourceUrl = function(sourceUrl) {
+		this.sourceUrl_ = sourceUrl;
+	};
+
+
 	//
 	// Private Methods
 	//
@@ -79,7 +97,7 @@
 				this.getHtmlElement().hide();
 			} else {
 				// See bug #8237.
-				if (!jQuery.browser.msie) {
+				if (! /msie/.test(navigator.userAgent.toLowerCase())) {
 					this.getHtmlElement().hide().html(handledJsonData.content).fadeIn(400);
 				} else {
 					this.getHtmlElement().html(handledJsonData.content);

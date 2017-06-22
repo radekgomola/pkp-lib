@@ -3,8 +3,8 @@
 /**
  * @file classes/notification/managerDelegate/review/AllReviewsInNotificationManager.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AllReviewsInNotificationManager
@@ -27,11 +27,7 @@ class AllReviewsInNotificationManager extends ReviewRoundNotificationManager {
 
 
 	/**
-	 * @see NotificationManagerDelegate::updateNotification()
-	 * @param $request PKPRequest
-	 * @param $userIds array
-	 * @param $assocType int ASSOC_TYPE_...
-	 * @param $assocId int Numerical ID to correspond to $assocType
+	 * @copydoc NotificationManagerDelegate::updateNotification()
 	 */
 	public function updateNotification($request, $userIds, $assocType, $assocId) {
 		$reviewRoundDao = DAORegistry::getDAO('ReviewRoundDAO');

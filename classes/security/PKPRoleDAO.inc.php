@@ -3,18 +3,18 @@
 /**
  * @file classes/security/PKPRoleDAO.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPRoleDAO
  * @ingroup security
- * @see PKPRole
+ * @see Role
  *
  * @brief Operations for retrieving and modifying Role objects.
  */
 
-import('lib.pkp.classes.security.PKPRole');
+import('lib.pkp.classes.security.Role');
 import('lib.pkp.classes.security.UserGroupAssignment');
 
 class PKPRoleDAO extends DAO {
@@ -30,12 +30,11 @@ class PKPRoleDAO extends DAO {
 	}
 
 	/**
-	 * create new data object
-	 * (allows DAO to be subclassed)
-	 * @return PKPRole
+	 * Create new data object
+	 * @return Role
 	 */
 	function newDataObject() {
-		return new PKPRole();
+		return new Role();
 	}
 
 	/**
@@ -148,7 +147,9 @@ class PKPRoleDAO extends DAO {
 
 		$roles = array();
 		while ( !$result->EOF ) {
-			$roles[] = new Role($result->fields[0]);
+			$role = $this->newDataObject();
+			$role->setRoleId($result->fields[0]);
+			$roles[] = $role;
 			$result->MoveNext();
 		}
 		$result->Close();
@@ -177,28 +178,6 @@ class PKPRoleDAO extends DAO {
 	}
 
 	/**
-	 * Get a role's ID based on its path.
-	 * @param $rolePath string
-	 * @return int
-	 */
-	function getRoleIdFromPath($rolePath) {
-		switch ($rolePath) {
-			case 'manager':
-				return ROLE_ID_MANAGER;
-			case 'admin':
-				return ROLE_ID_SITE_ADMIN;
-			case 'author':
-				return ROLE_ID_AUTHOR;
-			case 'reviewer':
-				return ROLE_ID_REVIEWER;
-			case 'reader':
-				return ROLE_ID_READER;
-			default:
-				return null;
-		}
-	}
-
-	/**
 	 * Map a column heading value to a database value for sorting
 	 * @param string
 	 * @return string
@@ -214,14 +193,21 @@ class PKPRoleDAO extends DAO {
 	}
 
 	/**
-	* Get role forbidden stages.
-	* @param $roleId int
-	* @return array
-	*/
+	 * Get role forbidden stages.
+	 * @param $roleId int Specific role ID to fetch stages for, if any
+	 * @return array With $roleId, array(WORKFLOW_STAGE_ID_...); without,
+	 *  array(ROLE_ID_... => array(WORKFLOW_STAGE_ID_...))
+	 */
 	function getForbiddenStages($roleId = null) {
-		$forbiddenStages = array(ROLE_ID_REVIEWER =>
-				// User groups with reviewer roles should only have review stage assignments.
-				array(WORKFLOW_STAGE_ID_SUBMISSION, WORKFLOW_STAGE_ID_EDITING, WORKFLOW_STAGE_ID_PRODUCTION)
+		$forbiddenStages = array(
+			ROLE_ID_REVIEWER => array(
+				// Reviewer user groups should only have review stage assignments.
+				WORKFLOW_STAGE_ID_SUBMISSION, WORKFLOW_STAGE_ID_EDITING, WORKFLOW_STAGE_ID_PRODUCTION,
+			),
+			ROLE_ID_READER => array(
+				// Reader user groups should have no stage assignments.
+				WORKFLOW_STAGE_ID_SUBMISSION, WORKFLOW_STAGE_ID_INTERNAL_REVIEW, WORKFLOW_STAGE_ID_EXTERNAL_REVIEW, WORKFLOW_STAGE_ID_EDITING, WORKFLOW_STAGE_ID_PRODUCTION,
+			),
 		);
 
 		if ($roleId) {

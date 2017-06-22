@@ -3,8 +3,8 @@
 /**
  * @file controllers/informationCenter/FileInformationCenterHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FileInformationCenterHandler
@@ -46,7 +46,7 @@ class FileInformationCenterHandler extends InformationCenterHandler {
 	 */
 	function authorize($request, &$args, $roleAssignments) {
 		// Require stage access
-		import('classes.security.authorization.WorkflowStageAccessPolicy');
+		import('lib.pkp.classes.security.authorization.WorkflowStageAccessPolicy');
 		$this->addPolicy(new WorkflowStageAccessPolicy($request, $args, $roleAssignments, 'submissionId', (int) $request->getUserVar('stageId')));
 
 		return parent::authorize($request, $args, $roleAssignments);
@@ -85,13 +85,14 @@ class FileInformationCenterHandler extends InformationCenterHandler {
 		$templateMgr->assign('title', $fileName);
 		$templateMgr->assign('removeHistoryTab', (int) $request->getUserVar('removeHistoryTab'));
 
-		return parent::viewInformationCenter($request);
+		return parent::viewInformationCenter($args, $request);
 	}
 
 	/**
 	 * Display the notes tab.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function viewNotes($args, $request) {
 		$this->setupTemplate($request);
@@ -100,14 +101,14 @@ class FileInformationCenterHandler extends InformationCenterHandler {
 		$notesForm = new NewFileNoteForm($this->submissionFile->getFileId());
 		$notesForm->initData();
 
-		$json = new JSONMessage(true, $notesForm->fetch($request));
-		return $json->getString();
+		return new JSONMessage(true, $notesForm->fetch($request));
 	}
 
 	/**
 	 * Display the list of existing notes from prior files.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function listPastNotes($args, $request) {
 		$this->setupTemplate($request);
@@ -139,6 +140,7 @@ class FileInformationCenterHandler extends InformationCenterHandler {
 	 * Save a note.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function saveNote($args, $request) {
 		$this->setupTemplate($request);
@@ -149,25 +151,24 @@ class FileInformationCenterHandler extends InformationCenterHandler {
 
 		if ($notesForm->validate()) {
 			$notesForm->execute($request);
-			$json = new JSONMessage(true);
 
 			// Save to event log
 			$this->_logEvent($request, SUBMISSION_LOG_NOTE_POSTED);
 
 			$user = $request->getUser();
 			NotificationManager::createTrivialNotification($user->getId(), NOTIFICATION_TYPE_SUCCESS, array('contents' => __('notification.addedNote')));
+			return new JSONMessage(true);
 		} else {
 			// Return a JSON string indicating failure
-			$json = new JSONMessage(false);
+			return new JSONMessage(false);
 		}
-
-		return $json->getString();
 	}
 
 	/**
 	 * Display the notify tab.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function viewNotify ($args, $request) {
 		$this->setupTemplate($request);
@@ -176,14 +177,14 @@ class FileInformationCenterHandler extends InformationCenterHandler {
 		$notifyForm = new InformationCenterNotifyForm($this->submissionFile->getFileId(), ASSOC_TYPE_SUBMISSION_FILE);
 		$notifyForm->initData();
 
-		$json = new JSONMessage(true, $notifyForm->fetch($request));
-		return $json->getString();
+		return new JSONMessage(true, $notifyForm->fetch($request));
 	}
 
 	/**
 	 * Send a notification from the notify tab.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function sendNotification ($args, $request) {
 		$this->setupTemplate($request);
@@ -200,24 +201,27 @@ class FileInformationCenterHandler extends InformationCenterHandler {
 			NotificationManager::createTrivialNotification($user->getId(), NOTIFICATION_TYPE_SUCCESS, array('contents' => __('notification.sentNotification')));
 
 			// Success--Return a JSON string indicating so (will clear the form on return, and indicate success)
-			$json = new JSONMessage(true);
+			return new JSONMessage(true);
 		} else {
 			// Failure--Return a JSON string indicating so
-			$json = new JSONMessage(false);
+			return new JSONMessage(false);
 		}
-
-		return $json->getString();
 	}
 
 	/**
 	 * Fetch the contents of the event log.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function viewHistory($args, $request) {
 		$this->setupTemplate($request);
 		$templateMgr = TemplateManager::getManager($request);
-		return $templateMgr->fetchJson('controllers/informationCenter/fileHistory.tpl');
+		$dispatcher = $request->getDispatcher();
+		return $templateMgr->fetchAjax(
+			'eventLogGrid',
+			$dispatcher->url($request, ROUTE_COMPONENT, null, 'grid.eventLog.SubmissionFileEventLogGridHandler', 'fetchGrid', null, $this->_getLinkParams())
+		);
 	}
 
 	/**

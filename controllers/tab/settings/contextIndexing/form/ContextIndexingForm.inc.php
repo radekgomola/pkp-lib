@@ -3,8 +3,8 @@
 /**
  * @file controllers/tab/settings/contextIndexing/form/ContextIndexingForm.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ContextIndexingForm
@@ -23,7 +23,6 @@ class ContextIndexingForm extends ContextSettingsForm {
 	function ContextIndexingForm($wizardMode = false) {
 		$settings = array(
 			'searchDescription' => 'string',
-			'searchKeywords' => 'string',
 			'customHeaders' => 'string'
 		);
 
@@ -38,7 +37,7 @@ class ContextIndexingForm extends ContextSettingsForm {
 	 * Get all locale field names
 	 */
 	function getLocaleFieldNames() {
-		return array('searchDescription', 'searchKeywords', 'customHeaders');
+		return array('searchDescription', 'customHeaders');
 	}
 }
 

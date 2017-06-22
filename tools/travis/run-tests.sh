@@ -2,8 +2,8 @@
 
 # @file tools/travis/run-tests.sh
 #
-# Copyright (c) 2014 Simon Fraser University Library
-# Copyright (c) 2010-2014 John Willinsky
+# Copyright (c) 2014-2016 Simon Fraser University Library
+# Copyright (c) 2010-2016 John Willinsky
 # Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
 #
 # Script to run data build, unit, and integration tests.
@@ -11,7 +11,8 @@
 
 set -xe
 
-export DUMMYFILE=~/dummy.pdf
+export DUMMY_PDF=~/dummy.pdf
+export DUMMY_ZIP=~/dummy.zip
 export BASEURL="http://localhost"
 export DBHOST=localhost
 export DBNAME=ojs-ci
@@ -23,8 +24,9 @@ export DATABASEDUMP=~/database.sql.gz
 # Install required software
 sudo apt-get install a2ps libbiblio-citation-parser-perl libhtml-parser-perl
 
-# Generate a sample PDF file to use for testing.
-echo "This is a test" | a2ps -o - | ps2pdf - ~/dummy.pdf
+# Generate sample files to use for testing.
+echo "This is a test" | a2ps -o - | ps2pdf - ${DUMMY_PDF} # PDF format
+zip ${DUMMY_ZIP} ${DUMMY_PDF} # Zip format; add PDF dummy as contents
 
 # Create the database.
 if [[ "$TEST" == "pgsql" ]]; then
@@ -46,7 +48,11 @@ sed -i -e "s/enable_cdn = On/enable_cdn = Off/" config.inc.php # Disable CDN use
 mkdir ${FILESDIR}
 
 # Run data build suite
-./lib/pkp/tools/runAllTests.sh -b
+if [[ "$TEST" == "mysql" ]]; then
+	./lib/pkp/tools/runAllTests.sh -bH
+else
+	./lib/pkp/tools/runAllTests.sh -b
+fi
 
 # Dump the completed database.
 if [[ "$TEST" == "pgsql" ]]; then
@@ -57,4 +63,8 @@ fi
 
 # Run test suite.
 sudo rm -f cache/*.php
-./lib/pkp/tools/runAllTests.sh -Ccf
+if [[ "$TEST" == "mysql" ]]; then
+	./lib/pkp/tools/runAllTests.sh -CcPpfH
+else
+	./lib/pkp/tools/runAllTests.sh -CcPpf
+fi

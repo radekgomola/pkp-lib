@@ -4,8 +4,8 @@
 /**
  * @file js/controllers/grid/users/stageParticipant/form/StageParticipantNotifyHandler.js
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class StageParticipantNotifyHandler
@@ -96,13 +96,16 @@
 					function(formElement, jsonData) {
 
 		var $form = this.getHtmlElement(),
-				processedJsonData = this.handleJson(jsonData);
+				processedJsonData = this.handleJson(jsonData),
+				jsonDataContent =
+				/** @type {{variables: Object, body: string}} */ (jsonData.content),
+				$textarea = $form.find('textarea[name="message"]'),
+				editor =
+				tinyMCE.EditorManager.get(/** @type {string} */ ($textarea.attr('id')));
 
-		if (processedJsonData !== false) {
-			if (processedJsonData.content !== '') {
-				$form.find('textarea[name="message"]').val(processedJsonData.content);
-			}
-		}
+		$textarea.attr('data-variables', JSON.stringify(jsonDataContent.variables));
+		editor.setContent(jsonDataContent.body);
+
 		return processedJsonData.status;
 	};
 

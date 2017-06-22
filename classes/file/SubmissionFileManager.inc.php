@@ -3,8 +3,8 @@
 /**
  * @file classes/file/SubmissionFileManager.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionFileManager
@@ -84,6 +84,32 @@ class SubmissionFileManager extends BaseSubmissionFileManager {
 	 * @return boolean
 	 */
 	function downloadFile($fileId, $revision = null, $inline = false, $filename = null) {
+		$returner = false;
+		$submissionFile = $this->_getFile($fileId, $revision);
+		if (isset($submissionFile)) {
+			// Make sure that the file belongs to the submission.
+			if ($submissionFile->getSubmissionId() != $this->getSubmissionId()) fatalError('Invalid file id!');
+
+			SubmissionFileManager::recordView($submissionFile);
+
+			// Send the file to the user.
+			$filePath = $submissionFile->getFilePath();
+			$mediaType = $submissionFile->getFileType();
+			$returner = parent::downloadFile($filePath, $mediaType, $inline, $filename);
+		}
+
+		return $returner;
+	}
+        
+        /**
+	 * Flipbook a file.
+	 * @param $fileId int the file id of the file to download
+	 * @param $revision int the revision of the file to download
+	 * @param $inline boolean print file as inline instead of attachment, optional
+	 * @param $filename string The client-side download filename (optional)
+	 * @return boolean
+	 */
+	function flipbook($fileId, $revision = null) {
 		$returner = false;
 		$submissionFile = $this->_getFile($fileId, $revision);
 		if (isset($submissionFile)) {

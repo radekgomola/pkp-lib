@@ -1,8 +1,8 @@
 /**
  * @file js/controllers/grid/users/reviewer/form/AddReviewerFormHandler.js
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AddReviewerFormHandler
@@ -16,7 +16,7 @@
 	/**
 	 * @constructor
 	 *
-	 * @extends $.pkp.controllers.grid.users.reviewer.form.LimitFilesFormHandler
+	 * @extends $.pkp.controllers.grid.users.reviewer.form.EditReviewFormHandler
 	 *
 	 * @param {jQueryObject} $form the wrapped HTML form element.
 	 * @param {Object} options form options.
@@ -39,7 +39,7 @@
 			$.pkp.controllers.grid.users.reviewer.form.
 					AddReviewerFormHandler,
 			$.pkp.controllers.grid.users.reviewer.form.
-					LimitFilesFormHandler);
+					EditReviewFormHandler);
 
 
 	//

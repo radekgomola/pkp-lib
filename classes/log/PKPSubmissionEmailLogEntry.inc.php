@@ -3,8 +3,8 @@
 /**
  * @file classes/log/PKPSubmissionEmailLogEntry.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPSubmissionEmailLogEntry
@@ -32,7 +32,6 @@ define('SUBMISSION_EMAIL_REVIEW_CANCEL',				0x40000003);
 define('SUBMISSION_EMAIL_REVIEW_REMIND',				0x40000004);
 define('SUBMISSION_EMAIL_REVIEW_CONFIRM',			0x40000005);
 define('SUBMISSION_EMAIL_REVIEW_DECLINE',			0x40000006);
-define('SUBMISSION_EMAIL_REVIEW_COMPLETE',			0x40000007);
 define('SUBMISSION_EMAIL_REVIEW_CONFIRM_ACK',			0x40000008);
 
 // Copyeditor events						0x50000000

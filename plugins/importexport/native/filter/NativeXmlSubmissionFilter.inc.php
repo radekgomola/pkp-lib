@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/native/filter/NativeXmlSubmissionFilter.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class NativeXmlSubmissionFilter
@@ -71,10 +71,11 @@ class NativeXmlSubmissionFilter extends NativeImportFilter {
 		$submissionDao = Application::getSubmissionDAO();
 		$submission = $submissionDao->newDataObject();
 		$submission->setContextId($context->getId());
-		$submission->setUserId($user->getId());
 		$submission->setStatus(STATUS_QUEUED);
 		$submission->setLocale($node->getAttribute('locale'));
 		$submission->setSubmissionProgress(0);
+		$workflowStageDao = DAORegistry::getDAO('WorkflowStageDAO');
+		$submission->setStageId(WorkflowStageDAO::getIdFromPath($node->getAttribute('stage')));
 		$submissionDao->insertObject($submission);
 		$deployment->setSubmission($submission);
 
@@ -98,6 +99,9 @@ class NativeXmlSubmissionFilter extends NativeImportFilter {
 	 */
 	function populateObject($submission, $node) {
 		$submissionDao = Application::getSubmissionDAO();
+		if ($dateSubmitted = $node->getAttribute('date_submitted')) {
+			$submission->setDateSubmitted(strtotime($dateSubmitted));
+		}
 		$submissionDao->updateObject($submission);
 		// If the date_published was set, add a published submission
 		if ($datePublished = $node->getAttribute('date_published')) {
@@ -110,6 +114,7 @@ class NativeXmlSubmissionFilter extends NativeImportFilter {
 			$publishedSubmissionDao->$insertMethod($publishedSubmission);
 			// Reload from DB now that some fields may have changed
 			$submission = $submissionDao->getById($submission->getId());
+			$submission->setStatus(STATUS_PUBLISHED);
 		}
 		return $submission;
 	}
@@ -179,8 +184,9 @@ class NativeXmlSubmissionFilter extends NativeImportFilter {
 	function parseIdentifier($element, $submission) {
 		switch ($element->getAttribute('type')) {
 			case 'internal':
-				// Currently internal IDs are discarded; new IDs
-				// are generated and assigned.
+				// "update" advice not supported yet.
+				$advice = $element->getAttribute('advice');
+				assert(!$advice || $advice == 'ignore');
 				break;
 			case 'public':
 				$submission->setStoredPubId('publisher-id', $element->textContent);
@@ -248,10 +254,8 @@ class NativeXmlSubmissionFilter extends NativeImportFilter {
 			'prefix' => 'setPrefix',
 			'subtitle' => 'setSubtitle',
 			'abstract' => 'setAbstract',
-			'subject_class' => 'setSubjectClass',
-			'coverage_geo' => 'setCoverageGeo',
-			'coverage_chron' => 'setCoverageChron',
-			'coverage_sample' => 'setCoverageSample',
+			'coverage' => 'setCoverage',
+			'type' => 'setType',
 			'source' => 'setSource',
 			'rights' => 'setRights',
                     
@@ -260,7 +264,7 @@ class NativeXmlSubmissionFilter extends NativeImportFilter {
                         //MUNIPRESS
                         'urlWeb' => 'setUrlWeb',                               
                         'poznamka' => 'setPoznamka',
-                        'dedikace' => 'setDedikace',
+                        'referenceMunipress' => 'setReferenceMunipress',
 		);
 	}
 

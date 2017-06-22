@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/native/filter/RepresentationNativeXmlFilter.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RepresentationNativeXmlFilter
@@ -79,12 +79,19 @@ class RepresentationNativeXmlFilter extends NativeExportFilter {
 		$sequenceNode->appendChild($doc->createTextNode($representation->getSeq()));
 		$representationNode->appendChild($sequenceNode);
 
-		// Add files
-		foreach ($this->getFiles($representation) as $submissionFile) {
-			$fileRefNode = $doc->createElementNS($deployment->getNamespace(), 'submission_file_ref');
-			$fileRefNode->setAttribute('id', $submissionFile->getFileId());
-			$fileRefNode->setAttribute('revision', $submissionFile->getRevision());
-			$representationNode->appendChild($fileRefNode);
+		$remoteURL = $representation->getRemoteURL();
+		if ($remoteURL) {
+			$remoteNode = $doc->createElementNS($deployment->getNamespace(), 'remote');
+			$remoteNode->setAttribute('src', $remoteURL);
+			$representationNode->appendChild($remoteNode);
+		} else {
+			// Add files
+			foreach ($this->getFiles($representation) as $submissionFile) {
+				$fileRefNode = $doc->createElementNS($deployment->getNamespace(), 'submission_file_ref');
+				$fileRefNode->setAttribute('id', $submissionFile->getFileId());
+				$fileRefNode->setAttribute('revision', $submissionFile->getRevision());
+				$representationNode->appendChild($fileRefNode);
+			}
 		}
 
 		return $representationNode;

@@ -2,13 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../dtd/locale.dtd">
 
 <!--
-  * locale/en_US/submission.xml
+  * locale/ml_IN/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the ml_IN (Malayalam) locale.
+  * Localization strings for the ml_IN (മലയാളം) locale.
   -->
 
 <locale name="ml_IN" full_name = "Malayalam">
@@ -216,8 +216,6 @@
 		<p>Experimental text export options include ABNT, APA, MLA and Vancouver citation output styles. These options provide a text output that can be copied and pasted into a text-based article galley (for example into Microsoft Word or OpenOffice; Adobe InDesign; etc.). Each citation includes an embedded link to automatically search for that citation in Google Scholar.</p></li>
 	</ul>]]></message>
 	<message key="submission.citations.editor.loadMessage">ദയവായി സൈറ്റെഷന്‍ മാര്‍ക്ക് അപ് അസിസ്റ്റന്റ് ലോഡ് ആകുന്നത് വരെ കാത്തിരിക്കുക.</message>
-	<message key="submission.citations.editor.pleaseAddParserFilter"><![CDATA[Please ask your journal manager to <a href="{$citationSetupUrl}">add at least one citation extraction service</a> before you can use the citation markup assistant.]]></message>
-	<message key="submission.citations.editor.pleaseConfigureOutputStyle"><![CDATA[Please ask your journal manager to <a href="{$citationSetupUrl}">configure a citation export style</a> before you can use the citation markup assistant.]]></message>
 	<message key="submission.citations.editor.pleaseImportCitationsFirst"><![CDATA[<p>There are no citations for this article.</p><p>Please go to the article's <a href="{$articleMetadataUrl}">metadata page</a> and enter a reference list or add references manually using the add item button of the editor.</p>]]></message>
 	<message key="submission.citations.editor.pleaseSelect">ദയവായി തിരെഞ്ഞെടുക്കുക...</message>
 	<message key="submission.citations.editor.pleaseSetup"><![CDATA[Please ask your journal manager to <a href="{$citationSetupUrl}">enable citation editing</a> before you can access the citation markup assistant.]]></message>
@@ -341,7 +339,7 @@
 	<message key="submission.page.summary">#{$id} സംഗ്രഹം</message>
 	<message key="submission.page.citations">#{$id} സൈറ്റെഷന്‍സ്</message>
 	<message key="submission.peerReview"><![CDATA[പീര്‍&എന്‍.ബി.എസ്.പി;അവലോകനം]]></message>
-	<message key="submission.recommendation">ശുപാര്‍ശ</message>
+	<message key="submission.recommendation">ശുപാര്‍ശ: {$recommendation}</message>
 	<message key="submission.rejected">തിരസ്കരിക്കപ്പെട്ടത്</message>
 	<message key="submission.request">അഭ്യര്‍ത്ഥന</message>
 	<message key="submission.response">പ്രതികരണം</message>
@@ -385,4 +383,8 @@
 	<message key="submission.nameRequired">ഈ ഇനത്തിനു ഒരു നാമം ആവശ്യമാണ്.</message>
 	<message key="submission.date.mmdd">മാസം-തീയതി</message>
 	<message key="submission.date.yyyymmdd">വര്‍ഷം-മാസം-തീയതി</message>
+
+	<!--  peer review -->
+	<message key="submission.reviewForm">അവലോകനാരൂപം</message>
+	<message key="submission.reviewFormResponse">അവലോകനാരൂപത്തിന്റെ പ്രതികരണം</message>
 </locale>

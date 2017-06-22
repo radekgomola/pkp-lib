@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/submissions/archivedSubmissions/ArchivedSubmissionsListGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ArchivedSubmissionsListGridHandler
@@ -29,11 +29,55 @@ class ArchivedSubmissionsListGridHandler extends SubmissionsListGridHandler {
 		parent::SubmissionsListGridHandler();
 		$this->addRoleAssignment(
 			array(ROLE_ID_REVIEWER, ROLE_ID_ASSISTANT, ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR),
-			array('fetchGrid', 'fetchRow', 'deleteSubmission')
+			array('fetchGrid', 'fetchRows', 'fetchRow')
 		);
 		$this->addRoleAssignment(
 			array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR),
 			array('deleteSubmission')
+		);
+	}
+
+
+	//
+	// Implement template methods from GridHandler
+	//
+	function getIsSubComponent() {
+		return false;
+	}
+
+	/**
+	 * @copydoc GridHandler::loadData()
+	 */
+	function loadData($request, $filter) {
+		$context = $request->getContext();
+		$userRoles = $this->getAuthorizedContextObject(ASSOC_TYPE_USER_ROLES);
+		$submissionDao = Application::getSubmissionDAO();
+		$user = $request->getUser();
+		$rangeInfo = $this->getGridRangeInfo($request, $this->getId());
+
+		list($search, $column, $stageId) = $this->getFilterValues($filter);
+		$title = $author = null;
+		if ($column == 'title') {
+			$title = $search;
+		} elseif ($column == 'author') {
+			$author = $search;
+		}
+
+		if ($userRoles == array(ROLE_ID_REVIEWER)) {
+			// Just a reviewer, get the rejected reviews submissions only.
+			return $submissionDao->getReviewerArchived($user->getId(), $context->getId(), $title, $author, $stageId, $rangeInfo);
+		}
+
+		$canSeeAllSubmissions = in_array(ROLE_ID_MANAGER, $userRoles);
+
+		return $submissionDao->getByStatus(
+			array(STATUS_DECLINED, STATUS_PUBLISHED),
+			$canSeeAllSubmissions?null:$user->getId(),
+			$context->getId(),
+			$title,
+			$author,
+			$stageId,
+			$rangeInfo
 		);
 	}
 
@@ -56,57 +100,13 @@ class ArchivedSubmissionsListGridHandler extends SubmissionsListGridHandler {
 
 
 	//
-	// Implement template methods from SubmissionListGridHandler
+	// Extend methods from SubmissionsListGridHandler
 	//
 	/**
-	 * @copydoc SubmissionListGridHandler::getSubmissions()
+	 * @copydoc SubmissionsListGridHandler::getItemsNumber()
 	 */
-	function getSubmissions($request) {
-		// Get all contexts that user is enrolled in as manager, series editor
-		// reviewer or assistant
-		$user = $request->getUser();
-		$roleDao = DAORegistry::getDAO('RoleDAO');
-		$contextDao = Application::getContextDAO();
-		$contexts = $contextDao->getAll()->toArray();
-		$accessibleRoles = array(
-			ROLE_ID_MANAGER,
-			ROLE_ID_SUB_EDITOR,
-			ROLE_ID_REVIEWER,
-			ROLE_ID_ASSISTANT
-		);
-
-		$accessibleContexts = array();
-		$stageUserId = null;
-		$reviewUserId = null;
-		foreach ($accessibleRoles as $role) {
-			foreach ($contexts as $context) {
-				if ($roleDao->userHasRole($context->getId(), $user->getId(), $role)) {
-					$accessibleContexts[] = $context->getId();
-
-					if ($role == ROLE_ID_ASSISTANT) {
-						$stageUserId = $user->getId();
-					} elseif ($role == ROLE_ID_REVIEWER) {
-						$reviewUserId = $user->getId();
-					}
-				}
-			}
-		}
-		$accessibleContexts = array_unique($accessibleContexts);
-		if (count($accessibleContexts) == 1) {
-			$accessibleContexts = array_pop($accessibleContexts);
-		}
-
-		// Fetch all submissions for contexts the user can access. If the user
-		// is a reviewer or assistant only show submissions that have been
-		// assigned to the user
-		$submissionDao = Application::getSubmissionDAO();
-		return $submissionDao->getByStatus(
-			array(STATUS_DECLINED, STATUS_PUBLISHED),
-			$stageUserId,
-			$reviewUserId,
-			$accessibleContexts,
-			$this->getGridRangeInfo($request, $this->getId())
-		);
+	protected function getItemsNumber() {
+		return 20;
 	}
 }
 

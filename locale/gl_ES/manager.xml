@@ -4,11 +4,11 @@
 <!--
   * locale/gl_ES/manager.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the gl_ES (Galego (Galiza)) locale.
+  * Localization strings for the gl_ES (Galego) locale.
   *
   -->
 
@@ -147,7 +147,6 @@
 	<message key="manager.setup.layout.unselected">Sen seleccionar</message>
 	<message key="manager.setup.loggingAndAuditing">Rexistro e Auditoría</message>
 	<message key="manager.setup.pageHeaderLogoImageInvalid">Formato de imaxe non válido. Os formatos aceptados son .gif, .jpg, o .png.</message>
-	<message key="manager.setup.pageHeaderTitleImageInvalid">Formato de imaxe non válido. Os formatos aceptados son .gif, .jpg, o .png.</message>
 	<message key="manager.setup.selectOne">Seleccione unha</message>
 	<message key="manager.statistics">Estatísticas e informes</message>
 	<message key="manager.statistics.statistics.count.value">{$count} ({$percentage}%)</message>
@@ -170,7 +169,6 @@
 	<message key="plugins.categories.themes">Complementos de Aspecto</message>
 	<message key="manager.emails.form.emailKeyRequired">O ficheiro non se puido subir. Por favor tentao outra vez ou contacta co administrador se o problema persiste</message>
 	<message key="manager.setup.errorDeletingItem"> Produciuse un erro ao borrar este ítem</message>
-	<message key="manager.reviewerSearch.advancedSearch">Procura avanzada de Revisor</message>
 	<message key="manager.reviewerSearch.searchByName">Buscar Revisor por Nomee</message>
 	<message key="manager.reviewerSearch.doneAmount">Número de revisións completadas</message>
 	<message key="manager.reviewerSearch.avgAmount">Número estimado de días por revisión</message>
@@ -200,13 +198,13 @@
 		<p><strong>Nota:</strong>Para que o proceso de comprobación das citas se complete ao xeito, a directiva <tt>citation_checking_max_processes</tt> no teu arquivo de configuración, compre establecer en un valor razonabel. Ver a sección Xeral Settings en <tt>config.inc.php</tt> para máis información.</p>]]></message>
 	<message key="manager.setup.citationOutputStyleDescription">Seleccione o estilo de citas que se usa nos envíos dos autores á túa revista. O Asistente de Marcado de Citas permíteche comparar a versión do autor da cita cunha versión xerada polo XML, desta sorte poderás detectar sen dificultade os erros:</message>
 	<message key="manager.setup.filter.lookup.grid.description.iSBNdb"><![CDATA[<p>Este filtro conéctase ao libro <a href="http://isbndb.com/" target="_blank">ISBNdb.com</a> na base de dados do ISBN</p>
-	<p>Es obligatorio una clave de la API de ISBNdb. Para obter información sobre a xeración desta clave, consulta a <a href="http://isbndb.com/docs/api/30-keys.html" target="_blank">documentación online</a>.</p>]]></message>
+	<p>Es obligatorio una clave de la API de ISBNdb. Para obter información sobre a xeración desta clave, consulta a <a href="http://isbndb.com/api/v1/docs/keys" target="_blank">documentación online</a>.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.crossRef"><![CDATA[<p>Este filtro conectarase á base de dados de citas CrossRef usando <a href="http://www.crossref.org/02publishers/openurl_info.html" target="_blank">OpenURL Query Interface</a> de CrossRef.</p> 
 	<p>Para utilizar este filtro, podes usar a túa conta do sistema CrossRef, ou rexistrar un enderezo de correo electrónico válido con CrossRef <a href="http://www.crossref.org/requestaccount/" target="_blank">aquí</a>.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.pubMed"><![CDATA[<p>Este filtro conéctase ao motor de busca entre bases de dados <a href="http://www.ncbi.nlm.nih.gov/gquery/gquery.fcgi" target="_blank">Entrez</a> de PubMed's.</p>
 	<p>Un correo electrónico de rexistro non é estrictamente obrigatorio, ainda que pódese necesitar se atopas problemas de conexión. Ver a sección de <a href="http://www.be-md.ncbi.nlm.nih.gov/bookshelf/br.fcgi?book=helpeutils&part=chapter2#chapter2.Usage_Guidelines_and_Requiremen" target="_blank">Usage Guidelines and Requirements</a> na documentación de Entrez para máis información.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.worldCat"><![CDATA[<p>Este filtro conéctase aos servizos OCLC <a href="http://www.worldcat.org/affiliate/webservices/xisbn/app.jsp" target="_blank">xISBN</a> e <a href="http://www.worldcat.org/" target="_blank">Worldcat</a> (opcional).</p>
-	<p>Si usted dispone de una <a href="http://www.worldcat.org/devnet/wiki/SearchAPIWhoCanUse" target="_blank">clave API</a>de Worldcat entón pódese conectar a Worldcat a través da clave de abaixo.</p>]]></message>
+	<p>Si usted dispone de una <a href="http://oclc.org/developer/develop/web-services.html" target="_blank">clave API</a>de Worldcat entón pódese conectar a Worldcat a través da clave de abaixo.</p>]]></message>
 	<message key="manager.setup.filter.parser.grid.descriptionTemplate">Por favor, selecciona un analisador de citas.</message>
 	<message key="manager.setup.filter.parser.grid.description.freeCite"><![CDATA[<p>Este filtro de extracción conéctase ao servizo web de <a href="http://freecite.library.brown.edu/" target="_blank">FreeCite</a>.</p>]]></message>
 	<message key="manager.setup.filter.parser.grid.description.paraCite"><![CDATA[<p>Este filtro de extracción usa os módulos Perl de <a href="http://paracite.eprints.org/developers/" target="_blank">ParaTools</a> co obxectivo de proporcionar unha funcionalidade de analisador de citas <a href="http://paracite.eprints.org" target="_blank">ParaCite</a>. Para que isto funcione correctamente, debes ter instalado Perl, xunto con <a href="http://search.cpan.org/~mjewell/Biblio-Citation-Parser-1.10/" target="_blank">Biblio::Citation::Parser</a> e os módulos CPAN <a href="http://search.cpan.org/~sburke/Text-Unidecode-0.04/" target="_blank">Text::Unidecode</a>. Tamén debes configurar a directiva <tt>perl</tt> no teu ficheiro de configuración. Esta directiva pódese achar na sección <em>External Commands</em> de <tt>config.inc.php</tt>.</p>
@@ -219,4 +217,37 @@
 	<message key="manager.setup.metaCitationsDescription">Activa a seguinte caixa de verificación para habilitar a edición de citas e referencias. Isto permitirá aos autores incluir citas en bruto cos envíos. Os editores tamén terán acceso a un asistente de marcado de citas co que poden contrastar as citas orixinais coas bases de dados externas,  como WorldCat, ISBNdb, PubMed e outras, para maior precisión. As citas aprobadas pódense exportar a arquivo final de galeradas.</message>
 	<message key="plugins.categories.oaiMetadataFormats">Plugins de Formato de Metadados de OAI</message>
 	<message key="plugins.categories.oaiMetadataFormats.description">Estes plugin de formato expresan metadados en comunicacións OAI</message>
+
+	<!-- Review forms -->
+	<message key="manager.reviewFormElements">Elementos do Formulario</message>
+	<message key="manager.reviewFormElements.addResponseItem">Engadir selección</message>
+	<message key="manager.reviewFormElements.checkboxes">Caixa de selección (checkboxes: selección múltiple)</message>
+	<message key="manager.reviewFormElements.chooseType">Escoller tipo de elemento</message>
+	<message key="manager.reviewFormElements.copyTo">Copia a:</message>
+	<message key="manager.reviewFormElements.create">Crear Novo Elemento</message>
+	<message key="manager.reviewFormElements.dropdownbox">Caixa desdobrabel</message>
+	<message key="manager.reviewFormElements.edit">Editar Elementos Formulario</message>
+	<message key="manager.reviewFormElements.elementType">Tipo de elemento</message>
+	<message key="manager.reviewFormElements.form.elementTypeRequired">Precísase un tipo de elemento para o elemento de formulario.</message>
+	<message key="manager.reviewFormElements.form.questionRequired">Precísase unha pregunta para o elemento de formulario.</message>
+	<message key="manager.reviewFormElements.noneCreated">Non se crearon elementos de formulario.</message>
+	<message key="manager.reviewFormElements.possibleResponse">Selección</message>
+	<message key="manager.reviewFormElements.question">Elemento</message>
+	<message key="manager.reviewFormElements.radiobuttons">Botóns radio (radiobuttons: selección única)</message>
+	<message key="manager.reviewFormElements.required">Precísanse Revisores para completar o elemento</message>
+	<message key="manager.reviewFormElements.smalltextfield">Caixa de texto dunha palabra</message>
+	<message key="manager.reviewFormElements.textarea">Caixa de texto extendida.</message>
+	<message key="manager.reviewFormElements.textfield">Caixa de texto dunha liña</message>
+	<message key="manager.reviewForms">Formularios Revisión</message>
+	<message key="manager.reviewForms.completed">Completado</message>
+	<message key="manager.reviewForms.create">Crear Formulario Revisión</message>
+	<message key="manager.reviewForms.description">Descrición e Instruccións</message>
+	<message key="manager.reviewForms.edit">Formulario Revisión</message>
+	<message key="manager.reviewForms.form.titleRequired">Un título é necesario para o formulario de revisión.</message>
+	<message key="manager.reviewForms.inReview">En Revisión</message>
+	<message key="manager.reviewForms.list.description">Os formularios de revisión creados aquí serán presentados ós revisores para ser completados, en vez do formulario por defecto o cal consiste en dúas caixas de texto, a primeira "para autor e editor", e la segunda "para editor". Formularios de revisión poden ser designados para unha sección específica dunha revista, e os editores terán a opción de seleccionar que formulario usar ao asignar a revisión. En todos os casos, os editores terán a opción de inserir as  revisións de acordo co autor.</message>
+	<message key="manager.reviewForms.noneChosen">Nengún / Revisión libre</message>
+	<message key="manager.reviewForms.noneCreated">Non se crearon  formularios de revisión.</message>
+	<message key="manager.reviewForms.preview">Previsualizar Formulario</message>
+	<message key="manager.reviewForms.title">Título</message>
 </locale>

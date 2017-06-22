@@ -3,8 +3,8 @@
 /**
  * @file controllers/modals/editorDecision/EditorDecisionHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EditorDecisionHandler
@@ -42,7 +42,7 @@ class PKPEditorDecisionHandler extends Handler {
 		// Approve proof need submission access policy.
 		$router = $request->getRouter();
 		if ($router->getRequestedOp($request) == 'saveApproveProof') {
-			import('classes.security.authorization.SubmissionFileAccessPolicy');
+			import('lib.pkp.classes.security.authorization.SubmissionFileAccessPolicy');
 			$this->addPolicy(new SubmissionFileAccessPolicy($request, $args, $roleAssignments, SUBMISSION_FILE_ACCESS_MODIFY));
 		}
 
@@ -190,7 +190,7 @@ class PKPEditorDecisionHandler extends Handler {
 	 * Import all free-text/review form reviews to paste into message
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	function importPeerReviews($args, $request) {
 		// Retrieve the authorized submission.
@@ -217,34 +217,34 @@ class PKPEditorDecisionHandler extends Handler {
 				// Get the comments associated with this review assignment
 				$submissionComments = $submissionCommentDao->getSubmissionComments($submission->getId(), COMMENT_TYPE_PEER_REVIEW, $reviewAssignment->getId());
 
-				$body .= "\n\n$textSeparator\n";
+				$body .= "<br><br>$textSeparator<br>";
 				// If it is not a double blind review, show reviewer's name.
 				if ($reviewAssignment->getReviewMethod() != SUBMISSION_REVIEW_METHOD_DOUBLEBLIND) {
-					$body .= $reviewAssignment->getReviewerFullName() . "\n";
+					$body .= $reviewAssignment->getReviewerFullName() . "<br>\n";
 				} else {
-					$body .= __('submission.comments.importPeerReviews.reviewerLetter', array('reviewerLetter' => String::enumerateAlphabetically($reviewIndexes[$reviewAssignment->getId()]))) . "\n";
+					$body .= __('submission.comments.importPeerReviews.reviewerLetter', array('reviewerLetter' => PKPString::enumerateAlphabetically($reviewIndexes[$reviewAssignment->getId()]))) . "<br>\n";
 				}
 
 				while ($comment = $submissionComments->next()) {
 					// If the comment is viewable by the author, then add the comment.
 					if ($comment->getViewable()) {
-						$body .= String::html2text($comment->getComments()) . "\n\n";
+						$body .= PKPString::html2text($comment->getComments()) . "\n\n";
 					}
 				}
-				$body .= "$textSeparator\n\n";
+				$body .= "<br>$textSeparator<br><br>";
 
 				if ($reviewFormId = $reviewAssignment->getReviewFormId()) {
 					$reviewId = $reviewAssignment->getId();
 
 
-					$reviewFormElements = $reviewFormElementDao->getReviewFormElements($reviewFormId);
+					$reviewFormElements = $reviewFormElementDao->getByReviewFormId($reviewFormId);
 					if(!$submissionComments) {
 						$body .= "$textSeparator\n";
 
-						$body .= __('submission.comments.importPeerReviews.reviewerLetter', array('reviewerLetter' => String::enumerateAlphabetically($reviewIndexes[$reviewAssignment->getId()]))) . "\n\n";
+						$body .= __('submission.comments.importPeerReviews.reviewerLetter', array('reviewerLetter' => PKPString::enumerateAlphabetically($reviewIndexes[$reviewAssignment->getId()]))) . "\n\n";
 					}
-					foreach ($reviewFormElements as $reviewFormElement) {
-						$body .= String::html2text($reviewFormElement->getLocalizedQuestion()) . ": \n";
+					while ($reviewFormElement = $reviewFormElements->next()) {
+						$body .= PKPString::html2text($reviewFormElement->getLocalizedQuestion()) . ": \n";
 						$reviewFormResponse = $reviewFormResponseDao->getReviewFormResponse($reviewId, $reviewFormElement->getId());
 
 						if ($reviewFormResponse) {
@@ -252,14 +252,14 @@ class PKPEditorDecisionHandler extends Handler {
 							if (in_array($reviewFormElement->getElementType(), $reviewFormElement->getMultipleResponsesElementTypes())) {
 								if ($reviewFormElement->getElementType() == REVIEW_FORM_ELEMENT_TYPE_CHECKBOXES) {
 									foreach ($reviewFormResponse->getValue() as $value) {
-										$body .= "\t" . String::htmltext($possibleResponses[$value-1]['content']) . "\n";
+										$body .= "\t" . PKPString::html2text($possibleResponses[$value]) . "\n";
 									}
 								} else {
-									$body .= "\t" . String::html2text($possibleResponses[$reviewFormResponse->getValue()-1]['content']) . "\n";
+									$body .= "\t" . PKPString::html2text($possibleResponses[$reviewFormResponse->getValue()]) . "\n";
 								}
 								$body .= "\n";
 							} else {
-								$body .= "\t" . String::html2text($reviewFormResponse->getValue()) . "\n\n";
+								$body .= "\t" . PKPString::html2text($reviewFormResponse->getValue()) . "\n\n";
 							}
 						}
 
@@ -273,11 +273,10 @@ class PKPEditorDecisionHandler extends Handler {
 		}
 
 		if(empty($body)) {
-			$json = new JSONMessage(false, __('editor.review.noReviews'));
+			return new JSONMessage(false, __('editor.review.noReviews'));
 		} else {
-			$json = new JSONMessage(true, $body);
+			return new JSONMessage(true, $body);
 		}
-		return $json->getString();
 	}
 
 
@@ -349,7 +348,7 @@ class PKPEditorDecisionHandler extends Handler {
 	 * @param $args array
 	 * @param $request PKPRequest
 	 * @param $formName string Name of form to call
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	protected function _initiateEditorDecision($args, $request, $formName) {
 		// Retrieve the decision
@@ -359,8 +358,7 @@ class PKPEditorDecisionHandler extends Handler {
 		$editorDecisionForm = $this->_getEditorDecisionForm($formName, $decision);
 		$editorDecisionForm->initData($args, $request);
 
-		$json = new JSONMessage(true, $editorDecisionForm->fetch($request));
-		return $json->getString();
+		return new JSONMessage(true, $editorDecisionForm->fetch($request));
 	}
 
 	/**
@@ -370,7 +368,7 @@ class PKPEditorDecisionHandler extends Handler {
 	 * @param $formName string Name of form to call
 	 * @param $redirectOp string A workflow stage operation to
 	 *  redirect to if successful (if any).
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	protected function _saveEditorDecision($args, $request, $formName, $redirectOp = null, $decision = null) {
 		// Retrieve the authorized submission.
@@ -385,6 +383,16 @@ class PKPEditorDecisionHandler extends Handler {
 		if ($editorDecisionForm->validate()) {
 			$editorDecisionForm->execute($args, $request);
 
+			// Get a list of author user IDs
+			$authorUserIds = array();
+			$stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
+			$submitterAssignments = $stageAssignmentDao->getBySubmissionAndRoleId($submission->getId(), ROLE_ID_AUTHOR);
+			while ($assignment = $submitterAssignments->next()) {
+				$authorUserIds[] = $assignment->getUserId();
+			}
+			// De-duplicate assignments
+			$authorUserIds = array_unique($authorUserIds);
+
 			// Update editor decision and pending revisions notifications.
 			$notificationMgr = new NotificationManager();
 			$editorDecisionNotificationType = $this->_getNotificationTypeByEditorDecision($decision);
@@ -393,7 +401,7 @@ class PKPEditorDecisionHandler extends Handler {
 			$notificationMgr->updateNotification(
 				$request,
 				$notificationTypes,
-				array($submission->getUserId()),
+				$authorUserIds,
 				ASSOC_TYPE_SUBMISSION,
 				$submission->getId()
 			);
@@ -426,9 +434,8 @@ class PKPEditorDecisionHandler extends Handler {
 				return DAO::getDataChangedEvent();
 			}
 		} else {
-			$json = new JSONMessage(false);
+			return new JSONMessage(false);
 		}
-		return $json->getString();
 	}
 
 	/**

@@ -4,43 +4,46 @@
 <!--
   * locale/cs_CZ/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings.
+  * Localization strings for the cs_CZ (Čeština) locale.
+  * Translated by František Chmelik, frantisek.chmelik 'at' upol.cz
+  * Corrections, migration to the OCS 2.3.x by Ivo Vesely and Petr Petyovsky (petyovsky 'at' feec.vutbr.cz)
+  *
   -->
 
-<locale name="cs_CZ" full_name="Čeština">
-	<!-- Author Submission -->
-	<message key="author.submit.submissionCitations">Poskytněte formátovaný seznam referencí pro práce citavané v příspěvku. Prosím, oddělujte jednotlivé reference prázným řádkem.</message>
-	<message key="submission.submit.submissionComplete">Příspěvek dokončen</message>
-	<message key="submission.submit.submissionCompleteThanks">Děkujeme za Váš zájem o publikování v {$contextName}.</message>
-	<message key="submission.submit.whatNext">Co se stane dále?</message>
-	<message key="submission.submit.whatNext.forNow">Nyní můžete:</message>
-	<message key="submission.submit.whatNext.review">Recenzovat tento příspěvek</message>
-	<message key="submission.submit.whatNext.create">Vytvořit nový příspěvek</message>
-	<message key="submission.submit.whatNext.return">Vrátit se do navigační lišty</message>
-	<message key="submission.submit.uploadExpeditedFiles">Jako redaktor nyní můžete nahrát PDF soubor a zaslat jej přímo do produkce k poslednímu kroku zaslání příspěvku.</message>
-	<message key="submission.submit.extendedMetadata">Rozšířená metadata</message>
-	<message key="submission.submit.expediteSubmission">Odeslat příspěvek</message>
-
-	<!-- FIXME: move to meta-data plug-ins -->
-	<!-- messages used by meta-data filters -->
-	<message key="metadata.filters.crossref.settings.email.displayName">Adresa registrovaná v CrossRef</message>
-    <message key="metadata.filters.crossref.settings.email.validationMessage">Zadejte prosím platnou e-mailovou adresu, kterou jste si zaregistroval/a v systému CrossRef. Adresu můžete registrovat zdarma na webové stránce CrossRef.</message>
-    <message key="metadata.filters.isbndb.settings.apiKey.displayName">API klíč pro ISBNdb</message>
-    <message key="metadata.filters.isbndb.settings.apiKey.validationMessage">Zadejte váš API klíč pro systém ISBNdb. Pokud jej nemáte, můžete jej získat zdarma od projektu ISBNdb.</message>
-    <message key="metadata.filters.pubmed.settings.email.displayName">Adresa registrovaná v PubMed</message>
-    <message key="metadata.filters.pubmed.settings.email.validationMessage">Zadejte platnou adresu registrovanou v systému PubMed, pokud ji máte.</message>
-    <message key="metadata.filters.worldcat.settings.apiKey.displayName">API klíč pro WorldCat</message>
-    <message key="metadata.filters.worldcat.settings.apiKey.validationMessage">Zadejte platný API klíč pro systém WorldCat, pokud jej máte.</message>
-    <message key="metadata.filters.paracite.settings.citationModule.displayName">Citační modul</message>
-    <message key="metadata.filters.paracite.settings.citationModule.validationMessage">Vyberte prosím jeden z uvedených citačních modulů.</message>
-    <message key="metadata.filters.settings.isOptional.displayName">Ve výchozím nastavení nepoužívat (možnost ale zůstane dostupná editorovi)</message>
-    <message key="metadata.filters.settings.isOptional.validationMessage">Vnitřní chyba. V možnosti "volitelný filtr" byla zadána neplatná hodnota. Odešlete prosím chybové hlášení.</message>
-
-	<!-- messages shared between MD schemas -->
+<locale name="cs_CZ" full_name = "Čeština">
+	<message key="submission.agencies">Agentury</message>
+	<message key="submission.abstractViews">Zobrazení abstraktu</message>
+	<message key="submission.accepted">Přijata</message>
+	<message key="submission.acknowledge">Poděkovat</message>
+	<message key="submission.addSuppFile">Přidat doplňkový soubor</message>
+	<message key="submission.ask">Vyžádáno</message>
+	<message key="submission.backToSubmissionEditing">Zpět na editaci příspěvku</message>
+	<message key="submission.changeComments">Změnit na</message>
+	<message key="submission.citations">Reference</message>
+	<message key="submission.citations.jQueryRequired"><![CDATA[Editace citací vyžaduje doplněk jQuery. Prosím, navštivte <a target="_blank" href="{$genericPluginsUrl}">stránku Obecné doplňky</a> a zde povolte doplněk jQuery.]]></message>
+	<message key="submission.citations.grid.fields">Název pole</message>
+	<message key="submission.citations.grid.values">Hodnota pole</message>
+	<message key="submission.citations.grid.title">Upravit citace</message>
+	<message key="submission.citations.grid.importCitations">Importovat citace</message>
+	<message key="submission.citations.grid.exportCitations">Exportovat citace</message>
+	<message key="submission.citations.grid.editCheckCitation">Upravit/Kontrolovat</message>
+	<message key="submission.citations.grid.checkCitationAgain">Znovu zkontrolovat</message>
+	<message key="submission.citations.grid.editedCitation">Text citace</message>
+	<message key="submission.citations.grid.editedCitationRequired">Je vyžadován text citace</message>
+	<message key="submission.citations.grid.publicationTypeRequired">Prosím ujistěte se, že jste skutečně správně nastavili typ publikace. Možné varianty jsou: kniha (pro knihu nebo kapitolu v knize) a časopis (pro článek v časopise). Jinak nebude citace zobrazena ve správném formátu.</message>
+	<message key="submission.citations.grid.errorDeletingCitation">Při mazání citace došlo k chybě.</message>
+	<message key="submission.citations.form.title">Upravit citaci</message>
+	<message key="submission.citations.form.loadMessage">Prosím, vyčkejte na načtení editoru citací.</message>
+	<message key="submission.citations.form.description">Pokud nejste spokojen(a) s obsahem citací, můžete citace ručně upravit editací jednotlivých položek a poté provést opětovnou kontrolu.</message>
+	<message key="submission.citations.form.unsavedChanges">Citace obsahuje data z externích databází, které nejsou dosud uloženy. Prosím přečtěte si a případně upravte datová pole. Poté zvolte "OK" pro uložení změn, nebo zvolte tlačítko "Zrušit", kterým provedené změny neuložíte.</message>
+	<message key="submission.citations.form.filterError">Analýza nebo vyhledávání nevrátily žádné výsledky. Úpravou textu citace pravděpodobně získáte lepší výsledek.</message>
+	<message key="submission.citations.output.unsupportedPublicationType">Nepodporovaný nebo chybějící typ publikace. Prosím upravte citaci ručně a zadejte typ publikace (buď "book", "journal", "thesis" nebo "conf-proc").</message>
+	<message key="submission.citations.output.exportDescription">Prosím, zkopírujte obsah tohoto dialogového okna a vložte jej do dokumentu.</message>
+	<!-- FIXME: move to meta-data plug-in -->
 	<message key="metadata.property.displayName.author">Autoři</message>
 	<message key="metadata.property.validationMessage.author">Pro lepší výsledky, by autoři měli být vkládání v následujícím formátu: Novák, Petr Malý</message>
 	<message key="metadata.property.displayName.editor">Editoři</message>
@@ -379,8 +382,7 @@
 	<message key="submission.page.summary">#{$id} Souhrn</message>
 	<message key="submission.page.citations">#{$id} Citace</message>
 	<message key="submission.peerReview"><![CDATA[Recenzní&nbsp;řízení]]></message>
-        <message key="submission.production">Produkce</message>
-	<message key="submission.recommendation">Doporučení</message>
+	<message key="submission.recommendation">Doporučení: {$recommendation}</message>
 	<message key="submission.rejected">Zamítnut</message>
 	<message key="submission.request">Požádat</message>
 	<message key="submission.response">Odpověď</message>
@@ -453,159 +455,10 @@
 	<message key="submission.submit.contributorRole">Role spolupracovníka</message>
 	<message key="submission.submit.addAuthor">Přidat spolupracovníka</message>
 
-	<!-- Submission file upload form elements -->
-	<message key="submission.form.name">Název souboru (např. Novák příspěvek, Novák tabulka 1)</message>
-    <message key="submission.form.replaceExisting">Nahradit stávající soubor?</message>
+	<!-- Author Submission -->
+	<message key="author.submit.submissionCitations">Uveďte formátovaný seznam referencí pro práce citované v tomto příspěvku.</message>
+	<message key="log.review.reviewerAssigned">{$reviewerName} byl přidělen pro recenzování příspěvku {$submissionId} v recenzním kole {$round}.</message>
 
-	<!-- Workflow keys -->
-	<message key="workflow.review.internalReview">Vnitřní recenzní řízení</message>
-    <message key="workflow.review.externalReview">Vnější recenzní řízení</message>
-
-	<!-- Submission status -->
-    <message key="submission.status.editorial">Probíhá redakce</message>
-    <message key="submission.status.production">Probíhá korektura</message>
-    <message key="submission.status.review">Probíhá recenzní řízení</message>
-    <message key="submission.status.submission">Očekává se rozhodnutí editora</message>
-    <message key="submission.status.unassigned">Nepřiřazeno</message>
-    <message key="submission.status.declined">Odmítnuto</message>
-    <message key="submission.status.published">Publikováno</message>
-    <message key="submission.submit.uploadStep">1. Nahrát příspěvek</message>
-    <message key="submission.submit.uploadSubmissionFile">Nahrát soubor příspěvku</message>
-    <message key="submission.submit.metadataStep">2. Metadata</message>
-    <message key="submission.submit.finishingUpStep">3. Konečné úpravy</message>
-    <message key="submission.submit.fileNameRequired">Je třeba zadat název tohoto souboru</message>
-    <message key="submission.submit.howToSubmit">
-      <![CDATA[Problémy? Obraťte se na uživatele <a href="mailto:{$supportEmail}">{$supportName}</a> s žádostí o pomoc ({$supportPhone}).]]>
-    </message>
-    <message key="submission.submit.howToSubmitNoPhone">
-      <![CDATA[Problémy? Obraťte se na uživatele <a href="mailto:{$supportEmail}">{$supportName}</a> s žádostí o pomoc.]]>
-    </message>
-
-	<!-- File upload wizard -->
-	<message key="submission.upload.noteToAccompanyFile">Průvodní poznámka k souboru</message>
-    <message key="submission.upload.noGenre">Neplatný nebo chybějící žánr!</message>
-    <message key="submission.upload.invalidUserGroup">Neplatná nebo chybějící uživatelská skupina!</message>
-    <message key="submission.upload.possibleRevision">Možná duplikace nebo opakování</message>
-    <message key="submission.upload.possibleRevisionDescription">
-      <![CDATA[<p>Název zadaného souboru připomíná název dříve nahraného souboru "{$revisedFileName}". Pokud má tento soubor nahradit minulou verzi, vyberte prosím z nabídky soubor, který má být nahrazen. Pokud soubor nechcete přepsat, vyberte v nabídce možnost "Vybrat soubor (zachovat historii)"</p>]]>
-    </message>
-    <message key="submission.upload.selectMandatoryFileToRevise">Vyberte prosím soubor, který chcete upravit.</message>
-    <message key="submission.upload.selectOptionalFileToRevise">Pokud nahráváte upravenou verzi stávajícícho souboru, uveďte prosím, o jaký soubor se jedná.</message>
-    <message key="submission.upload.uploadNewFile">Vybrat soubor (zachovat historii)"</message>
-    <message key="submission.upload.fileContents">Obsah souboru</message>
-    <message key="submission.upload.userGroup">Nahrát tento soubor coby...</message>
-    <message key="submission.upload.userGroupDescription">Pokud předkládáte sborník, měl/a byste nahrát všechny jeho kapitoly zvlášť a označit se za editora sborníku.</message>
-    <message key="submission.upload.uploadLibraryFile">Nahrát soubor knihovny</message>
-    <message key="submission.upload.libraryCategory">Kategorie dokumentu z příspěvku</message>
-
-	<!-- File uploads -->
-	<message key="submission.upload.finalDraft">Nahrát soubor</message>
-    <message key="submission.upload.copyeditedVersion">Nahrát redigovaný soubor</message>
-    <message key="submission.upload.fairCopy">Nahrát čistopis</message>
-    <message key="submission.upload.uploadFiles">Nahrát soubory</message>
-    <message key="submission.upload.signoff">Nahrát odpověď</message>
-    <message key="submission.upload.response.description">Po přezkoumání přiděleného souboru vložte jakékoli komentáře do pole níže a/nebo nahrajte komentovanou verzi souboru či nový soubor.</message>
-    <message key="submission.upload.productionReady">Nahrát soubor připravený k tisku</message>
-    <message key="submission.upload.proof">Nahrát čistopis</message>
-    <message key="submission.upload.noAvailableReviewFiles">Aktuálně zde pro vás nejsou žádné soubory k posouzení.</message>
-    
-	<!-- Review Round Status Keys -->
-	<message key="editor.submission.roundStatus.revisionsRequested">Byly vyžádány posudky.</message>
-    <message key="editor.submission.roundStatus.resubmitted">Nová verze příspěvku byla předložena k posouzení.</message>
-    <message key="editor.submission.roundStatus.sentToExternal">Odesláno do vnějšího recenzního řízení.</message>
-    <message key="editor.submission.roundStatus.accepted">Příspěvek byl přijat.</message>
-    <message key="editor.submission.roundStatus.declined">Předložení byl odmítnut.</message>
-    <message key="editor.submission.roundStatus.pendingReviewers">Čeká se na recenzenty.</message>
-    <message key="editor.submission.roundStatus.pendingReviews">Čeká se na odpovědi recenzentů.</message>
-    <message key="editor.submission.roundStatus.reviewsReady">Nové posudky jsou připraveny.</message>
-    <message key="editor.submission.roundStatus.reviewsCompleted">Posudky dokončeny.</message>
-
-	<!-- Participants -->
-	<message key="editor.submission.stageParticipants">Účastníci</message>
-	
-	<!-- Stage Participants grid -->
-	
-    <message key="editor.submission.noneAssigned">Nikdo nebyl přidělen</message>
-    <message key="editor.submission.participant">Účastník</message>
-    <message key="editor.submission.addStageParticipant">Přidat účastníka</message>
-    <message key="editor.submission.addStageParticipant.description">
-      <![CDATA[Pokud chcete přidat účastníka do této fáze publikačního procesu, vyberte uživatelskou skupinu z nabídky a poté přidejte uživatele.<br /><br /> Upozornění: Uživatel bude přidán do všech fází, které jsou této skupině přiřazeny.]]>
-    </message>
-    <message key="editor.submission.removeStageParticipant">Odebrat účastníka</message>
-    <message key="editor.submission.removeStageParticipant.description">
-      <![CDATA[Chystáte se odebrat účastníka ze <strong>všech</strong> fází publikačního procesu. Pokud má tento uživatel přiřazeny probíhající kontrolní úkoly, budou rovněž odstraněny.]]>
-    </message>
-    <message key="editor.submission.addStageParticipant.form.userGroupRequired">Je třeba vybrat uživatelskou skupinu.</message>
-    <message key="editor.submission.addStageParticipant.form.userRequired">Je třeba vybrat uživatele z dané uživatelské skupiny.</message>
-
-	<!--  editor decisions -->
-	<message key="editor.submission.decision">Rozhodnutí</message>
-    <message key="editor.submission.decision.accept">Přijmout příspěvek</message>
-    <message key="editor.submission.decision.requestRevisions">Vyžádat si přepracovanou verzi</message>
-    <message key="editor.submission.decision.resubmit">Nové kolo recenzního řízení</message>
-    <message key="editor.submission.decision.decline">Odmítnout příspěvek</message>
-    <message key="editor.submission.decision.sendToProduction">Odeslat k tisku</message>
-    <message key="editor.submission.decision.sendInternalReview">Odeslat do vnitřního recenzního řízení</message>
-    <message key="editor.submission.decision.sendExternalReview">Odeslat do vnějšího recenzního řízení</message>
-    <message key="editor.submission.decision.approveProofs">Schválit čistopisy</message>
-    <message key="editor.submission.decision.approveProofsDescription">Soubor se stránkovou sazbou musí být před zeřejněním označen za schválený. Chcete jej schválit?</message>
-    <message key="editor.submission.decision.disapproveProofsDescription">Tento soubor se stránkovou sazbou nadále nebude zveřejněn a nepůjde jej koupit ani stáhnout. Chcete odvolat schválení?</message>
-
-	<!-- workflow navigation keys -->
-	<message key="submission.currentStage">Aktuální fáze</message>
-    <message key="submission.noActionRequired">Není potřeba žádná akce.</message>
-    <message key="submission.actionNeeded">Vyžaduje akci</message>
-    <message key="reviewer.submission.reviewFiles">Soubory posudků</message>
-    <message key="submission.submit.currentFile">Aktuální soubor</message>
-    <message key="submission.finalDraft">Finální verze</message>
-
-	<!-- Auditor keys -->
-	<message key="editor.submission.addAuditorError">Přiřazení kontrolora se nezdařilo. Zkuste to prosím znovu.</message>
-
-	<!-- Submission event log -->
-	<message key="submission.event.fileUploaded">Soubor "{$originalFileName}" byl nahrán jako součást příspěvku č. {$submissionId} od autora "{$username}".</message>
-    <message key="submission.event.fileDeleted">Soubor "{$originalFileName}" byl odstraněn z příspěvku č. {$submissionId} od autora "{$username}".</message>
-    <message key="submission.event.revisionUploaded">Nová verze souboru "{$originalFileName}" byla nahrána jako součást příspěvku č. {$submissionId} od autora "{$username}".</message>
-    <message key="submission.event.revisionDeleted">Nová verze souboru "{$originalFileName}" byla odstraněna z příspěvku č. {$submissionId} od autora "{$username}".</message>
-    <message key="submission.event.lastRevisionDeleted">Poslední verze souboru "{$title}" byla odstraněna uživatelem {$username}.</message>
-    <message key="submission.event.fileAuditorAdded">Uživatel "{$name}" ({$username}) byl přiřazen jako kontrolor souboru "{$file}."</message>
-    <message key="submission.event.fileAuditorCleared">Uživatel "{$name}" ({$username}) již není kontrolorem souboru "{$file}."</message>
-    <message key="submission.event.fileAuditUploaded">Uživatel "{$name}" ({$username}) dokončil kontrolu a nahrál soubor "{$file}."</message>
-    <message key="submission.event.signoffSignoff">Uživatel "{$name}" ({$username}) označil soubor "{$file}" za dokončený.</message>
-    <message key="submission.event.proofsApproved">Uživatel "{$name}" ({$username}) schválil sazby formátu "{$formatName}."</message>
-    <message key="submission.overview">Přehled příspěvku</message>
-    <message key="submission.description">Popis</message>
-    <message key="submission.stageNotInitiated">Fáze nebyla zahájena.</message>
-    <message key="submission.documents">Dokumenty příspěvku</message>
-    <message key="notification.type.editorDecisionTitle">Nejnovější rozhodnutí editora.</message>
-    <message key="notification.type.editorDecisionAccept">Příspěvek byl přijat.</message>
-    <message key="notification.type.editorDecisionExternalReview">Vnější recenzní řízení bylo zahájeno.</message>
-    <message key="notification.type.editorDecisionPendingRevisions">Vyžádán posudek.</message>
-    <message key="notification.type.editorDecisionResubmit">Požadováno nové kolo recenzního řízení.</message>
-    <message key="notification.type.editorDecisionDecline">Příspěvek byl odmítnut.</message>
-    <message key="notification.type.editorDecisionSendToProduction">TIsková fáze byla zahájena.</message>
-    <message key="notification.type.signoff">Máte probíhající kontrolní úkoly.</message>
-    <message key="notification.uploadedResponse">Odpověď byla nahrána.</message>
-    <message key="submission.authorDashboard.description">U každé zahájené fáze publikačního procesu uvedené níže zde naleznete informace o aktuálním stavu stejně jako o všech souvisejících souborech příspěvku a o korespondenci relevantní pro tuto fázi. Můžete být vyzván/a k nahrání nové verze nebo ke kontrole dříve nahraného souboru. Oba kroky lze splnit v rámci požadované fáze.</message>
-
- 	<!-- Read/Upload/Perform Signoff -->
- 	<message key="submission.signoff.selectFile">Vyberte soubor, který si přejete označit za dokončený.</message>
-    <message key="submission.signoff.signoffOnFile">Dokončit tento soubor</message>
-    <message key="submission.signoff.signedOffOnFile">Dokončený soubor</message>
-    <message key="submission.signoff.noAvailableSignoffs">Aktuálně zde pro vás nejsou žádné soubory, na které by bylo třeba reagovat.</message>
-    <message key="submission.signoff.fileResponse">Odpověď</message>
-    <message key="grid.copyediting.deleteSignoff">Zrušit přiřazení uživatele</message>
-    <message key="notification.type.editorAssignment">Před zahájením recenzního řízení je třeba přiřadit editora. Přiřaďte prosím editora kliknutím na odkaz Účastníci výše.</message>
-    <message key="grid.reviewAttachments.title">Přílohy recenzenta</message>
-    <message key="submission.productionReady">Kniha zveřejněna</message>
-    <message key="submission.review.uploadRevisionToRound">Nahrát přepracovaný soubor</message>
-    <message key="log.review.reviewerAssigned">Recenzent {$reviewerName} byl přiřazen pro posouzení příspěvku č. {$submissionId} v {$round}. kole recenzního řízení.</message>
-    <message key="submission.document">Dokument</message>
-    <message key="submission.art">Grafika</message>
-    <message key="grid.action.itemWorkflow">Přejít na publikační proces tohoto příspěvku</message>
-    <message key="editor.review.personalMessageFromEditor">Zpráva od editora</message>
-    <message key="submission.previousAuthorMessages">Předchozí zprávy</message>
-    <message key="notification.type.editorDecisionSendToProduction">TIsková fáze byla zahájena.</message>
-    <message key="notification.type.editorAssignmentProduction">Před zahájením tiskové fáze musí být přiřazen tiskový editor. Přiřaďte prosím tiskového editora kliknutím na odkaz Účastníci výše.</message>
-    <message key="notification.type.editorAssignmentEditing">Před zahájením redakční fáze musí být přiřazen tiskový editor. Přiřaďte prosím tiskového editora kliknutím na odkaz Účastníci výše.</message>
+	<message key="submission.reviewForm">Formulář posudku</message>
+	<message key="submission.reviewFormResponse">Odpovědi na formulář posudku</message>
 </locale>

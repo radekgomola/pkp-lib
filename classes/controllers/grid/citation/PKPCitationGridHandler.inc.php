@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/citation/PKPCitationGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPCitationGridHandler
@@ -155,8 +155,7 @@ class PKPCitationGridHandler extends GridHandler {
 				null,
 				false,
 				'controllers/grid/citation/citationGridCell.tpl',
-				$cellProvider,
-				array('multiline' => true)
+				$cellProvider
 			)
 		);
 	}
@@ -168,7 +167,7 @@ class PKPCitationGridHandler extends GridHandler {
 	/**
 	 * @see GridHandler::getRowInstance()
 	 */
-	function getRowInstance() {
+	protected function getRowInstance() {
 		// Return a citation row
 		return new PKPCitationGridRow();
 	}
@@ -189,7 +188,7 @@ class PKPCitationGridHandler extends GridHandler {
 	 * @param $args array
 	 * @param $request PKPRequest
 	 * @param $noCitationsFoundMessage string an app-specific help message
-	 * @return string a serialized JSON message
+	 * @return JSONMessage JSON object
 	 */
 	function exportCitations(&$args, $request, $noCitationsFoundMessage) {
 		$router = $request->getRouter();
@@ -319,7 +318,7 @@ class PKPCitationGridHandler extends GridHandler {
 	 * Edit a citation
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string a serialized JSON message
+	 * @return JSONMessage JSON object
 	 */
 	function editCitation(&$args, $request) {
 		// Identify the citation to be edited
@@ -335,7 +334,7 @@ class PKPCitationGridHandler extends GridHandler {
 		}
 		$json = new JSONMessage(true, $data = $citationForm->fetch($request));
 		$json->setEvent('setCitationPaneData', $data);
-		return $json->getString();
+		return $json;
 	}
 
 	/**
@@ -361,7 +360,7 @@ class PKPCitationGridHandler extends GridHandler {
 	 * Check (parse and lookup) a citation
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string a serialized JSON message
+	 * @return JSONMessage JSON object
 	 */
 	function checkCitation(&$args, $request) {
 		if ($request->isPost()) {
@@ -375,8 +374,7 @@ class PKPCitationGridHandler extends GridHandler {
 				// Re-display the form without processing so that the
 				// user can fix the errors that kept us from persisting
 				// the citation.
-				$json = new JSONMessage(false, $citationForm->fetch($request));
-				return $json->getString();
+				return new JSONMessage(false, $citationForm->fetch($request));
 			}
 
 			// We retrieve the citation to be checked from the form.
@@ -402,7 +400,7 @@ class PKPCitationGridHandler extends GridHandler {
 		if (!$citationForm->isValid()) {
 			// Re-display the citation form with error messages
 			// so that the user can fix it.
-			$json = new JSONMessage(false, $citationForm->fetch($request));
+			return new JSONMessage(false, $citationForm->fetch($request));
 		} else {
 			// Get the persisted citation from the form.
 			$savedCitation =& $citationForm->getCitation();
@@ -428,18 +426,15 @@ class PKPCitationGridHandler extends GridHandler {
 			$row->initialize($request);
 
 			// Render the row into a JSON response
-			$json = new JSONMessage(true, $this->renderRowInternally($request, $row));
+			return new JSONMessage(true, $this->renderRowInternally($request, $row));
 		}
-
-		// Return the serialized JSON response
-		return $json->getString();
 	}
 
 	/**
 	 * Delete a citation
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string a serialized JSON message
+	 * @return JSONMessage JSON object
 	 */
 	function deleteCitation(&$args, $request) {
 		// Identify the citation to be deleted
@@ -451,9 +446,8 @@ class PKPCitationGridHandler extends GridHandler {
 		if ($result) {
 			return DAO::getDataChangedEvent();
 		} else {
-			$json = new JSONMessage(false, __('submission.citations.editor.citationlist.errorDeletingCitation'));
+			return new JSONMessage(false, __('submission.citations.editor.citationlist.errorDeletingCitation'));
 		}
-		return $json->getString();
 	}
 
 	/**
@@ -462,7 +456,7 @@ class PKPCitationGridHandler extends GridHandler {
 	 * raw version.
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string a serialized JSON message
+	 * @return JSONMessage JSON object
 	 */
 	function fetchCitationFormErrorsAndComparison(&$args, $request) {
 		// Read the data in the request into
@@ -473,8 +467,7 @@ class PKPCitationGridHandler extends GridHandler {
 		$output = $citationForm->fetch($request, CITATION_FORM_COMPARISON_TEMPLATE);
 
 		// Render the row into a JSON response
-		$json = new JSONMessage(true, $output);
-		return $json->getString();
+		return new JSONMessage(true, $output);
 	}
 
 	/**
@@ -501,11 +494,10 @@ class PKPCitationGridHandler extends GridHandler {
 
 		// In principle we should use a template here but this seems exaggerated
 		// for such a small message.
-		$json = new JSONMessage(true,
+		return new JSONMessage(true,
 			'<div id="authorQueryResult"><span class="pkp_form_error">'
 			.__('submission.citations.editor.details.sendAuthorQuerySuccess')
 			.'</span></div>');
-		return $json->getString();
 	}
 
 
@@ -602,7 +594,7 @@ class PKPCitationGridHandler extends GridHandler {
 	 * @param $request PKPRequest
 	 * @param $originalCitation Citation
 	 * @param $persist boolean whether to save (true) or render (false)
-	 * @return string|Citation a serialized JSON message with the citation
+	 * @return JSONMessage|Citation a serialized JSON message with the citation
 	 *  form when $persist is false, else the persisted citation object.
 	 */
 	function _recheckCitation($request, &$originalCitation, $persist = true) {
@@ -643,8 +635,7 @@ class PKPCitationGridHandler extends GridHandler {
 
 			// Return the rendered form.
 			$citationForm->initData();
-			$json = new JSONMessage(true, $citationForm->fetch($request));
-			return $json->getString();
+			return new JSONMessage(true, $citationForm->fetch($request));
 		}
 	}
 

@@ -3,8 +3,8 @@
 /**
  * @file classes/notification/managerDelegate/EditorDecisionNotificationManager.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EditorDecisionNotificationManager
@@ -69,36 +69,40 @@ class EditorDecisionNotificationManager extends NotificationManagerDelegate {
 	public function updateNotification($request, $userIds, $assocType, $assocId) {
 		$context = $request->getContext();
 
-		// Get the submitter id.
-		$userId = current($userIds);
-
 		// Remove any existing editor decision notifications.
 		$notificationDao = DAORegistry::getDAO('NotificationDAO');
 		$notificationFactory = $notificationDao->getByAssoc(
 			ASSOC_TYPE_SUBMISSION,
 			$assocId,
-			$userId,
+			null,
 			null,
 			$context->getId()
 		);
 
+		// Delete old notifications.
 		$editorDecisionNotificationTypes = $this->_getAllEditorDecisionNotificationTypes();
-		while(!$notificationFactory->eof()) {
-			$notification = $notificationFactory->next();
-			if (in_array($notification->getType(), $editorDecisionNotificationTypes)) {
-				$notificationDao->deleteObject($notification);
-			}
+		while ($notification = $notificationFactory->next()) {
+			// If a list of user IDs was specified, make sure we're respecting it.
+			if ($userIds !== null && !in_array($notification->getUserId(), $userIds)) continue;
+
+			// Check that the notification type is in the specified list.
+			if (!in_array($notification->getType(), $editorDecisionNotificationTypes)) continue;
+
+			$notificationDao->deleteObject($notification);
 		}
 
-		// Create the notification.
-		$this->createNotification(
+		// (Re)create notifications, but don’t send email, since we
+		// got here from the editor decision which sends its own email.
+		foreach ((array) $userIds as $userId) $this->createNotification(
 			$request,
 			$userId,
 			$this->getNotificationType(),
 			$context->getId(),
 			ASSOC_TYPE_SUBMISSION,
 			$assocId,
-			$this->_getNotificationTaskLevel($this->getNotificationType())
+			$this->_getNotificationTaskLevel($this->getNotificationType()),
+			null,
+			true // suppressEmail
 		);
 	}
 
@@ -117,14 +121,7 @@ class EditorDecisionNotificationManager extends NotificationManagerDelegate {
 				$submissionDao = Application::getSubmissionDAO();
 				$submission = $submissionDao->getById($notification->getAssocId());
 				import('lib.pkp.controllers.grid.submissions.SubmissionsListGridCellProvider');
-				list($page, $operation) = SubmissionsListGridCellProvider::getPageAndOperationByUserRoles($request, $submission);
-				$router = $request->getRouter();
-				$dispatcher = $router->getDispatcher();
-				$contextDao = Application::getContextDAO();
-				$context = $contextDao->getById($submission->getContextId());
-				// this will probably be authorDashboard/submission, but the possibility exists that an editor is
-				// revising a submission without being an author in the stage assignments.
-				return $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), $page, $operation, $submission->getId());
+				return SubmissionsListGridCellProvider::getUrlByUserRoles($request, $submission, $notification->getUserId());
 			default:
 				return '';
 		}

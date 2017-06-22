@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/SubmissionFile.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionFile
@@ -29,9 +29,9 @@ define('SUBMISSION_FILE_COPYEDIT', 9);
 define('SUBMISSION_FILE_PROOF', 10);
 define('SUBMISSION_FILE_PRODUCTION_READY', 11);
 define('SUBMISSION_FILE_ATTACHMENT', 13);
-define('SUBMISSION_FILE_SIGNOFF', 14);
 define('SUBMISSION_FILE_REVIEW_REVISION', 15);
 define('SUBMISSION_FILE_DEPENDENT', 17);
+define('SUBMISSION_FILE_QUERY', 18);
 
 class SubmissionFile extends PKPFile {
 	/**
@@ -62,7 +62,7 @@ class SubmissionFile extends PKPFile {
 	function setFileId($fileId) {
 		// WARNING: Do not modernize getter/setters without considering
 		// ID clash with subclasses ArticleGalley and ArticleNote!
-		return $this->setData('fileId', $fileId);
+		$this->setData('fileId', $fileId);
 	}
 
 	/**
@@ -78,7 +78,7 @@ class SubmissionFile extends PKPFile {
 	 * @param $sourceFileId int
 	 */
 	function setSourceFileId($sourceFileId) {
-		return $this->setData('sourceFileId', $sourceFileId);
+		$this->setData('sourceFileId', $sourceFileId);
 	}
 
 	/**
@@ -94,11 +94,11 @@ class SubmissionFile extends PKPFile {
 	 * @param $sourceRevision int
 	 */
 	function setSourceRevision($sourceRevision) {
-		return $this->setData('sourceRevision', $sourceRevision);
+		$this->setData('sourceRevision', $sourceRevision);
 	}
 
 	/**
-	 * Get associated ID of file. (Used, e.g., for email log attachments.)
+	 * Get associated ID of file.
 	 * @return int
 	 */
 	function getAssocId() {
@@ -106,11 +106,11 @@ class SubmissionFile extends PKPFile {
 	}
 
 	/**
-	 * Set associated ID of file. (Used, e.g., for email log attachments.)
+	 * Set associated ID of file.
 	 * @param $assocId int
 	 */
 	function setAssocId($assocId) {
-		return $this->setData('assocId', $assocId);
+		$this->setData('assocId', $assocId);
 	}
 
 	/**
@@ -128,7 +128,7 @@ class SubmissionFile extends PKPFile {
 	 * @param $directSalesPrice numeric|null
 	 */
 	function setDirectSalesPrice($directSalesPrice) {
-		return $this->setData('directSalesPrice', $directSalesPrice);
+		$this->setData('directSalesPrice', $directSalesPrice);
 	}
 
 	/**
@@ -144,7 +144,7 @@ class SubmissionFile extends PKPFile {
 	 * @param $salesType string
 	 */
 	function setSalesType($salesType) {
-		return $this->setData('salesType', $salesType);
+		$this->setData('salesType', $salesType);
 	}
 
 	/**
@@ -239,7 +239,7 @@ class SubmissionFile extends PKPFile {
 	 * @param $revision int
 	 */
 	function setRevision($revision) {
-		return $this->setData('revision', $revision);
+		$this->setData('revision', $revision);
 	}
 
 	/**
@@ -255,7 +255,7 @@ class SubmissionFile extends PKPFile {
 	 * @param $submissionId int
 	 */
 	function setSubmissionId($submissionId) {
-		return $this->setData('submissionId', $submissionId);
+		$this->setData('submissionId', $submissionId);
 	}
 
 	/**
@@ -289,7 +289,7 @@ class SubmissionFile extends PKPFile {
 	 * @param $fileStage int SUBMISSION_FILE_...
 	 */
 	function setFileStage($fileStage) {
-		return $this->setData('fileStage', $fileStage);
+		$this->setData('fileStage', $fileStage);
 	}
 
 	/**
@@ -389,7 +389,7 @@ class SubmissionFile extends PKPFile {
 	 * @param $assocType int
 	 */
 	function setAssocType($assocType) {
-		return $this->setData('assocType', $assocType);
+		$this->setData('assocType', $assocType);
 	}
 
 	/**
@@ -409,6 +409,23 @@ class SubmissionFile extends PKPFile {
 		return $submissionFileManager->getBasePath() . $this->_fileStageToPath($this->getFileStage()) . '/' . $this->getServerFileName();
 	}
 
+        /**
+	 * Cestu do složky, kde bude uložený flipbook.
+	 */
+	function getFlipbookFolderPath() {
+		// Get the context ID
+		$submissionDao = Application::getSubmissionDAO();
+		$submission = $submissionDao->getById($this->getSubmissionId());
+		if (!$submission) return null;
+		$contextId = $submission->getContextId();
+		unset($submission);
+
+		// Construct the file path
+		import('lib.pkp.classes.file.SubmissionFileManager');
+		$submissionFileManager = new SubmissionFileManager($contextId, $this->getSubmissionId());
+		return $submissionFileManager->getBasePath() . $this->_fileStageToPath($this->getFileStage()) . '/' . $this->getServerFolderName();
+	}
+        
 	/**
 	 * Build a file name label.
 	 * @return string
@@ -475,6 +492,14 @@ class SubmissionFile extends PKPFile {
 	function getServerFileName() {
 		return $this->_generateFileName();
 	}
+        
+        /**
+	 * Generate the folder name from identification data rather than
+	 * retrieving it from the database.
+	 */
+	function getServerFolderName() {
+		return $this->_generateFolderName();
+	}
 
 	/**
 	 * @see PKPFile::setFileName()
@@ -517,6 +542,24 @@ class SubmissionFile extends PKPFile {
 			'.' .
 			strtolower_codesafe($this->getExtension());
 	}
+        
+        /**
+	 * Generate the unique foldername for this flipbook submission file.
+	 * @return string
+	 */
+	function _generateFolderName() {
+		// Generate a human readable time stamp.
+		$timestamp = date('Ymd', strtotime($this->getDateUploaded()));
+
+		// Make the file name unique across all files and file revisions.
+		// Also make sure that files can be ordered sensibly by file name.
+		return	$this->getSubmissionId() . '-'.
+			$this->getGenreId() . '-' .
+			$this->getFileId() . '-' .
+			$this->getRevision() . '-' .
+			$this->getFileStage() . '-' .
+			$timestamp;
+	}
 
 	/**
 	 * Return path associated with a file stage code.
@@ -540,7 +583,7 @@ class SubmissionFile extends PKPFile {
 				SUBMISSION_FILE_PROOF => 'submission/proof',
 				SUBMISSION_FILE_PRODUCTION_READY => 'submission/productionReady',
 				SUBMISSION_FILE_ATTACHMENT => 'attachment',
-				SUBMISSION_FILE_SIGNOFF => 'submission/signoff',
+				SUBMISSION_FILE_QUERY => 'submission/query',
 		);
 
 		assert(isset($fileStageToPath[$fileStage]));
@@ -559,6 +602,17 @@ class SubmissionFile extends PKPFile {
 	function isInlineable() {
 		$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO'); /* @var $submissionFileDao SubmissionFileDAO */
 		return $submissionFileDao->isInlineable($this);
+	}
+
+	/**
+	 * Get the metadata form for this submission file.
+	 * @param $stageId int FILE_STAGE_...
+	 * @param $reviewRound ReviewRound
+	 * @return Form
+	 */
+	function getMetadataForm($stageId, $reviewRound) {
+		import('lib.pkp.controllers.wizard.fileUpload.form.SubmissionFilesMetadataForm');
+		return new SubmissionFilesMetadataForm($this, $stageId, $reviewRound);
 	}
 }
 

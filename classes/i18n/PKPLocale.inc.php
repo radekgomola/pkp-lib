@@ -8,8 +8,8 @@
 /**
  * @file classes/i18n/PKPLocale.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPLocale
@@ -108,8 +108,12 @@ class PKPLocale {
 		$notes =& Registry::get('system.debug.notes');
 		$notes[] = array('debug.notes.missingLocaleKey', array('key' => $key));
 
-		// Add some octothorpes to missing keys to make them more obvious
-		return '##' . htmlentities($key) . '##';
+		if (!HookRegistry::call('PKPLocale::translate', array(&$this, &$key, &$params, &$locale, &$localeFiles, &$value))) {
+			// Add some octothorpes to missing keys to make them more obvious
+			return '##' . htmlentities($key) . '##';
+		} else {
+			return $value;
+		}
 	}
 
 	/**
@@ -131,6 +135,13 @@ class PKPLocale {
 		}
 
 		AppLocale::registerLocaleFile($locale, "lib/pkp/locale/$locale/common.xml");
+
+		// Set site time zone
+		// Starting from PHP 5.3.0 PHP will throw an E_WARNING if the default
+		// time zone is not set and date/time functions are used
+		// http://pl.php.net/manual/en/function.date-default-timezone-set.php
+		$timeZone = self::getTimeZone();
+		date_default_timezone_set($timeZone);
 	}
 
 	/**
@@ -226,8 +237,9 @@ class PKPLocale {
 	static function registerLocaleFile ($locale, $filename, $addToTop = false) {
 		$localeFiles =& AppLocale::getLocaleFiles($locale);
 		$localeFile = new LocaleFile($locale, $filename);
-		if (!$localeFile->isValid()) {
-			return null;
+
+		if (!HookRegistry::call('PKPLocale::registerLocaleFile::isValidLocaleFile', array(&$localeFile))) {
+			if (!$localeFile->isValid()) return null;
 		}
 		if ($addToTop) {
 			// Work-around: unshift by reference.
@@ -368,7 +380,7 @@ class PKPLocale {
 	 */
 	static function getParameterNames($source) {
 		$matches = null;
-		String::regexp_match_all('/({\$[^}]+})/' /* '/{\$[^}]+})/' */, $source, $matches);
+		PKPString::regexp_match_all('/({\$[^}]+})/' /* '/{\$[^}]+})/' */, $source, $matches);
 		array_shift($matches); // Knock the top element off the array
 		if (isset($matches[0])) return $matches[0];
 		return array();

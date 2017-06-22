@@ -4,8 +4,8 @@
 /**
  * @file js/controllers/form/reviewer/ReviewerReviewStep3FormHandler.js
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReviewerReviewStep3FormHandler
@@ -36,7 +36,7 @@
 
 		// bind a handler to make sure we update the required state
 		// of the comments field.
-		$('#submitFormButton', $formElement).click(this.callbackWrapper(
+		$formElement.find('[id^=\'submitFormButton-\']').click(this.callbackWrapper(
 				this.updateCommentsRequired_));
 	};
 	$.pkp.classes.Helper.inherits(

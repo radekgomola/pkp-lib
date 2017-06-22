@@ -3,8 +3,8 @@
 /**
  * @file classes/security/UserGroup.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserGroup
@@ -15,7 +15,7 @@
  */
 
 // Bring in role constants.
-import('classes.security.Role');
+import('lib.pkp.classes.security.Role');
 
 class UserGroup extends DataObject {
 	/**
@@ -148,7 +148,7 @@ class UserGroup extends DataObject {
 	 * @param $locale string
 	 */
 	function setName($name, $locale) {
-		return $this->setData('name', $name, $locale);
+		$this->setData('name', $name, $locale);
 	}
 
 	/**
@@ -174,7 +174,7 @@ class UserGroup extends DataObject {
 	 * @param $locale string
 	 */
 	function setAbbrev($abbrev, $locale) {
-		return $this->setData('abbrev', $abbrev, $locale);
+		$this->setData('abbrev', $abbrev, $locale);
 	}
 }
 

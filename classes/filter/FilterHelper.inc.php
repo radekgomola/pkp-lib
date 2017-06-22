@@ -2,8 +2,8 @@
 /**
  * @file classes/filter/FilterHelper.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FilterHelper
@@ -71,7 +71,7 @@ class FilterHelper {
 		// We have to include the filter class before going on
 		// so that all required constants are defined before they
 		// might be used in settings.
-		if (String::regexp_match('/^[a-zA-Z0-9.]+$/', $filterClassName)) {
+		if (PKPString::regexp_match('/^[a-zA-Z0-9.]+$/', $filterClassName)) {
 			import($filterClassName);
 		}
 

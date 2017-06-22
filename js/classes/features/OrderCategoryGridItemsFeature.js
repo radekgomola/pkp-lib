@@ -1,8 +1,8 @@
 /**
  * @file js/classes/features/OrderCategoryGridItemsFeature.js
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OrderCategoryGridItemsFeature
@@ -36,15 +36,16 @@
 	$.pkp.classes.features.OrderCategoryGridItemsFeature.prototype.
 			setupSortablePlugin = function() {
 
-		var $categories, index, limit, $category;
+		var $categories, index, limit, $category, userAgent;
 
 		this.applySortPlgOnElements(
 				this.getGridHtmlElement(), 'tbody.orderable', null);
 
 		// FIXME *7610*: IE8 can't handle well ordering in both categories and
 		// category rows.
-		if ($.browser.msie && parseInt(
-				$.browser.version.substring(0, 1), 10) <= 8) {
+		userAgent = navigator.userAgent.toLowerCase();
+		if (/msie/.test(userAgent) &&
+				parseInt(userAgent.substr(userAgent.indexOf('msie') + 5, 1), 10) <= 8) {
 			return;
 		}
 

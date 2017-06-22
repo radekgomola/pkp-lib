@@ -4,8 +4,8 @@
 <!--
   * locale/fr_CA/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fr_CA (Français (Canada)) locale.
@@ -138,7 +138,7 @@
 	<message key="submission.page.review">#{$id} Évaluation</message>
 	<message key="submission.page.summary">#{$id} Résumé</message>
 	<message key="submission.peerReview">Évaluation par les pairs</message>
-	<message key="submission.recommendation">Recommandation</message>
+	<message key="submission.recommendation">Recommandation: {$recommendation}</message>
 	<message key="submission.rejected">Refusé</message>
 	<message key="submission.request">Demande</message>
 	<message key="submission.response">Réponse</message>
@@ -353,8 +353,6 @@
 	<message key="submission.citations.editor.export.pleaseSelectXmlFilter">Options de sortie XML :</message>
 	<message key="submission.citations.editor.export.pleaseSelectPlaintextFilter">Style de sortie des références (expérimental seulement!) :</message>
 	<message key="submission.citations.editor.introduction">Introduction</message>
-	<message key="submission.citations.editor.pleaseAddParserFilter"><![CDATA[Veuillez demander à votre directeur de revue d'<a href="{$citationSetupUrl}">ajouter au minimum un service d'extraction de références</a> avant de pouvoir utiliser l'assistant au balisage de références.]]></message>
-	<message key="submission.citations.editor.pleaseConfigureOutputStyle"><![CDATA[Veuillez demander à votre directeur de revue de <a href="{$citationSetupUrl}">configurer au minimum un style d'exportation de références</a> avant de pouvoir utiliser l'assistant au balisage de références.]]></message>
 	<message key="submission.citations.editor.pleaseImportCitationsFirst"><![CDATA[<p>Il n'y a aucune référence pour cet article.</p><p>Veuillez aller à la <a href="{$articleMetadataUrl}">page des métadonnées</a> de l'article pour saisir une liste de références ou ajouter manuellement des références à l'aide du bouton 'Ajouter un élément' de l'éditeur.</p>]]></message>
 	<message key="submission.citations.editor.pleaseSelect">Veuillez sélectionner...</message>
 	<message key="submission.citations.editor.pleaseSetup"><![CDATA[Veuillez demander à votre directeur de revue d'<a href="{$citationSetupUrl}">activer l'édition de références</a> avant de pouvoir accéder à l'assistant au balisage de références.]]></message>
@@ -506,7 +504,6 @@
 	<message key="submission.coverage.chron">Couverture chronologique ou historique</message>
 	<message key="submission.coverage.geo">Couverture géo-spatiale</message>
 	<message key="submission.coverage.sample">Exemple de couverture</message>
-	<message key="submission.editorial">Editorial</message>
 	<message key="submission.event.submissionSubmitted">Soumission initiale complétée</message>
 	<message key="submission.event.fileRevised">La révision "{$name}" (file ID {$fileId}-{$revision}) a été téléchargée.</message>
 	<message key="submission.files.downloadAll">Télécharger tous les fichiers</message>
@@ -521,12 +518,9 @@
 	<message key="submission.production">Production</message>
 	<message key="submission.reviewed">Révisé</message>
 	<message key="submission.source">Source</message>
-	<message key="submission.subjectClass">Sujet de la soumission</message>
 	<message key="submission.submit.metadataStep">2. Métadonnées</message>
 	<message key="submission.rights.tip">Si vous le désirez, vous pouvez ajouter une brève note concernant les droits d'accès de votre soumission.</message>
 	<message key="submission.source.tip">Est-ce que cette soumission dérive d'une autre ressource? Si oui, vous devez indiquer l'adresse URL ou décrire cette ressource.</message>
-	<message key="submission.subjectClass.tip">Veuillez décrire votre soumission à l'aide de quelques phrases clés. Vous pouvez préciser le sujet à l'aide de mots clés spécifiques au bas du formulaire.</message>
-	<message key="submission.submit.errorDeletingAuthor">Il y a eu une erreur au moment de supprimer l'auteur.</message>
 	<message key="submission.submit.metadataForm">Autres modifications</message>
 	<message key="submission.submit.metadataForm.tip">Ajouter d'autres renseignements pour votre soumission. Veuillez appuyer sur la touche "enter" après chaque terme.</message>
 	<message key="submission.submit.submissionFiles">Fichiers de soumission</message>
@@ -538,7 +532,6 @@
 	<message key="submission.type.tip"><![CDATA[Par type de soumission, on entend 'image', 'texte' ou d'autres formats multimédias, y compris 'logiciel' et 'interactif'. Veuillez choisir le type qui correspond le mieux à votre soumission. Vous trouverez des exemples au <a target="_blank" href="http://dublincore.org/documents/2001/04/12/usageguide/generic.shtml#type">http://dublincore.org/documents/2001/04/12/usageguide/generic.shtml#type</a>]]></message>
 	<message key="submission.createRemote">Créer un distant</message>
 	<message key="submission.submit.selectPrincipalContact">Personne-ressource pour la correspondance éditoriale.</message>
-	<message key="submission.form.name">Nommer le fichier (ex.: Soumission Smith, Smith Tableau 1)</message>
 	<message key="submission.form.replaceExisting">Remplacer un fichier existant?</message>
 	<message key="workflow.review.internalReview">Examen interne</message>
 	<message key="submission.status.declined">Refusé</message>
@@ -548,7 +541,6 @@
 	<message key="submission.submit.fileNameRequired">Vous devez entrer un nom de fichier pour ce fichier.</message>
 	<message key="submission.submit.howToSubmit"><![CDATA[Vous avez des difficultés? Contactez <a href="mailto:{$supportEmail}">{$supportName}</a> pour obtenir de l'aide ({$supportPhone}).]]></message>
 	<message key="submission.submit.howToSubmitNoPhone"><![CDATA[Vous avez des difficultés? Contactez <a href="mailto:{$supportEmail}">{$supportName}</a> pour obtenir de l'aide.]]></message>
-	<message key="submission.upload.noteToAccompanyFile">Note d'accompagnement au fichier.</message>
 	<message key="submission.upload.noGenre">Genre manquant ou invalide!</message>
 	<message key="submission.upload.invalidUserGroup">Groupe d'utilisateur manquant ou invalide!</message>
 	<message key="submission.upload.possibleRevision">Détection d</message>
@@ -578,4 +570,6 @@
 	<message key="editor.submission.roundStatus.pendingReviews">En attente des réponses des examinateurs.</message>
 	<message key="editor.submission.roundStatus.reviewsReady">Les nouvelles révisions sont prêtes.</message>
 	<message key="editor.review.personalMessageFromEditor">Message de l'éditeur.</message>
+	<message key="submission.reviewForm">Formulaire d'évaluation</message>
+	<message key="submission.reviewFormResponse">Réponse au formulaire d'évaluation</message>
 </locale>

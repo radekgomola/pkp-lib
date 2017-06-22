@@ -3,8 +3,8 @@
 /**
  * @file classes/handler/PKPHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @package core
@@ -13,11 +13,6 @@
  * Base request handler abstract class.
  *
  */
-
-// FIXME: remove these import statements - handler validators are deprecated.
-import('lib.pkp.classes.handler.validation.HandlerValidator');
-import('lib.pkp.classes.handler.validation.HandlerValidatorRoles');
-import('lib.pkp.classes.handler.validation.HandlerValidatorCustom');
 
 class PKPHandler {
 	/**
@@ -101,19 +96,6 @@ class PKPHandler {
 		$dispatcher = $this->getDispatcher();
 		if (isset($dispatcher)) $dispatcher->handle404();
 		else Dispatcher::handle404(); // For old-style handlers
-	}
-
-	/**
-	 * Add a validation check to the handler.
-	 *
-	 * NB: deprecated!
-	 *
-	 * @param $handlerValidator HandlerValidator
-	 */
-	function addCheck(&$handlerValidator) {
-		// FIXME: Add a deprecation warning once we've refactored
-		// all HandlerValidator occurrences.
-		$this->_checks[] =& $handlerValidator;
 	}
 
 	/**
@@ -259,8 +241,10 @@ class PKPHandler {
 		}
 
 		// Enforce SSL site-wide.
-		import('lib.pkp.classes.security.authorization.HttpsPolicy');
-		$this->addPolicy(new HttpsPolicy($request), true);
+		if ($this->requireSSL()) {
+			import('lib.pkp.classes.security.authorization.HttpsPolicy');
+			$this->addPolicy(new HttpsPolicy($request), true);
+		}
 
 		if (!defined('SESSION_DISABLE_INIT')) {
 			// Add user roles in authorized context.
@@ -360,7 +344,7 @@ class PKPHandler {
 			// and human readable component id.
 			// Example: "grid.citation.CitationGridHandler"
 			// becomes "grid-citation-citationgrid"
-			$componentId = str_replace('.', '-', String::strtolower(String::substr($componentId, 0, -7)));
+			$componentId = str_replace('.', '-', PKPString::strtolower(PKPString::substr($componentId, 0, -7)));
 			$this->setId($componentId);
 		} else {
 			assert(is_a($router, 'PKPPageRouter'));
@@ -436,14 +420,18 @@ class PKPHandler {
 
 		AppLocale::requireComponents(
 			LOCALE_COMPONENT_PKP_COMMON,
-			LOCALE_COMPONENT_PKP_USER
+			LOCALE_COMPONENT_PKP_USER,
+			LOCALE_COMPONENT_APP_COMMON
 		);
-		if (defined('LOCALE_COMPONENT_APP_COMMON')) {
-			AppLocale::requireComponents(LOCALE_COMPONENT_APP_COMMON);
+
+		$userRoles = (array) $this->getAuthorizedContextObject(ASSOC_TYPE_USER_ROLES);
+		if (array_intersect(array(ROLE_ID_MANAGER), $userRoles)) {
+			AppLocale::requireComponents(LOCALE_COMPONENT_PKP_MANAGER);
 		}
 
 		$templateMgr = TemplateManager::getManager($request);
-		$templateMgr->assign('userRoles', $this->getAuthorizedContextObject(ASSOC_TYPE_USER_ROLES));
+		$templateMgr->assign('userRoles', $userRoles);
+
 		$accessibleWorkflowStages = $this->getAuthorizedContextObject(ASSOC_TYPE_ACCESSIBLE_WORKFLOW_STAGES);
 		if ($accessibleWorkflowStages) $templateMgr->assign('accessibleWorkflowStages', $accessibleWorkflowStages);
 	}
@@ -466,22 +454,33 @@ class PKPHandler {
 	}
 
 	/**
-	 * Get a list of pages that don't require login, even if the system does
-	 * FIXME: Delete this method when authorization re-factoring is complete.
-	 * @return array
-	 */
-	function getLoginExemptions() {
-		import('lib.pkp.classes.security.authorization.RestrictedSiteAccessPolicy');
-		return RestrictedSiteAccessPolicy::_getLoginExemptions();
-	}
-
-	/**
 	 * Get the iterator of working contexts.
 	 * @param $request PKPRequest
 	 * @return ItemIterator
 	 */
 	function getWorkingContexts($request) {
-		assert(false); // Must be implemented by subclasses
+		// For installation process
+		if (defined('SESSION_DISABLE_INIT') || !Config::getVar('general', 'installed')) {
+			return null;
+		}
+
+		$user = $request->getUser();
+		$contextDao = Application::getContextDAO();
+		return $contextDao->getAvailable($user?$user->getId():null);
+	}
+
+	/**
+	 * Return the context that is configured in site redirect setting.
+	 * @param $request Request
+	 * @return mixed Either Context or null
+	 */
+	function getSiteRedirectContext($request) {
+		$site = $request->getSite();
+		if ($site && ($contextId = $site->getRedirect())) {
+			$contextDao = Application::getContextDAO(); /* @var $contextDao ContextDAO */
+			return $contextDao->getById($contextId);
+		}
+		return null;
 	}
 
 	/**
@@ -501,6 +500,14 @@ class PKPHandler {
 			}
 		}
 		return $context;
+	}
+
+	/**
+	 * Assume SSL is required for all handlers, unless overridden in subclasses.
+	 * @return boolean
+	 */
+	function requireSSL() {
+		return true;
 	}
 }
 

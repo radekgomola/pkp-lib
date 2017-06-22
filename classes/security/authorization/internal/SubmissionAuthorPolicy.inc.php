@@ -2,8 +2,8 @@
 /**
  * @file classes/security/authorization/internal/SubmissionAuthorPolicy.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionAuthorPolicy
@@ -45,12 +45,17 @@ class SubmissionAuthorPolicy extends AuthorizationPolicy {
 		$submission = $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION);
 		if (!is_a($submission, 'Submission')) return AUTHORIZATION_DENY;
 
-		// Check authorship of the submission.
-		if ($submission->getUserId() === $user->getId()) {
-			return AUTHORIZATION_PERMIT;
-		} else {
-			return AUTHORIZATION_DENY;
+		// Check authorship of the submission. Any ROLE_ID_AUTHOR assignment will do.
+		$stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
+		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
+		$submitterAssignments = $stageAssignmentDao->getBySubmissionAndStageId($submission->getId(), null, null, $user->getId());
+		while ($assignment = $submitterAssignments->next()) {
+			$userGroup = $userGroupDao->getById($assignment->getUserGroupId());
+			if ($userGroup->getRoleId() == ROLE_ID_AUTHOR) {
+				return AUTHORIZATION_PERMIT;
+			}
 		}
+		return AUTHORIZATION_DENY;
 	}
 }
 

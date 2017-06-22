@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/submissions/SubmissionsListGridCellProvider.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionsListGridCellProvider
@@ -20,14 +20,17 @@ class SubmissionsListGridCellProvider extends DataObjectGridCellProvider {
 	/** @var Array */
 	var $_authorizedRoles;
 
+	/** @var User */
+	var $user;
+
 	/**
 	 * Constructor
 	 */
-	function SubmissionsListGridCellProvider($authorizedRoles = null) {
+	function SubmissionsListGridCellProvider($user, $authorizedRoles = null) {
 		if ($authorizedRoles) {
 			$this->_authorizedRoles = $authorizedRoles;
 		}
-
+		$this->user = $user;
 		parent::DataObjectGridCellProvider();
 	}
 
@@ -64,22 +67,62 @@ class SubmissionsListGridCellProvider extends DataObjectGridCellProvider {
 	 * @return array an array of LinkAction instances
 	 */
 	function getCellActions($request, $row, $column, $position = GRID_ACTION_POSITION_DEFAULT) {
-		if ( $column->getId() == 'title' ) {
-			$submission = $row->getData();
+		$submission = $row->getData();
+		$user = $request->getUser();
+		switch ($column->getId()) {
+			case 'editor':
+				$stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO'); /* @var $stageAssignmentDao StageAssignmentDAO */
+				$editorAssignments = $stageAssignmentDao->getEditorsAssignedToStage($submission->getId(), $submission->getStageId());
+				$assignment = current($editorAssignments);
+				if (!$assignment) return array();
+				$userDao = DAORegistry::getDAO('UserDAO'); /* @var $userDao UserDAO */
+				$editor = $userDao->getById($assignment->getUserId());
 
-			if (is_a($submission, 'ReviewerSubmission')) {
-				// Reviewer: Add a review link action.
-				return array($this->_getCellLinkAction($request, 'reviewer', 'submission', $submission));
-			} else {
-				// Get the right page and operation (authordashboard or workflow).
-				list($page, $operation) = SubmissionsListGridCellProvider::getPageAndOperationByUserRoles($request, $submission);
+				import('lib.pkp.classes.linkAction.request.NullAction');
+				return array(new LinkAction('editor', new NullAction(), $editor->getInitials(), null, $editor->getFullName()));
+			case 'stage':
+				$stageId = $submission->getStageId();
+				$stage = null;
 
-				// Return redirect link action.
-				return array($this->_getCellLinkAction($request, $page, $operation, $submission));
-			}
+				if ($submission->getSubmissionProgress() > 0) {
+					// Submission process not completed.
+					$stage = __('submissions.incomplete');
+				}
+				switch ($submission->getStatus()) {
+					case STATUS_DECLINED:
+						$stage = __('submission.status.declined');
+						break;
+					case STATUS_PUBLISHED:
+						$stage = __('submission.status.published');
+						break;
+				}
 
-			// This should be unreachable code.
-			assert(false);
+				if (!$stage) $stage = __(WorkflowStageDAO::getTranslationKeyFromId($stageId));
+
+				import('lib.pkp.classes.linkAction.request.RedirectAction');
+				$reviewAssignmentDao = DAORegistry::getDAO('ReviewAssignmentDAO');
+				$reviewAssignment = $reviewAssignmentDao->getLastReviewRoundReviewAssignmentByReviewer($submission->getId(), $user->getId());
+				if (is_a($reviewAssignment, 'ReviewAssignment') && ($reviewAssignment->getStageId() == $stageId)) {
+					return array(new LinkAction(
+						'itemWorkflow',
+						new RedirectAction(
+							$request->getDispatcher()->url(
+								$request, ROUTE_PAGE,
+								null,
+								'reviewer', 'submission',
+								$submission->getId()
+							)
+						),
+						$stage
+					));
+				}
+				return array(new LinkAction(
+					'itemWorkflow',
+					new RedirectAction(
+						SubmissionsListGridCellProvider::getUrlByUserRoles($request, $submission)
+					),
+					$stage
+				));
 		}
 		return parent::getCellActions($request, $row, $column, $position);
 	}
@@ -99,74 +142,35 @@ class SubmissionsListGridCellProvider extends DataObjectGridCellProvider {
 		$columnId = $column->getId();
 		assert(is_a($submission, 'DataObject') && !empty($columnId));
 
-		$contextId = $submission->getContextId();
-		$contextDao = Application::getContextDAO();
-		$context = $contextDao->getById($contextId);
-
 		switch ($columnId) {
+			case 'id':
+				return array('label' => $submission->getId());
 			case 'title':
-				return array('label' => '');
-				break;
-			case 'context':
-				return array('label' => $context->getLocalizedName());
-				break;
-			case 'author':
-				if (is_a($submission, 'ReviewerSubmission') && $submission->getReviewMethod() == SUBMISSION_REVIEW_METHOD_DOUBLEBLIND) return array('label' => '—');
-				return array('label' => $submission->getAuthorString(true));
-				break;
+				$this->_titleColumn = $column;
+				$title = $submission->getLocalizedTitle();
+				if ( empty($title) ) $title = __('common.untitled');
+
+				// Ensure we aren't exposing the author name to reviewers
+				$reviewAssignmentDao = DAORegistry::getDAO('ReviewAssignmentDAO');
+				$reviewAssignment = $reviewAssignmentDao->getLastReviewRoundReviewAssignmentByReviewer($submission->getId(), $this->user->getId());
+				if (!$reviewAssignment || $reviewAssignment->getReviewMethod() != SUBMISSION_REVIEW_METHOD_DOUBLEBLIND) {
+					$authorsInTitle = $submission->getShortAuthorString();
+					$title =  $title. '; ' . $authorsInTitle . '';
+				}
+
+				return array('label' => $title);
 			case 'dateAssigned':
 				assert(is_a($submission, 'ReviewerSubmission'));
 				$dateAssigned = strftime(Config::getVar('general', 'date_format_short'), strtotime($submission->getDateAssigned()));
 				if ( empty($dateAssigned) ) $dateAssigned = '--';
 				return array('label' => $dateAssigned);
-				break;
 			case 'dateDue':
 				$dateDue = strftime(Config::getVar('general', 'date_format_short'), strtotime($submission->getDateDue()));
 				if ( empty($dateDue) ) $dateDue = '--';
 				return array('label' => $dateDue);
-				break;
-			case 'status':
-				$stageId = $submission->getStageId();
-
-				switch ($stageId) {
-					case WORKFLOW_STAGE_ID_SUBMISSION: default:
-						$returner = array('label' => __('submission.status.submission'));
-						break;
-					case WORKFLOW_STAGE_ID_INTERNAL_REVIEW:
-						$returner = array('label' => __('submission.status.review'));
-						break;
-					case WORKFLOW_STAGE_ID_EXTERNAL_REVIEW:
-						$returner = array('label' => __('submission.status.review'));
-						break;
-					case WORKFLOW_STAGE_ID_EDITING:
-						$returner = array('label' => __('submission.status.editorial'));
-						break;
-					case WORKFLOW_STAGE_ID_PRODUCTION:
-						$returner = array('label' => __('submission.status.production'));
-						break;
-				}
-
-				// Handle special cases.
-				$stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
-				if ($submission->getSubmissionProgress() > 0) {
-					// Submission process not completed.
-					$returner = array('label' => __('submissions.incomplete'));
-				} elseif (!$stageAssignmentDao->editorAssignedToStage($submission->getId())) {
-					// No editor assigned to any submission stages.
-					$returner = array('label' => __('submission.status.unassigned'));
-				}
-
-				// Handle declined and published submissions
-				switch ($submission->getStatus()) {
-					case STATUS_DECLINED:
-						$returner = array('label' => __('submission.status.declined'));
-						break;
-					case STATUS_PUBLISHED:
-						$returner = array('label' => __('submission.status.published'));
-						break;
-				}
-
-				return $returner;
+			case 'stage':
+			case 'editor':
+				return array('label' => '');
 		}
 	}
 
@@ -175,39 +179,43 @@ class SubmissionsListGridCellProvider extends DataObjectGridCellProvider {
 	// Public static methods
 	//
 	/**
-	 * Static method that returns the correct page and operation between
-	 * 'authordashboard' and 'workflow', based on users roles.
+	 * Static method that returns the correct access URL for a submission
+	 * between 'authordashboard', 'workflow', and 'submission', based on
+	 * users roles.
 	 * @param $request Request
 	 * @param $submission Submission
 	 * @param $userId an optional user id
-	 * @return array
+	 * @param $stageName string An optional suggested stage name
+	 * @return string|null URL; null if the user does not exist
 	 */
-	static function getPageAndOperationByUserRoles($request, $submission, $userId = null) {
+	static function getUrlByUserRoles($request, $submission, $userId = null, $stageName = null) {
+		// Get the current user, relying on current session if appropriate
 		if ($userId == null) {
 			$user = $request->getUser();
 		} else {
 			$userDao = DAORegistry::getDAO('UserDAO');
 			$user = $userDao->getById($userId);
-			if ($user == null) { // user does not exist
-				return array();
-			}
 		}
+		if ($user == null) return null;
 
-		// This method is used to build links in componentes that lists
-		// submissions from various contexts, sometimes. So we need to make sure
-		// that we are getting the right submission context (not necessarily the
-		// current context in request).
-		$contextId = $submission->getContextId();
+		// Get the submission's context, relying on the current session if appropriate
+		if (!($context = $request->getContext()) || $context->getId() != $submission->getContextId()) {
+			$contextDao = Application::getContextDAO();
+			$context = $contextDao->getById($submission->getContextId());
+		} 
+		$dispatcher = $request->getDispatcher();
+
+		// Incomplete submissions get sent back to the wizard.
+		if ($submission->getSubmissionProgress()>0) {
+			return $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'submission', 'wizard', $submission->getSubmissionProgress(), array('submissionId' => $submission->getId()));
+		}
 
 		// If user is enrolled with a context manager user group, let
-		// him access the workflow pages.
+		// them access the workflow pages.
 		$roleDao = DAORegistry::getDAO('RoleDAO');
-		$isManager = $roleDao->userHasRole($contextId, $user->getId(), ROLE_ID_MANAGER);
-		if($isManager) {
-			return array('workflow', 'access');
+		if ($roleDao->userHasRole($context->getId(), $user->getId(), ROLE_ID_MANAGER)) {
+			return $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'workflow', $stageName?$stageName:'access', $submission->getId());
 		}
-
-		$submissionId = $submission->getId();
 
 		// If user has only author role user groups stage assignments,
 		// then add an author dashboard link action.
@@ -215,59 +223,24 @@ class SubmissionsListGridCellProvider extends DataObjectGridCellProvider {
 		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
 
 		$authorUserGroupIds = $userGroupDao->getUserGroupIdsByRoleId(ROLE_ID_AUTHOR);
-		$stageAssignmentsFactory = $stageAssignmentDao->getBySubmissionAndStageId($submissionId, null, null, $user->getId());
+		$stageAssignmentsFactory = $stageAssignmentDao->getBySubmissionAndStageId($submission->getId(), null, null, $user->getId());
 
+		// Check if the user should be considered as author.
 		$authorDashboard = false;
 		while ($stageAssignment = $stageAssignmentsFactory->next()) {
 			if (!in_array($stageAssignment->getUserGroupId(), $authorUserGroupIds)) {
 				$authorDashboard = false;
 				break;
-			}
-			$authorDashboard = true;
+			} else $authorDashboard = true;
 		}
-		if ($authorDashboard) {
-			return array('authorDashboard', 'submission');
-		} else {
-			return array('workflow', 'access');
-		}
-	}
+		if ($authorDashboard) return $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'authorDashboard', 'submission', $submission->getId());
 
-	//
-	// Private helper methods.
-	//
-	/**
-	 * Get the cell link action.
-	 * @param $request Request
-	 * @param $page string
-	 * @param $operation string
-	 * @param $submission Submission
-	 * @return LinkAction
-	 */
-	function _getCellLinkAction($request, $page, $operation, $submission) {
-		$router = $request->getRouter();
-		$dispatcher = $router->getDispatcher();
+		// Check if the user should be considered as reviewer.
+		$reviewAssignmentDao = DAORegistry::getDAO('ReviewAssignmentDAO');
+		$reviewAssignment = $reviewAssignmentDao->getLastReviewRoundReviewAssignmentByReviewer($submission->getId(), $request->getUser()->getId());
+		if ($reviewAssignment) return $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'reviewer', 'submission', $submission->getId());
 
-		$title = $submission->getLocalizedTitle();
-		if ( empty($title) ) $title = __('common.untitled');
-
-		$contextId = $submission->getContextId();
-		$contextDao = Application::getContextDAO();
-		$context = $contextDao->getById($contextId);
-
-		import('lib.pkp.classes.linkAction.request.RedirectAction');
-
-		return new LinkAction(
-			'itemWorkflow',
-			new RedirectAction(
-				$dispatcher->url(
-					$request, ROUTE_PAGE,
-					$context->getPath(),
-					$page, $operation,
-					$submission->getId()
-				)
-			),
-			$title
-		);
+		return $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'workflow', $stageName?$stageName:'access', $submission->getId());
 	}
 }
 

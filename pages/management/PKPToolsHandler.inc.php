@@ -3,7 +3,8 @@
 /**
  * @file pages/management/PKPToolsHandler.inc.php
  *
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPToolsHandler
@@ -15,6 +16,8 @@
 // Import the base ManagementHandler.
 import('lib.pkp.pages.management.ManagementHandler');
 
+define('IMPORTEXPORT_PLUGIN_CATEGORY', 'importexport');
+
 class PKPToolsHandler extends ManagementHandler {
 	/**
 	 * Constructor.
@@ -23,7 +26,7 @@ class PKPToolsHandler extends ManagementHandler {
 		parent::Handler();
 		$this->addRoleAssignment(
 			ROLE_ID_MANAGER,
-			array('tools')
+			array('tools', 'statistics', 'importexport')
 		);
 	}
 
@@ -37,10 +40,10 @@ class PKPToolsHandler extends ManagementHandler {
 	}
 
 	/**
-	* Route to other Tools operations
-	* @param $args array
-	* @param $request PKPRequest
-	*/
+	 * Route to other Tools operations
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
 	function tools($args, $request) {
 		$path = array_shift($args);
 		switch ($path) {
@@ -48,7 +51,7 @@ class PKPToolsHandler extends ManagementHandler {
 				$this->index($args, $request);
 				break;
 			case 'statistics':
-				$this->statisticcs($args, $request);
+				$this->statistics($args, $request);
 				break;
 			case 'report':
 				$this->report($args, $request);
@@ -67,10 +70,10 @@ class PKPToolsHandler extends ManagementHandler {
 	}
 
 	/**
-	* Display tools index page.
-	* @param $request PKPRequest
-	* @param $args array
-	*/
+	 * Display tools index page.
+	 * @param $request PKPRequest
+	 * @param $args array
+	 */
 	function index($args, $request) {
 		$templateMgr = TemplateManager::getManager($request);
 		$this->setupTemplate($request);
@@ -78,11 +81,31 @@ class PKPToolsHandler extends ManagementHandler {
 	}
 
 	/**
-	 * Display the
+	 * Import or export data.
 	 * @param $args array
 	 * @param $request PKPRequest
 	 */
-	function statisticcs($args, $request) {
+	function importexport($args, $request) {
+		$this->setupTemplate($request, true);
+
+		PluginRegistry::loadCategory(IMPORTEXPORT_PLUGIN_CATEGORY);
+		$templateMgr = TemplateManager::getManager($request);
+
+		if (array_shift($args) === 'plugin') {
+			$pluginName = array_shift($args);
+			$plugin = PluginRegistry::getPlugin(IMPORTEXPORT_PLUGIN_CATEGORY, $pluginName);
+			if ($plugin) return $plugin->display($args, $request);
+		}
+		$templateMgr->assign('plugins', PluginRegistry::getPlugins(IMPORTEXPORT_PLUGIN_CATEGORY));
+		$templateMgr->display('manager/importexport/plugins.tpl');
+	}
+
+	/**
+	 * Display the statistics area.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function statistics($args, $request) {
 		$this->setupTemplate($request);
 		$context = $request->getContext();
 
@@ -106,11 +129,11 @@ class PKPToolsHandler extends ManagementHandler {
 	}
 
 	/**
-	* Delegates to plugins operations
-	* related to report generation.
-	* @param $args array
-	* @param $request Request
-	*/
+	 * Delegates to plugins operations
+	 * related to report generation.
+	 * @param $args array
+	 * @param $request Request
+	 */
 	function report($args, $request) {
 		$this->setupTemplate($request);
 
@@ -141,11 +164,11 @@ class PKPToolsHandler extends ManagementHandler {
 
 
 	/**
-	* Generate statistics reports from passed
-	* request arguments.
-	* @param $args array
-	* @param $request PKPRequest
-	*/
+	 * Generate statistics reports from passed
+	 * request arguments.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
 	function generateReport($args, $request) {
 		$this->setupTemplate($request);
 		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_SUBMISSION);
@@ -224,7 +247,7 @@ class PKPToolsHandler extends ManagementHandler {
 
 				// Give a chance for subclasses to set the row values.
 				if ($returner = $this->getReportRowValue($key, $record)) {
-					$row = $returner;
+					$row[] = $returner;
 					continue;
 				}
 
@@ -297,7 +320,9 @@ class PKPToolsHandler extends ManagementHandler {
 
 	/**
 	 * Save statistics settings.
-	 * @
+	 * @param $args array
+	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function saveStatisticsSettings($args, $request) {
 		$router = $request->getRouter();
@@ -310,9 +335,7 @@ class PKPToolsHandler extends ManagementHandler {
 		$user = $request->getUser();
 		$notificationManager->createTrivialNotification($user->getId());
 
-		('classes.core.JSONMessage');
-		$json = new JSONMessage();
-		return $json->getString();
+		return new JSONMessage();
 	}
 
 
@@ -331,12 +354,12 @@ class PKPToolsHandler extends ManagementHandler {
 	}
 
 	/**
-	* Get data object title based on passed
-	* assoc type and id.
-	* @param $assocId int
-	* @param $assocType int
-	* @return string
-	*/
+	 * Get data object title based on passed
+	 * assoc type and id.
+	 * @param $assocId int
+	 * @param $assocType int
+	 * @return string
+	 */
 	protected function getObjectTitle($assocId, $assocType) {
 		switch ($assocType) {
 			case Application::getContextAssocType():
@@ -361,7 +384,7 @@ class PKPToolsHandler extends ManagementHandler {
 				return $submissionFile->getFileLabel();
 		}
 
-		return null;
+		return __('manager.statistics.reports.objectNotFound');
 	}
 
 	/**

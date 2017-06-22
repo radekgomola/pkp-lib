@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/notifications/NotificationsGridCellProvider.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class NotificationsGridCellProvider
@@ -15,7 +15,7 @@
 
 
 import('lib.pkp.classes.controllers.grid.GridCellProvider');
-import('lib.pkp.classes.linkAction.request.RedirectAction');
+import('lib.pkp.classes.linkAction.request.AjaxAction');
 
 class NotificationsGridCellProvider extends GridCellProvider {
 	/**
@@ -32,22 +32,27 @@ class NotificationsGridCellProvider extends GridCellProvider {
 	 * @return array an array of LinkAction instances
 	 */
 	function getCellActions($request, $row, $column, $position = GRID_ACTION_POSITION_DEFAULT) {
-		if ( $column->getId() == 'title' ) {
-			return array();
-		} elseif ($column->getId() == 'task') {
-			$notification = $row->getData();
+		assert($column->getId() == 'task');
 
-			$notificationMgr = new NotificationManager();
-			return array(new LinkAction(
-				'details',
-				new RedirectAction(
-					$notificationMgr->getNotificationUrl($request, $notification)
-				),
-				$notificationMgr->getNotificationMessage($request, $notification)
-			));
-		}
-		// This should be unreachable.
-		assert(false);
+		$notification = $row->getData();
+		$contextDao = Application::getContextDAO();
+		$context = $contextDao->getById($notification->getContextId());
+
+		$notificationMgr = new NotificationManager();
+		$router = $request->getRouter();
+		return array(new LinkAction(
+			'details',
+			new AjaxAction($router->url(
+				$request, null, null, 'markRead',
+				null,
+				array('redirect' => 1, 'selectedElements' => array($notification->getId()))
+			)),
+			($notification->getDateRead()?'':'<strong>') . __('common.tasks.titleAndTask', array(
+				'acronym' => $context->getLocalizedAcronym(),
+				'title' => $this->_getTitle($notification),
+				'task' => $notificationMgr->getNotificationMessage($request, $notification)
+			)) . ($notification->getDateRead()?'':'</strong>')
+		));
 	}
 
 
@@ -62,67 +67,76 @@ class NotificationsGridCellProvider extends GridCellProvider {
 	 * @return array
 	 */
 	function getTemplateVarsFromRowColumn($row, $column) {
-		$notification = $row->getData();
+		assert($column->getId()=='task');
 
-		switch ($column->getId()) {
-			case 'title':
-				switch ($notification->getAssocType()) {
+		// The action has the label.
+		return array('label' => '');
+	}
+
+	/**
+	 * Get the title for a notification.
+	 * @param $notification Notification
+	 * @return string
+	 */
+	function _getTitle($notification) {
+		switch ($notification->getAssocType()) {
+			case ASSOC_TYPE_ANNOUNCEMENT:
+				$announcementId = $notification->getAssocId();
+				$announcement = DAORegistry::getDAO('AnnouncementDAO')->getById($announcementId);
+				if ($announcement) return $announcement->getLocalizedTitle();
+				return null;
+			case ASSOC_TYPE_SUBMISSION:
+				$submissionId = $notification->getAssocId();
+				break;
+			case ASSOC_TYPE_SUBMISSION_FILE:
+				$fileId = $notification->getAssocId();
+				break;
+			case ASSOC_TYPE_REVIEW_ASSIGNMENT:
+				$reviewAssignmentDao = DAORegistry::getDAO('ReviewAssignmentDAO'); /* @var $reviewAssignmentDao ReviewAssignmentDAO */
+				$reviewAssignment = $reviewAssignmentDao->getById($notification->getAssocId());
+				assert(is_a($reviewAssignment, 'ReviewAssignment'));
+				$submissionId = $reviewAssignment->getSubmissionId();
+				break;
+			case ASSOC_TYPE_REVIEW_ROUND:
+				$reviewRoundDao = DAORegistry::getDAO('ReviewRoundDAO');
+				$reviewRound = $reviewRoundDao->getById($notification->getAssocId());
+				assert(is_a($reviewRound, 'ReviewRound'));
+				$submissionId = $reviewRound->getSubmissionId();
+				break;
+			case ASSOC_TYPE_QUERY:
+				$queryDao = DAORegistry::getDAO('QueryDAO');
+				$query = $queryDao->getById($notification->getAssocId());
+				assert(is_a($query, 'Query'));
+				switch ($query->getAssocType()) {
 					case ASSOC_TYPE_SUBMISSION:
-						$submissionId = $notification->getAssocId();
+						$submissionId = $query->getAssocId();
 						break;
-					case ASSOC_TYPE_SUBMISSION_FILE:
-						$fileId = $notification->getAssocId();
+					case ASSOC_TYPE_REPRESENTATION:
+						$representationDao = Application::getRepresentationDAO();
+						$representation = $representationDao->getById($query->getAssocId());
+						$submissionId = $representation->getSubmissionId();
 						break;
-					case ASSOC_TYPE_SIGNOFF:
-						$signoffDao = DAORegistry::getDAO('SignoffDAO'); /* @var $signoffDao SignoffDAO */
-						$signoff = $signoffDao->getById($notification->getAssocId());
-						if ($signoff->getAssocType() == ASSOC_TYPE_SUBMISSION) {
-							$submissionId = $signoff->getAssocId();
-						} elseif ($signoff->getAssocType() == ASSOC_TYPE_SUBMISSION_FILE) {
-							$fileId = $signoff->getAssocId();
-						} else {
-							// Don't know of SIGNOFFs with other ASSOC types for TASKS
-							assert(false);
-						}
-						break;
-					case ASSOC_TYPE_REVIEW_ASSIGNMENT:
-						$reviewAssignmentDao = DAORegistry::getDAO('ReviewAssignmentDAO'); /* @var $reviewAssignmentDao ReviewAssignmentDAO */
-						$reviewAssignment = $reviewAssignmentDao->getById($notification->getAssocId());
-						assert(is_a($reviewAssignment, 'ReviewAssignment'));
-						$submissionId = $reviewAssignment->getSubmissionId();
-						break;
-					case ASSOC_TYPE_REVIEW_ROUND:
-						$reviewRoundDao = DAORegistry::getDAO('ReviewRoundDAO');
-						$reviewRound = $reviewRoundDao->getById($notification->getAssocId());
-						assert(is_a($reviewRound, 'ReviewRound'));
-						$submissionId = $reviewRound->getSubmissionId();
-						break;
-					default:
-						// Don't know of other ASSOC_TYPEs for TASK notifications
-						assert(false);
+					default: assert(false);
 				}
-
-				if (!isset($submissionId) && isset($fileId)) {
-					assert(is_numeric($fileId));
-					$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO'); /* @var $submissionFileDao SubmissionFileDAO */
-					$submissionFile = $submissionFileDao->getLatestRevision($fileId);
-					assert(is_a($submissionFile, 'SubmissionFile'));
-					$submissionId = $submissionFile->getSubmissionId();
-				}
-				assert(is_numeric($submissionId));
-				$submissionDao = Application::getSubmissionDAO();
-				$submission = $submissionDao->getById($submissionId);
-				assert(is_a($submission, 'Submission'));
-
-				$title = $submission->getLocalizedTitle();
-				if ( empty($title) ) $title = __('common.untitled');
-				return array('label' => $title);
 				break;
-			case 'task':
-				// The action has the label
-				return array('label' => '');
-				break;
+			default:
+				// Don't know of other ASSOC_TYPEs for TASK notifications
+				assert(false);
 		}
+
+		if (!isset($submissionId) && isset($fileId)) {
+			assert(is_numeric($fileId));
+			$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO'); /* @var $submissionFileDao SubmissionFileDAO */
+			$submissionFile = $submissionFileDao->getLatestRevision($fileId);
+			assert(is_a($submissionFile, 'SubmissionFile'));
+			$submissionId = $submissionFile->getSubmissionId();
+		}
+		assert(is_numeric($submissionId));
+		$submissionDao = Application::getSubmissionDAO();
+		$submission = $submissionDao->getById($submissionId);
+		assert(is_a($submission, 'Submission'));
+
+		return $submission->getLocalizedTitle();
 	}
 }
 

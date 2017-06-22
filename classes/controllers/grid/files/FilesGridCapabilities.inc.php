@@ -3,8 +3,8 @@
 /**
  * @file classes/controllers/grid/files/FilesGridCapabilities.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FilesGridCapabilities
@@ -20,6 +20,7 @@ define('FILE_GRID_DOWNLOAD_ALL',	0x00000002);
 define('FILE_GRID_DELETE',		0x00000004);
 define('FILE_GRID_VIEW_NOTES',		0x00000008);
 define('FILE_GRID_MANAGE',		0x00000010);
+define('FILE_GRID_EDIT',		0x00000020);
 
 class FilesGridCapabilities {
 
@@ -38,18 +39,21 @@ class FilesGridCapabilities {
 	/** @var boolean */
 	var $_canManage;
 
+	/** @var boolean */
+	var $_canEdit;
 
 	/**
 	 * Constructor
 	 * @param $capabilities integer A bit map with zero or more
 	 *  FILE_GRID_* capabilities set.
 	 */
-	function FilesGridCapabilities($capabilities) {
+	function FilesGridCapabilities($capabilities = 0) {
 		$this->setCanAdd($capabilities & FILE_GRID_ADD);
 		$this->setCanDownloadAll($capabilities & FILE_GRID_DOWNLOAD_ALL);
 		$this->setCanDelete($capabilities & FILE_GRID_DELETE);
 		$this->setCanViewNotes($capabilities & FILE_GRID_VIEW_NOTES);
 		$this->setCanManage($capabilities & FILE_GRID_MANAGE);
+		$this->setCanEdit($capabilities & FILE_GRID_EDIT);
 	}
 
 
@@ -135,6 +139,22 @@ class FilesGridCapabilities {
 	 */
 	function setCanManage($canManage) {
 		$this->_canManage = $canManage;
+	}
+
+	/**
+	 * Whether the grid allows file metadata editing
+	 * @return boolean
+	 */
+	function canEdit() {
+		return $this->_canEdit;
+	}
+
+	/**
+	 * Set whether the grid allows file metadata editing
+	 * @return boolean
+	 */
+	function setCanEdit($canEdit) {
+		$this->_canEdit = $canEdit;
 	}
 
 	/**

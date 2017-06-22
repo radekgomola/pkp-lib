@@ -1,8 +1,8 @@
 /**
  * @file js/controllers/AutocompleteHandler.js
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AutocompleteHandler
@@ -40,6 +40,9 @@
 		// Create autocomplete settings.
 		opt = {};
 		opt.source = this.callbackWrapper(this.fetchAutocomplete);
+
+		// Set the anchor where to append the suggestions menu
+		opt.appendTo = '#' + $autocompleteField.attr('id');
 
 		autocompleteOptions = $.extend({ },
 				this.self('DEFAULT_PROPERTIES_'), opt, options);

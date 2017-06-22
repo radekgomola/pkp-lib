@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/users/reviewer/form/ThankReviewerForm.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ThankReviewerForm
@@ -65,21 +65,21 @@ class ThankReviewerForm extends Form {
 		$email = new SubmissionMailTemplate($submission, 'REVIEW_ACK');
 
 		$dispatcher = $request->getDispatcher();
-		$paramArray = array(
+		$email->assignParams(array(
 			'reviewerName' => $reviewer->getFullName(),
 			'editorialContactSignature' => $user->getContactSignature(),
 			'reviewerUserName' => $reviewer->getUsername(),
 			'passwordResetUrl' => $dispatcher->url($request, ROUTE_PAGE, null, 'login', 'resetPassword', $reviewer->getUsername(), array('confirm' => Validation::generatePasswordResetHash($reviewer->getId()))),
 			'submissionReviewUrl' => $dispatcher->url($request, ROUTE_PAGE, null, 'reviewer', 'submission', null, array('submissionId' => $reviewAssignment->getSubmissionId()))
-		);
-		$email->assignParams($paramArray);
+		));
+		$email->replaceParams();
 
 		$this->setData('submissionId', $submission->getId());
 		$this->setData('stageId', $reviewAssignment->getStageId());
 		$this->setData('reviewAssignmentId', $reviewAssignment->getId());
 		$this->setData('reviewAssignment', $reviewAssignment);
 		$this->setData('reviewerName', $reviewer->getFullName() . ' <' . $reviewer->getEmail() . '>');
-		$this->setData('message', $email->getBody() . "\n" . $context->getSetting('emailSignature'));
+		$this->setData('message', $email->getBody());
 	}
 
 	/**
@@ -112,6 +112,15 @@ class ThankReviewerForm extends Form {
 
 		if (!$this->getData('skipEmail')) {
 			HookRegistry::call('ThankReviewerForm::thankReviewer', array(&$submission, &$reviewAssignment, &$email));
+			$dispatcher = $request->getDispatcher();
+			$context = $request->getContext();
+			$user = $request->getUser();
+			$email->assignParams(array(
+				'reviewerName' => $reviewer->getFullName(),
+				'contextUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath()),
+				'editorialContactSignature' => $user->getContactSignature(),
+				'signatureFullName' => $user->getFullname(),
+			));
 			$email->send($request);
 		}
 

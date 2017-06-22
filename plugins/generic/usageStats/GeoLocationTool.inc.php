@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/usageStats/GeoLocationTool.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class GeoLocationTool
@@ -26,23 +26,34 @@ class GeoLocationTool {
 
 	/**
 	 * Constructor.
-	 * @param $argv array command-line arguments
+	 * If we cannot find the database file, an empty object will be constructed.
+	 * Use the method isPresent() to check if the database file is present before use.
 	 */
 	function GeoLocationTool() {
-		$geoLocationDbFile = dirname(__FILE__) . DIRECTORY_SEPARATOR . "GeoLiteCity.dat";
+		$geoLocationDbFile = str_replace(PKP_LIB_PATH . DIRECTORY_SEPARATOR, '', dirname(__FILE__)) . DIRECTORY_SEPARATOR . "GeoLiteCity.dat";
 		if (file_exists($geoLocationDbFile)) {
-			$_isDbFilePresent = true;
+			$isDbFilePresent = true;
 			$this->_geoLocationTool = geoip_open($geoLocationDbFile, GEOIP_STANDARD);
 			include('lib' . DIRECTORY_SEPARATOR . 'geoIp' . DIRECTORY_SEPARATOR . 'geoipregionvars.php');
 			$this->_regionName = $GEOIP_REGION_NAME;
 		} else {
-			$_isDbFilePresent = false;
+			$isDbFilePresent = false;
 		}
+
+		$this->_isDbFilePresent = $isDbFilePresent;
 	}
 
 	//
 	// Public methods.
 	//
+	/**
+	 * Identify if the geolocation database tool is available for use.
+	 * @return boolean
+	 */
+	function isPresent() {
+		return $this->_isDbFilePresent;
+	}
+
 	/**
 	 * Return country code and city name for the passed
 	 * ip address.

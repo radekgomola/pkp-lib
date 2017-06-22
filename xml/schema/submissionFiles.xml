@@ -4,8 +4,8 @@
 <!--
   * xml/schema/submissionFiles.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Submission files schema in XML.
@@ -114,5 +114,20 @@
 		<field name="chapter_id" type="I8"/>
 		<field name="contact_author" type="I8"/>
 		<descr>Submission visuals.</descr>
+	</table>
+
+	<!--
+	  *
+	  * TABLE submission_supplementary_files
+	  *
+	  -->
+	<table name="submission_supplementary_files">
+		<field name="file_id" type="I8">
+			<KEY />
+		</field>
+		<field name="revision" type="I8">
+			<KEY />
+		</field>
+		<descr>Submission supplementary content.</descr>
 	</table>
 </schema>

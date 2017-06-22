@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/reviewer/form/ReviewerReviewStep1Form.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReviewerReviewStep1Form
@@ -39,7 +39,6 @@ class ReviewerReviewStep1Form extends ReviewerReviewForm {
 		// Add submission parameters.
 		$submission = $this->getReviewerSubmission();
 		$templateMgr->assign('completedSteps', $submission->getStatus());
-		// FIXME: Need context setting that denotes competing interests are required, see #6402.
 		$templateMgr->assign('competingInterestsText', $submission->getCompetingInterests());
 
 		// Add review assignment.
@@ -96,7 +95,7 @@ class ReviewerReviewStep1Form extends ReviewerReviewForm {
 	 * @see Form::readInputData()
 	 */
 	function readInputData() {
-		$this->readUserVars(array('competingInterestOption', 'competingInterestText'));
+		$this->readUserVars(array('competingInterestOption', 'competingInterestsText'));
 	}
 
 	/**

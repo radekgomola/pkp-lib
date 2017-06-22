@@ -3,8 +3,8 @@
 /**
  * @file controllers/modals/editorDecision/form/EditorDecisionWithEmailForm.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EditorDecisionWithEmailForm
@@ -63,7 +63,6 @@ class EditorDecisionWithEmailForm extends EditorDecisionForm {
 		$dispatcher = $router->getDispatcher();
 
 		$submission = $this->getSubmission();
-		$submitter = $submission->getUser();
 		$user = $request->getUser();
 
 		import('lib.pkp.classes.mail.SubmissionMailTemplate');
@@ -78,13 +77,13 @@ class EditorDecisionWithEmailForm extends EditorDecisionForm {
 
 		$email = new SubmissionMailTemplate($submission, $emailKeys[$this->getDecision()]);
 
-		$paramArray = array(
-			'authorName' => $submitter->getFullName(),
+		$submissionUrl = $dispatcher->url($request, ROUTE_PAGE, null, 'authorDashboard', 'submission', $submission->getId());
+		$email->assignParams(array(
+			'authorName' => $submission->getAuthorString(),
 			'editorialContactSignature' => $user->getContactSignature(),
-			'authorUsername' => $submitter->getUsername(),
-			'submissionUrl' => $dispatcher->url($request, ROUTE_PAGE, null, 'authorDashboard', 'submission', $submission->getId()),
-		);
-		$email->assignParams($paramArray);
+			'submissionUrl' => "<a href=\"$submissionUrl\">$submissionUrl</a>",
+		));
+		$email->replaceParams();
 
 		// If we are in review stage we need a review round.
 		$reviewRound = $this->getReviewRound();
@@ -96,7 +95,7 @@ class EditorDecisionWithEmailForm extends EditorDecisionForm {
 			'submissionId' => $submission->getId(),
 			'decision' => $this->getDecision(),
 			'authorName' => $submission->getAuthorString(),
-			'personalMessage' => $email->getBody() . "\n" . $context->getSetting('emailSignature'),
+			'personalMessage' => $email->getBody(),
 			'actionLabel' => $actionLabels[$this->getDecision()]
 		);
 		foreach($data as $key => $value) {
@@ -150,6 +149,8 @@ class EditorDecisionWithEmailForm extends EditorDecisionForm {
 			$templateMgr->assign('saveFormOperation', $this->getSaveFormOperation());
 		}
 
+		$templateMgr->assign('allowedVariables', $this->_getAllowedVariables($request));
+
 		return parent::fetch($request);
 	}
 
@@ -186,22 +187,20 @@ class EditorDecisionWithEmailForm extends EditorDecisionForm {
 	 */
 	function _sendReviewMailToAuthor($submission, $emailKey, $request) {
 		// Send personal message to author.
-		$submitter = $submission->getUser();
 		import('lib.pkp.classes.mail.SubmissionMailTemplate');
 		$email = new SubmissionMailTemplate($submission, $emailKey, null, null, null, false);
 		$email->setBody($this->getData('personalMessage'));
-		$email->addRecipient($submitter->getEmail(), $submitter->getFullName());
-		$email->setEventType(SUBMISSION_EMAIL_EDITOR_NOTIFY_AUTHOR);
 
-		$userStageAssignmentDao = DAORegistry::getDAO('UserStageAssignmentDAO');
-		$authorStageParticipants = $userStageAssignmentDao->getUsersBySubmissionAndStageId($submission->getId(), $submission->getStageId(), null, ROLE_ID_AUTHOR);
-		while ($author = $authorStageParticipants->next()) {
-			if (preg_match('{^' . quotemeta($submitter->getEmail()) . '$}', $author->getEmail())) {
-				$email->addRecipient($author->getEmail(), $author->getFullName());
-			} else {
-				$email->addCc($author->getEmail(), $author->getFullName());
-			}
+		$stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
+		$userDao = DAORegistry::getDAO('UserDAO');
+		$submitterAssignments = $stageAssignmentDao->getBySubmissionAndRoleId($submission->getId(), ROLE_ID_AUTHOR);
+		while ($submitterAssignment = $submitterAssignments->next()) {
+			$submitterUser = $userDao->getById($submitterAssignment->getUserId());
+			$email->addRecipient($submitterUser->getEmail(), $submitterUser->getFullName());
 		}
+
+		DAORegistry::getDAO('SubmissionEmailLogDAO'); // Load constants
+		$email->setEventType(SUBMISSION_EMAIL_EDITOR_NOTIFY_AUTHOR);
 
 		// Get review round.
 		$reviewRound = $this->getReviewRound();
@@ -245,7 +244,7 @@ class EditorDecisionWithEmailForm extends EditorDecisionForm {
 					// Add the attachment to the email.
 					$email->addAttachment(
 						$submissionFile->getFilePath(),
-						String::enumerateAlphabetically($reviewIndex).'-'.$submissionFile->getOriginalFileName()
+						PKPString::enumerateAlphabetically($reviewIndex).'-'.$submissionFile->getOriginalFileName()
 					);
 
 					// Update submission file to set viewable as true, so author
@@ -260,13 +259,35 @@ class EditorDecisionWithEmailForm extends EditorDecisionForm {
 		if (!$this->getData('skipEmail')) {
 			$router = $request->getRouter();
 			$dispatcher = $router->getDispatcher();
-			$paramArray = array(
-				'authorUsername' => $submitter->getUsername(),
+			$context = $request->getContext();
+			$user = $request->getUser();
+			$email->assignParams(array(
 				'submissionUrl' => $dispatcher->url($request, ROUTE_PAGE, null, 'authorDashboard', 'submission', $submission->getId()),
-			);
-			$email->assignParams($paramArray);
+				'contextName' => $context->getLocalizedName(),
+				'authorName' => $submission->getAuthorString(),
+				'editorialContactSignature' => $user->getContactSignature(),
+			));
 			$email->send($request);
 		}
+	}
+
+	/**
+	 * Get a list of allowed email template variables.
+	 * @param $request PKPRequest Request object
+	 * @return array
+	 */
+	function _getAllowedVariables($request) {
+		$router = $request->getRouter();
+		$dispatcher = $router->getDispatcher();
+		$submission = $this->getSubmission();
+		$user = $request->getUser();
+		return array(
+			'submissionUrl' => __('common.url'),
+			'contextName' => $request->getContext()->getLocalizedName(),
+			'editorialContactSignature' => strip_tags($user->getContactSignature(), "<br>"),
+			'submissionTitle' => strip_tags($submission->getLocalizedTitle()),
+			'authorName' => strip_tags($submission->getAuthorString()),
+		);
 	}
 }
 

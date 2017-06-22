@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/action/EditorAction.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EditorAction
@@ -13,17 +13,14 @@
  * @brief Editor actions.
  */
 
-import('lib.pkp.classes.submission.action.PKPAction');
-
 // Access decision actions constants.
 import('classes.workflow.EditorDecisionActionsManager');
 
-class EditorAction extends PKPAction {
+class EditorAction {
 	/**
 	 * Constructor.
 	 */
 	function EditorAction() {
-		parent::PKPAction();
 	}
 
 	//
@@ -288,15 +285,6 @@ class EditorAction extends PKPAction {
 	}
 
 	/**
-	 * Assign the default participants to a workflow stage.
-	 * @param $submission Submission
-	 * @param $stageId int
-	 * @param $request Request
-	 */
-	function assignDefaultStageParticipants($submission, $stageId, $request) {
-	}
-
-	/**
 	 * Increment a submission's workflow stage.
 	 * @param $submission Submission
 	 * @param $newStage integer One of the WORKFLOW_STAGE_* constants.
@@ -307,11 +295,7 @@ class EditorAction extends PKPAction {
 		$submission->setStageId($newStage);
 		$submissionDao = Application::getSubmissionDAO();
 		$submissionDao->updateObject($submission);
-
-		// Assign the default users to the next workflow stage.
-		$this->assignDefaultStageParticipants($submission, $newStage, $request);
 	}
-
 }
 
 ?>

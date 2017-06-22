@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/announcements/AnnouncementTypeGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AnnouncementTypeGridHandler
@@ -14,7 +14,7 @@
  */
 
 import('lib.pkp.classes.controllers.grid.GridHandler');
-import('controllers.grid.announcements.form.AnnouncementTypeForm');
+import('lib.pkp.controllers.grid.announcements.form.AnnouncementTypeForm');
 
 class AnnouncementTypeGridHandler extends GridHandler {
 	/**
@@ -40,8 +40,8 @@ class AnnouncementTypeGridHandler extends GridHandler {
 	 * @copydoc GridHandler::authorize()
 	 */
 	function authorize($request, &$args, $roleAssignments) {
-		import('lib.pkp.classes.security.authorization.PkpContextAccessPolicy');
-		$this->addPolicy(new PkpContextAccessPolicy($request, $roleAssignments));
+		import('lib.pkp.classes.security.authorization.ContextAccessPolicy');
+		$this->addPolicy(new ContextAccessPolicy($request, $roleAssignments));
 		$context = $request->getContext();
 
 		$announcementTypeId = $request->getUserVar('announcementTypeId');
@@ -77,7 +77,7 @@ class AnnouncementTypeGridHandler extends GridHandler {
 			new GridColumn('name',
 				'common.name',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$announcementTypeCellProvider,
 				array('width' => 60)
 			)
@@ -108,18 +108,16 @@ class AnnouncementTypeGridHandler extends GridHandler {
 	/**
 	 * @copydoc GridHandler::loadData()
 	 */
-	function loadData($request, $filter) {
+	protected function loadData($request, $filter) {
 		$context = $request->getContext();
 		$announcementTypeDao = DAORegistry::getDAO('AnnouncementTypeDAO');
-		$announcementTypes = $announcementTypeDao->getByAssoc($context->getAssocType(), $context->getId());
-
-		return $announcementTypes;
+		return $announcementTypeDao->getByAssoc($context->getAssocType(), $context->getId());
 	}
 
 	/**
 	 * @copydoc GridHandler::getRowInstance()
 	 */
-	function getRowInstance() {
+	protected function getRowInstance() {
 		import('lib.pkp.controllers.grid.announcements.AnnouncementTypeGridRow');
 		return new AnnouncementTypeGridRow();
 	}
@@ -141,7 +139,7 @@ class AnnouncementTypeGridHandler extends GridHandler {
 	 * Display form to edit an announcement type.
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string
+	 * @return JSONMessage JSON object
 	 */
 	function editAnnouncementType($args, $request) {
 		$announcementTypeId = (int)$request->getUserVar('announcementTypeId');
@@ -151,15 +149,14 @@ class AnnouncementTypeGridHandler extends GridHandler {
 		$announcementTypeForm = new AnnouncementTypeForm($contextId, $announcementTypeId);
 		$announcementTypeForm->initData($args, $request);
 
-		$json = new JSONMessage(true, $announcementTypeForm->fetch($request));
-		return $json->getString();
+		return new JSONMessage(true, $announcementTypeForm->fetch($request));
 	}
 
 	/**
 	 * Save an edited/inserted announcement type.
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string
+	 * @return JSONMessage JSON object
 	 */
 	function updateAnnouncementType($args, $request) {
 
@@ -191,15 +188,15 @@ class AnnouncementTypeGridHandler extends GridHandler {
 			// Prepare the grid row data.
 			return DAO::getDataChangedEvent($announcementTypeId);
 		} else {
-			$json = new JSONMessage(false);
+			return new JSONMessage(false);
 		}
-		return $json->getString();
 	}
 
 	/**
 	 * Delete an announcement type.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function deleteAnnouncementType($args, $request) {
 		$announcementTypeId = (int) $request->getUserVar('announcementTypeId');

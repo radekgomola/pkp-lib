@@ -4,11 +4,11 @@
 <!--
   * locale/nb_NO/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the nb_NO (Norwegian) locale.
+  * Localization strings for the nb_NO (Norsk bokmål) locale.
   *
   -->
 
@@ -130,7 +130,7 @@
 	<message key="submission.page.review">#{$id} Fagvurdering</message>
 	<message key="submission.page.summary">#{$id} Oppsummering</message>
 	<message key="submission.peerReview"><![CDATA[Faglig&nbsp;vurdering]]></message>
-	<message key="submission.recommendation">Anbefaling</message>
+	<message key="submission.recommendation">Anbefaling: {$recommendation}</message>
 	<message key="submission.rejected">Avvist</message>
 	<message key="submission.request">Bestill</message>
 	<message key="submission.response">Svar</message>
@@ -269,4 +269,6 @@
 	<message key="submission.citations.editor.details.saveAndRevokeApproval">Tilbakekall godkjenning</message>
 	<message key="submission.form.replaceExisting">Erstatte eksisterende fil?</message>
 	<message key="log.review.reviewerAssigned">{$reviewerName} er oppnevnt for å vurdere manuskriptet {$submissionId} for vurderingsrunde {$round}.</message>
+	<message key="submission.reviewForm">Vurderingsskjema</message>
+	<message key="submission.reviewFormResponse">Vurderingsskjema-respons</message>
 </locale>

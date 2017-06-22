@@ -3,8 +3,8 @@
 /**
  * @file classes/context/PKPSection.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPSection
@@ -35,23 +35,23 @@ class PKPSection extends DataObject {
 	 * @param $contextId int
 	 */
 	function setContextId($contextId) {
-		return $this->setData('contextId', $contextId);
+		$this->setData('contextId', $contextId);
 	}
 
 	/**
-	 * Get path to section (in URL).
-	 * @return string
+	 * Get sequence of section.
+	 * @return float
 	 */
-	function getPath() {
-		return $this->getData('path');
+	function getSequence() {
+		return $this->getData('sequence');
 	}
 
 	/**
-	 * Set path to section (in URL).
-	 * @param $path string
+	 * Set sequence of section.
+	 * @param $sequence float
 	 */
-	function setPath($path) {
-		return $this->setData('path', $path);
+	function setSequence($sequence) {
+		$this->setData('sequence', $sequence);
 	}
 
 	/**
@@ -77,7 +77,7 @@ class PKPSection extends DataObject {
 	 * @param $locale string
 	 */
 	function setTitle($title, $locale) {
-		return $this->setData('title', $title, $locale);
+		$this->setData('title', $title, $locale);
 	}
 
 	/**
@@ -93,13 +93,29 @@ class PKPSection extends DataObject {
 	 * @param $editorRestricted boolean
 	 */
 	function setEditorRestricted($editorRestricted) {
-		return $this->setData('editorRestricted', $editorRestricted);
+		$this->setData('editorRestricted', $editorRestricted);
 	}
 
 	/**
-	* Get section main page views.
-	* @return int
-	*/
+	 * Get ID of primary review form.
+	 * @return int
+	 */
+	function getReviewFormId() {
+		return $this->getData('reviewFormId');
+	}
+
+	/**
+	 * Set ID of primary review form.
+	 * @param $reviewFormId int
+	 */
+	function setReviewFormId($reviewFormId) {
+		$this->setData('reviewFormId', $reviewFormId);
+	}
+
+	/**
+	 * Get section main page views.
+	 * @return int
+	 */
 	function getViews() {
 		$application = Application::getApplication();
 		return $application->getPrimaryMetricByAssoc(ASSOC_TYPE_SECTION, $this->getId());

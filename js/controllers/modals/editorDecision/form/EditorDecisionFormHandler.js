@@ -4,8 +4,8 @@
 /**
  * @file js/controllers/modals/editorDecision/form/EditorDecisionFormHandler.js
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EditorDecisionFormHandler
@@ -86,21 +86,15 @@
 
 		var processedJsonData = this.handleJson(jsonData),
 				$form = this.getHtmlElement(),
-				$textArea, currentContent;
+				$textArea = $('textarea[id^="personalMessage"]', $form),
+				editor = tinyMCE.get(/** @type {string} */ ($textArea.attr('id'))),
+				currentContent = editor.getContent();
 
 		if (processedJsonData !== false) {
 			// Add the peer review text to the personal message to the author.
-			$textArea = $('textarea[id^="personalMessage"]', $form);
 			currentContent = $textArea.val();
-
-			// make a reasonable effort to look for a signature separator.
-			// if there is one, insert the peer reviews before it.
-			if (!currentContent.match(/__________/)) {
-				$textArea.val(currentContent + processedJsonData.content);
-			} else {
-				$textArea.val(currentContent.
-						replace(/__________/, processedJsonData.content + '__________'));
-			}
+			editor.setContent(
+					currentContent + processedJsonData.content + '<br>');
 		}
 	};
 

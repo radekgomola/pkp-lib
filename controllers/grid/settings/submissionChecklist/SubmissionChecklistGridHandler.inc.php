@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/settings/submissionChecklist/SubmissionChecklistGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionChecklistGridHandler
@@ -39,8 +39,6 @@ class SubmissionChecklistGridHandler extends SetupGridHandler {
 		// Basic grid configuration
 		$this->setId('submissionChecklist');
 		$this->setTitle('manager.setup.submissionPreparationChecklist');
-		$this->setInstructions('manager.setup.submissionPreparationChecklistDescription');
-
 
 		// Add grid-level actions
 		import('lib.pkp.classes.linkAction.request.AjaxModal');
@@ -63,9 +61,9 @@ class SubmissionChecklistGridHandler extends SetupGridHandler {
 				'content',
 				'grid.submissionChecklist.column.checklistItem',
 				null,
-				'controllers/grid/gridCell.tpl',
 				null,
-				array('multiline' => true, 'html' => true, 'maxLength' => 220)
+				null,
+				array('html' => true, 'maxLength' => 220)
 			)
 		);
 	}
@@ -85,14 +83,14 @@ class SubmissionChecklistGridHandler extends SetupGridHandler {
 	/**
 	 * @copydoc GridHandler::getRowInstance()
 	 */
-	function getRowInstance() {
+	protected function getRowInstance() {
 		return new SubmissionChecklistGridRow();
 	}
 
 	/**
 	 * @copydoc GridHandler::loadData()
 	 */
-	function loadData($request, $filter) {
+	protected function loadData($request, $filter) {
 		// Elements to be displayed in the grid
 		$router = $request->getRouter();
 		$context = $router->getContext($request);
@@ -111,8 +109,7 @@ class SubmissionChecklistGridHandler extends SetupGridHandler {
 	 * @param $request PKPRequest
 	 */
 	function addItem($args, $request) {
-		// Calling editSubmissionChecklist with an empty row id will add
-		// a new submissionChecklist.
+		// Calling editItem with an empty row id will add a new row.
 		return $this->editItem($args, $request);
 	}
 
@@ -120,7 +117,7 @@ class SubmissionChecklistGridHandler extends SetupGridHandler {
 	 * An action to edit a submissionChecklist
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	function editItem($args, $request) {
 		import('lib.pkp.controllers.grid.settings.submissionChecklist.form.SubmissionChecklistForm');
@@ -129,15 +126,14 @@ class SubmissionChecklistGridHandler extends SetupGridHandler {
 
 		$submissionChecklistForm->initData($args, $request);
 
-		$json = new JSONMessage(true, $submissionChecklistForm->fetch($request));
-		return $json->getString();
+		return new JSONMessage(true, $submissionChecklistForm->fetch($request));
 	}
 
 	/**
 	 * Update a submissionChecklist
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	function updateItem($args, $request) {
 		// -> submissionChecklistId must be present and valid
@@ -152,8 +148,7 @@ class SubmissionChecklistGridHandler extends SetupGridHandler {
 			$submissionChecklistForm->execute($args, $request);
 			return DAO::getDataChangedEvent($submissionChecklistForm->submissionChecklistId);
 		} else {
-			$json = new JSONMessage(false);
-			return $json->getString();
+			return new JSONMessage(false);
 		}
 	}
 
@@ -161,7 +156,7 @@ class SubmissionChecklistGridHandler extends SetupGridHandler {
 	 * Delete a submissionChecklist
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	function deleteItem($args, $request) {
 		$rowId = $request->getUserVar('rowId');
@@ -179,9 +174,7 @@ class SubmissionChecklistGridHandler extends SetupGridHandler {
 				// only fail if the currently displayed locale was not set
 				// (this is the one that needs to be removed from the currently displayed grid)
 				if ( $locale == AppLocale::getLocale() ) {
-					$json = new JSONMessage(false, __('manager.setup.errorDeletingSubmissionChecklist'));
-					return $json->getString();
-					exit;
+					return new JSONMessage(false, __('manager.setup.errorDeletingSubmissionChecklist'));
 				}
 			}
 		}

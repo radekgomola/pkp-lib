@@ -3,8 +3,8 @@
 /**
  * @file classes/controllers/grid/filter/form/FilterForm.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FilterForm
@@ -200,7 +200,7 @@ class FilterForm extends Form {
 				// please make sure that you use the en-US key for this
 				// processing. Alternatively we might want to introduce
 				// an alphanumeric "filter key" to the filters table.
-				$filterKey = String::regexp_replace('/[^a-zA-Z0-9]/', '', $displayName);
+				$filterKey = PKPString::regexp_replace('/[^a-zA-Z0-9]/', '', $displayName);
 				$filterKey = strtolower(substr($filterKey, 0, 1)).substr($filterKey, 1);
 				$formDescriptionKey = $this->getDescription().'.'.$filterKey;
 			} else {

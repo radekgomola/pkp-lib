@@ -8,8 +8,8 @@
 /**
  * @file classes/security/AccessKey.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AccessKey
@@ -43,7 +43,7 @@ class AccessKey extends DataObject {
 	 * @param $context string
 	 */
 	function setContext($context) {
-		return $this->setData('context', $context);
+		$this->setData('context', $context);
 	}
 
 	/**
@@ -59,7 +59,7 @@ class AccessKey extends DataObject {
 	 * @param $keyHash string
 	 */
 	function setKeyHash($keyHash) {
-		return $this->setData('keyHash', $keyHash);
+		$this->setData('keyHash', $keyHash);
 	}
 
 	/**
@@ -76,7 +76,7 @@ class AccessKey extends DataObject {
 	 */
 	function setUserId($userId)
 	{
-		return $this->setData('userId', $userId);
+		$this->setData('userId', $userId);
 	}
 
 	/**
@@ -93,7 +93,7 @@ class AccessKey extends DataObject {
 	 */
 	function setAssocId($assocId)
 	{
-		return $this->setData('assocId', $assocId);
+		$this->setData('assocId', $assocId);
 	}
 
 	/**
@@ -109,7 +109,7 @@ class AccessKey extends DataObject {
 	 * @param $expiryDate string
 	 */
 	function setExpiryDate($expiryDate) {
-		return $this->setData('expiryDate', $expiryDate);
+		$this->setData('expiryDate', $expiryDate);
 	}
 }
 

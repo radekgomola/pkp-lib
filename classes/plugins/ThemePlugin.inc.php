@@ -3,8 +3,8 @@
 /**
  * @file classes/plugins/ThemePlugin.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ThemePlugin
@@ -15,7 +15,7 @@
 
 import('lib.pkp.classes.plugins.LazyLoadPlugin');
 
-class ThemePlugin extends LazyLoadPlugin {
+abstract class ThemePlugin extends LazyLoadPlugin {
 	/**
 	 * Constructor
 	 */
@@ -27,34 +27,28 @@ class ThemePlugin extends LazyLoadPlugin {
 	 * @copydoc Plugin::register
 	 */
 	function register($category, $path) {
-		$this->pluginPath = $path;
-
-		$result = parent::register($category, $path);
-
+		if (!parent::register($category, $path)) return false;
 		$request = $this->getRequest();
-		if ($result && $this->getEnabled() && !defined('SESSION_DISABLE_INIT')) {
-			HookRegistry::register('PageHandler::displayCss', array($this, '_displayCssCallback'));
+		if ($this->getEnabled() && !defined('SESSION_DISABLE_INIT')) {
 			$templateManager = TemplateManager::getManager($request);
-			$dispatcher = $request->getDispatcher();
-			$templateManager->addStyleSheet($dispatcher->url($request, ROUTE_COMPONENT, null, 'page.PageHandler', 'css', null, array('name' => $this->getName())), STYLE_SEQUENCE_LATE);
+			HookRegistry::register('PageHandler::displayCss', array($this, '_displayCssCallback'));
+			$context = $request->getContext();
+			$site = $request->getSite();
+			$contextOrSite = $context?$context:$site;
+
+			// Add the stylesheet.
+			if ($contextOrSite->getSetting('themePluginPath') == basename($path)) {
+				$dispatcher = $request->getDispatcher();
+				$templateManager->addStyleSheet($dispatcher->url($request, ROUTE_COMPONENT, null, 'page.PageHandler', 'css', null, array('name' => $this->getName())), STYLE_SEQUENCE_LATE);
+
+				// If this theme uses templates, ensure they're given priority.
+				array_unshift(
+					$templateManager->template_dir,
+					$path = Core::getBaseDir() . DIRECTORY_SEPARATOR . $this->getPluginPath() . '/templates'
+				);
+			}
 		}
-		return $result;
-	}
-
-	/**
-	 * Get the display name of this plugin. This name is displayed on the
-	 * Journal Manager's setup page 5, for example.
-	 * @return String
-	 */
-	function getDisplayName() {
-		assert(false); // Should always be overridden
-	}
-
-	/**
-	 * Get a description of the plugin.
-	 */
-	function getDescription() {
-		assert(false); // Should always be overridden
+		return true;
 	}
 
 	/**
@@ -74,6 +68,13 @@ class ThemePlugin extends LazyLoadPlugin {
 		if ($this->getLessStylesheet() === null) return null;
 
 		return 'compiled-' . $this->getName() . '.css';
+	}
+
+	/**
+	 * @copydoc PKPPlugin::getTemplatePath()
+	 */
+	function getTemplatePath($inCore = false) {
+		return parent::getTemplatePath($inCore) . 'templates/';
 	}
 
 	/**
@@ -100,11 +101,10 @@ class ThemePlugin extends LazyLoadPlugin {
 				$lastModified = time();
 
 				// Compile this theme's styles
-				require_once('lib/pkp/lib/lessphp/lessc.inc.php');
-				$less = new lessc($lessFile);
-				$less->importDir = $this->getPluginPath(); // @see PKPTemplateManager::compileStylesheet
-				$themeStyles = $less->parse();
-				$compiledStyles = str_replace('{$baseUrl}', $request->getBaseUrl(), $themeStyles);
+				require_once('lib/pkp/lib/vendor/oyejorge/less.php/lessc.inc.php');
+				$less = new Less_Parser(array( 'relativeUrls' => false ));
+				$less->parseFile ($lessFile);
+				$compiledStyles = str_replace('{$baseUrl}', $request->getBaseUrl(), $less->getCss());
 
 				// Give other plugins the chance to intervene
 				HookRegistry::call('ThemePlugin::compileCss', array($request, $less, &$compiledStylesheetFile, &$compiledStyles));

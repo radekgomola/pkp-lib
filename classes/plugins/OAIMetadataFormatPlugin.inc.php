@@ -3,8 +3,8 @@
 /**
  * @file lib/pkp/classes/plugins/OAIMetadataFormatPlugin.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OAIMetadataFormatPlugin
@@ -16,7 +16,10 @@
 import('lib.pkp.classes.plugins.Plugin');
 import('lib.pkp.classes.oai.OAIStruct');
 
-class OAIMetadataFormatPlugin extends Plugin {
+abstract class OAIMetadataFormatPlugin extends Plugin {
+	/**
+	 * Constructor
+	 */
 	function OAIMetadataFormatPlugin() {
 		parent::Plugin();
 	}
@@ -28,36 +31,10 @@ class OAIMetadataFormatPlugin extends Plugin {
 	 * 	the plugin will not be registered.
 	 */
 	function register($category, $path) {
-		if (parent::register($category, $path)) {
-			$this->addLocaleData();
-			HookRegistry::register('OAI::metadataFormats', array($this, 'callback_formatRequest'));
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Get the name of this plugin. The name must be unique within
-	 * its category, and should be suitable for part of a filename
-	 * (ie short, no spaces, and no dependencies on cases being unique).
-	 * @return String name of plugin
-	 */
-	function getName() {
-		assert(false); // Should always be overridden
-	}
-
-	/**
-	 * Get the display name for this plugin.
-	 */
-	function getDisplayName() {
-		assert(false); // Should always be overridden
-	}
-
-	/**
-	 * Get a description of this plugin.
-	 */
-	function getDescription() {
-		assert(false); // Should always be overridden
+		if (!parent::register($category, $path)) return false;
+		$this->addLocaleData();
+		HookRegistry::register('OAI::metadataFormats', array($this, 'callback_formatRequest'));
+		return true;
 	}
 
 	/**

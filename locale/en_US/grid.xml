@@ -4,8 +4,8 @@
 <!--
   * locale/en_US/grid.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings.
@@ -16,11 +16,18 @@
 	<message key="grid.noItems">No Items</message>
 	<message key="grid.settings">Settings</message>
 	<message key="grid.noAuditors">No Auditors</message>
+	<message key="grid.remotelyHostedItem">This item is remotely hosted.</message>
 
 	<message key="grid.action.manageAccess">Manage Access</message>
 	<message key="grid.action.sort">Sort</message>
 	<message key="grid.action.addItem">Add Item</message>
+	<message key="grid.action.addNote">Add Note</message>
+	<message key="grid.action.addQuery">Add discussion</message>
+	<message key="grid.action.readQuery">Read discussion</message>
+	<message key="grid.action.deleteQuery">Delete discussion</message>
+	<message key="grid.action.updateQuery">Update discussion</message>
 	<message key="grid.action.addUser">Add User</message>
+	<message key="grid.action.unassignReviewer">Unassign this reviewer</message>
 	<message key="grid.action.approveCopyedit">Approve this copyedit file for sending it to the next stage</message>
 	<message key="grid.action.reload">Reload</message>
 	<message key="grid.action.delete">Delete</message>
@@ -34,6 +41,8 @@
 	<message key="grid.action.remove">Remove</message>
 	<message key="grid.action.edit">Edit</message>
 	<message key="grid.action.approve">Approve</message>
+	<message key="grid.action.disapprove">Disapprove</message>
+	<message key="grid.action.setApproval">Set Approval</message>
 	<message key="grid.action.moreInformation">More Information</message>
 	<message key="grid.action.restoreDefaults">Restore Defaults</message>
 	<message key="grid.action.restoreDefaults.confirm">Are you sure you wish to restore the defaults?</message>
@@ -57,7 +66,6 @@
 	<message key="grid.action.editFile">Edit a file</message>
 	<message key="grid.action.selectFiles">Select files to manage</message>
 	<message key="grid.action.requestRevisions">Request revisions for this submission</message>
-	<message key="grid.action.resubmit">Request that this submission be resubmitted</message>
 	<message key="grid.action.accept">Accept this submission</message>
 	<message key="grid.action.decline">Decline this Submission</message>
 	<message key="grid.action.internalReview">Send this submission to internal review</message>
@@ -74,10 +82,6 @@
 	<message key="grid.action.editPreparedEmail">Edit this email template</message>
 	<message key="grid.action.disableEmail">Disable this email template</message>
 	<message key="grid.action.resetEmail">Reset this email template to the default</message>
-	<message key="grid.action.addSignoff">Add an audit response for this file</message>
-	<message key="grid.action.deleteSignoff">Delete this signoff</message>
-	<message key="grid.action.fileSignoff">Signoff on this file</message>
-	<message key="grid.action.readSignoff">Read this signoff</message>
 	<message key="grid.action.expandAll">Expand All</message>
 	<message key="grid.action.requestAccount">Add a participant</message>
 	<message key="grid.action.expand">Expand</message>
@@ -88,6 +92,7 @@
 	<message key="grid.action.details">View this item</message>
 	<message key="grid.action.enrolExisting">Enrol an existing user as a reviewer</message>
 	<message key="grid.action.selectCreate">Create a new reviewer</message>
+	<message key="grid.action.search">Search</message>
 	<message key="grid.action.advancedSearch">Advanced Search</message>
 	<message key="grid.action.viewLibrary">View Document Library</message>
 	<message key="grid.action.viewMetadata">View the metadata for this submission</message>
@@ -108,6 +113,12 @@
 	<message key="grid.action.logInAs">Login As</message>
 	<message key="grid.action.exportAllUsers">Export All Users</message>
 	<message key="grid.users.confirmExportAllUsers">Are you sure you wish to export all users?</message>
+	<message key="grid.action.activate">Activate</message>
+	<message key="grid.action.deactivate">Deactivate</message>
+	<message key="grid.action.copy">Copy</message>
+	<message key="grid.action.preview">Preview</message>
+	<message key="grid.action.install">Install</message>
+	<message key="grid.action.moreItems">Load more</message>
 
 	<!--  grid task status -->
 	<message key="grid.task.status.completed">This task is completed</message>
@@ -124,7 +135,7 @@
 	<message key="grid.columns.locale">Locale</message>
 
 	<!-- Sponsors Grid -->
-	<message key="grid.sponsor.title">Sponsors</message>
+	<message key="grid.sponsor.title">Sponsoring Organizations</message>
 	<message key="grid.action.addSponsor">Add Sponsor</message>
 	<message key="grid.action.deleteSponsor">Delete Sponsor</message>
 	<message key="grid.action.editSponsor">Edit Sponsor</message>
@@ -140,18 +151,16 @@
 	<message key="grid.action.deleteCategory">Delete Category</message>
 
 	<!-- Contributor Grid -->
-	<message key="grid.contributor.title">Contributors</message>
+	<message key="grid.contributor.title">Sources of Support</message>
 	<message key="grid.action.addContributor">Add Contributor</message>
 	<message key="grid.action.editContributor">Edit Contributor</message>
 	<message key="grid.action.deleteContributor">Delete Contributor</message>
 
-	<!-- Genres Grid -->
-	<message key="grid.genres.title">Genres</message>
-	<message key="grid.genres.description">These genres are used for file-naming purposes and are presented in a pull-down menu on uploading files. The genres designated ## allow the user to associate the file with either the whole book 99Z or a particular chapter by number (e.g., 02).</message>
-	
-
 	<!-- Review Forms Grid -->
 	<message key="grid.reviewForm.title">Review Forms</message>
+
+	<!-- Review Form Element Reponse Items Grid -->
+	<message key="grid.reviewFormElement.responseItems">Response Options</message>
 
 	<!-- Files -->
 	<message key="grid.noFiles">No Files</message>
@@ -195,7 +204,7 @@
 	<message key="grid.user.enableReason">Reason for enabling user</message>
 	<message key="grid.user.error">An error was encountered administrating this user. Please try again.</message>
 	<message key="grid.user.errorEmail">An error was encountered sending this email. Please ensure that your email server configuration is working and/or contact your system administrator.</message>
-	<message key="grid.user.cannotAdminister">You do not have sufficient permissions to edit this user.</message>
+	<message key="grid.user.cannotAdminister">You do not have sufficient permissions to administer this user. In order to administer a user, you must either be site administrator, or administer all contexts that this user is enrolled in.</message>
 	<message key="grid.user.authSource">Authentication source</message>
 	<message key="grid.user.mustProvideName">Please provide at least a last name for the user first.</message>
 	<message key="grid.user.generatePassword">Generate Password</message>
@@ -229,15 +238,12 @@
 
 	<!-- Prepared emails -->
 	<message key="grid.preparedEmails.title">Prepared Email Templates</message>
-	<message key="grid.preparedEmails.description">The press facilitates work flow communication through the use of prepared email messages. The default wording of these email templates can be easily modified below.</message>
 	<message key="grid.preparedEmails.currentList">Current List</message>
-	
+
 	<!-- Plugins -->
 	<message key="grid.plugin.allCategories">All Categories</message>
 	<message key="grid.plugin.disable">Are you sure you want to disable this plugin?</message>
 
-	<!-- signoffs -->
-	<message key="grid.action.viewSignoffNotes">View signoff notes</message>
 	<message key="grid.action.fileUnconsider">Proofing corrections made. You may unconsider this task</message>
 
 	<!-- Artwork Files Grid -->
@@ -247,8 +253,8 @@
 	<message key="grid.artworkFile.copyrightContact">Contact Info (if not author/publisher)</message>
 	<message key="grid.artworkFile.permissionTerms">Permission Terms</message>
 	<message key="grid.artworkFile.placement">Placement in submission</message>
-	
-	<!-- User Group Grid -->
+
+        <!-- User Group Grid -->
 	<message key="grid.userGroup.assignStage">Assign stage</message>
 	<message key="grid.userGroup.unassignStage">Unassign stage</message>
 	<message key="grid.userGroup.allStages">All Workflow Stages</message>
@@ -259,4 +265,7 @@
 	<message key="grid.userGroup.removed">{$userGroupName} role removed.</message>
 	<message key="grid.userGroup.assignedStage">{$userGroupName} role assigned to {$stageName} stage.</message>
 	<message key="grid.userGroup.unassignedStage">{$userGroupName} role unassigned from {$stageName} stage.</message>
+
+	<!-- Submission list grids -->
+	<message key="grid.submission.itemTitle">Author; Title</message>
 </locale>

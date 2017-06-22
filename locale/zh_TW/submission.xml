@@ -4,8 +4,8 @@
 <!--
   * locale/zh_TW/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the zh_TW (繁體中文) locale.
@@ -128,7 +128,7 @@
 	<message key="submission.page.review">#{$id} 審查</message>
 	<message key="submission.page.summary">#{$id} 摘要</message>
 	<message key="submission.peerReview">審查</message>
-	<message key="submission.recommendation">推薦</message>
+	<message key="submission.recommendation">推薦: {$recommendation}</message>
 	<message key="submission.rejected">退稿</message>
 	<message key="submission.request">要求</message>
 	<message key="submission.response">回應：</message>

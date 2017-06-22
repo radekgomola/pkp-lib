@@ -3,8 +3,8 @@
 /**
  * @file pages/notification/NotificationHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class NotificationHandler
@@ -48,51 +48,11 @@ class NotificationHandler extends Handler {
 		$context = $request->getContext();
 		$contextId = isset($context)?$context->getId():null;
 
-		$notificationManager = new NotificationManager();
 		$notificationDao = DAORegistry::getDAO('NotificationDAO');
-
-		$rangeInfo = $this->getRangeInfo($request, 'notifications');
-
-		// Construct the formatted notification string to display in the template
-		$formattedNotifications = $notificationManager->getFormattedNotificationsForUser($request, $userId, NOTIFICATION_LEVEL_NORMAL, $contextId, $rangeInfo);
-
-		// Get the same notifications used for the string so we can paginate
-		$notifications = $notificationDao->getByUserId($userId, NOTIFICATION_LEVEL_NORMAL, null, $contextId, $rangeInfo);
-
-		$notificationDao = DAORegistry::getDAO('NotificationDAO');
-		$templateMgr->assign('formattedNotifications', $formattedNotifications);
-		$templateMgr->assign('notifications', $notifications);
 		$templateMgr->assign('unread', $notificationDao->getNotificationCount(false, $userId, $contextId));
 		$templateMgr->assign('read', $notificationDao->getNotificationCount(true, $userId, $contextId));
-		$templateMgr->assign('url', $router->url($request, null, 'notification', 'settings'));
+		$templateMgr->assign('url', $router->url($request, null, 'user', 'profile'));
 		$templateMgr->display('notification/index.tpl');
-	}
-
-	/**
-	 * Delete a notification
-	 * @param $args array
-	 * @param $request Request
-	 */
-	function delete($args, $request) {
-		$this->validate();
-
-		$notificationId = array_shift($args);
-		if (array_shift($args) == 'ajax') {
-			$isAjax = true;
-		} else $isAjax = false;
-
-		$user = $request->getUser();
-		if(isset($user)) {
-			$userId = (int) $user->getId();
-
-			$notificationDao = DAORegistry::getDAO('NotificationDAO');
-			$notificationDao->deleteById($notificationId, $userId);
-		}
-
-		if (!$isAjax) {
-			$router = $request->getRouter();
-			$request->redirectUrl($router->url($request, null, 'notification'));
-		}
 	}
 
 	/**
@@ -303,8 +263,7 @@ class NotificationHandler extends Handler {
 	 * Return formatted notification data using Json.
 	 * @param $args array
 	 * @param $request Request
-	 *
-	 * @return JSONMessage
+	 * @return JSONMessage JSON object
 	 */
 	function fetchNotification($args, $request) {
 		$this->setupTemplate($request);
@@ -317,7 +276,9 @@ class NotificationHandler extends Handler {
 		// Get the notification options from request.
 		$notificationOptions = $request->getUserVar('requestOptions');
 
-		if (is_array($notificationOptions)) {
+		if (!$user) {
+			$notifications = array();
+		} elseif (is_array($notificationOptions)) {
 			// Retrieve the notifications.
 			$notifications = $this->_getNotificationsByOptions($notificationOptions, $context->getId(), $userId);
 		} else {
@@ -345,7 +306,7 @@ class NotificationHandler extends Handler {
 			$json->setContent($formattedNotificationsData);
 		}
 
-		return $json->getString();
+		return $json;
 	}
 
 	/**

@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/settings/sponsor/SponsorGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SponsorGridHandler
@@ -25,6 +25,7 @@ class SponsorGridHandler extends SetupGridHandler {
 		parent::SetupGridHandler();
 		$this->addRoleAssignment(array(ROLE_ID_MANAGER),
 				array('fetchGrid', 'fetchRow', 'addSponsor', 'editSponsor', 'updateSponsor', 'deleteSponsor'));
+		$this->setTitle('grid.sponsor.title');
 	}
 
 	//
@@ -65,7 +66,7 @@ class SponsorGridHandler extends SetupGridHandler {
 				'institution',
 				'grid.columns.institution',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				null,
 				array('width' => 50, 'alignment' => COLUMN_ALIGNMENT_LEFT)
 			)
@@ -75,7 +76,7 @@ class SponsorGridHandler extends SetupGridHandler {
 				'url',
 				'grid.columns.url',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				null,
 				array('width' => 50, 'alignment' => COLUMN_ALIGNMENT_LEFT)
 			)
@@ -89,7 +90,7 @@ class SponsorGridHandler extends SetupGridHandler {
 	 * Get the row handler - override the default row handler
 	 * @return SponsorGridRow
 	 */
-	function getRowInstance() {
+	protected function getRowInstance() {
 		return new SponsorGridRow();
 	}
 
@@ -111,7 +112,7 @@ class SponsorGridHandler extends SetupGridHandler {
 	 * An action to edit a sponsor
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	function editSponsor($args, $request) {
 		$sponsorId = isset($args['rowId'])?$args['rowId']:null;
@@ -125,15 +126,14 @@ class SponsorGridHandler extends SetupGridHandler {
 			$sponsorForm->initData($args, $request);
 		}
 
-		$json = new JSONMessage(true, $sponsorForm->fetch($request));
-		return $json->getString();
+		return new JSONMessage(true, $sponsorForm->fetch($request));
 	}
 
 	/**
 	 * Update a sponsor
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	function updateSponsor($args, $request) {
 		// -> sponsorId must be present and valid
@@ -165,7 +165,7 @@ class SponsorGridHandler extends SetupGridHandler {
 	 * Delete a sponsor
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	function deleteSponsor($args, $request) {
 		$sponsorId = isset($args['rowId'])?$args['rowId']:null;

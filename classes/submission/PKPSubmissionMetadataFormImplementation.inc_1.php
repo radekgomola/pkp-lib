@@ -99,7 +99,7 @@ class PKPSubmissionMetadataFormImplementation {
                                 'urlWeb' => $submission->getLocalizedUrlWeb(null), // Localized
                                 'bibliografickaCitace' => $submission->getBibliografickaCitace(null), // Localized
                                 'poznamka' => $submission->getPoznamka(null), // Localized
-                                'dedikace' => $submission->getDedikace(null), // Localized
+                                'referencereferenceMunipress' => $submission->getReferenceMunipress(null), // Localized
                                 'typ_02_58' => $submission->getLocalizedTypPublikace(null), // Localized
                                 
 			); 
@@ -156,7 +156,7 @@ class PKPSubmissionMetadataFormImplementation {
                                 'licenceZverejnit', 'naklad', 'honorarCelkem', 
                                 'honorarVyplata', 'povVytiskyDosly', 'povVytiskyOdesly', 
                                 'tiskarna', 'poznamkaAdmin', 'typ_02_58', 'urlWeb',
-                                'bibliografickaCitace', 'poznamka', 'dedikace',
+                                'bibliografickaCitace', 'poznamka', 'referenceMunipress',
                                 'languages', 'souvisejiciPublikace', 'muPracoviste');
 		$this->_parentForm->readUserVars($userVars);
 	}
@@ -166,7 +166,7 @@ class PKPSubmissionMetadataFormImplementation {
 	 * @return array
 	 */
 	function getLocaleFieldNames() {
-		return array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights', 'bibliografickaCitace', 'poznamka', 'dedikace', 'typ_02_58', 'urlWeb');
+		return array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights', 'bibliografickaCitace', 'poznamka', 'referenceMunipress', 'typ_02_58', 'urlWeb');
 	}
 
 	/**
@@ -217,7 +217,7 @@ class PKPSubmissionMetadataFormImplementation {
 //                $submission->setUrlWeb($this->_parentForm->getData('urlWeb'), null); // Localized
 //                $submission->setBibliografickaCitace($this->_parentForm->getData('bibliografickaCitace'), null); // Localized
 //                $submission->setPoznamka($this->_parentForm->getData('poznamka'), null); // Localized
-//                $submission->setDedikace($this->_parentForm->getData('dedikace'), null); // Localized
+//                $submission->setReferenceMunipress($this->_parentForm->getData('referenceMunipress'), null); // Localized
 
                 // Save the submission
 		$submissionDao->updateObject($submission);

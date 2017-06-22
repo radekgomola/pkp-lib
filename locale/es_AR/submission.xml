@@ -2,10 +2,10 @@
 <!DOCTYPE locale SYSTEM "../../dtd/locale.dtd">
 
 <!--
-  * ../pkp//locale/es_AR/submission.xml
+  * locale/es_AR/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the es_AR (Español (Argentina)) locale.
@@ -129,7 +129,7 @@
 	<message key="submission.page.review">#{$id} Revisión</message>
 	<message key="submission.page.summary">#{$id} Resumen</message>
 	<message key="submission.peerReview">Peer&amp;nbsp;Review</message>
-	<message key="submission.recommendation">Recomendación</message>
+	<message key="submission.recommendation">Recomendación: {$recommendation}</message>
 	<message key="submission.rejected">Rechazado</message>
 	<message key="submission.request">Pedir</message>
 	<message key="submission.response">Respuesta</message>

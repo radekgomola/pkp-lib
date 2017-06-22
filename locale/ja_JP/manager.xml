@@ -4,8 +4,8 @@
 <!--
   * locale/ja_JP/manager.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ja_JP (日本語) locale.
@@ -147,7 +147,6 @@
 	<message key="manager.setup.layout.unselected">未選択のコンポーネント</message>
 	<message key="manager.setup.loggingAndAuditing">ログ出力と監査</message>
 	<message key="manager.setup.pageHeaderLogoImageInvalid">ページヘッダのロゴ画像フォーマットが不正です。利用できるフォーマットは、.gif、.jpg、.pngの3つです。</message>
-	<message key="manager.setup.pageHeaderTitleImageInvalid">ページヘッダの誌名画像フォーマットが不正です。利用できるフォーマットは、.gif、.jpg、.pngの3つです。</message>
 	<message key="manager.setup.selectOne">1つ選択してください</message>
 	<message key="manager.statistics">統計と報告書</message>
 	<message key="manager.statistics.statistics.count.value">{$count}（{$percentage}%）</message>
@@ -169,7 +168,6 @@
 	<message key="plugins.categories.themes.description">システムの外観を変更することができます。</message>
 	<message key="plugins.categories.themes">テーマプラグイン</message>
 	<message key="manager.emails.form.emailKeyRequired">ユニークなメールテンプレート識別キーが必要です。</message>
-	<message key="manager.reviewerSearch.advancedSearch">詳細査読者検索</message>
 	<message key="manager.reviewerSearch.searchByName">者読者名で検索</message>
 	<message key="manager.reviewerSearch.doneAmount">完了した査読数</message>
 	<message key="manager.reviewerSearch.avgAmount">1論文あたりの平均査読所要日数</message>
@@ -199,9 +197,9 @@
 	<message key="manager.setup.filter.parser.grid.title">引用抽出サービス</message>
 	<message key="manager.setup.filter.pleaseSelect">選択してください...</message>
 	<message key="manager.setup.filter.lookup.grid.description.iSBNdb"><![CDATA[<p>このフィルタでは <a href="http://isbndb.com/" target="_blank">ISBNdb.com</a> の book and ISBN database に接続できます。</p>
-	<p>ISBNdb API key の取得が必要です。key 作成の詳細については <a href="http://isbndb.com/docs/api/30-keys.html" target="_blank">online documentation</a> を参照してください。</p>]]></message>
+	<p>ISBNdb API key の取得が必要です。key 作成の詳細については <a href="http://isbndb.com/api/v1/docs/keys" target="_blank">online documentation</a> を参照してください。</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.worldCat"><![CDATA[<p>このフィルタでは，OCLCが提供する <a href="http://www.worldcat.org/affiliate/webservices/xisbn/app.jsp" target="_blank">xISBN</a> と <a href="http://www.worldcat.org/" target="_blank">Worldcat</a> (オプション)に接続します。</p>
-	<p>既に Worldcat <a href="http://www.worldcat.org/devnet/wiki/SearchAPIWhoCanUse" target="_blank">API key</a> を持っている場合は下記にkey を入力することで Worldcat にアクセスできます。</p>]]></message>
+	<p>既に Worldcat <a href="http://oclc.org/developer/develop/web-services.html" target="_blank">API key</a> を持っている場合は下記にkey を入力することで Worldcat にアクセスできます。</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.loadMessage">引用データベースの設定を読み込むまでお待ちください。</message>
 	<message key="manager.setup.filter.parser.grid.description.freeCite"><![CDATA[<p>この抽出フィルタでは <a href="http://freecite.library.brown.edu/" target="_blank">FreeCite</a> のWebサービスに接続します。</p>]]></message>
 	<message key="manager.setup.filter.parser.grid.description.parsCit"><![CDATA[<p>この抽出フィルタでは <a href="http://aye.comp.nus.edu.sg/parsCit/" target="_blank">ParsCit</a> のWebサービスに接続します。</p>]]></message>
@@ -219,4 +217,39 @@
 	<message key="manager.setup.filter.noMoreTemplates">利用可能なすべてのテンプレートがすでに追加されています。"キャンセル"をクリックして設定ページに戻ってください。</message>
 	<message key="plugins.categories.oaiMetadataFormats">OAIメタデータフォーマットプラグイン</message>
 	<message key="subscriptionTypes.format.online">オンライン</message>
+
+	<!-- Review forms -->
+	<message key="manager.reviewFormElement.changeType">フォーム項目種別を変更する</message>
+	<message key="manager.reviewFormElements">フォーム項目</message>
+	<message key="manager.reviewFormElements.addResponseItem">選択の追加</message>
+	<message key="manager.reviewFormElements.checkboxes">チェックボックス（1つ以上選択可能）</message>
+	<message key="manager.reviewFormElements.chooseType">項目種別を選択してください</message>
+	<message key="manager.reviewFormElements.confirmDelete">公開されたフォーム項目の削除を確認</message>
+	<message key="manager.reviewFormElements.copyTo">複写先:</message>
+	<message key="manager.reviewFormElements.create">新項目の作成</message>
+	<message key="manager.reviewFormElements.dropdownbox">ドロップダウンボックス</message>
+	<message key="manager.reviewFormElements.edit">フォーム項目の編集</message>
+	<message key="manager.reviewFormElements.elementType">項目種別</message>
+	<message key="manager.reviewFormElements.form.elementTypeRequired">フォーム項目には項目種別が必要です。</message>
+	<message key="manager.reviewFormElements.form.questionRequired">フォーム項目には質問が必要です。</message>
+	<message key="manager.reviewFormElements.noneCreated">フォーム項目は作成されていません。</message>
+	<message key="manager.reviewFormElements.possibleResponse">選択</message>
+	<message key="manager.reviewFormElements.question">項目</message>
+	<message key="manager.reviewFormElements.radiobuttons">ラジオボックス（1つのみ選択可能）</message>
+	<message key="manager.reviewFormElements.required">必須入力項目</message>
+	<message key="manager.reviewFormElements.smalltextfield">単語テキストボックス</message>
+	<message key="manager.reviewFormElements.textarea">拡張テキストボックス</message>
+	<message key="manager.reviewFormElements.textfield">行テキストボックス</message>
+	<message key="manager.reviewForms">査読フォーム</message>
+	<message key="manager.reviewForms.completed">完了</message>
+	<message key="manager.reviewForms.create">査読フォームの作成</message>
+	<message key="manager.reviewForms.description">説明と操作法</message>
+	<message key="manager.reviewForms.edit">査読フォーム</message>
+	<message key="manager.reviewForms.form.titleRequired">査読フォームにはタイトルが必要です。</message>
+	<message key="manager.reviewForms.inReview">査読中</message>
+	<message key="manager.reviewForms.list.description">2つの入力欄（「著者と編集者用」と「編集者用」）を持つデフォルトフォームの代わりに査読者に表示する、査読フォームを作成します。査読フォームは特定の雑誌セクションごとに作成することもでき、どれを使用するかは編集者が査読者任命の際に選択することができます。どんな場合も、編集者は著者への通知に査読結果を含めるか否かを選択することができます。</message>
+	<message key="manager.reviewForms.noneChosen">使用しない / 自由記述の査読フォーム</message>
+	<message key="manager.reviewForms.noneCreated">査読フォームが作成されていません。</message>
+	<message key="manager.reviewForms.preview">プレビュー</message>
+	<message key="manager.reviewForms.title">タイトル</message>
 </locale>

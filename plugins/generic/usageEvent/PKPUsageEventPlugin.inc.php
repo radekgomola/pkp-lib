@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/usageEvent/PKPUsageEventPlugin.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPUsageEventPlugin
@@ -27,7 +27,7 @@ abstract class PKPUsageEventPlugin extends GenericPlugin {
 	// Implement methods from PKPPlugin.
 	//
 	/**
-	* @see LazyLoadPlugin::register()
+	* @copydoc LazyLoadPlugin::register()
 	*/
 	function register($category, $path) {
 		$success = parent::register($category, $path);
@@ -43,49 +43,49 @@ abstract class PKPUsageEventPlugin extends GenericPlugin {
 	}
 
 	/**
-	 * @see LazyLoadPlugin::getName()
+	 * @copydoc LazyLoadPlugin::getName()
 	 */
 	function getName() {
 		return 'usageeventplugin';
 	}
 
 	/**
-	 * @see Plugin::getInstallSitePluginSettingsFile()
+	 * @copydoc Plugin::getInstallSitePluginSettingsFile()
 	 */
 	function getInstallSitePluginSettingsFile() {
-		return PKP_LIB_PATH . DIRECTORY_SEPARATOR . $this->getPluginPath() .  DIRECTORY_SEPARATOR . 'settings.xml';
+		return PKP_LIB_PATH . DIRECTORY_SEPARATOR . $this->getPluginPath() . DIRECTORY_SEPARATOR . 'settings.xml';
 	}
 
 	/**
-	 * @see Plugin::getDisplayName()
+	 * @copydoc Plugin::getDisplayName()
 	 */
 	function getDisplayName() {
 		return __('plugins.generic.usageEvent.displayName');
 	}
 
 	/**
-	 * @see Plugin::getDescription()
+	 * @copydoc Plugin::getDescription()
 	 */
 	function getDescription() {
 		return __('plugins.generic.usageEvent.description');
 	}
 
 	/**
-	 * @see LazyLoadPlugin::getEnabled()
+	 * @copydoc LazyLoadPlugin::getEnabled()
 	 */
 	function getEnabled() {
 		return true;
 	}
 
 	/**
-	 * @see Plugin::isSitePlugin()
+	 * @copydoc Plugin::isSitePlugin()
 	 */
 	function isSitePlugin() {
 		return true;
 	}
 
 	/**
-	 * @see GenericPlugin::getManagementVerbs()
+	 * @copydoc GenericPlugin::getManagementVerbs()
 	 */
 	function getManagementVerbs() {
 		return array();
@@ -100,7 +100,7 @@ abstract class PKPUsageEventPlugin extends GenericPlugin {
 	 * @return mixed string or null
 	 */
 	function getUniqueSiteId() {
-		return $this->getSetting(0, 'uniqueSiteId');
+		return $this->getSetting(CONTEXT_SITE, 'uniqueSiteId');
 	}
 
 
@@ -187,6 +187,21 @@ abstract class PKPUsageEventPlugin extends GenericPlugin {
 		$canonicalUrl = $router->url(
 			$request, null, $canonicalUrlPage, $canonicalUrlOp, $canonicalUrlParams
 		);
+
+		// Make sure we log the server name and not aliases.
+		$configBaseUrl = Config::getVar('general', 'base_url');
+		$requestBaseUrl = $request->getBaseUrl();
+		if ($requestBaseUrl !== $configBaseUrl) {
+			// Make sure it's not an url override (no alias on that case).
+			if (!in_array($requestBaseUrl, Config::getContextBaseUrls()) &&
+					$requestBaseUrl !== Config::getVar('general', 'base_url[index]')) {
+				// Alias found, replace it by base_url from config file.
+				// Make sure we use the correct base url override value for the context, if any.
+				$baseUrlReplacement = Config::getVar('general', 'base_url['.$context->getPath().']');
+				if (!$baseUrlReplacement) $baseUrlReplacement = $configBaseUrl;
+				$canonicalUrl = str_replace($requestBaseUrl, $baseUrlReplacement, $canonicalUrl);
+			}
+		}
 
 		// Public identifiers.
 		// 1) A unique system internal ID that will help us to easily attribute

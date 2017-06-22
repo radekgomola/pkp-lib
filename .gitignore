@@ -1,6 +1,4 @@
 te_ST/
 lib/tinymce/jscripts/tiny_mce/*.gz
-templates/common/footer.tpl.orig
-xml/schema/content.xml.orig
-classes/submission/PKPAuthorDAO.inc.old.php
-controllers/grid/users/author/form/AuthorForm.inc.old.php
+lib/vendor
+lib/components

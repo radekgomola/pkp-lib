@@ -3,8 +3,8 @@
 /**
  * @file controllers/informationCenter/InformationCenterHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class InformationCenterHandler
@@ -56,10 +56,8 @@ class InformationCenterHandler extends Handler {
 	 */
 	function authorize($request, &$args, $roleAssignments) {
 		// Require a submission
-		import('classes.security.authorization.SubmissionAccessPolicy');
+		import('lib.pkp.classes.security.authorization.SubmissionAccessPolicy');
 		$this->addPolicy(new SubmissionAccessPolicy($request, $args, $roleAssignments, 'submissionId'));
-
-
 		return parent::authorize($request, $args, $roleAssignments);
 	}
 
@@ -81,9 +79,11 @@ class InformationCenterHandler extends Handler {
 	//
 	/**
 	 * Display the main information center modal.
+	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
-	function viewInformationCenter($request) {
+	function viewInformationCenter($args, $request) {
 		$this->setupTemplate($request);
 		$templateMgr = TemplateManager::getManager($request);
 		return $templateMgr->fetchJson('controllers/informationCenter/informationCenter.tpl');
@@ -129,6 +129,7 @@ class InformationCenterHandler extends Handler {
 	 * Display the list of existing notes.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function listNotes($args, $request) {
 		$this->setupTemplate($request);
@@ -144,13 +145,14 @@ class InformationCenterHandler extends Handler {
 		$templateMgr->assign('notesListId', 'notesList');
 		$json = new JSONMessage(true, $templateMgr->fetch('controllers/informationCenter/notesList.tpl'));
 		$json->setEvent('dataChanged');
-		return $json->getString();
+		return $json;
 	}
 
 	/**
 	 * Delete a note.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function deleteNote($args, $request) {
 		$this->setupTemplate($request);
@@ -164,8 +166,7 @@ class InformationCenterHandler extends Handler {
 		$user = $request->getUser();
 		NotificationManager::createTrivialNotification($user->getId(), NOTIFICATION_TYPE_SUCCESS, array('contents' => __('notification.removedNote')));
 
-		$json = new JSONMessage(true);
-		return $json->getString();
+		return new JSONMessage(true);
 	}
 
 	/**

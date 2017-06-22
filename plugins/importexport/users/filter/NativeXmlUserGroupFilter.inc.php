@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/users/filter/NativeXmlUserGroupFilter.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class NativeXmlUserGroupFilter
@@ -82,7 +82,6 @@ class NativeXmlUserGroupFilter extends NativeImportFilter {
 
 			for ($n = $node->firstChild; $n !== null; $n=$n->nextSibling) if (is_a($n, 'DOMElement')) switch($n->tagName) {
 				case 'role_id': $userGroup->setRoleId($n->textContent); break;
-				case 'path': $userGroup->setPath($n->textContent); break;
 				case 'is_default': $userGroup->setDefault($n->textContent); break;
 				case 'show_title': $userGroup->setShowTitle($n->textContent); break;
 				case 'name': $userGroup->setName($n->textContent, $n->getAttribute('locale')); break;

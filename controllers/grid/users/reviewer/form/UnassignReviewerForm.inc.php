@@ -2,8 +2,8 @@
 /**
  * @file controllers/grid/users/reviewer/form/UnassignReviewerForm.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UnassignReviewerForm
@@ -72,8 +72,9 @@ class UnassignReviewerForm extends Form {
 				'editorialContactSignature' => $user->getContactSignature(),
 				'signatureFullName' => $user->getFullname(),
 			));
+			$template->replaceParams();
 
-			$this->setData('personalMessage', $template->getBody() . "\n" . $context->getSetting('emailSignature'));
+			$this->setData('personalMessage', $template->getBody());
 		}
 	}
 
@@ -90,7 +91,7 @@ class UnassignReviewerForm extends Form {
 
 		// Notify the reviewer via email.
 		import('lib.pkp.classes.mail.SubmissionMailTemplate');
-		$mail = new SubmissionMailTemplate($submission, 'REVIEW_CANCEL', null, null, null, false);
+		$mail = new SubmissionMailTemplate($submission, 'REVIEW_CANCEL', null, null, false);
 
 		if ($mail->isEnabled() && !$this->getData('skipEmail')) {
 			$userDao = DAORegistry::getDAO('UserDAO');
@@ -98,6 +99,7 @@ class UnassignReviewerForm extends Form {
 			$reviewer = $userDao->getById($reviewerId);
 			$mail->addRecipient($reviewer->getEmail(), $reviewer->getFullName());
 			$mail->setBody($this->getData('personalMessage'));
+			$mail->assignParams();
 			$mail->send($request);
 		}
 

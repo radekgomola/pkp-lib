@@ -4,11 +4,11 @@
 <!--
   * locale/sv_SE/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the sv_SE (Swedish) locale.
+  * Localization strings for the sv_SE (Svenska) locale.
   *
   -->
 
@@ -129,7 +129,7 @@
 	<message key="submission.page.review">#{$id} Granska</message>
 	<message key="submission.page.summary">#{$id} Sammandrag</message>
 	<message key="submission.peerReview">Sakkunnig&amp;nbsp;granskning</message>
-	<message key="submission.recommendation">Rekommendation</message>
+	<message key="submission.recommendation">Rekommendation: {$recommendation}</message>
 	<message key="submission.rejected">Avvisad</message>
 	<message key="submission.request">Beställa</message>
 	<message key="submission.response">Svar</message>
@@ -163,4 +163,5 @@
 	<message key="submission.viewMetadata">Visa metadata</message>
 	<message key="submission.views">Visningar</message>
 	<message key="log.review.reviewerAssigned">{$reviewerName} har tilldelats ett manuskript att granska {$submissionId} för granskningsomgång {$round}.</message>
+	<message key="submission.reviewForm">Granskningsformulär</message> 
 </locale>

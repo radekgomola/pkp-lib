@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/users/reviewer/form/CreateReviewerForm.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CreateReviewerForm
@@ -40,9 +40,9 @@ class CreateReviewerForm extends ReviewerForm {
 	 * @see Form::fetch()
 	 */
 	function fetch($request) {
-		$searchByNameAction = $this->getSearchByNameAction($request);
+		$advancedSearchAction = $this->getAdvancedSearchAction($request);
 
-		$this->setReviewerFormAction($searchByNameAction);
+		$this->setReviewerFormAction($advancedSearchAction);
 		return parent::fetch($request);
 	}
 
@@ -58,12 +58,11 @@ class CreateReviewerForm extends ReviewerForm {
 			'middleName',
 			'lastName',
 			'affiliation',
-			'keywords',
-			'interestsTextOnly',
+			'interests',
 			'username',
 			'email',
 			'skipEmail',
-			'userGroupId'
+			'userGroupId',
 		));
 	}
 
@@ -98,6 +97,7 @@ class CreateReviewerForm extends ReviewerForm {
 		} else {
 			$user->setPassword(Validation::encryptCredentials($this->getData('username'), $password));
 		}
+		$user->setMustChangePassword(true); // Emailed P/W not safe
 
 		$user->setDateRegistered(Core::getCurrentDate());
 		$reviewerId = $userDao->insertObject($user);
@@ -106,10 +106,9 @@ class CreateReviewerForm extends ReviewerForm {
 		$this->setData('reviewerId', $reviewerId);
 
 		// Insert the user interests
-		$interests = $this->getData('interestsKeywords') ? $this->getData('interestsKeywords') : $this->getData('interestsTextOnly');
 		import('lib.pkp.classes.user.InterestManager');
 		$interestManager = new InterestManager();
-		$interestManager->setInterestsForUser($user, $interests);
+		$interestManager->setInterestsForUser($user, $this->getData('interests'));
 
 		// Assign the selected user group ID to the user
 		$userGroupDao = DAORegistry::getDAO('UserGroupDAO'); /* @var $userGroupDao UserGroupDAO */

@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/admin/systemInfo/VersionInfoGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class VersionInfoGridHandler
@@ -78,7 +78,7 @@ class VersionInfoGridHandler extends GridHandler {
 				'version',
 				'admin.version',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$infoGridCellProvider,
 				array('width' => 20)
 			)
@@ -90,7 +90,7 @@ class VersionInfoGridHandler extends GridHandler {
 				'versionMajor',
 				'admin.versionMajor',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$infoGridCellProvider
 			)
 		);
@@ -101,7 +101,7 @@ class VersionInfoGridHandler extends GridHandler {
 				'versionMinor',
 				'admin.versionMinor',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$infoGridCellProvider
 			)
 		);
@@ -112,7 +112,7 @@ class VersionInfoGridHandler extends GridHandler {
 				'versionRevision',
 				'admin.versionRevision',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$infoGridCellProvider
 			)
 		);
@@ -123,7 +123,7 @@ class VersionInfoGridHandler extends GridHandler {
 				'versionBuild',
 				'admin.versionBuild',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$infoGridCellProvider
 			)
 		);
@@ -134,7 +134,7 @@ class VersionInfoGridHandler extends GridHandler {
 				'dateInstalled',
 				'admin.dateInstalled',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$infoGridCellProvider
 			)
 		);
@@ -148,7 +148,7 @@ class VersionInfoGridHandler extends GridHandler {
 	/**
 	 * @copydoc GridHandler::loadData()
 	 */
-	function loadData($request, $filter) {
+	protected function loadData($request, $filter) {
 		$versionDao = DAORegistry::getDAO('VersionDAO');
 		return $versionDao->getVersionHistory();
 	}

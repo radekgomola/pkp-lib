@@ -3,8 +3,8 @@
 /**
  * @file classes/site/VersionDAO.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class VersionDAO
@@ -142,6 +142,7 @@ class VersionDAO extends DAO {
 			// Find out whether the last installed version is the same as the
 			// one to be inserted.
 			$versionHistory =& $this->getVersionHistory($version->getProductType(), $version->getProduct());
+
 			$oldVersion =& array_shift($versionHistory);
 			if ($oldVersion) {
 				if ($version->compare($oldVersion) == 0) {

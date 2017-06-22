@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/form/PKPSubmissionSubmitStep1Form.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPSubmissionSubmitStep1Form
@@ -111,10 +111,10 @@ class PKPSubmissionSubmitStep1Form extends SubmissionSubmitForm {
 	 */
 	function initData($data = array()) {
 		if (isset($this->submission)) {
-			$this->_data = $data + array(
+			$this->_data = array_merge($data, array(
 				'locale' => $this->submission->getLocale(),
 				'commentsToEditor' => $this->submission->getCommentsToEditor(),
-			);
+			));
 		} else {
 			$supportedSubmissionLocales = $this->context->getSupportedSubmissionLocales();
 			// Try these locales in order until we find one that's
@@ -155,7 +155,7 @@ class PKPSubmissionSubmitStep1Form extends SubmissionSubmitForm {
 	 * @param $submission Submission
 	 */
 	function setSubmissionData($submission) {
-		$this->submission->setLanguage(String::substr($this->submission->getLocale(), 0, 2));
+		$this->submission->setLanguage(PKPString::substr($this->submission->getLocale(), 0, 2));
 		$this->submission->setCommentsToEditor($this->getData('commentsToEditor'));
 		$this->submission->setLocale($this->getData('locale'));
 	}
@@ -181,7 +181,6 @@ class PKPSubmissionSubmitStep1Form extends SubmissionSubmitForm {
 			// Create new submission
 			$this->submission = $submissionDao->newDataObject();
 			$user = $request->getUser();
-			$this->submission->setUserId($user->getId());
 			$this->submission->setContextId($this->context->getId());
 
 			$this->setSubmissionData($this->submission);

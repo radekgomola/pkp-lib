@@ -7,8 +7,8 @@
 /**
  * @file pages/install/index.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @ingroup pages_install
@@ -21,8 +21,8 @@ switch ($op) {
 	case 'install':
 	case 'upgrade':
 	case 'installUpgrade':
-		define('HANDLER_CLASS', 'PKPInstallHandler');
-		import('lib.pkp.pages.install.PKPInstallHandler');
+		define('HANDLER_CLASS', 'InstallHandler');
+		import('lib.pkp.pages.install.InstallHandler');
 		break;
 }
 

@@ -3,8 +3,8 @@
 /**
  * @file classes/controlledVocab/ControlledVocabEntry.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ControlledVocabEntry
@@ -40,7 +40,7 @@ class ControlledVocabEntry extends DataObject {
 	 * @param $controlledVocabId int
 	 */
 	function setControlledVocabId($controlledVocabId) {
-		return $this->setData('controlledVocabId', $controlledVocabId);
+		$this->setData('controlledVocabId', $controlledVocabId);
 	}
 
 	/**
@@ -56,7 +56,7 @@ class ControlledVocabEntry extends DataObject {
 	 * @param $sequence float
 	 */
 	function setSequence($sequence) {
-		return $this->setData('sequence', $sequence);
+		$this->setData('sequence', $sequence);
 	}
 
 	/**
@@ -82,7 +82,7 @@ class ControlledVocabEntry extends DataObject {
 	 * @param $locale string
 	 */
 	function setName($name, $locale) {
-		return $this->setData('name', $name, $locale);
+		$this->setData('name', $name, $locale);
 	}
 }
 

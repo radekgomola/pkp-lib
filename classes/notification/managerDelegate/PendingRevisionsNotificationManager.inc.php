@@ -3,8 +3,8 @@
 /**
  * @file classes/notification/managerDelegate/PendingRevisionsNotificationManager.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PendingRevisionsNotificationManager
@@ -14,6 +14,7 @@
  */
 
 import('lib.pkp.classes.notification.NotificationManagerDelegate');
+import('lib.pkp.classes.workflow.WorkflowStageDAO');
 
 class PendingRevisionsNotificationManager extends NotificationManagerDelegate {
 
@@ -39,19 +40,11 @@ class PendingRevisionsNotificationManager extends NotificationManagerDelegate {
 		$submissionDao = Application::getSubmissionDAO();
 		$submission = $submissionDao->getById($notification->getAssocId());
 
+		$stageData = $this->_getStageDataByType();
+		$operation = $stageData['path'];
+
 		import('lib.pkp.controllers.grid.submissions.SubmissionsListGridCellProvider');
-		list($page, $operation) = SubmissionsListGridCellProvider::getPageAndOperationByUserRoles($request, $submission);
-
-		if ($page == 'workflow') {
-			$stageData = $this->_getStageDataByType();
-			$operation = $stageData['path'];
-		}
-
-		$router = $request->getRouter();
-		$dispatcher = $router->getDispatcher();
-		$contextDao = Application::getContextDAO();
-		$context = $contextDao->getById($submission->getContextId());
-		return $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), $page, $operation, $submission->getId());
+		return SubmissionsListGridCellProvider::getUrlByUserRoles($request, $submission, $notification->getUserId(), $stageData['path']);
 	}
 
 	/**
@@ -150,8 +143,7 @@ class PendingRevisionsNotificationManager extends NotificationManagerDelegate {
 	 * @return string
 	 */
 	private function _getStageDataByType() {
-		$userGroupDao = DAORegistry::getDAO('UserGroupDAO'); /* @var $userGroupDao UserGroupDAO */
-		$stagesData = $userGroupDao->getWorkflowStageKeysAndPaths();
+		$stagesData = WorkflowStageDAO::getWorkflowStageKeysAndPaths();
 
 		switch ($this->getNotificationType()) {
 			case NOTIFICATION_TYPE_PENDING_INTERNAL_REVISIONS:

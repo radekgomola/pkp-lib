@@ -2,8 +2,8 @@
 /**
  * @file controllers/grid/files/submissionDocuments/SubmissionDocumentsFilesGridDataProvider.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionDocumentsFilesGridDataProvider
@@ -27,9 +27,8 @@ class SubmissionDocumentsFilesGridDataProvider extends CategoryGridDataProvider 
 	 * @copydoc GridDataProvider::getAuthorizationPolicy()
 	 */
 	function getAuthorizationPolicy($request, $args, $roleAssignments) {
-		import('classes.security.authorization.SubmissionAccessPolicy');
-		$policy = new SubmissionAccessPolicy($request, $args, $roleAssignments, 'submissionId');
-		return $policy;
+		import('lib.pkp.classes.security.authorization.SubmissionAccessPolicy');
+		return new SubmissionAccessPolicy($request, $args, $roleAssignments, 'submissionId');
 	}
 
 	//
@@ -40,7 +39,7 @@ class SubmissionDocumentsFilesGridDataProvider extends CategoryGridDataProvider 
 	 * Get the authorized submission.
 	 * @return Submission
 	 */
-	function &getSubmission() {
+	function getSubmission() {
 		return $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION);
 	}
 
@@ -55,9 +54,9 @@ class SubmissionDocumentsFilesGridDataProvider extends CategoryGridDataProvider 
 	}
 
 	/**
-	 * @copydoc CategoryGridHandler::getCategoryData()
+	 * @copydoc CategoryGridHandler::loadCategoryData()
 	 */
-	function getCategoryData(&$fileType, $filter = null) {
+	function loadCategoryData($request, &$fileType, $filter = null) {
 
 		// Retrieve all library files for the given submission document category.
 		$submission = $this->getSubmission();

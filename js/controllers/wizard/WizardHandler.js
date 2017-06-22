@@ -4,8 +4,8 @@
 /**
  * @file js/controllers/wizard/WizardHandler.js
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class WizardHandler
@@ -27,17 +27,24 @@
 	 *
 	 * @param {jQueryObject} $wizard A wrapped HTML element that
 	 *  represents the wizard.
-	 * @param {Object} options Wizard options.
+	 * @param {{
+	 *  enforceLinear: boolean,
+	 *  cancelButtonText: string,
+	 *  continueButtonTest: string,
+	 *  finishButtonText: string
+	 *  }} options options to configure the form handler.
 	 */
 	$.pkp.controllers.wizard.WizardHandler = function($wizard, options) {
-		options.notScrollable = true;
 		this.parent($wizard, options);
-
-		// Start the wizard.
-		this.startWizard();
 
 		// Add the wizard buttons
 		this.addWizardButtons_($wizard, options);
+
+		this.enforceLinear_ = options.hasOwnProperty('enforceLinear') ?
+				options.enforceLinear : true;
+
+		// Start the wizard.
+		this.startWizard();
 
 		// Bind the wizard events to handlers.
 		this.bindWizardEvents();
@@ -58,7 +65,7 @@
 	/**
 	 * The continue button.
 	 * @private
-	 * @type {jQueryObject}
+	 * @type {jQueryObject?}
 	 */
 	$.pkp.controllers.wizard.WizardHandler.prototype.$continueButton_ = null;
 
@@ -66,7 +73,7 @@
 	/**
 	 * The progress indicator.
 	 * @private
-	 * @type {jQueryObject}
+	 * @type {jQueryObject?}
 	 */
 	$.pkp.controllers.wizard.WizardHandler.prototype.$progressIndicator_ = null;
 
@@ -85,6 +92,14 @@
 	 * @type {?string}
 	 */
 	$.pkp.controllers.wizard.WizardHandler.prototype.finishButtonText_ = null;
+
+
+	/**
+	 * Whether or not to enforce linear progress through the wizard.
+	 * @private
+	 * @type {?boolean}
+	 */
+	$.pkp.controllers.wizard.WizardHandler.prototype.enforceLinear_ = null;
 
 
 	//
@@ -131,7 +146,7 @@
 
 		// The default implementation enables the continue button
 		// as soon as the form validates.
-		this.getContinueButton().button('enable');
+		this.enableContinueButton();
 	};
 
 
@@ -147,7 +162,7 @@
 
 		// The default implementation disables the continue button
 		// as if the form no longer validates.
-		this.getContinueButton().button('disable');
+		this.disableContinueButton();
 	};
 
 
@@ -251,7 +266,7 @@
 		if ($form) {
 			// Try to submit the form.
 			if ($form.submit()) {
-				this.getContinueButton().button('disable');
+				this.disableContinueButton();
 				this.getProgressIndicator().show();
 			}
 
@@ -296,21 +311,23 @@
 		$wizard.tabs('enable', targetStep);
 
 		// Advance to the target step.
-		$wizard.tabs('select', targetStep);
+		$wizard.tabs('option', 'active', targetStep);
 
-		// Disable the previous step.
-		$wizard.tabs('disable', currentStep);
+		if (this.enforceLinear_) {
+			// Disable the previous step.
+			$wizard.tabs('disable', currentStep);
+		}
 
 		// If this is the last step then change the text on the
 		// continue button to finish.
 		$continueButton = this.getContinueButton();
 		if (targetStep === lastStep) {
-			$continueButton.button('option', 'label',
+			$continueButton.text(
 					/** @type {string} */ (this.getFinishButtonText()));
 		}
 
 		this.getProgressIndicator().hide();
-		$continueButton.button('enable');
+		this.enableContinueButton();
 	};
 
 
@@ -334,20 +351,22 @@
 			$wizard.tabs('enable', 0);
 
 			// Go to the first step.
-			$wizard.tabs('select', 0);
+			$wizard.tabs('option', 'active', 0);
 
 			// Reset the continue button label.
 			$continueButton = this.getContinueButton();
-			$continueButton.button('option', 'label',
+			$continueButton.text(
 					/** @type {string} */ (this.getContinueButtonText()));
 		}
 
-		// Disable all but the first step.
-		disabledSteps = [];
-		for (i = 1; i < this.getNumberOfSteps(); i++) {
-			disabledSteps.push(i);
+		if (this.enforceLinear_) {
+			// Disable all but the first step.
+			disabledSteps = [];
+			for (i = 1; i < this.getNumberOfSteps(); i++) {
+				disabledSteps.push(i);
+			}
+			$wizard.tabs('option', 'disabled', disabledSteps);
 		}
-		$wizard.tabs('option', 'disabled', disabledSteps);
 	};
 
 
@@ -445,10 +464,15 @@
 	 * @return {jQueryObject?} The form (if any).
 	 */
 	$.pkp.controllers.wizard.WizardHandler.prototype.getForm_ = function() {
+		var i, $element, $tabContent;
+
 		// If we find a form in the current tab then return it.
-		var $tabContent = this.getCurrentTab().children().first();
-		if ($tabContent.is('form')) {
-			return $tabContent;
+		$tabContent = this.getCurrentTab().children();
+		for (i = 0; i < $tabContent.length; i++) {
+			$element = $($tabContent[i]);
+			if ($element.is('form')) {
+				return $element;
+			}
 		}
 
 		return null;
@@ -521,8 +545,8 @@
 
 		if (options.cancelButtonText) {
 			// Add cancel button.
-			$cancelButton = $(['<a id="cancelButton" href="#">',
-				options.cancelButtonText, '</a>'].join(''));
+			$cancelButton = $('<a id="cancelButton" href="#"></a>')
+				.text(options.cancelButtonText);
 			$wizardButtons.append($cancelButton);
 
 			// Attach the cancel request handler.
@@ -532,20 +556,20 @@
 
 		if (options.continueButtonText) {
 			// Add continue/finish button.
-			$continueButton = $(['<button id="continueButton"',
-				'class="button pkp_helpers_align_right">', options.continueButtonText,
-				'</button>'].join('')).button();
+			$continueButton = $(
+					'<button id="continueButton" class="pkp_button"></button>')
+					.text(options.continueButtonText);
 			$wizardButtons.append($continueButton);
 
 			$progressIndicator = $(
-					'<div class="pkp_helpers_progressIndicator"></div>');
+					'<span class="pkp_spinner"></span>');
 			$wizardButtons.append($progressIndicator);
 
 			$continueButton.
 					// Attach the continue request handler.
 					bind('click',
 							this.callbackWrapper(this.continueRequest));
-			this.$continueButton_ = $continueButton;
+			this.$continueButton_ = /** @type {jQueryObject} */ $continueButton;
 			this.$progressIndicator_ = $progressIndicator;
 
 			// Remember the button labels.
@@ -559,6 +583,24 @@
 
 		// Insert wizard buttons.
 		$wizard.after($wizardButtons);
+	};
+
+
+	/**
+	 * Disable the continue button
+	 */
+	$.pkp.controllers.wizard.WizardHandler.prototype.disableContinueButton =
+			function() {
+		this.getContinueButton().attr('disabled', 'disabled');
+	};
+
+
+	/**
+	 * Enable the continue button
+	 */
+	$.pkp.controllers.wizard.WizardHandler.prototype.enableContinueButton =
+			function() {
+		this.getContinueButton().removeAttr('disabled');
 	};
 
 

@@ -3,8 +3,8 @@
 /**
  * @file controllers/listbuilder/files/FileListbuilderGridCellProvider.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FileListbuilderGridCellProvider
@@ -38,13 +38,15 @@ class FileListbuilderGridCellProvider extends GridCellProvider {
 		$file = $row->getData();
 		$columnId = $column->getId();
 		assert(is_a($file, 'SubmissionFile') && !empty($columnId));
-		switch ( $columnId ) {
+		switch ($columnId) {
 			case 'name':
-				return array('labelKey' => $file->getFileId(), 'label' => $file->getFileLabel());
+				return array(
+					'labelKey' => $file->getFileId(),
+					'label' => '<span class="label before_actions">' . $file->getFileId() . '-' . $file->getRevision() . '</span>' . htmlspecialchars($file->getFileLabel())
+				);
 		}
-		// we got an unexpected column
-		assert(false);
+		return parent::getTemplateVarsFromRowColumn($row, $column);
 	}
-	}
+}
 
 ?>

@@ -6,8 +6,8 @@
 /**
  * @file plugins/importexport/native/PKPNativeImportExportDeployment.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPNativeImportExportDeployment
@@ -83,7 +83,6 @@ class PKPNativeImportExportDeployment extends PKPImportExportDeployment {
 			'proof' => SUBMISSION_FILE_PROOF,
 			'production_ready' => SUBMISSION_FILE_PRODUCTION_READY,
 			'attachment' => SUBMISSION_FILE_ATTACHMENT,
-			'signoff' => SUBMISSION_FILE_SIGNOFF,
 			'review_revision' => SUBMISSION_FILE_REVIEW_REVISION,
 			'dependent' => SUBMISSION_FILE_DEPENDENT,
 		);

@@ -3,8 +3,8 @@
 /**
  * @file classes/gift/PKPGiftDAO.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPGiftDAO
@@ -103,7 +103,7 @@ class PKPGiftDAO extends DAO {
 		$gift->setGiftNote($row['gift_note']);
 		$gift->setNotes($row['notes']);
 
-		HookRegistry::call('PKPNoteDAO::_returnGiftFromRow', array(&$gift, &$row));
+		HookRegistry::call('PKPGiftDAO::_returnGiftFromRow', array(&$gift, &$row));
 
 		return $gift;
 	}

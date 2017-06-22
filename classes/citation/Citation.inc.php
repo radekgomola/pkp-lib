@@ -9,8 +9,8 @@
 /**
  * @file classes/citation/Citation.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Citation
@@ -255,14 +255,14 @@ class Citation extends DataObject {
 	 */
 	function _cleanCitationString($citationString) {
 		// 1) If the string contains non-UTF8 characters, convert it to UTF-8
-		if (Config::getVar('i18n', 'charset_normalization') && !String::utf8_compliant($citationString)) {
-			$citationString = String::utf8_normalize($citationString);
+		if (Config::getVar('i18n', 'charset_normalization') && !PKPString::utf8_compliant($citationString)) {
+			$citationString = PKPString::utf8_normalize($citationString);
 		}
 		// 2) Strip slashes and whitespace
 		$citationString = trim(stripslashes($citationString));
 
 		// 3) Normalize whitespace
-		$citationString = String::regexp_replace('/[\s]+/', ' ', $citationString);
+		$citationString = PKPString::regexp_replace('/[\s]+/', ' ', $citationString);
 
 		return $citationString;
 	}

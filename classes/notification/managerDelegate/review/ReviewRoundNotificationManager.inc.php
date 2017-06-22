@@ -47,15 +47,7 @@ abstract class ReviewRoundNotificationManager extends NotificationManagerDelegat
 		$submissionDao = Application::getSubmissionDAO();
 		$submission = $submissionDao->getById($reviewRound->getSubmissionId());
 		import('lib.pkp.controllers.grid.submissions.SubmissionsListGridCellProvider');
-		list($page, $operation) = SubmissionsListGridCellProvider::getPageAndOperationByUserRoles($request, $submission, $notification->getUserId());
-
-		if ($page == 'workflow') {
-			$stageId = $reviewRound->getStageId();
-			$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
-			$operation = $userGroupDao->getPathFromId($stageId);
-		}
-
-		return $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), $page, $operation, $submission->getId());		
+		return SubmissionsListGridCellProvider::getUrlByUserRoles($request, $submission);
 	}
 
 	/**
@@ -64,8 +56,8 @@ abstract class ReviewRoundNotificationManager extends NotificationManagerDelegat
 	function getNotificationMessage($request, $notification) {
 		$localeKey = $this->getMessageLocaleKey();
 		$reviewRound = $this->getReviewRound($notification->getAssocId());
-		$userGroupDao = DAORegistry::getDAO('UserGroupDAO'); /* @var $userGroupDao UserGroupDAO */
-		$stagesData = $userGroupDao->getWorkflowStageKeysAndPaths();
+		$workflowStageDao = DAORegistry::getDAO('WorkflowStageDAO');
+		$stagesData = $workflowStageDao->getWorkflowStageKeysAndPaths();
 		return __($localeKey, array('stage' => __($stagesData[$reviewRound->getStageId()]['translationKey'])));	
 	}
 

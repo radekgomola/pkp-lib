@@ -3,8 +3,8 @@
 /**
  * @file controllers/statistics/ReportGeneratorHandler.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReportGeneratorHandler
@@ -32,6 +32,7 @@ class ReportGeneratorHandler extends Handler {
 	* Fetch form to generate custom reports.
 	* @param $args array
 	* @param $request Request
+	 * @return JSONMessage JSON object
 	*/
 	function fetchReportGenerator($args, $request) {
 		$this->setupTemplate($request);
@@ -47,13 +48,14 @@ class ReportGeneratorHandler extends Handler {
 			$json->setContent($formContent);
 		}
 
-		return $json->getString();
+		return $json;
 	}
 
 	/**
 	 * Save form to generate custom reports.
 	 * @param $args array
 	 * @param $request Request
+	 * @return JSONMessage JSON object
 	 */
 	function saveReportGenerator($args, $request) {
 		$this->setupTemplate($request);
@@ -68,7 +70,7 @@ class ReportGeneratorHandler extends Handler {
 			$json->setStatus(false);
 		}
 
-		return $json->getString();
+		return $json;
 	}
 
 	/**
@@ -76,17 +78,16 @@ class ReportGeneratorHandler extends Handler {
 	 * the passed request variable issue id.
 	 * @param $args array
 	 * @param $request Request
-	 * @return string JSON response
+	 * @return JSONMessage JSON object
 	 */
 	function fetchArticlesInfo($args, $request) {
 		$this->validate();
 
 		$issueId = (int) $request->getUserVar('issueId');
 		import('lib.pkp.classes.core.JSONMessage');
-		$json = new JSONMessage();
 
 		if (!$issueId) {
-			$json->setStatus(false);
+			return new JSONMessage(false);
 		} else {
 			$articleDao = DAORegistry::getDAO('PublishedArticleDAO'); /* @var $articleDao PublishedArticleDAO */
 			$articles = $articleDao->getPublishedArticles($issueId);
@@ -95,25 +96,22 @@ class ReportGeneratorHandler extends Handler {
 				$articlesInfo[] = array('id' => $article->getId(), 'title' => $article->getLocalizedTitle());
 			}
 
-			$json->setContent($articlesInfo);
+			return new JSONMessage(true, $articlesInfo);
 		}
-
-		return $json->getString();
 	}
 
 	/**
-	* Fetch regions from the passed request
-	* variable country id.
-	* @param $args array
-	* @param $request Request
-	* @return string JSON response
-	*/
+	 * Fetch regions from the passed request
+	 * variable country id.
+	 * @param $args array
+	 * @param $request Request
+	 * @return JSONMessage JSON object
+	 */
 	function fetchRegions($args, $request) {
 		$this->validate();
 
 		$countryId = (string) $request->getUserVar('countryId');
 		import('lib.pkp.classes.core.JSONMessage');
-		$json = new JSONMessage(false);
 
 		if ($countryId) {
 			$statsHelper = new StatisticsHelper();
@@ -125,13 +123,12 @@ class ReportGeneratorHandler extends Handler {
 					foreach ($regions as $id => $name) {
 						$regionsData[] = array('id' => $id, 'name' => $name);
 					}
-					$json->setStatus(true);
-					$json->setContent($regionsData);
+					return new JSONMessage(true, $regionsData);
 				}
 			}
 		}
 
-		return $json->getString();
+		return new JSONMessage(false);
 	}
 
 	/**
@@ -169,6 +166,9 @@ class ReportGeneratorHandler extends Handler {
 		$columns = $reportPlugin->getColumns($metricType);
 		$columns = array_flip(array_intersect(array_flip($statsHelper->getColumnNames()), $columns));
 
+		$optionalColumns = $reportPlugin->getOptionalColumns($metricType);
+		$optionalColumns = array_flip(array_intersect(array_flip($statsHelper->getColumnNames()), $optionalColumns));
+
 		$objects = $reportPlugin->getObjectTypes($metricType);
 		$objects = array_flip(array_intersect(array_flip($statsHelper->getObjectTypeString()), $objects));
 
@@ -188,7 +188,7 @@ class ReportGeneratorHandler extends Handler {
 		$reportTemplate = $request->getUserVar('reportTemplate');
 
 		import('controllers.statistics.form.ReportGeneratorForm');
-		$reportGeneratorForm = new ReportGeneratorForm($columns,
+		$reportGeneratorForm = new ReportGeneratorForm($columns, $optionalColumns,
 			$objects, $fileTypes, $metricType, $defaultReportTemplates, $reportTemplate);
 
 		return $reportGeneratorForm;

@@ -1,8 +1,8 @@
 /**
  * closure-externs.js
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2010-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2010-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Import symbols into the closure compiler that are not defined
@@ -33,6 +33,7 @@ jQueryObject.prototype.button = function(param1, param2, param3) {};
  * @param {Object=} options
  */
 jQueryObject.prototype.validate = function(options) {};
+jQueryObject.prototype.valid = function() {};
 
 /**
  * @param {Function} param1
@@ -53,13 +54,6 @@ jQueryObject.prototype.jLabel = function(options) {};
  * @param {Object=} options
  */
 jQueryObject.prototype.selectBox = function(options) {};
-
-jQueryObject.prototype.superfish = function() {};
-
-/**
- * @param {Object|string=} param1
- */
-jQueryObject.prototype.plupload = function(param1) {};
 
 jQueryObject.prototype.equalizeElementHeights = function() {};
 
@@ -116,12 +110,6 @@ jQueryObject.prototype.pkpAjaxHtml = function(url, callback) {};
 jQueryObject.prototype.dialog = function(param1, param2, param3) {};
 
 /**
- * @param {string|Object=} param1
- * @param {string|Object|number=} param2
- */
-jQueryObject.prototype.roundabout = function(param1, param2) {};
-
-/**
  * @constructor
  * @param {Object=} options
  * @param {jQueryObject=} form
@@ -135,14 +123,8 @@ jQuery.validator.prototype.defaultShowErrors = function() {};
 jQuery.validator.prototype.settings = {};
 
 /**
- * @param {Object=} userDefinedSettings
- * @return {jQueryObject}
- */
-jQueryObject.prototype.imgPreview = function(userDefinedSettings) {};
-
-/**
  * @param {string} param1
- * @param {string|Object=} param2
+ * @param {string|boolean|Object=} param2
  */
 jQueryObject.prototype.prop = function(param1, param2) {};
 
@@ -159,55 +141,64 @@ jQueryObject.prototype.ajaxSettings = null;
  */
 function tinyMCEObject() {};
 
-tinyMCEObject.prototype.triggerSave = function() {};
+tinyMCEObject.prototype.EditorManager = {};
+
+tinyMCEObject.prototype.EditorManager.triggerSave = function() {};
 
 /**
- * @param {string} c
- * @param {boolean} u
- * @param {string} v
+ * @param {string} param1
+ * @param {Object} param2
+ * @return {tinyMCEObject}
  */
-tinyMCEObject.prototype.execCommand = function(c, u, v) {};
+tinyMCEObject.prototype.EditorManager.createEditor = function(param1, param2) {};
 
-tinyMCEObject.prototype.activeEditor = { dom: {}, id: '' };
+/**
+ * @param {string} param1
+ * @return {tinyMCEObject}
+ */
+tinyMCEObject.prototype.EditorManager.get = function(param1) {};
+
+/**
+ * @param {string} param1
+ * @return {tinyMCEObject}
+ */
+tinyMCEObject.prototype.get = function(param1) {};
+
+tinyMCEObject.prototype.target = {dom: {}, editorContainer: {}};
 
 /**
  * @param {string} param1
  */
-tinyMCEObject.prototype.activeEditor.dom.get = function(param1) {};
+tinyMCEObject.prototype.target.dom.get = function(param1) {};
 
-tinyMCEObject.prototype.activeEditor.dom.getRoot = function() {};
+tinyMCEObject.prototype.target.getContent = function() {};
+tinyMCEObject.prototype.getContent = function() {};
 
-tinyMCEObject.prototype.onActivate = {};
+/**
+ * @param {string} param1
+ */
+tinyMCEObject.prototype.setContent = function(param1) {};
 
-tinyMCEObject.prototype.onDeactivate = {};
+tinyMCEObject.prototype.render = function() {};
 
-tinyMCEObject.prototype.onActive = {};
+/**
+ * @param {string} param1
+ * @param {Object} param2
+ */
+tinyMCEObject.prototype.on = function(param1, param2) {};
 
-tinyMCEObject.prototype.onInit = {};
+tinyMCEObject.prototype.off = function() {};
 
 tinyMCEObject.prototype.editor = { dom: {}, id: '' };
-
-tinyMCEObject.prototype.editor.getContent = function() {};
-
-tinyMCEObject.prototype.editor.getRoot = function() {};
 
 tinyMCEObject.prototype.dom = {};
 
 tinyMCEObject.prototype.editor.dom.getRoot = function() {};
 
-tinyMCEObject.prototype.dom.Event = {};
-
-/**
- * @param {Object} param1
- * @param {string} param2
- * @param {Object} param3
- */
-tinyMCEObject.prototype.dom.Event.add = function(param1, param2, param3) {};
-
 /**
  * @type {string} c
  */
-tinyMCEObject.prototype.editorId = '';
+tinyMCEObject.prototype.id = '';
 
 tinyMCEObject.prototype.getWin = function() {};
 
@@ -232,6 +223,35 @@ tinyMCEObject.prototype.onSetContent.remove = function(param1) {};
  */
 var tinyMCE;
 
+/**
+ * @param {string} f
+ */
+jQueryObject.prototype.plupload = function(f) {};
+var plupload = {};
+
+/**
+ * @param {Object} options
+ * @constructor
+ */
+plupload.Uploader = function (options) {};
+plupload.Uploader.prototype.init = function() {};
+
+/**
+ * @param {string|number} p
+ */
+plupload.Uploader.prototype.percent = function(p) {};
+
+/**
+ * @param {string} f
+ */
+plupload.Uploader.prototype.removeFile = function(f) {};
+
+/**
+ * @param {!string} eventName
+ * @param {Function} f
+ */
+plupload.Uploader.prototype.bind = function(eventName, f) {};
+
 
 $.pkp.locale = {
 	search_noKeywordError: '',
@@ -253,15 +273,3 @@ $.pkp.cons = {
 	ORDER_CATEGORY_GRID_CATEGORIES_ROWS_ONLY: 0,
 	UPLOAD_MAX_FILESIZE: 0
 }
-
-/**
- * @param {Object} param1
- * @return {jQueryObject}
- */
-jQueryObject.prototype.scrollabletab = function(param1) {};
-
-/**
- * @param {Object} param1
- * @return {jQueryObject}
- */
-jQueryObject.prototype.pnotify = function(param1) {};

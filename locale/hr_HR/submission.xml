@@ -4,8 +4,8 @@
 <!--
   * locale/hr_HR/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the hr_HR (Hrvatski) locale.
@@ -126,7 +126,7 @@
 	<message key="submission.page.review">Recenzija br.{$id}</message>
 	<message key="submission.page.summary">Pregled priloga br.{$id}</message>
 	<message key="submission.peerReview">Recenzija</message>
-	<message key="submission.recommendation">Preporuka</message>
+	<message key="submission.recommendation">Preporuka: {$recommendation}</message>
 	<message key="submission.rejected">Odbijena</message>
 	<message key="submission.request">Zahtjev</message>
 	<message key="submission.response">Odgovor</message>
@@ -158,4 +158,6 @@
 	<message key="submission.viewMetadata">Pregled metapodataka</message>
 	<message key="submission.views">Pristupa datoteci</message>
 	<message key="log.review.reviewerAssigned">{$reviewerName} je dodijeljen(a) kao recenzent priloga {$submissionId} u {$round}. krugu recenzije.</message>
+	<message key="submission.reviewForm">Recenzijski obrazac</message>
+	<message key="submission.reviewFormResponse">Odgovor na recenziju</message>
 </locale>

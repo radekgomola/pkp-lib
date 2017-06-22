@@ -1,72 +1,66 @@
 /**
  * @file styles/index.less
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
- * 
+ *
  * @brief Main OMP stylesheet wrapper
  *
  */
 
 /**
- * Helpers etc.
+ * To minimize specificity battles, styles should be loaded in the following
+ * order: fonts, browser reset, variables, mix-ins, helpers, structure,
+ * components, library overrides, particular page styling and one-off exceptions
  */
-@import url("lib/pkp/styles/helpers.less");
 
-/**
- * Library CSS overrides
- */
-@import url("lib/pkp/styles/plupload.less");
+// Fonts first - get the files loading as quick as possible
+@import "lib/pkp/styles/fonts.less";
+
+// Normalize.css - Browser reset styles
+@import "lib/pkp/styles/lib/normalize.less";
+
+// Variables
+@import "lib/pkp/styles/variables.less";
+
+// Mix-ins, animations, etc
+@import "lib/pkp/styles/utils.less";
+
+// Helpers etc.
+@import "lib/pkp/styles/helpers.less";
+
+// Structure
+@import "lib/pkp/styles/structure/index.less";
+
+// Controllers
+@import "lib/pkp/styles/controllers/index.less";
+
+// Override styles from imported libraries
+@import "lib/pkp/styles/jlabel.less";
+
+// Link Actions
+@import "lib/pkp/styles/linkActions.less";
+
+// Listing tables
+@import "lib/pkp/styles/listing.less";
 
 /**
  * Legacy styles needing refactoring
  */
 
 /* Content Elements */
-@import url("lib/pkp/styles/content.css");
+@import "lib/pkp/styles/content.less";
 
-@import url("lib/pkp/styles/sprites.less");
+@import "lib/pkp/styles/sprites.less";
 
 /* Page Elements */
-@import url("lib/pkp/styles/pages/index.less");
-
-/* Bug #8282: Scrollable tabs controls overlap tab names */
-.stTabsInnerWrapper {
-	/* Make sure the tabs don't overlap the navigation controls */
-	padding-left: 15px;
-	padding-right: 15px;
-}
-
-.stTabsMainWrapper ul.ui-tabs-nav {
-	/* Keep the scrolled tabs from peeking out from under the nav controls */
-	margin-left: 2px;
-	margin-right: 2px;
-}
-
-.stNav {
-	/* Adjust the height of the scrollable tab controls */
-	height: 23px !important;
-	padding-top: 7px;
-}
-
-/* Additional styles: clean up? */
-.loading_container {
-	text-align: center;
-	padding-top: 10px;
- 
-	.pkp_helpers_progressIndicator {
-		margin-right: auto;
-		margin-left: auto;
-		float: none;
-		display: block;
-	}
-}
+@import "lib/pkp/styles/pages/index.less";
 
 .grid_actions {
 	padding: 22px 0 22px 0;
 	overflow: hidden;
-	
+
 	a {
 		padding:0;
 		/**
@@ -84,14 +78,14 @@
 		-webkit-border-radius: 0px;
 		border-radius: 0px;
 	}
-	
+
 	a:first-child {
 		-webkit-top-left-border-radius: 5px;
 		-webkit-bottom-left-border-radius: 5px;
 		border-top-left-radius: 5px;
 		border-bottom-left-radius: 5px;
 	}
-	
+
 	a:last-child {
 		-webkit-top-right-border-radius: 5px;
 		-webkit-bottom-right-border-radius: 5px;
@@ -112,8 +106,4 @@
 	font-size: 90%;
 	margin-right: 20px;
 	float: left;
-}
-
-.pkp_help {
-	line-height: 14px;
 }

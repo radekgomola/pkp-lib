@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/acron/PKPAcronPlugin.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2000-2013 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPAcronPlugin
@@ -29,7 +29,7 @@ class PKPAcronPlugin extends GenericPlugin {
 	var $_tasksToRun;
 
 	/**
-	 * @see LazyLoadPlugin::register()
+	 * @copydoc LazyLoadPlugin::register()
 	 */
 	function register($category, $path) {
 		$success = parent::register($category, $path);
@@ -46,7 +46,7 @@ class PKPAcronPlugin extends GenericPlugin {
 	}
 
 	/**
-	* @see PKPPlugin::isSitePlugin()
+	* @copydoc PKPPlugin::isSitePlugin()
 	*/
 	function isSitePlugin() {
 		// This is a site-wide plugin.
@@ -54,67 +54,31 @@ class PKPAcronPlugin extends GenericPlugin {
 	}
 
 	/**
-	 * @see LazyLoadPlugin::getName()
+	 * @copydoc LazyLoadPlugin::getName()
 	 */
 	function getName() {
 		return 'acronPlugin';
 	}
 
 	/**
-	 * @see PKPPlugin::getDisplayName()
+	 * @copydoc PKPPlugin::getDisplayName()
 	 */
 	function getDisplayName() {
 		return __('plugins.generic.acron.name');
 	}
 
 	/**
-	 * @see PKPPlugin::getDescription()
+	 * @copydoc PKPPlugin::getDescription()
 	 */
 	function getDescription() {
 		return __('plugins.generic.acron.description');
 	}
 
 	/**
-	* @see PKPPlugin::getInstallSitePluginSettingsFile()
+	* @copydoc PKPPlugin::getInstallSitePluginSettingsFile()
 	*/
 	function getInstallSitePluginSettingsFile() {
 		return PKP_LIB_PATH . DIRECTORY_SEPARATOR . $this->getPluginPath() . '/settings.xml';
-	}
-
-	/**
-	 * @see GenericPlugin::getManagementVerbs()
-	 */
-	function getManagementVerbs() {
-		$isEnabled = $this->getSetting(0, 'enabled');
-
-		$verbs = array();
-		$verbs[] = array(
-			($isEnabled?'disable':'enable'),
-			__($isEnabled?'manager.plugins.disable':'manager.plugins.enable')
-		);
-		$verbs[] = array(
-			'reload', __('plugins.generic.acron.reload')
-		);
-		return $verbs;
-	}
-
-	/**
-	 * @see GenericPlugin::manage()
-	 */
-	function manage($verb, $args, &$message, &$messageParams, &$pluginModalContent = NULL) {
-		switch ($verb) {
-			case 'enable':
-				$this->updateSetting(0, 'enabled', true);
-				$message = __('plugins.generic.acron.enabled');
-				break;
-			case 'disable':
-				$this->updateSetting(0, 'enabled', false);
-				$message = __('plugins.generic.acron.disabled');
-				break;
-			case 'reload':
-				$this->_parseCrontab();
-		}
-		return false;
 	}
 
 	/**
@@ -216,6 +180,8 @@ class PKPAcronPlugin extends GenericPlugin {
 		ob_end_flush();
 		flush();
 
+		set_time_limit(0);
+
 		// Fix the current working directory. See
 		// http://www.php.net/manual/en/function.register-shutdown-function.php#92657
 		chdir($this->_workingDir);
@@ -295,13 +261,25 @@ class PKPAcronPlugin extends GenericPlugin {
 
 				$args = ScheduledTaskHelper::getTaskArgs($task);
 
-				// Tasks without a frequency defined  will run on every request.
+				// Tasks without a frequency defined, or defined to zero, will run on every request.
 				// To avoid that happening (may cause performance problems) we
 				// setup a default period of time.
+				$setDefaultFrequency = true;
 				$minHoursRunPeriod = 24;
+				if ($frequency) { 
+					$frequencyAttributes = $frequency->getAttributes();
+					if (is_array($frequencyAttributes)) {
+						foreach($frequencyAttributes as $key => $value) {
+							if ($value != 0) {
+								$setDefaultFrequency = false;
+								break;
+							}
+						}
+					}
+				}
 				$tasks[] = array(
 					'className' => $task->getAttribute('class'),
-					'frequency' => $frequency ? $frequency->getAttributes() : $minHoursRunPeriod,
+					'frequency' => $setDefaultFrequency ? array('hour' => $minHoursRunPeriod) : $frequencyAttributes,
 					'args' => $args
 				);
 			}

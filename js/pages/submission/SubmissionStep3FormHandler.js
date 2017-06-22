@@ -9,8 +9,8 @@ jQuery.pkp.pages.submission = jQuery.pkp.pages.submission || { };
 /**
 * @file js/pages/submission/SubmissionStep3FormHandler.js
 *
-* Copyright (c) 2014 Simon Fraser University Library
-* Copyright (c) 2000-2014 John Willinsky
+* Copyright (c) 2014-2016 Simon Fraser University Library
+* Copyright (c) 2000-2016 John Willinsky
 * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
 *
 * @class SubmissionStep3FormHandler
@@ -22,13 +22,13 @@ jQuery.pkp.pages.submission = jQuery.pkp.pages.submission || { };
 
 
 	/**
-	* @constructor
-	*
-	* @extends $.pkp.controllers.form.AjaxFormHandler
-	*
-	* @param {jQueryObject} $form the wrapped HTML form element.
-	* @param {Object} options form options.
-	*/
+	 * @constructor
+	 *
+	 * @extends $.pkp.controllers.form.AjaxFormHandler
+	 *
+	 * @param {jQueryObject} $form the wrapped HTML form element.
+	 * @param {Object} options form options.
+	 */
 	$.pkp.pages.submission.SubmissionStep3FormHandler =
 			function($form, options) {
 
@@ -40,15 +40,6 @@ jQuery.pkp.pages.submission = jQuery.pkp.pages.submission || { };
 		// Save supplied options
 		this.authorsGridContainer_ = options.authorsGridContainer;
 		this.chaptersGridContainer_ = options.chaptersGridContainer;
-		this.isEditedVolume_ = options.isEditedVolume;
-		this.canExpedite_ = options.canExpedite;
-
-		if (this.canExpedite_) {
-			// Wrap the fields in an accordion. "collapsible" lets it work with a
-			// single panel; "active" false means that it is collapsed by default.
-			$('#metadataAccordion').accordion(
-					{ clearStyle: true, collapsible: true, active: false });
-		}
 	};
 	$.pkp.classes.Helper.inherits(
 			$.pkp.pages.submission.SubmissionStep3FormHandler,
@@ -59,49 +50,30 @@ jQuery.pkp.pages.submission = jQuery.pkp.pages.submission || { };
 	// Private properties
 	//
 	/**
-	* The id of the div where the chapters grid should go.
-	* @private
-	* @type {string}
-	*/
+	 * The id of the div where the chapters grid should go.
+	 * @private
+	 * @type {string}
+	 */
 	$.pkp.pages.submission.SubmissionStep3FormHandler.
 			prototype.chaptersGridContainer_ = '';
-
-
-	/**
-	* Specifies if there is a chapters grid or not.
-	* @private
-	* @type {boolean}
-	*/
-	$.pkp.pages.submission.SubmissionStep3FormHandler.
-			prototype.isEditedVolume_ = false;
-
-
-	/**
-	* Specifies if this user can expedite the submission process.
-	* @private
-	* @type {boolean}
-	*/
-	$.pkp.pages.submission.SubmissionStep3FormHandler.
-			prototype.canExpedite_ = false;
 
 
 	//
 	// Private methods.
 	//
 	/**
-	* Handler the data changed event from the author's grid
-	* @private
-	* @param {$.pkp.pages.submission.SubmissionStep3FormHandler} submissionForm
-	* the Submission Form this is attached to.
-	* @param {Event} event A "gridRefreshRequested" event.
-	*/
+	 * Handler the data changed event from the author's grid
+	 * @private
+	 * @param {$.pkp.pages.submission.SubmissionStep3FormHandler} submissionForm
+	 * the Submission Form this is attached to.
+	 * @param {Event} event A "gridRefreshRequested" event.
+	 */
 	$.pkp.pages.submission.SubmissionStep3FormHandler.
 			prototype.fetchChaptersGrid_ = function(submissionForm, event) {
 		// redraw the chapters grid if it was the authors grid.
 		var $eventTarget = event.target;
 
-		if (this.isEditedVolume_ &&
-				$eventTarget.id == this.authorsGridContainer_) {
+		if ($eventTarget.id == this.authorsGridContainer_) {
 			$('#' + this.chaptersGridContainer_).find('.pkp_controllers_grid')
 			.trigger('dataChanged');
 		}

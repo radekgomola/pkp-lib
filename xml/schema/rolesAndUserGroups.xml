@@ -4,8 +4,8 @@
 <!--
   * xml/schema/rolesAndUserGroups.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Roles and User Groups schema in XML.
@@ -26,9 +26,6 @@
 			<NOTNULL />
 		</field>
 		<field name="role_id" type="I8">
-			<NOTNULL />
-		</field>
-		<field name="path" type="C2" size="30">
 			<NOTNULL />
 		</field>
 		<field name="is_default" type="I1">
@@ -52,9 +49,6 @@
 		</index>
 		<index name="user_groups_role_id">
 			<col>role_id</col>
-		</index>
-		<index name="user_groups_path">
-			<col>path</col>
 		</index>
 	</table>
 

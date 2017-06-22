@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/native/filter/SubmissionNativeXmlFilter.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionNativeXmlFilter
@@ -16,6 +16,9 @@
 import('lib.pkp.plugins.importexport.native.filter.NativeExportFilter');
 
 class SubmissionNativeXmlFilter extends NativeExportFilter {
+
+	var $_includeSubmissionsNode;
+
 	/**
 	 * Constructor
 	 * @param $filterGroup FilterGroup
@@ -50,7 +53,7 @@ class SubmissionNativeXmlFilter extends NativeExportFilter {
 		$doc = new DOMDocument('1.0');
 		$deployment = $this->getDeployment();
 
-		if (count($submissions)==1) {
+		if (count($submissions)==1 && !$this->getIncludeSubmissionsNode()) {
 			// Only one submission specified; create root node
 			$rootNode = $this->createSubmissionNode($doc, $submissions[0]);
 		} else {
@@ -82,6 +85,15 @@ class SubmissionNativeXmlFilter extends NativeExportFilter {
 		$deployment->setSubmission($submission);
 		$submissionNode = $doc->createElementNS($deployment->getNamespace(), $deployment->getSubmissionNodeName());
 		$submissionNode->setAttribute('locale', $submission->getLocale());
+		$submissionLanguage = $submission->getLanguage();
+		if ($submissionLanguage) {
+			$submissionNode->setAttribute('locale', $submissionLanguage);
+		}
+		$submissionNode->setAttribute('date_submitted', strftime('%F', strtotime($submission->getDateSubmitted())));
+
+		$workflowStageDao = DAORegistry::getDAO('WorkflowStageDAO');
+		$submissionNode->setAttribute('stage', WorkflowStageDAO::getPathFromId($submission->getStageId()));
+
 		if ($datePublished = $submission->getDatePublished()) {
 			$submissionNode->setAttribute('date_published', strftime('%F', strtotime($datePublished)));
 		}
@@ -108,11 +120,13 @@ class SubmissionNativeXmlFilter extends NativeExportFilter {
 		// Add internal ID
 		$submissionNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'id', $submission->getId()));
 		$node->setAttribute('type', 'internal');
+		$node->setAttribute('advice', 'ignore');
 
 		// Add public ID
 		if ($pubId = $submission->getPubId('publisher-id')) {
 			$submissionNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'id', $pubId));
 			$node->setAttribute('type', 'public');
+			$node->setAttribute('advice', 'ignore');
 		}
 
 		// Add pub IDs by plugin
@@ -136,6 +150,7 @@ class SubmissionNativeXmlFilter extends NativeExportFilter {
 			$deployment = $this->getDeployment();
 			$submissionNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'id', $pubId));
 			$node->setAttribute('type', $pubIdPlugin->getPubIdType());
+			$node->setAttribute('advice', 'ignore');
 			return $node;
 		}
 		return null;
@@ -152,10 +167,7 @@ class SubmissionNativeXmlFilter extends NativeExportFilter {
 		$this->createLocalizedNodes($doc, $submissionNode, 'prefix', $submission->getPrefix(null));
 		$this->createLocalizedNodes($doc, $submissionNode, 'subtitle', $submission->getSubtitle(null));
 		$this->createLocalizedNodes($doc, $submissionNode, 'abstract', $submission->getAbstract(null));
-		$this->createLocalizedNodes($doc, $submissionNode, 'subject_class', $submission->getSubjectClass(null));
-		$this->createLocalizedNodes($doc, $submissionNode, 'coverage_geo', $submission->getCoverageGeo(null));
-		$this->createLocalizedNodes($doc, $submissionNode, 'coverage_chron', $submission->getCoverageChron(null));
-		$this->createLocalizedNodes($doc, $submissionNode, 'coverage_sample', $submission->getCoverageSample(null));
+		$this->createLocalizedNodes($doc, $submissionNode, 'coverage', $submission->getCoverage(null));
 		$this->createLocalizedNodes($doc, $submissionNode, 'type', $submission->getType(null));
 		$this->createLocalizedNodes($doc, $submissionNode, 'source', $submission->getSource(null));
 		$this->createLocalizedNodes($doc, $submissionNode, 'rights', $submission->getRights(null));
@@ -175,7 +187,7 @@ class SubmissionNativeXmlFilter extends NativeExportFilter {
                 $this->createOptionalNode($doc, $submissionNode, 'muPracoviste', $submission->getFakulta());                
                 $this->createLocalizedNodes($doc, $submissionNode, 'urlWeb', $submission->getUrlWeb(null));
                 $this->createLocalizedNodes($doc, $submissionNode, 'poznamka', $submission->getPoznamka(null));
-                $this->createLocalizedNodes($doc, $submissionNode, 'dedikace', $submission->getDedikace(null));
+                $this->createLocalizedNodes($doc, $submissionNode, 'referenceMunipress', $submission->getReferenceMunipress(null));
 	}
 
 	/**
@@ -279,6 +291,24 @@ class SubmissionNativeXmlFilter extends NativeExportFilter {
 	 */
 	function getRepresentationExportFilterGroupName() {
 		assert(false); // Must be overridden by subclasses
+	}
+
+	/**
+	 * Sets a flag to always include the <submissions> node, even if there
+	 * may only be one submission.
+	 * @param boolean $includeSubmissionsNode
+	 */
+	function setIncludeSubmissionsNode($includeSubmissionsNode) {
+		$this->_includeSubmissionsNode = $includeSubmissionsNode;
+	}
+
+	/**
+	 * Returnes whether to always include the <submissions> node, even if there
+	 * may only be one submission.
+	 * @return boolean $includeSubmissionsNode
+	 */
+	function getIncludeSubmissionsNode() {
+		return $this->_includeSubmissionsNode;
 	}
 }
 

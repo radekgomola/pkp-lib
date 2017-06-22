@@ -3,8 +3,8 @@
 /**
  * @file classes/controllers/listbuilder/ListbuilderHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ListbuilderHandler
@@ -183,6 +183,7 @@ class ListbuilderHandler extends GridHandler {
 	 * Persist a new entry insert.
 	 * @param $request Request object
 	 * @param $newRowId mixed ID of row to modify
+	 * @return boolean
 	 */
 	function insertEntry($request, $newRowId) {
 		fatalError('ABSTRACT METHOD');
@@ -199,7 +200,7 @@ class ListbuilderHandler extends GridHandler {
 	 * @return array
 	 */
 	function getOptions($request) {
-		fatalError('ABSTRACT METHOD');
+		return array();
 	}
 
 	//
@@ -211,6 +212,26 @@ class ListbuilderHandler extends GridHandler {
 	 * @param $request PKPRequest
 	 */
 	function fetch($args, $request) {
+		$templateMgr = TemplateManager::getManager($request);
+		$options = $this->getOptions($request);
+		$availableOptions = false;
+		if (is_array($options) && !empty($options)) {
+			$firstColumnOptions = current($options);
+			$optionsCount = count($firstColumnOptions);
+			if (is_array(current($firstColumnOptions))) { // Options with opt group, count only the selectable options.
+				unset($firstColumnOptions[LISTBUILDER_OPTGROUP_LABEL]);
+				$optionsCount--;
+				$optionsCount = count($firstColumnOptions, COUNT_RECURSIVE) - $optionsCount;
+			}
+		
+			$listElements = $this->getGridDataElements($request);
+			if (count($listElements) < $optionsCount) {
+				$availableOptions = true;
+			}
+		}
+
+		$templateMgr->assign('availableOptions', $availableOptions);
+	
 		return $this->fetchGrid($args, $request);
 	}
 
@@ -309,12 +330,11 @@ class ListbuilderHandler extends GridHandler {
 	 * Load the set of options for a select list type listbuilder.
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string JSON-encoded set of options
+	 * @return JSONMessage JSON object
 	 */
 	function fetchOptions($args, $request) {
 		$options = $this->getOptions($request);
-		$json = new JSONMessage(true, $options);
-		return $json->getString();
+		return new JSONMessage(true, $options);
 	}
 
 	//

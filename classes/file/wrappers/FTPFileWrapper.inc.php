@@ -3,8 +3,8 @@
 /**
  * @file classes/file/wrappers/FTPFileWrapper.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @package file.wrappers
@@ -21,6 +21,11 @@ class FTPFileWrapper extends FileWrapper {
 	/** @var Control socket */
 	var $ctrl;
 
+	/**
+	 * Open the file.
+	 * @param $mode string See fopen for mode string options.
+	 * @return boolean True iff success.
+	 */
 	function open($mode = 'r') {
 		$user = isset($this->info['user']) ? $this->info['user'] : 'anonymous';
 		$pass = isset($this->info['pass']) ? $this->info['pass'] : 'user@example.com';
@@ -38,6 +43,9 @@ class FTPFileWrapper extends FileWrapper {
 		return false;
 	}
 
+	/**
+	 * Close an open file.
+	 */
 	function close() {
 		if ($this->fp) {
 			parent::close();
@@ -51,6 +59,13 @@ class FTPFileWrapper extends FileWrapper {
 		$this->ctrl = null;
 	}
 
+	/**
+	 * Internal function to open a connection.
+	 * @param $user string Username
+	 * @param $pass string Password
+	 * @param $path string Path to file
+	 * @return boolean True iff success
+	 */
 	function _open($user, $pass, $path) {
 		// Connection establishment
 		if ($this->_receive() != '220')
@@ -95,14 +110,29 @@ class FTPFileWrapper extends FileWrapper {
 		return true;
 	}
 
+	/**
+	 * Internal function to write to the connection.
+	 * @param $command string FTP command
+	 * @param $data string FTP data
+	 * @return boolean True iff success
+	 */
 	function _send($command, $data = '') {
 		return fwrite($this->ctrl, $command . (empty($data) ? '' : ' ' . $data) . "\r\n");
 	}
 
+	/**
+	 * Internal function to read a line from the connection.
+	 * @return string|false Resulting string, or false indicating error
+	 */
 	function _receive() {
 		return $this->_receiveLine($line);
 	}
 
+	/**
+	 * Internal function to receive a line from the connection.
+	 * @param $line string Reference to receive read data
+	 * @return string|false
+	 */
 	function _receiveLine(&$line) {
 		do {
 			$line = fgets($this->ctrl);

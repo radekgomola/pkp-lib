@@ -3,8 +3,8 @@
 /**
  * @file plugins/metadata/nlm30/filter/Nlm30NameSchemaPersonStringFilter.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Nlm30NameSchemaPersonStringFilter
@@ -151,11 +151,11 @@ class Nlm30NameSchemaPersonStringFilter extends Nlm30PersonStringFilter {
 		$givenNames = $personDescription->getStatement('given-names');
 		$nameVars['%firstname%'] = $nameVars['%initials%'] = '';
 		if(is_array($givenNames) && count($givenNames)) {
-			if (String::strlen($givenNames[0]) > 1) {
+			if (PKPString::strlen($givenNames[0]) > 1) {
 				$nameVars['%firstname%'] = array_shift($givenNames);
 			}
 			foreach($givenNames as $givenName) {
-				$nameVars['%initials%'] .= String::substr($givenName, 0, 1).'.';
+				$nameVars['%initials%'] .= PKPString::substr($givenName, 0, 1).'.';
 			}
 		}
 		if (!empty($nameVars['%initials%'])) $nameVars['%initials%'] = ' '.$nameVars['%initials%'];

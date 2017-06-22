@@ -3,8 +3,8 @@
 /**
  * @file controllers/tab/settings/paymentMethod/form/PaymentMethodForm.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PaymentMethodForm
@@ -97,7 +97,7 @@ class PaymentMethodForm extends ContextSettingsForm {
 		$paymentPluginName = $this->getData('paymentPluginName');
 		if (isset($this->paymentPlugins[$paymentPluginName])) {
 			$plugin = $this->paymentPlugins[$paymentPluginName];
-			foreach ($plugin->getSettingsFormFieldNames() as $settingName) {
+			foreach ($plugin->getRequiredSettingsFormFieldNames() as $settingName) {
 				$this->addCheck(new FormValidator($this, $settingName, 'required', 'common.required'));
 			}
 		}

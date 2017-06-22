@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/settings/roles/form/UserGroupForm.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserGroupForm
@@ -14,6 +14,7 @@
  */
 
 import('lib.pkp.classes.form.Form');
+import('lib.pkp.classes.workflow.WorkflowStageDAO');
 
 class UserGroupForm extends Form {
 
@@ -31,13 +32,13 @@ class UserGroupForm extends Form {
 	 */
 	function UserGroupForm($contextId, $userGroupId = null) {
 		parent::Form('controllers/grid/settings/roles/form/userGroupForm.tpl');
+		AppLocale::requireComponents(LOCALE_COMPONENT_APP_SUBMISSION);
 		$this->_contextId = $contextId;
 		$this->_userGroupId = $userGroupId;
 
 		// Validation checks for this form
 		$this->addCheck(new FormValidatorLocale($this, 'name', 'required', 'settings.roles.nameRequired'));
 		$this->addCheck(new FormValidatorLocale($this, 'abbrev', 'required', 'settings.roles.abbrevRequired'));
-		$this->addCheck(new FormValidatorArray($this, 'assignedStages', 'required', 'settings.roles.stageIdRequired'));
 		if ($this->getUserGroupId() == null) {
 			$this->addCheck(new FormValidator($this, 'roleId', 'required', 'settings.roles.roleIdRequired'));
 		}
@@ -79,7 +80,7 @@ class UserGroupForm extends Form {
 	function initData() {
 		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
 		$userGroup = $userGroupDao->getById($this->getUserGroupId());
-		$stages = $userGroupDao->getWorkflowStageTranslationKeys();
+		$stages = WorkflowStageDAO::getWorkflowStageTranslationKeys();
 		$this->setData('stages', $stages);
 		$this->setData('assignedStages', array()); // sensible default
 
@@ -138,7 +139,7 @@ class UserGroupForm extends Form {
 	 * @return array
 	 */
 	function getPermitSelfRegistrationRoles() {
-		return array(ROLE_ID_REVIEWER, ROLE_ID_AUTHOR);
+		return array(ROLE_ID_REVIEWER, ROLE_ID_AUTHOR, ROLE_ID_READER);
 	}
 
 	/**
@@ -151,13 +152,11 @@ class UserGroupForm extends Form {
 		// Check if we are editing an existing user group or creating another one.
 		if ($userGroupId == null) {
 			$userGroup = $userGroupDao->newDataObject();
-			$role = new Role($this->getData('roleId'));
-			$userGroup->setRoleId($role->getId());
+			$userGroup->setRoleId($this->getData('roleId'));
 			$userGroup->setContextId($this->getContextId());
-			$userGroup->setPath($role->getPath());
 			$userGroup->setDefault(false);
 			$userGroup->setShowTitle($this->getData('showTitle'));
-			$userGroup->setPermitSelfRegistration($this->getData('permitSelfRegistration') && in_array($role->getId(), $this->getPermitSelfRegistrationRoles()));
+			$userGroup->setPermitSelfRegistration($this->getData('permitSelfRegistration') && in_array($userGroup->getRoleId(), $this->getPermitSelfRegistrationRoles()));
 			$userGroup = $this->_setUserGroupLocaleFields($userGroup, $request);
 			$userGroupId = $userGroupDao->insertObject($userGroup);
 		} else {
@@ -188,7 +187,7 @@ class UserGroupForm extends Form {
 		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
 
 		// Current existing workflow stages.
-		$stages = $userGroupDao->getWorkflowStageTranslationKeys();
+		$stages = WorkflowStageDAO::getWorkflowStageTranslationKeys();
 
 		foreach (array_keys($stages) as $stageId) {
 			$userGroupDao->removeGroupFromStage($contextId, $userGroupId, $stageId);

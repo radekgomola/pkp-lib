@@ -3,8 +3,8 @@
 /**
  * @file includes/functions.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @ingroup index
@@ -41,7 +41,7 @@ function fatalError($reason) {
 		$isErrorCondition = false;
 	}
 
-	echo "<h1>$reason</h1>";
+	echo "<h1>" . htmlspecialchars($reason) . "</h1>";
 
 	if ($showStackTrace) {
 		echo "<h4>Stack Trace:</h4>\n";
@@ -286,9 +286,9 @@ function strtolower_codesafe($str) {
 function cygwinConversion($path) {
 	$path = str_replace('\\', '/', $path);
 	$matches = null;
-	String::regexp_match_get('/^([A-Z]):/i', $path, $matches);
+	PKPString::regexp_match_get('/^([A-Z]):/i', $path, $matches);
 	if (isset($matches[1]) && strlen($matches[1]) === 1) {
-		$path = String::regexp_replace('/^[A-Z]:/i', '/cygdrive/' . strtolower($matches[1]), $path);
+		$path = PKPString::regexp_replace('/^[A-Z]:/i', '/cygdrive/' . strtolower($matches[1]), $path);
 	}
 	return $path;
 }

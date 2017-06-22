@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/users/exportableUsers/ExportableUsersGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ExportableUsersGridHandler
@@ -40,8 +40,8 @@ class ExportableUsersGridHandler extends GridHandler {
 	 * @copydoc PKPHandler::authorize()
 	 */
 	function authorize($request, &$args, $roleAssignments) {
-		import('lib.pkp.classes.security.authorization.PkpContextAccessPolicy');
-		$this->addPolicy(new PkpContextAccessPolicy($request, $roleAssignments));
+		import('lib.pkp.classes.security.authorization.ContextAccessPolicy');
+		$this->addPolicy(new ContextAccessPolicy($request, $roleAssignments));
 		return parent::authorize($request, $args, $roleAssignments);
 	}
 
@@ -68,7 +68,7 @@ class ExportableUsersGridHandler extends GridHandler {
 		$this->_pluginName = $pluginName;
 
 		$dispatcher = $request->getDispatcher();
-		$url = $dispatcher->url($request, ROUTE_PAGE, null, 'manager', 'importexport', array('plugin', $pluginName, 'exportAllUsers'));
+		$url = $dispatcher->url($request, ROUTE_PAGE, null, 'management', 'importexport', array('plugin', $pluginName, 'exportAllUsers'));
 
 		$this->addAction(
 			new LinkAction(
@@ -94,7 +94,7 @@ class ExportableUsersGridHandler extends GridHandler {
 				'firstName',
 				'user.firstName',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$cellProvider
 			)
 		);
@@ -106,7 +106,7 @@ class ExportableUsersGridHandler extends GridHandler {
 				'lastName',
 				'user.lastName',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$cellProvider
 			)
 		);
@@ -118,7 +118,7 @@ class ExportableUsersGridHandler extends GridHandler {
 					'username',
 					'user.username',
 					null,
-					'controllers/grid/gridCell.tpl',
+					null,
 					$cellProvider
 				)
 		);
@@ -130,7 +130,7 @@ class ExportableUsersGridHandler extends GridHandler {
 				'email',
 				'user.email',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$cellProvider
 			)
 		);
@@ -171,7 +171,7 @@ class ExportableUsersGridHandler extends GridHandler {
 	 * @param $request PKPRequest
 	 * @return array Grid data.
 	 */
-	function loadData($request, $filter) {
+	protected function loadData($request, $filter) {
 		// Get the context.
 		$context = $request->getContext();
 
@@ -247,7 +247,7 @@ class ExportableUsersGridHandler extends GridHandler {
 	 * @copydoc GridHandler::getFilterForm()
 	 * @return string Filter template.
 	 */
-	function getFilterForm() {
+	protected function getFilterForm() {
 		return 'controllers/grid/users/exportableUsers/userGridFilter.tpl';
 	}
 

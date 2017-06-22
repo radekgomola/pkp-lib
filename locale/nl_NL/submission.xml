@@ -4,8 +4,8 @@
 <!--
   * locale/nl_NL/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the nl_NL (Nederlands) locale.
@@ -132,7 +132,7 @@
 	<message key="submission.page.review">#{$id} Review</message>
 	<message key="submission.page.summary">#{$id} Samenvatting</message>
 	<message key="submission.peerReview">Peer review</message>
-	<message key="submission.recommendation">Aanbeveling</message>
+	<message key="submission.recommendation">Aanbeveling: {$recommendation}</message>
 	<message key="submission.rejected">Afgewezen</message>
 	<message key="submission.request">Aanvraag</message>
 	<message key="submission.response">Reactie</message>
@@ -225,11 +225,9 @@
 	<message key="submission.citations.filter.webserviceResultTransformationError">Er is een fout opgetreden in {$filterName}: De transformatie van XML-resultaten (bv. van een webservice) naar metadata-velden is mislukt. De reden is waarschijnlijk dat de webservice onjuiste of onvolledige gegevens levert. Gelieve dit als een fout te melden</message>
 	<message key="submission.citations.filter.invalidMetadata">Er is een fout opgetreden in {$filterName}: één van de data-elementen die werd teruggegeven door de dienst (bv. door een webservice) voldoet niet aan het interne metadata-formaat. De informatie van deze dienst is genegeerd. Gelieve dit als een fout te melden.</message>
 	<message key="submission.citations.filter.noResultFromFilterError">Meerder citatiediensten gaven geen resultaten. U kunt de citatievelden met de hand bewerken en dan de citatiediensten nogmaals proberen. Als dat niet helpt, bestaat de citatie niet in de aangesloten databanken.</message>
-	<message key="submission.citations.filter.unsupportedPublicationType">Niet-ondersteund of ontbrekend publicatietype. Bewerk de citatie met de hand en geef een publicatietype op (toegestaan zijn 'boek', 'tijdschrift', 'thesis' en 'conf-proc').</message>
+	<message key="submission.citations.filter.unsupportedPublicationType">Niet-ondersteund of ontbrekend publicatietype. Bewerk de citatie met de hand en geef een publicatietype op (toegestaan zijn 'book', 'journal', 'thesis' en 'conf-proc').</message>
 	<message key="submission.citations.filter.webserviceError">De webservice van {$filterName}'s gaf een foutmelding bij het aanroepen met de volgende URL: {$webserviceUrl}. Mogelijk is de webservice tijdelijk niet beschikbaar. U kunt doorwerken met de resterende webservices en uw resultaten opslaan. U kunt het ook later opnieuw proberen. Als de fout blijft, vraag dan de tijdschriftbeheerder om de webservice te deactiveren en een foutmelding in te dienen.</message>
 	<message key="submission.citations.editor.details.sourceResultsUseExplanation">Klik om dit resultaatveld meteen naar uw veldlijst te transporteren</message>
-	<message key="submission.citations.editor.pleaseAddParserFilter"><![CDATA[Vraag uw tijdschriftbeheerder om <a href="{$citationSetupUrl}">ten minste één citatie-extractie dienst toe te voegen</a> om u toegang te geven tot de citatiemarkeringsassistent.]]></message>
-	<message key="submission.citations.editor.pleaseConfigureOutputStyle"><![CDATA[Vraag uw tijdschriftbeheerder om een <a href="{$citationSetupUrl}">citatie-export stijl te configureren</a> om u toegang te geven tot de citatiemarkeringsassistent.]]></message>
 	<message key="submission.citations.editor.pleaseImportCitationsFirst"><![CDATA[<p>Eer zijn geen citaties voor dit artikel.</p><p>Ga naar de <a href="{$articleMetadataUrl}">metadata pagina</a> van het artikel en geef een referentielijst of voeg ze per stuk toe met de 'voeg onderdeel toe' knop.</p>]]></message>
 	<message key="submission.citations.editor.pleaseSetup"><![CDATA[Vraag uw tijdschriftbeheerder om <a href="{$citationSetupUrl}">citatiebewerking in te schakelen</a> om u toegang te geven tot de citatiemarkeringsassistent.]]></message>
 	<message key="submission.citations.editor.unprocessedCitations">De citaties van dit artikel worden nog verwerkt door de server. De huidige citatielijst bevat de reeds verwerkte citaties. Klik op de ververs-knop om de citaties te bekijken die in de tussentijd verwerkt zijn.</message>
@@ -386,4 +384,6 @@
 	<message key="submission.createRemote">Remote aanmaken</message>
 	<message key="submission.addFile">Bestand laden</message>
 	<message key="log.review.reviewerAssigned">{$reviewerName} is toegekend voor het reviewen van inzending {$submissionId} voor reviewronde {$round}.</message>
+	<message key="submission.reviewForm">Reviewformulier</message>
+	<message key="submission.reviewFormResponse">Reactie reviewformulier</message>
 </locale>

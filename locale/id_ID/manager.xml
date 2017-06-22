@@ -4,8 +4,8 @@
 <!--
   * locale/id_ID/manager.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings.
@@ -138,7 +138,6 @@
 	<message key="manager.plugins.sitePlugin">Ini adalah site-wide plugin. Hanya Administrator bisa mengatur plugin ini.</message>
 	<message key="manager.plugins">Sistem Plugins</message>
 	<message key="manager.readingTools">Alat Membaca</message>
-	<message key="manager.reviewerSearch.advancedSearch">Pencarian Reviewer Tingkat Tinggi</message>
 	<message key="manager.reviewerSearch.searchByName">Cari Reviewer dengan Nama</message>
 	<message key="manager.reviewerSearch.doneAmount">Jumlah review yang selesai</message>
 	<message key="manager.reviewerSearch.avgAmount">Jumlah hari rata-rata per review</message>
@@ -166,13 +165,13 @@
 	<message key="manager.setup.filter.lookup.grid.descriptionConfirm">Anda telah memilih untuk menambah database {$filterDisplayName}. Klik di "OK" untuk mengkonfirmasi.</message>
 	<message key="manager.setup.filter.lookup.grid.descriptionTemplate">Pilih lookup database.</message>
 	<message key="manager.setup.filter.lookup.grid.description.iSBNdb"><![CDATA[<p>Filter ini terkoneksi ke <a href="http://isbndb.com/" target="_blank">ISBNdb.com</a> buku dan database ISBN.</p>
-	<p>Kunci ISBNdb API bersifat mandatori. Untuk informasi tentang menghasilkan kunci, lihat <a href="http://isbndb.com/docs/api/30-keys.html" target="_blank">dokumentasi online</a>.</p>]]></message>
+	<p>Kunci ISBNdb API bersifat mandatori. Untuk informasi tentang menghasilkan kunci, lihat <a href="http://isbndb.com/api/v1/docs/keys" target="_blank">dokumentasi online</a>.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.crossRef"><![CDATA[<p>Filter ini terkoneksi ke database sitiran CrossRef dengan menggunakan CrossRef<a href="http://www.crossref.org/02publishers/openurl_info.html" target="_blank">OpenURL Query antarmuka</a>.</p> 
 	<p>Untuk menggunakan filter ini, Anda dapat menggunakan akun sistem CrossRef Anda, atau mendaftarkan alamat email yang valid dengan CrossRef <a href="http://www.crossref.org/requestaccount/" target="_blank">di sini</a>.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.pubMed"><![CDATA[<p>Filter ini terkoneksi ke PubMed <a href="http://www.ncbi.nlm.nih.gov/gquery/gquery.fcgi" target="_blank">Entrez</a> cross-database search engine.</p>
 	<p>Email pendaftaran tidak mandatori secara ketat, tapi mungkin perlu jika Anda menghadapi masalah koneksi. Lihat bagian di  <a href="http://www.be-md.ncbi.nlm.nih.gov/bookshelf/br.fcgi?book=helpeutils&part=chapter2#chapter2.Usage_Guidelines_and_Requiremen" target="_blank">Persyaratan dan Petunjuk Penggunaan</a> di dokumentasi Entrez untuk informasi lebih lanjut.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.worldCat"><![CDATA[<p>Filter ini terkoneksi ke layanan OCLC <a href="http://www.worldcat.org/affiliate/webservices/xisbn/app.jsp" target="_blank">xISBN</a> and <a href="http://www.worldcat.org/" target="_blank">Worldcat</a> (optional).</p>
-	<p>Jika Anda mempunyai Worldcat <a href="http://www.worldcat.org/devnet/wiki/SearchAPIWhoCanUse" target="_blank">kunci API</a>Anda dapat terkoneksi dengan Worldcat dengan memasukkan kunci di bawah ini.</p>]]></message>
+	<p>Jika Anda mempunyai Worldcat <a href="http://oclc.org/developer/develop/web-services.html" target="_blank">kunci API</a>Anda dapat terkoneksi dengan Worldcat dengan memasukkan kunci di bawah ini.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.loadMessage">Tunggu hingga grid konfigurasi database sitiran telah dimuat...</message>
 	<message key="manager.setup.filter.lookup.grid.title">Konektor Database Sitiran</message>
 	<message key="manager.setup.filter.noMoreTemplates">Semua transformasi yang tersedia telah ditambahkan. Klik "Batal" untuk kembali ke halaman setup.</message>
@@ -195,7 +194,6 @@
 	<message key="manager.setup.loggingAndAuditing">Proses Login dan Audit</message>
 	<message key="manager.setup.metaCitationsDescription">Aktifkan checkbox berikut untuk memudahkan pengeditan referensi dan sitiran. Ini akan memudahkan penulis untuk memasukkan sitiran kasar dengan naskah. Editor juga akan mempunyai akses ke bantuan Koreksi sitiran yang dapat mengecek sitiran kasar terhadap database eksternal, seperti WorldCat, ISBNdb, PubMed dan lainnya, untuk keakuratan. Sitiran yang disetujui dapat diekspor ke file galley akhir.</message>
 	<message key="manager.setup.pageHeaderLogoImageInvalid">Format gambar logo header halaman invalid atau unggahan gagal. Format yang diterima adalah .gif, .jpg, or .png.</message>
-	<message key="manager.setup.pageHeaderTitleImageInvalid">Format gambar judul header halaman invalid atau unggahan gagal. Format yang diterima adalah .gif, .jpg, or .png.</message>
 	<message key="manager.setup.selectOne">Pilih satu</message>
 	<message key="manager.statistics"><![CDATA[Statistik &amp; Laporan]]></message>
 	<message key="manager.statistics.statistics.count.value">{$count} ({$percentage}%)</message>
@@ -218,4 +216,40 @@
 	<message key="plugins.categories.themes">Plugin Tema</message>
 	<message key="plugins.categories.oaiMetadataFormats">Plugin Format Metadata OAI</message>
 	<message key="plugins.categories.oaiMetadataFormats.description">Plugin format ini mengekspresikan metadata in komunikasi OAI.</message>
+
+	<!-- Review forms -->
+	<message key="manager.reviewFormElement.changeType"> Peringatan: mengubah tipe elemen form review dari tipe pilihan banyak ke tipe akhir terbuka akan berakibat ke penghapusan opsi pilihan banyak.</message>	
+	<message key="manager.reviewFormElements">Item Form</message>
+	<message key="manager.reviewFormElements.addResponseItem"> Tambahkan penyeleksian </message> 
+	<message key="manager.reviewFormElements.checkboxes"> Kotak cek? (Anda bisa memilih satu atau lebih)</message>
+	<message key="manager.reviewFormElements.chooseType"> Pilih Tipe Item </message> 
+	<message key="manager.reviewFormElements.confirmDelete"> Apakah Anda yakin ingin menghapus elemen dari form review yang diterbitkan?</message> 
+	<message key="manager.reviewFormElements.copyTo"> Salin ke:</message> 
+	<message key="manager.reviewFormElements.create"> Buat Item Baru </message> 
+	<message key="manager.reviewFormElements.dropdownbox">Kotak Drop-down</message>
+	<message key="manager.reviewFormElements.edit"> Edit Tipe Form </message> 
+	<message key="manager.reviewFormElements.elementType"> Tipe item </message> 
+	<message key="manager.reviewFormElements.form.elementTypeRequired"> Sebuah tipe item diperlukan untuk item form.</message> 
+	<message key="manager.reviewFormElements.form.questionRequired"> Pertanyaan diperlukan untuk item form.</message> 
+	<message key="manager.reviewFormElements.noneCreated"> Tidak ada item form telah dibuat.</message> 
+	<message key="manager.reviewFormElements.possibleResponse"> Penyeleksian </message> 
+	<message key="manager.reviewFormElements.question">Item</message> 
+	<message key="manager.reviewFormElements.radiobuttons">Radio buttons (Anda hanya bisa memilih satu)</message> 
+<message key="manager.reviewFormElements.required"> Reviewer perlu melengkapi/ menyelesaikan item </message> 
+	<message key="manager.reviewFormElements.included"> Termasuk di pesan untuk penulis </message> 
+	<message key="manager.reviewFormElements.smalltextfield"> Kotak teks satu kata </message> 
+	<message key="manager.reviewFormElements.textarea"> Kotak teks lebih besar </message> 
+	<message key="manager.reviewFormElements.textfield"> Kotak teks satu garis </message> 
+	<message key="manager.reviewForms"> Form Review</message> 
+	<message key="manager.reviewForms.completed"> Selesai </message> 
+	<message key="manager.reviewForms.create"> Buat Form Review </message> 
+	<message key="manager.reviewForms.description"> Deskripsi dan Instruksi </message> 
+	<message key="manager.reviewForms.edit"> Form Review </message> 
+	<message key="manager.reviewForms.form.titleRequired"> Judul diperlukan untuk form review.</message> 
+	<message key="manager.reviewForms.inReview"> Dalam Review </message> 
+	<message key="manager.reviewForms.list.description"> Form peer review yang dibuat di sini akan ditampilkan kepada Reviewer untuk dilengkapi, bukan form default yang terdiri dari dua kotak teks terbuka, yang pertama "untuk Penulis dan Editor", dan yang kedua "untuk Editor". Form review dapat dipilih untuk bagian jurnal yang spesifik, dan Editor punya opsi untuk memilih form mana yang akan digunakan dalam penugasan review. Dalam semua kasus, editor punya opsi untuk memasukkan review dalam berkorespondensi dengan penulis.</message> 
+	<message key="manager.reviewForms.noneChosen"> Tidak ada form review </message> 
+	<message key="manager.reviewForms.noneCreated"> Tidak ada form review dibuat.</message> 
+	<message key="manager.reviewForms.preview"> Form Preview </message> 
+	<message key="manager.reviewForms.title"> Judul </message> 
 </locale>

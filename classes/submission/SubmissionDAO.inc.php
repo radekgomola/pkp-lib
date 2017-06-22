@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/SubmissionDAO.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionDAO
@@ -16,7 +16,7 @@
 
 import('lib.pkp.classes.submission.Submission');
 
-class SubmissionDAO extends DAO {
+abstract class SubmissionDAO extends DAO {
 	var $cache;
 	var $authorDao;
 
@@ -57,13 +57,14 @@ class SubmissionDAO extends DAO {
 	 * @return array
 	 */
 	function getLocaleFieldNames() {
-		return array(
+		return array_merge(parent::getLocaleFieldNames(), array(
 			'title', 'cleanTitle', 'abstract', 'prefix', 'subtitle',
-			'discipline', 'subjectClass', 'subject',
-			'coverageGeo', 'coverageChron', 'coverageSample',
-			'type', 'sponsor', 'source', 'rights', 
-                        'dedikace','urlWeb', 'poznamka',  
-		);
+                        'discipline', 'subject',
+			'coverage',
+			'type', 'sponsor', 'source', 'rights',
+			'copyrightHolder',
+                        'referenceMunipress','urlWeb', 'poznamka',  
+		));
 	}
 
        /**
@@ -72,10 +73,14 @@ class SubmissionDAO extends DAO {
 	 * @return array
 	 */
 	function getAdditionalFieldNames() {
-		$additionalFields = parent::getAdditionalFieldNames();
-		// FIXME: Move this to a PID plug-in.
-		$additionalFields[] = 'pub-id::publisher-id';
-		return $additionalFields;
+		return array_merge(
+			parent::getAdditionalFieldNames(),
+			array(
+				'pub-id::publisher-id', // FIXME: Move this to a PID plug-in.
+				'copyrightYear',
+				'licenseURL',
+			)
+		);
 	}
 
 	/**
@@ -99,7 +104,6 @@ class SubmissionDAO extends DAO {
 		$submission->setId($row['submission_id']);
 		$submission->setContextId($row['context_id']);
 		$submission->setLocale($row['locale']);
-		$submission->setUserId($row['user_id']);
 		$submission->setStageId($row['stage_id']);
 		$submission->setStatus($row['status']);
 		$submission->setSubmissionProgress($row['submission_progress']);
@@ -109,7 +113,8 @@ class SubmissionDAO extends DAO {
 		$submission->setLastModified($this->datetimeFromDB($row['last_modified']));
 		$submission->setLanguage($row['language']);
 		$submission->setCommentsToEditor($row['comments_to_ed']);
-                
+                $submission->setCitations($row['citations']);
+       
                 /*MUNIPRESS*/
                 
                 $submission->setAKolektiv($row['a_kol']);
@@ -122,8 +127,6 @@ class SubmissionDAO extends DAO {
                 $submission->setDatumVydani($this->dateFromDB($row['datum_vydani']));
                 $submission->setFakulta($row['mu_pracoviste']);
                                 
-                
-                
 		$this->getDataObjectSettings('submission_settings', 'submission_id', $submission->getId(), $submission);
                 
 		return $submission;
@@ -142,6 +145,13 @@ class SubmissionDAO extends DAO {
 	 * @param $submissionId int
 	 */
 	function deleteById($submissionId) {
+		// Delete submission files.
+		$submission = $this->getById($submissionId);
+		assert(is_a($submission, 'Submission'));
+		import('lib.pkp.classes.file.SubmissionFileManager');
+		$submissionFileManager = new SubmissionFileManager($submission->getContextId(), $submission->getId());
+		$submissionFileManager->rmtree($submissionFileManager->getBasePath());
+
 		$this->authorDao->deleteBySubmissionId($submissionId);
 
 		$reviewRoundDao = DAORegistry::getDAO('ReviewRoundDAO');
@@ -153,21 +163,9 @@ class SubmissionDAO extends DAO {
 		$reviewAssignmentDao = DAORegistry::getDAO('ReviewAssignmentDAO');
 		$reviewAssignmentDao->deleteBySubmissionId($submissionId);
 
-		// Signoff DAOs
-		$signoffDao = DAORegistry::getDAO('SignoffDAO');
-		$submissionFileSignoffDao = DAORegistry::getDAO('SubmissionFileSignoffDAO');
-
-		// Delete Signoffs associated with a submission file of this submission.
-		$submissionFileSignoffs = $submissionFileSignoffDao->getAllBySubmission($submissionId);
-		while ($signoff = $submissionFileSignoffs->next()) {
-			$signoffDao->deleteObject($signoff);
-		}
-
-		// Delete the Signoffs associated with the submission itself.
-		$submissionSignoffs = $signoffDao->getAllByAssocType(ASSOC_TYPE_SUBMISSION, $submissionId);
-		while ($signoff = $submissionSignoffs->next()) {
-			$signoffDao->deleteObject($signoff);
-		}
+		// Delete the queries associated with a submission
+		$queryDao = DAORegistry::getDAO('QueryDAO');
+		$queryDao->deleteByAssoc(ASSOC_TYPE_SUBMISSION, $submissionId);
 
 		// Delete the stage assignments.
 		$stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
@@ -176,7 +174,6 @@ class SubmissionDAO extends DAO {
 			$stageAssignmentDao->deleteObject($stageAssignment);
 		}
 
-		// N.B. Files must be deleted after signoffs to identify submission file signoffs.
 		// Delete submission files.
 		$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO'); /* @var $submissionFileDao SubmissionFileDAO */
 		$submissionFileDao->deleteAllRevisionsBySubmissionId($submissionId);
@@ -292,17 +289,17 @@ class SubmissionDAO extends DAO {
 			unset($submission);
 		}
 
-		$params = $this->_getFetchParameters();
+		$params = $this->getFetchParameters();
 		$params[] = (int) $submissionId;
 		if ($contextId) $params[] = (int) $contextId;
 
 		$result = $this->retrieve(
 			'SELECT	s.*, ps.date_published, munis.*,
-				' . $this->_getFetchColumns() . '                                
+				' . $this->getFetchColumns() . '                                
 			FROM	submissions s                                
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)  
                                 LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
-				' . $this->_getFetchJoins() . '                                
+				' . $this->getFetchJoins() . '                                
 			WHERE	s.submission_id = ?
 				' . ($contextId?' AND s.context_id = ?':''),
 			$params
@@ -319,7 +316,7 @@ class SubmissionDAO extends DAO {
 	}
 
 	/**
-	 * Retrieve a submission by Id only if the submission is not published, has been submitted, and does not
+	 * Retrieve a submission by ID only if the submission is not published, has been submitted, and does not
 	 * belong to the user in question and is not STATUS_DECLINED.
 	 * @param int $submissionId
 	 * @param int $userId
@@ -337,22 +334,30 @@ class SubmissionDAO extends DAO {
 			unset($submission);
 		}
 
-		$params = $this->_getFetchParameters();
-		$params[] = (int) $submissionId;
-		$params[] = (int) $userId;
+		$params = array_merge(
+			array((int) ROLE_ID_AUTHOR),
+			$this->_getFetchParameters(),
+			array((int) $submissionId)
+		);
 		if ($contextId) $params[] = (int) $contextId;
 
 		$result = $this->retrieve(
-				'SELECT	s.*, ps.date_published, munis.*,
-				' . $this->_getFetchColumns() . '
-				FROM	submissions s
+			'SELECT	s.*, ps.date_published, munis.*,
+				' . $this->getFetchColumns() . '
+			FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
+				' . $this->getCompletionJoins() . '
+				LEFT JOIN stage_assignments asa ON (asa.submission_id = s.submission_id)
+				LEFT JOIN user_groups aug ON (asa.user_group_id = aug.user_group_id AND aug.role_id = ?)
                                 LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
-				' . $this->_getFetchJoins() . '
-				WHERE	s.submission_id = ?
-				AND s.date_submitted IS NOT NULL AND ps.date_published IS NULL AND s.user_id <> ? AND s.status <> ' .  STATUS_DECLINED .
+				' . $this->getFetchJoins() . '
+			WHERE	s.submission_id = ?
+				' . $this->getCompletionConditions(false) . ' AND
+				AND aug.user_group_id IS NULL
+				AND s.date_submitted IS NOT NULL
+				AND s.status <> ' .  STATUS_DECLINED .
 				($contextId?' AND s.context_id = ?':''),
-				$params
+			$params
 		);
 
 		$returner = null;
@@ -370,16 +375,16 @@ class SubmissionDAO extends DAO {
 	 * @return DAOResultFactory containing matching Submissions
 	 */
 	function getByContextId($contextId) {
-		$params = $this->_getFetchParameters();
+		$params = $this->getFetchParameters();
 		$params[] = (int) $contextId;
 
 		$result = $this->retrieve(
 			'SELECT	s.*, ps.date_published, munis.*,
-				' . $this->_getFetchColumns() . '
+				' . $this->getFetchColumns() . '
 			FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
                                 LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
-				' . $this->_getFetchJoins() . '
+				' . $this->getFetchJoins() . '
 			WHERE	s.context_id = ?',
 			$params
 		);
@@ -394,20 +399,78 @@ class SubmissionDAO extends DAO {
 	 * @return array Submissions
 	 */
 	function getByUserId($userId, $contextId = null) {
-		$params = $this->_getFetchParameters();
-		$params[] = (int) $userId;
+		$params = array_merge(
+			$this->_getFetchParameters(),
+			array((int) ROLE_ID_AUTHOR, (int) $userId)
+		);
 		if ($contextId) $params[] = (int) $contextId;
 
 		$result = $this->retrieve(
 			'SELECT	s.*, ps.date_published, munis.*,
-				' . $this->_getFetchColumns() . '
+				' . $this->getFetchColumns() . '
 			FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
                                 LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
-				' . $this->_getFetchJoins() . '
-			WHERE	s.user_id = ?' .
+				' . $this->getFetchJoins() . '
+			WHERE	s.submission_id IN (SELECT asa.submission_id FROM stage_assignments asa, user_groups aug WHERE asa.user_group_id = aug.user_group_id AND aug.role_id = ? AND asa.user_id = ?)' .
 				($contextId?' AND s.context_id = ?':''),
 			$params
+		);
+
+		return new DAOResultFactory($result, $this, '_fromRow');
+	}
+	
+	/**
+	 * Get all unassigned submissions for a context or all contexts
+	 * @param $contextId mixed optional the ID of the context to query, or an array containing possible context ids.
+	 * @param $subEditorId int optional the ID of the sub editor
+	 *  whose section will be included in the results (excluding others).
+	 * @param $includeDeclined boolean optional include submissions which have STATUS_DECLINED
+	 * @param $includePublished boolean optional include submissions which are published
+	 * @param $title string|null optional Filter by title.
+	 * @param $author string|null optional Filter by author.
+	 * @param $stageId int|null optional Filter by stage id.
+	 * @param $rangeInfo DBRangeInfo
+	 * @return DAOResultFactory containing matching Submissions
+	 */
+	function getBySubEditorId($contextId = null, $subEditorId = null, $includeDeclined = true, $includePublished = true, $title = null, $author = null, $stageId = null, $rangeInfo = null) {
+		$params = $this->getFetchParameters();
+		if ($subEditorId) $params[] = (int) $subEditorId;
+		$params[] = (int) ROLE_ID_MANAGER;
+		$params[] = (int) ROLE_ID_SUB_EDITOR;
+		if ($contextId && is_int($contextId))
+			$params[] = (int) $contextId;
+		
+		if ($title) {
+			$params[] = 'title';
+			$params[] = '%' . $title . '%';
+		}
+		if ($author) array_push($params, $authorQuery = '%' . $author . '%', $authorQuery, $authorQuery);
+		if ($stageId) $params[] = (int) $stageId;
+
+		$result = $this->retrieveRange(
+			'SELECT	s.*, ps.date_published,
+				' . $this->getFetchColumns() . '
+			FROM	submissions s
+				LEFT JOIN published_submissions ps ON s.submission_id = ps.submission_id
+				' . $this->getCompletionJoins() . '
+				' . ($title?' LEFT JOIN submission_settings ss ON (s.submission_id = ss.submission_id)':'') . '
+				' . ($author?' LEFT JOIN authors au ON (s.submission_id = au.submission_id)':'') . '
+				' . $this->getFetchJoins() . '
+				' . ($subEditorId?' ' . $this->getSubEditorJoin():'') . '
+			WHERE	s.date_submitted IS NOT NULL AND 
+				(SELECT COUNT(sa.stage_assignment_id) FROM stage_assignments sa LEFT JOIN user_groups g ON sa.user_group_id = g.user_group_id WHERE 
+					sa.submission_id = s.submission_id AND (g.role_id = ? OR g.role_id = ?)) = 0' 
+			. (!$includeDeclined?' AND s.status <> ' . STATUS_DECLINED : '' )
+			. (!$includePublished?' AND ' . $this->getCompletionConditions(false):'')
+			. ($contextId && !is_array($contextId)?' AND s.context_id = ?':'')
+			. ($contextId && is_array($contextId)?' AND s.context_id IN  (' . join(',', array_map(array($this,'_arrayWalkIntCast'), $contextId)) . ')':'')
+			. ($title?' AND (ss.setting_name = ? AND ss.setting_value LIKE ?)':'') 
+			. ($author?' AND (au.first_name LIKE ? OR au.middle_name LIKE ? OR au.last_name LIKE ?)':'')
+			. ($stageId?' AND s.stage_id = ?':'') .
+			' GROUP BY ' . $this->getGroupByColumns(),
+			$params,
+			$rangeInfo
 		);
 
 		return new DAOResultFactory($result, $this, '_fromRow');
@@ -417,61 +480,143 @@ class SubmissionDAO extends DAO {
 	 * Get all unpublished submissions for a user.
 	 * @param $userId int
 	 * @param $contextId int optional
+	 * @param $rangeInfo DBResultRange optional
 	 * @return array Submissions
 	 */
-	function getUnpublishedByUserId($userId, $contextId = null, $rangeInfo = null) {
-		$params = $this->_getFetchParameters();
-		$params[] = (int) $userId;
 
+	function getUnpublishedByUserId($userId, $contextId = null, $title = null, $stageId = null, $rangeInfo = null) {
+		$params = array_merge(
+			$this->getFetchParameters(),
+			array((int) ROLE_ID_AUTHOR, (int) $userId)
+		);
+		if ($title) $params[] = '%' . $title . '%';
+		if ($stageId) $params[] = (int) $stageId;
 		if ($contextId) $params[] = (int) $contextId;
 
 		$result = $this->retrieveRange(
-				'SELECT	s.*, ps.date_published, munis.*,
-				' . $this->_getFetchColumns() . '
-				FROM	submissions s
+			'SELECT	s.*, ps.date_published, munis.*,
+				' . $this->getFetchColumns() . '
+			FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
-                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
-				' . $this->_getFetchJoins() . '
-				WHERE	ps.date_published IS NULL AND s.user_id = ?' .
-				($contextId?' AND s.context_id = ?':''),
-				$params, $rangeInfo
+                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)'.
+				$this->getCompletionJoins() .
+				($title?' LEFT JOIN submission_settings ss ON (s.submission_id = ss.submission_id)':'') .
+				$this->getFetchJoins() .
+			'WHERE	s.submission_id IN (SELECT asa.submission_id FROM stage_assignments asa, user_groups aug WHERE asa.user_group_id = aug.user_group_id AND aug.role_id = ? AND asa.user_id = ?)' .
+				' AND ' . $this->getCompletionConditions(false) .
+				($contextId?' AND s.context_id = ?':'') .
+				($title?' AND (ss.setting_name = ? AND ss.setting_value LIKE ?)':'') .
+				($stageId?' AND s.stage_id = ?':'') .
+				' GROUP BY ' . $this->getGroupByColumns(),
+			$params, $rangeInfo
 		);
 
 		return new DAOResultFactory($result, $this, '_fromRow');
 	}
 
 	/**
+	 * Get all submissions that a reviewer denied a review request.
+	 * It will list only the submissions that a review has denied
+	 * ALL review assignments.
+	 * @param $reviewerId int
+	 * @param $contextId int optional
+	 * @param $title string optional
+	 * @param $author string optional
+	 * @param $stageId int optional
+	 * @param $rangeInfo DBResultRange optional
+	 * @return DAOResultFactory 
+	 */
+	function getReviewerArchived($reviewerId, $contextId = null, $title = null, $author = null, $stageId = null, $rangeInfo = null) {
+		$params = array($reviewerId, $reviewerId);
+		$params = array_merge($params, $this->getFetchParameters());
+		$params[] = $reviewerId;
+		if ($title) {
+			$params[] = 'title';
+			$params[] = '%' . $title . '%';
+		}
+		if ($author) array_push($params, $authorQuery = '%' . $author . '%', $authorQuery, $authorQuery);
+		if ($stageId) $params[] = (int) $stageId;
+
+		$result = $this->retrieveRange(
+			'SELECT s.*, ps.date_published, munis.*,
+				' . $this->getFetchColumns() . '
+			FROM	submissions s
+				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
+                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
+				LEFT JOIN review_assignments ra ON (s.submission_id = ra.submission_id AND ra.reviewer_id = ? AND ra.declined = true)
+				LEFT JOIN review_assignments ra2 ON (s.submission_id = ra2.submission_id AND ra2.reviewer_id = ? AND ra2.declined = true AND ra2.review_id > ra.review_id)
+				' . ($title?' LEFT JOIN submission_settings ss ON (s.submission_id = ss.submission_id)':'') . '
+				' . ($author?' LEFT JOIN authors au ON (s.submission_id = au.submission_id)':'')
+				. $this->getFetchJoins() .
+			' WHERE ra2.review_id IS NULL AND ra.review_id IS NOT NULL
+				AND (SELECT COUNT(ra3.review_id) FROM review_assignments ra3 
+					WHERE s.submission_id = ra3.submission_id AND ra3.reviewer_id = ? AND ra3.declined = 0) = 0
+				' . ($contextId?' AND s.context_id IN  (' . join(',', array_map(array($this,'_arrayWalkIntCast'), (array) $contextId)) . ')':'')
+				. ($title?' AND (ss.setting_name = ? AND ss.setting_value LIKE ?)':'')
+				. ($author?' AND (au.first_name LIKE ? OR au.middle_name LIKE ? OR au.last_name LIKE ?)':'')
+				. ($stageId?' AND s.stage_id = ?':''),
+			$params,
+			$rangeInfo
+		);
+
+		return new DAOResultFactory($result, $this, '_fromRow');	
+	}
+
+	/**
 	 * Get all submissions for a status.
 	 * @param $status int Status to get submissions for
-	 * @param $stageUserId int optional Only get submissions where this user was assigned to a stage
-	 * @param $reviewUserId int optional Only get submissions where this user was a reviewer
+	 * @param $userId int optional User to require an assignment for
 	 * @param $contextId mixed optional Context(s) to fetch submissions for
+	 * @param $title string optional
+	 * @param $author string optional
+	 * @param $stageId int optional
 	 * @param $rangeInfo DBResultRange optional
-	 * @return array Submissions
+	 * @return DAOResultFactory
 	 */
-	function getByStatus($status, $stageUserId = null, $reviewUserId, $contextId = null, $rangeInfo = null) {
-		$params = $this->_getFetchParameters();
+	function getByStatus($status, $userId = null, $contextId = null, $title = null, $author = null, $stageId = null, $rangeInfo = null) {
+		$params = array();
 
-		if ($stageUserId) $params[] = (int) $stageUserId;
-		if ($reviewUserId) $params[] = (int) $reviewUserId;
+		if ($userId) $params = array_merge(
+			$params,
+			array(
+				(int) $userId, // Stage assignments
+				(int) $userId, // sa2 to prevent dupes
+				(int) $userId, // Review assignments
+				(int) $userId, // ra2 to prevent dupes
+			)
+		);
+
+		$params = array_merge($params, $this->getFetchParameters());
+
+		if ($title) {
+			$params[] = 'title';
+			$params[] = '%' . $title . '%';
+		}
+		if ($author) array_push($params, $authorQuery = '%' . $author . '%', $authorQuery, $authorQuery);
+		if ($stageId) $params[] = (int) $stageId;
 
 		$result = $this->retrieveRange(
 			'SELECT	s.*, ps.date_published, munis.*,
-				' . $this->_getFetchColumns() . '
+				' . $this->getFetchColumns() . '
 			FROM	submissions s
-				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id) 
+				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
                                 LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
-                                '
-				. (($stageUserId)?'LEFT JOIN stage_assignments sa ON (s.submission_id = sa.submission_id) ':'')
-				. (($reviewUserId)?'LEFT JOIN review_assignments ra ON (s.submission_id = ra.submission_id) ':'')
-				. $this->_getFetchJoins() .
-			'WHERE	'
-			. (!is_array($status)?'s.status = ' . ((int) $status):'')
-			. (is_array($status)?'s.status IN  (' . join(',', array_map(array($this,'_arrayWalkIntCast'), $status)) . ')':'')
-			. ($contextId && !is_array($contextId)?' AND s.context_id = ' . ((int) $contextId):'')
-			. ($contextId && is_array($contextId)?' AND s.context_id IN  (' . join(',', array_map(array($this,'_arrayWalkIntCast'), $contextId)) . ')':'')
-			. (($stageUserId)?' AND sa.user_id = ?':'')
-			. (($reviewUserId)?' AND ra.reviewer_id = ?':''),
+				' . ($userId?
+					'LEFT JOIN stage_assignments sa ON (s.submission_id = sa.submission_id AND sa.user_id = ?)
+					LEFT JOIN stage_assignments sa2 ON (s.submission_id = sa2.submission_id AND sa2.user_id = ? AND sa2.stage_assignment_id > sa.stage_assignment_id)
+					LEFT JOIN review_assignments ra ON (s.submission_id = ra.submission_id AND ra.reviewer_id = ?)
+					LEFT JOIN review_assignments ra2 ON (s.submission_id = ra2.submission_id AND ra2.reviewer_id = ? AND ra2.review_id > ra.review_id)'
+				:'') .
+				($title?' LEFT JOIN submission_settings ss ON (s.submission_id = ss.submission_id)':'') . '
+				' . ($author?' LEFT JOIN authors au ON (s.submission_id = au.submission_id)':'') .
+				$this->getFetchJoins() .
+			'WHERE
+				s.status IN  (' . join(',', array_map(array($this,'_arrayWalkIntCast'), (array) $status)) . ')
+				' . ($contextId?' AND s.context_id IN  (' . join(',', array_map(array($this,'_arrayWalkIntCast'), (array) $contextId)) . ')':'')
+				. ($userId?' AND sa2.stage_assignment_id IS NULL AND ra2.review_id IS NULL AND (sa.stage_assignment_id IS NOT NULL OR ra.review_id IS NOT NULL)':'')
+				. ($title?' AND (ss.setting_name = ? AND ss.setting_value LIKE ?)':'')
+				. ($author?' AND (au.first_name LIKE ? OR au.middle_name LIKE ? OR au.last_name LIKE ?)':'')
+				. ($stageId?' AND s.stage_id = ?':''),
 			$params,
 			$rangeInfo
 		);
@@ -479,6 +624,178 @@ class SubmissionDAO extends DAO {
 		return new DAOResultFactory($result, $this, '_fromRow');
 	}
 
+	/**
+	 * Get all submissions that are considered assigned to the passed user, excluding author participation.
+	 * @param $userId int
+	 * @param $contextId int optional
+	 * @param $title string|null optional Filter by title.
+	 * @param $author string|null optional Filter by author.
+	 * @param $stageId int|null optional Filter by stage id.
+	 * @param $rangeInfo DBResultRange optional
+	 * @return DAOResultFactory
+	 */
+	function getAssignedToUser($userId, $contextId = null, $title = null, $author = null, $stageId = null, $rangeInfo = null) {
+		$params = array_merge(
+			array(ROLE_ID_AUTHOR),
+			$this->getFetchParameters(),
+			array(
+				(int) STATUS_DECLINED,
+				(int) $userId,
+				(int) $userId
+			)
+		);
+		if ($contextId) $params[] = (int) $contextId;
+
+		if ($title) {
+			$params[] = 'title';
+			$params[] = '%' . $title . '%';
+		}
+		if ($author) array_push($params, $authorQuery = '%' . $author . '%', $authorQuery, $authorQuery);
+		if ($stageId) $params[] = (int) $stageId;
+
+		$result = $this->retrieveRange($sql =
+			'SELECT s.*, ps.date_published, munis.*,
+				' . $this->getFetchColumns() . '
+			FROM submissions s
+				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
+                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
+				' . $this->getCompletionJoins() . '
+				LEFT JOIN stage_assignments sa ON (s.submission_id = sa.submission_id)
+				LEFT JOIN user_groups aug ON (sa.user_group_id = aug.user_group_id AND aug.role_id = ?)
+				LEFT JOIN submission_files sf ON (s.submission_id = sf.submission_id)
+				LEFT JOIN review_assignments ra ON (s.submission_id = ra.submission_id AND ra.declined = 0)
+				' . ($title?' LEFT JOIN submission_settings ss ON (s.submission_id = ss.submission_id)':'') . '
+				' . ($author?' LEFT JOIN authors au ON (s.submission_id = au.submission_id)':'')
+				. $this->getFetchJoins() .
+			' WHERE s.date_submitted IS NOT NULL 
+				AND ' . $this->getCompletionConditions(false) . '
+				AND s.status <> ?
+				AND aug.user_group_id IS NULL
+				AND (sa.user_id = ? OR ra.reviewer_id = ?)'
+				. ($contextId?' AND s.context_id = ?':'')
+				. ($title?' AND (ss.setting_name = ? AND ss.setting_value LIKE ?)':'') 
+				. ($author?' AND (ra.submission_id IS NULL AND (au.first_name LIKE ? OR au.middle_name LIKE ? OR au.last_name LIKE ?))':'') // Don't permit reviewer searching on author name
+				. ($stageId?' AND s.stage_id = ?':'') .
+			' GROUP BY ' . $this->getGroupByColumns(),
+			$params,
+			$rangeInfo				
+		);
+
+		return new DAOResultFactory($result, $this, '_fromRow');
+	}
+
+	/**
+	 * Get all submissions that are assigned to users other than the passed one.
+	 * @param $userId int
+	 * @param $contextId int optional
+	 * @param $title string|null optional Filter by title.
+	 * @param $author string|null optional Filter by author.
+	 * @param $editor int|null optional Filter by editor name.
+	 * @param $stageId int|null optional Filter by stage id.
+	 * @param $rangeInfo DBResultRange optional
+	 * @return DAOResultFactory
+	 */
+	function getAssignedToOthers($userId, $contextId = null, $title = null, $author = null, $editor = null, $stageId = null, $rangeInfo = null) {
+		$params = $this->getFetchParameters();
+		$userId = (int) $userId;
+		array_push($params, (int) STATUS_DECLINED, $userId, (int) ROLE_ID_MANAGER, (int) ROLE_ID_SUB_EDITOR);
+		if ($editor) array_push($params, $editorQuery = '%' . $editor . '%', $editorQuery);
+		if ($contextId) $params[] = (int) $contextId;
+		
+		if ($title) {
+			$params[] = 'title';
+			$params[] = '%' . $title . '%';
+		}
+		if ($author) array_push($params, $authorQuery = '%' . $author . '%', $authorQuery, $authorQuery);
+		if ($stageId) $params[] = (int) $stageId;
+
+		$result = $this->retrieveRange($sql =
+			'SELECT s.*, ps.date_published, munis.*,
+				' . $this->getFetchColumns() . '
+			FROM submissions s
+				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
+                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
+				' . $this->getCompletionJoins() . '
+				LEFT JOIN submission_files sf ON (s.submission_id = sf.submission_id)
+				LEFT JOIN review_assignments ra ON (s.submission_id = ra.submission_id)
+				' . ($title?' LEFT JOIN submission_settings ss ON (s.submission_id = ss.submission_id)':'') . '
+				' . ($author?' LEFT JOIN authors au ON (s.submission_id = au.submission_id)':'')
+				. $this->getFetchJoins() .
+			' WHERE s.date_submitted IS NOT NULL AND
+				' . $this->getCompletionConditions(false) . ' AND
+				AND s.status <> ?
+				AND (SELECT COUNT(sa.stage_assignment_id) FROM stage_assignments sa 
+					WHERE sa.submission_id = s.submission_id AND sa.user_id = ?) = 0
+				AND (SELECT COUNT(sa.stage_assignment_id) FROM stage_assignments sa LEFT JOIN user_groups g ON sa.user_group_id = g.user_group_id'
+					. ($editor?' LEFT JOIN users u ON (sa.user_id = u.user_id)':'')	
+					. ' WHERE sa.submission_id = s.submission_id AND (g.role_id = ? OR g.role_id = ?)'
+					. ($editor?' AND ' . $this->_getEditorSearchQuery():'') . ') > 0' 
+				. ($contextId?' AND s.context_id = ?':'')
+				. ($title?' AND (ss.setting_name = ? AND ss.setting_value LIKE ?)':'') 
+				. ($author?' AND (au.first_name LIKE ? OR au.middle_name LIKE ? OR au.last_name LIKE ?)':'')
+				. ($stageId?' AND s.stage_id = ?':'') .
+			' GROUP BY ' . $this->getGroupByColumns(),
+			$params,
+			$rangeInfo				
+		);
+
+		return new DAOResultFactory($result, $this, '_fromRow');
+	}
+
+	/**
+	 * Get all active submissions for a context.
+	 * @param $contextId int optional
+	 * @param $title string|null optional Filter by title.
+	 * @param $author string|null optional Filter by author.
+	 * @param $editor int|null optional Filter by editor name.
+	 * @param $stageId int|null optional Filter by stage id.
+	 * @param $rangeInfo DBResultRange optional
+	 * @return DAOResultFactory
+	 */
+	function getActiveSubmissions($contextId = null, $title = null, $author = null, $editor = null, $stageId = null, $rangeInfo = null) {
+		$params = $this->getFetchParameters();
+		$params[] = (int) STATUS_DECLINED;
+
+		if ($contextId) $params[] = (int) $contextId;
+		
+		if ($title) {
+			$params[] = 'title';
+			$params[] = '%' . $title . '%';
+		}
+		if ($author) array_push($params, $authorQuery = '%' . $author . '%', $authorQuery, $authorQuery);
+		if ($stageId) $params[] = (int) $stageId;
+		if ($editor) array_push($params, (int) ROLE_ID_MANAGER, (int) ROLE_ID_SUB_EDITOR, $editorQuery = '%' . $editor . '%', $editorQuery);
+
+		$result = $this->retrieveRange(
+			'SELECT	s.*, ps.date_published, munis.*,
+				' . $this->getFetchColumns() . '
+			FROM	submissions s
+				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
+                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
+				' . $this->getCompletionJoins() . '
+				' . ($title?' LEFT JOIN submission_settings ss ON (s.submission_id = ss.submission_id)':'') . '
+				' . ($author?' LEFT JOIN authors au ON (s.submission_id = au.submission_id)':'') . '
+				' . ($editor?' LEFT JOIN stage_assignments sa ON (s.submission_id = sa.submission_id) 
+						LEFT JOIN user_groups g ON (sa.user_group_id = g.user_group_id) 
+						LEFT JOIN users u ON (sa.user_id = u.user_id)':'') . '
+				' . $this->getFetchJoins() . '
+			WHERE	s.date_submitted IS NOT NULL
+				AND ' . $this->getCompletionConditions(false) . '
+				AND s.status <> ?
+				' . ($contextId?' AND s.context_id = ?':'') . '
+				' . ($title?' AND (ss.setting_name = ? AND ss.setting_value LIKE ?)':'') . '
+				' . ($author?' AND (au.first_name LIKE ? OR au.middle_name LIKE ? OR au.last_name LIKE ?)':'') . '
+				' . ($stageId?' AND s.stage_id = ?':'') . '
+				' . ($editor?' AND (g.role_id = ? OR g.role_id = ?) AND' . $this->_getEditorSearchQuery():'') .
+			' GROUP BY ' . $this->getGroupByColumns(),
+			$params,
+			$rangeInfo
+		);
+
+		return new DAOResultFactory($result, $this, '_fromRow');
+	}
+
+	
 	/**
 	 * Delete all submissions by context ID.
 	 * @param $contextId int
@@ -490,6 +807,26 @@ class SubmissionDAO extends DAO {
 		}
 	}
 
+	/**
+	 * Delete the attached licenses of all submissions in a context.
+	 * @param $submissionId int
+	 */
+	function deletePermissions($contextId) {
+		$submissions = $this->getByContextId($contextId);
+		while ($submission = $submissions->next()) {
+			$this->update(
+				'DELETE FROM submission_settings WHERE (setting_name = ? OR setting_name = ? OR setting_name = ?) AND submission_id = ?',
+				array(
+					'licenseURL',
+					'copyrightHolder',
+					'copyrightYear',
+					(int) $submission->getId()
+				)
+			);
+		}
+		$this->flushCache();
+	}
+
 
 	//
 	// Protected functions
@@ -498,25 +835,33 @@ class SubmissionDAO extends DAO {
 	 * Return a list of extra parameters to bind to the submission fetch queries.
 	 * @return array
 	 */
-	protected function _getFetchParameters() {
-		assert(false); // To be overridden by subclasses
-	}
+	abstract protected function getFetchParameters();
 
 	/**
 	 * Return a SQL snippet of extra columns to fetch during submission fetch queries.
 	 * @return string
 	 */
-	protected function _getFetchColumns() {
-		assert(false); // To be overridden by subclasses
-	}
+	abstract protected function getFetchColumns();
+
+	/**
+	 * Return a SQL snippet of columns to group by the submission fetch queries.
+	 * See bug #8557, all tables that have columns selected must have one column listed here
+	 * to keep PostgreSQL happy.
+	 * @return string 
+	 */
+	abstract protected function getGroupByColumns();
 
 	/**
 	 * Return a SQL snippet of extra joins to include during fetch queries.
 	 * @return string
 	 */
-	protected function _getFetchJoins() {
-		assert(false); // To be overridden by subclasses
-	}
+	abstract protected function getFetchJoins();
+
+	/**
+	 * Return a SQL snippet of extra sub editor related join to include during fetch queries.
+	 * @return string
+	 */
+	abstract protected function getSubEditorJoin();
 
 	/**
 	 * Sanity test to cast values to int for database queries.
@@ -544,6 +889,32 @@ class SubmissionDAO extends DAO {
                         'prf' => 'munipress.fakulty.prf',
                         'Rmu' => 'munipress.fakulty.Rmu'
                 );
+                
+        }
+	/**
+	 * Get additional joins required to establish whether the submission is "completed".
+	 * @return string
+	 */
+	protected function getCompletionJoins() {
+		return '';
+	}
+
+	/**
+	 * Get conditions required to establish whether the submission is "completed".
+	 * @param $completed boolean True for completed submissions; false for incomplete
+	 * @return string
+	 */
+	abstract protected function getCompletionConditions($completed);
+
+	//
+	// Private helper methods.
+	//
+	/**
+	 * Get the editor search query for submissions.
+	 * @return string
+	 */
+	private function _getEditorSearchQuery() {
+		return '(CONCAT_WS(\' \', u.first_name, u.middle_name, u.last_name) LIKE ? OR CONCAT_WS(\' \', u.first_name, u.last_name) LIKE ?)';
 	}
 }
 

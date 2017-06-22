@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/PKPAuthor.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPAuthor
@@ -41,7 +41,7 @@ class PKPAuthor extends Identity {
 	 * @param $submissionId int
 	 */
 	function setSubmissionId($submissionId) {
-		return $this->setData('submissionId', $submissionId);
+		$this->setData('submissionId', $submissionId);
 	}
 
 	/**
@@ -108,7 +108,7 @@ class PKPAuthor extends Identity {
 	 * @param $primaryContact boolean
 	 */
 	function setPrimaryContact($primaryContact) {
-		return $this->setData('primaryContact', $primaryContact);
+		$this->setData('primaryContact', $primaryContact);
 	}
 
 	/**
@@ -124,7 +124,7 @@ class PKPAuthor extends Identity {
 	 * @param $sequence float
 	 */
 	function setSequence($sequence) {
-		return $this->setData('sequence', $sequence);
+		$this->setData('sequence', $sequence);
 	}
 
 	/**

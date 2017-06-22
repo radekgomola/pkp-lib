@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/SubmissionFileDAODelegate.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionFileDAODelegate
@@ -16,6 +16,9 @@
  */
 
 import('lib.pkp.classes.db.DAO');
+import('lib.pkp.classes.submission.SubmissionFile');
+
+define('SUBMISSION_FLIPBOOK_GENRE_ID', 17);
 
 class SubmissionFileDAODelegate extends DAO {
 	/**
@@ -30,15 +33,6 @@ class SubmissionFileDAODelegate extends DAO {
 	// Abstract public methods to be implemented by subclasses.
 	//
 	/**
-	 * Return the name of the base submission entity
-	 * (i.e. 'monograph', 'paper', 'article', etc.)
-	 * @return string
-	 */
-	function getSubmissionEntityName() {
-		return 'submission';
-	}
-
-	/**
 	 * Insert a new submission file.
 	 * @param $submissionFile SubmissionFile
 	 * @param $sourceFile string The place where the physical file
@@ -48,8 +42,9 @@ class SubmissionFileDAODelegate extends DAO {
 	 *  uploaded.
 	 * @return SubmissionFile the inserted file
 	 */
-	function insertObject(&$submissionFile, $sourceFile, $isUpload = false) {
+	function insertObject($submissionFile, $sourceFile, $isUpload = false) {
 		$fileId = $submissionFile->getFileId();
+                $fileType = $submissionFile->getFileType();
 
 		if (!is_numeric($submissionFile->getRevision())) {
 			// Set the initial revision.
@@ -81,7 +76,7 @@ class SubmissionFileDAODelegate extends DAO {
 		);
 
 		if ($fileId) {
-			array_unshift($params, $fileId);
+			array_unshift($params, (int) $fileId);
 		}
 
 		$this->update(
@@ -114,6 +109,11 @@ class SubmissionFileDAODelegate extends DAO {
 				assert(is_readable($sourceFile));
 				$success = $fileManager->copyFile($sourceFile, $targetFilePath);
 			}
+                        if($success && $submissionFile->getGenreId() == SUBMISSION_FLIPBOOK_GENRE_ID &&$fileType == "application/zip") {
+                            $targetFlipbookPath = $submissionFile->getFlipbookFolderPath();
+                            //vytvoř flipbook složku se soubory
+                            $flipsuccess = $fileManager->createFlipbook($targetFilePath,$targetFlipbookPath);
+                        }
 			if (!$success) {
 				// If the copy/upload operation fails then remove
 				// the already inserted meta-data.
@@ -237,11 +237,15 @@ class SubmissionFileDAODelegate extends DAO {
 
 		// Delete the file on the file system, too.
 		$filePath = $submissionFile->getFilePath();
+                $flipbookFolderPath = $submissionFile->getFlipbookFolderPath(); 
 		if(!(is_file($filePath) && is_readable($filePath))) return false;
 		assert(is_writable(dirname($filePath)));
 
 		import('lib.pkp.classes.file.FileManager');
 		$fileManager = new FileManager();
+                if(is_writable(dirname($flipbookFolderPath)) && $submissionFile->getFileType() == "application/zip"){
+                    $fileManager->deleteFolder($flipbookFolderPath);
+                }
 		$fileManager->deleteFile($filePath);
 
 		return !file_exists($filePath);
@@ -284,7 +288,7 @@ class SubmissionFileDAODelegate extends DAO {
 	 * @return SubmissionFile
 	 */
 	function newDataObject() {
-		assert(false);
+		return new SubmissionFile();
 	}
 
 
@@ -305,9 +309,9 @@ class SubmissionFileDAODelegate extends DAO {
 	 * Update the localized fields for this submission file.
 	 * @param $submissionFile SubmissionFile
 	 */
-	function updateLocaleFields(&$submissionFile) {
+	function updateLocaleFields($submissionFile) {
 		// Update the locale fields.
-		$this->updateDataObjectSettings($this->getSubmissionEntityName().'_file_settings', $submissionFile, array(
+		$this->updateDataObjectSettings('submission_file_settings', $submissionFile, array(
 			'file_id' => $submissionFile->getFileId()
 		));
 	}
@@ -328,17 +332,6 @@ class SubmissionFileDAODelegate extends DAO {
 				$previousFile->getRevision() == $submissionFile->getRevision()
 		) return;
 
-		// Update signoffs that refer to this file.
-		$signoffDao = DAORegistry::getDAO('SignoffDAO'); /* @var $signoffDao SignoffDAO */
-		$signoffFactory = $signoffDao->getByFileRevision(
-				$previousFile->getFileId(), $previousFile->getRevision()
-		);
-		while ($signoff = $signoffFactory->next()) { /* @var $signoff Signoff */
-			$signoff->setFileId($submissionFile->getFileId());
-			$signoff->setFileRevision($submissionFile->getRevision());
-			$signoffDao->updateObject($signoff);
-		}
-
 		// Update file views that refer to this file.
 		$viewsDao = DAORegistry::getDAO('ViewsDAO'); /* @var $viewsDao ViewsDAO */
 		$viewsDao->moveViews(
@@ -352,15 +345,6 @@ class SubmissionFileDAODelegate extends DAO {
 	 * @param $submissionFile SubmissionFile
 	 */
 	function _deleteDependentObjects($submissionFile) {
-		// Delete signoffs that refer to this file.
-		$signoffDao = DAORegistry::getDAO('SignoffDAO'); /* @var $signoffDao SignoffDAO */
-		$signoffFactory = $signoffDao->getByFileRevision(
-				$submissionFile->getFileId(), $submissionFile->getRevision()
-		);
-		while ($signoff = $signoffFactory->next()) { /* @var $signoff Signoff */
-			$signoffDao->deleteObject($signoff);
-		}
-
 		// Delete file views that refer to this file.
 		$viewsDao = DAORegistry::getDAO('ViewsDAO'); /* @var $viewsDao ViewsDAO */
 		$viewsDao->deleteViews(

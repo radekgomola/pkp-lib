@@ -3,8 +3,8 @@
 /**
  * @file plugins/metadata/mods34/tests/filter/Mods34SchemaSubmissionAdapterTest.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Mods34SchemaSubmissionAdapterTest
@@ -30,8 +30,9 @@ class Mods34SchemaSubmissionAdapterTest extends Mods34DescriptionTestCase {
 	/**
 	 * @covers Mods34SchemaSubmissionAdapter
 	 */
-	/* FIXME: This test is currently broken (see #5231).
 	public function testMods34SchemaSubmissionAdapter() {
+		$this->markTestSkipped('This test is currently broken (bug #5231)');
+
 		// Test constructor.
 		$adapter = new Mods34SchemaSubmissionAdapter(PersistableFilter::tempGroup(
 				'metadata::plugins.metadata.mods34.schema.Mods34Schema(CITATION)',
@@ -61,7 +62,7 @@ class Mods34SchemaSubmissionAdapterTest extends Mods34DescriptionTestCase {
 			'dateSubmitted' => '2010-07-07',
 			'language' => 'en',
 			'pages' => 215,
-			'coverageGeo' => array('en_US' => 'some geography'),
+			'coverage' => array('en_US' => 'some geography'),
 			'mods34:titleInfo/nonSort' => array('en_US' => 'the', 'de_DE' => 'ein'),
 			'mods34:titleInfo/subTitle' => array('en_US' => 'subtitle', 'de_DE' => 'Subtitel'),
 			'mods34:titleInfo/partNumber' => array('en_US' => 'part I', 'de_DE' => 'Teil I'),
@@ -109,6 +110,6 @@ class Mods34SchemaSubmissionAdapterTest extends Mods34DescriptionTestCase {
 			$submissionDescription->removeStatement($missingMapping);
 		}
 		self::assertEquals($submissionDescription, $extractedDescription);
-	} */
+	}
 }
 ?>

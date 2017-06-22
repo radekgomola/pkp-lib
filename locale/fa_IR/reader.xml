@@ -4,11 +4,11 @@
 <!--
   * locale/fa_IR/reader.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the fa_IR (Persian) locale.
+  * Localization strings for the fa_IR (فارسی) locale.
   *
   -->
 
@@ -127,7 +127,6 @@
 	<message key="rt.metadata.pkp.publisher">آزانس های سازمان دهنده ، موقعیت</message>
 	<message key="rt.metadata.pkp.source">عنوان مجله یا کنفرانس ، دوره ، شماره ، سال</message>
 	<message key="rt.metadata.pkp.sponsors">حمایت کننده</message>
-	<message key="rt.metadata.pkp.subjectClass">طبقه بندی موضوعی</message>
 	<message key="rt.metadata.pkp.subject">کلید وازه</message>
 	<message key="rt.metadata.pkp.suppFiles">فایل های الحاقی</message>
 	<message key="rt.metadata.pkp.title">عنوان سند</message>
@@ -160,13 +159,13 @@
 	<message key="comments.confirmDeleteChildren">با حذف این نظر دهی تمام پاسخ های آن نیز حذف میشود. آیا مطمئن هستید؟</message>
 	<message key="rt.admin.sharing">شراکت</message>
 	<message key="rt.admin.sharing.enabled">فعال شازی شراکت</message>
-	<message key="rt.admin.sharing.description"><![CDATA[برای اینکه خوانندکان بتوانند مقالاتی به شراکت بگذارند یک حساب کاربری از <a href="http://addthis.com">addthis.com</a> و بگیرید . کد دکمه شراکت را در زیر کپی کنید.]]></message>
+	<message key="rt.admin.sharing.description"><![CDATA[برای اینکه خوانندکان بتوانند مقالاتی به شراکت بگذارند یک حساب کاربری از <a href="http://www.addthis.com">addthis.com</a> و بگیرید . کد دکمه شراکت را در زیر کپی کنید.]]></message>
 	<message key="rt.admin.sharing.basic">تنظیمات پایه</message>
 	<message key="rt.admin.sharing.userNameLabel">نام کاربری AddThis.com</message>
 	<message key="rt.admin.sharing.buttonStyleLabel">سبک دکمه</message>
 	<message key="rt.admin.sharing.dropDownMenuLabel">استفاده از منوی کشوئی پائین کشیدنی</message>
 	<message key="rt.admin.sharing.advanced">تنظیمات پیشرفته. اختیاری</message>
-	<message key="rt.admin.sharing.customizationLink"><![CDATA[به عوان مرجع نگاه کنید به <a href="http://www.addthis.com/help/customize/custom-button/">دستورالعمل های سایت AddThis.com </a>.]]></message>
+	<message key="rt.admin.sharing.customizationLink"><![CDATA[به عوان مرجع نگاه کنید به <a href="http://support.addthis.com/customer/portal/articles/381236-custom-buttons">دستورالعمل های سایت AddThis.com </a>.]]></message>
 	<message key="rt.admin.sharing.brandLabel">مارک</message>
 	<message key="rt.admin.sharing.dropDownLabel"><![CDATA[گزینه های منوی پائین گشیدنی <br /> به صورت لیستی از کلمات جدا شده با کوما]]></message>
 	<message key="rt.admin.sharing.languageLabel">زبان</message>

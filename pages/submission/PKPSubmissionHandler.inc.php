@@ -3,8 +3,8 @@
 /**
  * @file pages/submission/PKPSubmissionHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPSubmissionHandler
@@ -16,7 +16,7 @@
 import('classes.handler.Handler');
 import('lib.pkp.classes.core.JSONMessage');
 
-class PKPSubmissionHandler extends Handler {
+abstract class PKPSubmissionHandler extends Handler {
 	/**
 	 * Constructor
 	 */
@@ -31,7 +31,7 @@ class PKPSubmissionHandler extends Handler {
 		// The policy for the submission handler depends on the
 		// step currently requested.
 		$step = isset($args[0]) ? (int) $args[0] : 1;
-		if ($step<1 || $step>$this->_getStepCount()) return false;
+		if ($step<1 || $step>$this->getStepCount()) return false;
 
 		// Do we have a submission present in the request?
 		$submissionId = (int)$request->getUserVar('submissionId');
@@ -39,11 +39,11 @@ class PKPSubmissionHandler extends Handler {
 		// Are we in step one without a submission present?
 		if ($step === 1 && $submissionId === 0) {
 			// Authorize submission creation.
-			import('lib.pkp.classes.security.authorization.PkpContextAccessPolicy');
-			$this->addPolicy(new PkpContextAccessPolicy($request, $roleAssignments));
+			import('lib.pkp.classes.security.authorization.ContextAccessPolicy');
+			$this->addPolicy(new ContextAccessPolicy($request, $roleAssignments));
 		} else {
 			// Authorize editing of incomplete submissions.
-			import('classes.security.authorization.SubmissionAccessPolicy');
+			import('lib.pkp.classes.security.authorization.SubmissionAccessPolicy');
 			$this->addPolicy(new SubmissionAccessPolicy($request, $args, $roleAssignments, 'submissionId'));
 		}
 
@@ -63,7 +63,7 @@ class PKPSubmissionHandler extends Handler {
 
 		// Deny if submission is complete (==0 means complete) and at
 		// any step other than the "complete" step (the last one)
-		if ($submission->getSubmissionProgress() == 0 && $step != $this->_getStepCount() ) return false;
+		if ($submission->getSubmissionProgress() == 0 && $step != $this->getStepCount() ) return false;
 
 		// Deny if trying to access a step greater than the current progress
 		if ($submission->getSubmissionProgress() != 0 && $step > $submission->getSubmissionProgress()) return false;
@@ -110,6 +110,7 @@ class PKPSubmissionHandler extends Handler {
 	 * Displays submission index page if a valid step is not specified.
 	 * @param $args array
 	 * @param $request Request
+	 * @return JSONMessage JSON object
 	 */
 	function step($args, $request) {
 		$step = isset($args[0]) ? (int) $args[0] : 1;
@@ -119,7 +120,7 @@ class PKPSubmissionHandler extends Handler {
 
 		$this->setupTemplate($request);
 
-		if ( $step < $this->_getStepCount() ) {
+		if ( $step < $this->getStepCount() ) {
 			$formClass = "SubmissionSubmitStep{$step}Form";
 			import("classes.submission.form.$formClass");
 
@@ -129,42 +130,23 @@ class PKPSubmissionHandler extends Handler {
 			} else {
 				$submitForm->initData();
 			}
-			$json = new JSONMessage(true, $submitForm->fetch($request));
-                        return $json->getString();
-			$submitForm->display($request);
-		} elseif($step == $this->_getStepCount()) {
+			return new JSONMessage(true, $submitForm->fetch($request));
+		} elseif($step == $this->getStepCount()) {
 			$templateMgr = TemplateManager::getManager($request);
 			$templateMgr->assign('context', $context);
 
 			// Retrieve the correct url for author review his submission.
 			import('lib.pkp.controllers.grid.submissions.SubmissionsListGridCellProvider');
-			list($page, $operation) = SubmissionsListGridCellProvider::getPageAndOperationByUserRoles($request, $submission);
+			$reviewSubmissionUrl = SubmissionsListGridCellProvider::getUrlByUserRoles($request, $submission);
 			$router = $request->getRouter();
 			$dispatcher = $router->getDispatcher();
-			$reviewSubmissionUrl = $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), $page, $operation, $submission->getId());
 
 			$templateMgr->assign('reviewSubmissionUrl', $reviewSubmissionUrl);
 			$templateMgr->assign('submissionId', $submission->getId());
 			$templateMgr->assign('submitStep', $step);
 			$templateMgr->assign('submissionProgress', $submission->getSubmissionProgress());
-			if ($this->_canExpedite($request->getUser(), $context)) {
-				$templateMgr->assign('canExpedite', true);
 
-				import('lib.pkp.classes.linkAction.request.AjaxModal');
-				$templateMgr->assign('expediteLinkAction', new LinkAction(
-					'expedite',
-					new AjaxModal(
-						$router->url($request, null, 'workflow', 'expedite', $submission->getId()),
-						__('submission.submit.confirmExpedite'),
-						'modal_edit',
-						true
-					),
-					__('submission.submit.expediteSubmission')
-				));
-			}
-
-			$json = new JSONMessage(true, $templateMgr->fetch('submission/form/complete.tpl'));
-                        return $json->getString();
+			return new JSONMessage(true, $templateMgr->fetch('submission/form/complete.tpl'));
 		}
 	}
 
@@ -172,6 +154,7 @@ class PKPSubmissionHandler extends Handler {
 	 * Save a submission step.
 	 * @param $args array first parameter is the step being saved
 	 * @param $request Request
+	 * @return JSONMessage JSON object
 	 */
 	function saveStep($args, $request) {
 		$step = isset($args[0]) ? (int) $args[0] : 1;
@@ -196,10 +179,10 @@ class PKPSubmissionHandler extends Handler {
 				}
 				$json = new JSONMessage(true);
 				$json->setEvent('setStep', max($step+1, $submission->getSubmissionProgress()));
+				return $json;
 			} else {
-				$json = new JSONMessage(true, $submitForm->fetch($request));
+				return new JSONMessage(true, $submitForm->fetch($request));
 			}
-			return $json->getString();
 		}
 	}
 
@@ -216,45 +199,20 @@ class PKPSubmissionHandler extends Handler {
 
 		// Get steps information.
 		$templateMgr = TemplateManager::getManager($request);
-		$templateMgr->assign('steps', $this->_getStepsNumberAndLocaleKeys());
+		$templateMgr->assign('steps', $this->getStepsNumberAndLocaleKeys());
 	}
 
 	/**
 	 * Get the step numbers and their corresponding title locale keys.
 	 * @return array
 	 */
-	protected function _getStepsNumberAndLocaleKeys() {
-		assert(false); // Subclasses to implement
-	}
+	abstract function getStepsNumberAndLocaleKeys();
 
 	/**
 	 * Get the number of submission steps.
 	 * @return int
 	 */
-	protected function _getStepCount() {
-		assert(false); // Subclasses to implement
-	}
-
-	/**
-	 * Determines whether or not this user can expedite this submission.
-	 * @param User $user
-	 * @param Context $context
-	 */
-	protected function _canExpedite($user, $context) {
-		$userGroupAssignmentDao = DAORegistry::getDAO('UserGroupAssignmentDAO');
-		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
-		$userGroupAssignments = $userGroupAssignmentDao->getByUserId($user->getId(), $context->getId());
-		if (!$userGroupAssignments->wasEmpty()) {
-			while ($userGroupAssignment = $userGroupAssignments->next()) {
-				$userGroup = $userGroupDao->getById($userGroupAssignment->getUserGroupId());
-				if (in_array($userGroup->getRoleId(), array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT))) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
+	abstract function getStepCount();
 }
 
 ?>

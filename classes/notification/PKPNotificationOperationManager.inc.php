@@ -3,8 +3,8 @@
 /**
  * @file classes/notification/PKPNotificationOperationManager.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPNotificationOperationManager
@@ -169,7 +169,7 @@ abstract class PKPNotificationOperationManager implements INotificationInfoProvi
 
 			// Send notification emails
 			if ($notification->getLevel() != NOTIFICATION_LEVEL_TRIVIAL && !$suppressEmail) {
-				$blockedEmailedNotifications = $this->getUserBlockedEmailedNotifications($userId, $contextId);
+				$notificationEmailSettings = $this->getUserBlockedNotifications($userId, $contextId);
 
 				if(!in_array($notificationType, $blockedEmailedNotifications)) {
 					$this->sendNotificationEmail($request, $notification);
@@ -239,10 +239,11 @@ abstract class PKPNotificationOperationManager implements INotificationInfoProvi
 		$formattedNotificationsData = array();
 		foreach ($notifications as $notification) { /* @var $notification Notification */
 			$formattedNotificationsData[$notification->getLevel()][$notification->getId()] = array(
-				'pnotify_title' => $this->getNotificationTitle($notification),
-				'pnotify_text' => $this->getNotificationContents($request, $notification),
-				'pnotify_addclass' => $this->getStyleClass($notification),
-				'pnotify_notice_icon' => $this->getIconClass($notification)
+				'title' => $this->getNotificationTitle($notification),
+				'text' => $this->getNotificationContents($request, $notification),
+				'addclass' => $this->getStyleClass($notification),
+				'notice_icon' => $this->getIconClass($notification),
+				'styling' => 'jqueryui',
 			);
 		}
 
@@ -285,11 +286,15 @@ abstract class PKPNotificationOperationManager implements INotificationInfoProvi
 			$dispatcher = $router->getDispatcher();
 
 			$mail = $this->getMailTemplate('NOTIFICATION_MAILLIST');
-			$mail->setReplyTo($site->getLocalizedContactEmail(), $site->getLocalizedContactName());
+			if ($context) {
+				$mail->setReplyTo($context->getContactEmail(), $context->getContactName());
+			} else {
+				$mail->setReplyTo($site->getLocalizedContactEmail(), $site->getLocalizedContactName());
+			}
 			$mail->assignParams(array(
 				'notificationContents' => $this->getNotificationContents($request, $notification),
 				'url' => $this->getNotificationUrl($request, $notification),
-				'siteTitle' => $context->getLocalizedTitle(),
+				'siteTitle' => $context->getLocalizedName(),
 				'unsubscribeLink' => $dispatcher->url($request, ROUTE_PAGE, null, 'notification', 'unsubscribeMailList')
 			));
 			$mail->addRecipient($email);
@@ -306,17 +311,18 @@ abstract class PKPNotificationOperationManager implements INotificationInfoProvi
 	 */
 	public function sendMailingListEmail($request, $email, $token, $template) {
 		$site = $request->getSite();
+		$context = $request->getContext();
 		$router = $request->getRouter();
 		$dispatcher = $router->getDispatcher();
 
 		$params = array(
-			'siteTitle' => $site->getLocalizedTitle(),
+			'siteTitle' => $context?$context->getLocalizedName():$site->getLocalizedTitle(),
 			'unsubscribeLink' => $dispatcher->url($request, ROUTE_PAGE, null, 'notification', 'unsubscribeMailList', array($token))
 		);
 
 		if ($template == 'NOTIFICATION_MAILLIST_WELCOME') {
 			$confirmLink = $dispatcher->url($request, ROUTE_PAGE, null, 'notification', 'confirmMailListSubscription', array($token));
-			$params["confirmLink"] = $confirmLink;
+			$params['confirmLink'] = $confirmLink;
 		}
 
 		$mail = $this->getMailTemplate($template);
@@ -354,7 +360,7 @@ abstract class PKPNotificationOperationManager implements INotificationInfoProvi
 	 */
 	protected function getMailTemplate($emailKey = null) {
 		import('lib.pkp.classes.mail.MailTemplate');
-		return new MailTemplate($emailKey, null, null, null, false);
+		return new MailTemplate($emailKey, null, null, false);
 	}
 
 	/**
@@ -403,7 +409,7 @@ abstract class PKPNotificationOperationManager implements INotificationInfoProvi
 		// Set the date read if it isn't already set
 		if (!$notification->getDateRead()) {
 			$notificationDao = DAORegistry::getDAO('NotificationDAO');
-			$dateRead = $notificationDao->setDateRead($notification->getId());
+			$dateRead = $notificationDao->setDateRead($notification->getId(), Core::getCurrentDate());
 			$notification->setDateRead($dateRead);
 		}
 
@@ -437,13 +443,14 @@ abstract class PKPNotificationOperationManager implements INotificationInfoProvi
 		if ($user) {
 			AppLocale::requireComponents(LOCALE_COMPONENT_APP_COMMON);
 
+			$context = $request->getContext();
 			$site = $request->getSite();
 			$mail = $this->getMailTemplate('NOTIFICATION');
 			$mail->setReplyTo($site->getLocalizedContactEmail(), $site->getLocalizedContactName());
 			$mail->assignParams(array(
 				'notificationContents' => $this->getNotificationContents($request, $notification),
 				'url' => $this->getNotificationUrl($request, $notification),
-				'siteTitle' => $site->getLocalizedTitle()
+				'siteTitle' => $context?$context->getLocalizedName():$site->getLocalizedTitle()
 			));
 			$mail->addRecipient($user->getEmail(), $user->getFullName());
 			if (!HookRegistry::call('PKPNotificationOperationManager::sendNotificationEmail', array($notification))) { 

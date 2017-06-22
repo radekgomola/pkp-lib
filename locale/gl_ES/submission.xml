@@ -4,11 +4,11 @@
 <!--
   * locale/gl_ES/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the gl_ES (Galego (Galiza)) locale.
+  * Localization strings for the gl_ES (Galego) locale.
   *
   -->
 
@@ -132,7 +132,7 @@
 	<message key="submission.page.review">#{$id} Revisión</message>
 	<message key="submission.page.summary">#{$id} Resumo</message>
 	<message key="submission.peerReview">Revisión por pares</message>
-	<message key="submission.recommendation">Recomendación</message>
+	<message key="submission.recommendation">Recomendación: {$recommendation}</message>
 	<message key="submission.rejected">Rexeitado</message>
 	<message key="submission.request">Solicitude</message>
 	<message key="submission.response">Responder</message>
@@ -344,8 +344,6 @@ El marcado de citas está configurado por el Gestor de la Revista en <a href="{$
 
 <p> Las opciones experimentales de exportación de texto incluyen ABNT, APA, MLA y los estilos de la citas de Vancouver. Estas opciones proporcionan una salida de texto que puede ser copiado y pegado en una galera de artículo (por ejemplo, en Microsoft Word u OpenOffice, Adobe InDesign, etc.) Cada cita incluye un enlace dirigido a una búsqueda automática de esta cita en Google Scholar. </p></li>
 </ul>]]></message>
-	<message key="submission.citations.editor.pleaseAddParserFilter"><![CDATA[Por favor, pregunte a su gestor de revista <a href="{$citationSetupUrl}"> añadir al menos un servicio de extracción de citas</a> antes de poder utilizar el asistente de citas.]]></message>
-	<message key="submission.citations.editor.pleaseConfigureOutputStyle"><![CDATA[Por favor, pida a su gestor de la revista que <a href="{$citationSetupUrl}">configure un  estilo de exportación de citas </a> antes de poder utilizar el asistente de marcado de citas.]]></message>
 	<message key="submission.citations.editor.pleaseImportCitationsFirst"><![CDATA[<p> No hay citas para este artículo. </p> Por favor, vaya a la página <a href="{$articleMetadataUrl}"> de metadatos </a>  del artículo y escriba una lista de referencias o añada referencias manualmente utilizando en el botón Agregar del editor.</p>]]></message>
 	<message key="submission.citations.editor.pleaseSetup"><![CDATA[Por favor, pida al gestor de la revista <a href="{$citationSetupUrl}">  habilitar edición de citas </a> para poder acceder al asistente de marcado de citas.]]></message>
 	<message key="submission.citations.editor.unprocessedCitations">Las citas de este artículo todavía se están procesando en el servidor. La actual lista de citas sólo contiene las ya procesadas. Por favor, haga clic en el botón Actualizar para ver las citas que han sido tratadas hasta el momento.</message>
@@ -354,4 +352,6 @@ El marcado de citas está configurado por el Gestor de la Revista en <a href="{$
 	<message key="submission.citations.filter.webserviceResultTransformationError">Se produjo un error en ($filterName): La transformación de los resultados XML (por ejemplo, de un servicio web) en meta-datos. La razón es probablemente que el servicio web devuelve datos no válidos o incompletos. Por favor presente esto como un error.</message>
 	<message key="submission.citations.metadata.changeWarning">¿Está seguro de que desea actualizar su lista de referencias? Si hace clic en Aceptar, los cambios hechos por los editores serán sobrescritos. Si no está seguro de si debe hacer cambios a la lista de referencias, por favor póngase en contacto con el Editor a cargo de su presentación.</message>
 	<message key="log.review.reviewerAssigned">{$reviewerName} foi asignado/a para revisar o envío {$submissionId} na rolda de revisión {$round}.</message>
+	<message key="submission.reviewForm">Formulario de revisión</message>
+	<message key="submission.reviewFormResponse">Resposta ao Formulario de Revisión</message>
 </locale>

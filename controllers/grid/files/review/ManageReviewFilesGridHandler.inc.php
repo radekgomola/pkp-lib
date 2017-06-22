@@ -2,8 +2,8 @@
 /**
  * @file controllers/grid/files/review/ManageReviewFilesGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ManageReviewFilesGridHandler
@@ -50,7 +50,7 @@ class ManageReviewFilesGridHandler extends SelectableSubmissionFileListCategoryG
 	 * Save 'manage review files' form.
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	function updateReviewFiles($args, $request) {
 		$submission = $this->getSubmission();
@@ -61,7 +61,10 @@ class ManageReviewFilesGridHandler extends SelectableSubmissionFileListCategoryG
 
 		if ($manageReviewFilesForm->validate()) {
 			$dataProvider = $this->getDataProvider();
-			$manageReviewFilesForm->execute($args, $request, $dataProvider->getCategoryData($this->getStageId()));
+			$manageReviewFilesForm->execute(
+				$args, $request,
+				$this->getGridCategoryDataElements($request, $this->getStageId())
+			);
 
 			$this->setupTemplate($request);
 			$user = $request->getUser();
@@ -70,8 +73,7 @@ class ManageReviewFilesGridHandler extends SelectableSubmissionFileListCategoryG
 			// Let the calling grid reload itself
 			return DAO::getDataChangedEvent();
 		} else {
-			$json = new JSONMessage(false);
-			return $json->getString();
+			return new JSONMessage(false);
 		}
 	}
 

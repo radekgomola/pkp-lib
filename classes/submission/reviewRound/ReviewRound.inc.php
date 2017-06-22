@@ -6,8 +6,8 @@
 /**
  * @file classes/submission/reviewRound/ReviewRound.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReviewRound
@@ -52,7 +52,7 @@ class ReviewRound extends DataObject {
 	 * @param $submissionId int
 	 */
 	function setSubmissionId($submissionId) {
-		return $this->setData('submissionId', $submissionId);
+		$this->setData('submissionId', $submissionId);
 	}
 
 	/**
@@ -68,7 +68,7 @@ class ReviewRound extends DataObject {
 	 * @param $stageId int
 	 */
 	function setStageId($stageId) {
-		return $this->setData('stageId', $stageId);
+		$this->setData('stageId', $stageId);
 	}
 
 	/**
@@ -84,7 +84,7 @@ class ReviewRound extends DataObject {
 	 * @param $assocType int
 	 */
 	function setRound($round) {
-		return $this->setData('round', $round);
+		$this->setData('round', $round);
 	}
 
 	/**
@@ -100,7 +100,7 @@ class ReviewRound extends DataObject {
 	 * @param $status int
 	 */
 	function setStatus($status) {
-		return $this->setData('status', $status);
+		$this->setData('status', $status);
 	}
 
 	/**

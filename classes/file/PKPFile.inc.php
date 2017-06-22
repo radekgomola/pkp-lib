@@ -3,8 +3,8 @@
 /**
  * @file classes/file/PKPFile.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPFile
@@ -56,7 +56,7 @@ class PKPFile extends DataObject {
 	 * @param $fileName string
 	 */
 	function setServerFileName($fileName) {
-		return $this->setData('fileName', $fileName);
+		$this->setData('fileName', $fileName);
 	}
 
 	/**
@@ -72,7 +72,7 @@ class PKPFile extends DataObject {
 	 * @param $originalFileName string
 	 */
 	function setOriginalFileName($originalFileName) {
-		return $this->setData('originalFileName', $originalFileName);
+		$this->setData('originalFileName', $originalFileName);
 	}
 
 	/**
@@ -88,7 +88,7 @@ class PKPFile extends DataObject {
 	 * @param $type string
 	 */
 	function setFileType($fileType) {
-		return $this->setData('filetype', $fileType);
+		$this->setData('filetype', $fileType);
 	}
 
 	/**

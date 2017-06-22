@@ -6,8 +6,8 @@
 /**
  * @file plugins/metadata/nlm30/filter/Nlm30CitationDemultiplexerFilter.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Nlm30CitationDemultiplexerFilter
@@ -160,7 +160,7 @@ class Nlm30CitationDemultiplexerFilter extends Filter {
 		$generatedCitation = trim(str_replace(GOOGLE_SCHOLAR_TAG, '', strip_tags($generatedCitation)));
 
 		// Compare the original to the generated citation.
-		$citationDiff = String::diff($originalCitation, $generatedCitation);
+		$citationDiff = PKPString::diff($originalCitation, $generatedCitation);
 
 		// Calculate similarity as the number of deleted characters in relation to the
 		// number of characters in the original citation. This intentionally excludes
@@ -169,10 +169,10 @@ class Nlm30CitationDemultiplexerFilter extends Filter {
 		foreach($citationDiff as $diffPart) {
 			// Identify deletions.
 			if (key($diffPart) == -1) {
-				$deletedCharacters += String::strlen(current($diffPart));
+				$deletedCharacters += PKPString::strlen(current($diffPart));
 			}
 		}
-		$originalCharacters = String::strlen($originalCitation);
+		$originalCharacters = PKPString::strlen($originalCitation);
 		$partOfCommonCharacters = ($originalCharacters-$deletedCharacters) / $originalCharacters;
 
 		$filterConfidenceScore = (integer)round(min($partOfCommonCharacters*100, 100));

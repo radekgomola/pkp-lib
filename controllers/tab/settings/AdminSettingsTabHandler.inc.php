@@ -3,8 +3,8 @@
 /**
  * @file controllers/tab/settings/AdminSettingsTabHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AdminSettingsTabHandler
@@ -36,11 +36,11 @@ class AdminSettingsTabHandler extends SettingsTabHandler {
 		);
 
 		parent::SettingsTabHandler($role);
-		$this->setPageTabs($additionalTabs + array(
+		$this->setPageTabs(array_merge($additionalTabs, array(
 			'siteSetup' => 'lib.pkp.controllers.tab.settings.siteSetup.form.SiteSetupForm',
 			'languages' => 'controllers/tab/admin/languages/languages.tpl',
 			'plugins' => 'controllers/tab/admin/plugins/sitePlugins.tpl',
-		));
+		)));
 	}
 
 
@@ -70,45 +70,41 @@ class AdminSettingsTabHandler extends SettingsTabHandler {
 	 * Show the upload image form.
 	 * @param $request Request
 	 * @param $args array
-	 * @return string JSON message
+	 * @return JSONMessage JSON object
 	 */
 	function showFileUploadForm($args, $request) {
 		$fileUploadForm = $this->_getFileUploadForm($request);
 		$fileUploadForm->initData($request);
 
-		$json = new JSONMessage(true, $fileUploadForm->fetch($request));
-		return $json->getString();
+		return new JSONMessage(true, $fileUploadForm->fetch($request));
 	}
 
 	/**
 	 * Upload a new file.
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string
+	 * @return JSONMessage JSON object
 	 */
 	function uploadFile($args, $request) {
 		$fileUploadForm =& $this->_getFileUploadForm($request);
-		$json = new JSONMessage();
-
 		$temporaryFileId = $fileUploadForm->uploadFile($request);
 
 		if ($temporaryFileId !== false) {
+			$json = new JSONMessage();
 			$json->setAdditionalAttributes(array(
 				'temporaryFileId' => $temporaryFileId
 			));
+			return $json;
 		} else {
-			$json->setStatus(false);
-			$json->setContent(__('common.uploadFailed'));
+			return new JSONMessage(false, __('common.uploadFailed'));
 		}
-
-		return $json->getString();
 	}
 
 	/**
 	 * Save an uploaded file.
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string
+	 * @return JSONMessage JSON object
 	 */
 	function saveFile($args, $request) {
 		$fileUploadForm = $this->_getFileUploadForm($request);
@@ -121,15 +117,14 @@ class AdminSettingsTabHandler extends SettingsTabHandler {
 				return DAO::getDataChangedEvent($settingName);
 			}
 		}
-		$json = new JSONMessage(false, __('common.invalidFileType'));
-		return $json->getString();
+		return new JSONMessage(false, __('common.invalidFileType'));
 	}
 
 	/**
 	 * Deletes a context image.
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string
+	 * @return JSONMessage JSON object
 	 */
 	function deleteFile($args, $request) {
 		$settingName = $request->getUserVar('fileSettingName');
@@ -149,7 +144,7 @@ class AdminSettingsTabHandler extends SettingsTabHandler {
 	 *
 	 * @param $args array
 	 * @param $request Request
-	 * @return string
+	 * @return JSONMessage JSON object
 	 */
 	function fetchFile($args, $request) {
 		// Get the setting name.
@@ -168,7 +163,7 @@ class AdminSettingsTabHandler extends SettingsTabHandler {
 			$json->setElementId($settingName);
 			$json->setContent($renderedElement);
 		}
-		return $json->getString();
+		return $json;
 	}
 
 

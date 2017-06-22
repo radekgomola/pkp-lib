@@ -4,8 +4,8 @@
 /**
  * @file js/pages/workflow/WorkflowHandler.js
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class WorkflowHandler
@@ -15,7 +15,7 @@
  *
  */
 (function($) {
-
+    
 	/** @type {Object} */
 	$.pkp.pages.workflow = $.pkp.pages.workflow || {};
 
@@ -57,11 +57,29 @@
 	$.pkp.pages.workflow.WorkflowHandler.prototype.handleStageParticipantsChanged_ =
 			function(callingElement, event) {
 		// Find and reload editor decision action and progress bar.
-
-		var $editorDecisionActions = this.getHtmlElement().
-				find('.editorDecisionActions'),
+		var $elements, $stageTabs, matches, cssClass, stageId, sourceUrl,
+				$editorDecisionActions = this.getHtmlElement()
+				.find('.editorDecisionActions'),
 				$progressBar = this.getHtmlElement().find('#submissionProgressBarDiv'),
-				$elements = $editorDecisionActions.add($progressBar);
+				$stageTabContainer = this.getHtmlElement().find('#stageTabs');
+
+		$stageTabs = $stageTabContainer.find('li');
+		$stageTabs.each(function(index) {
+			if ($(this).hasClass('ui-state-active')) {
+				cssClass = $(this).find('a').attr('class');
+				matches = cssClass.match(/stageId(\d)/);
+				if (matches) {
+					stageId = matches[1];
+					var handler = $.pkp.classes.Handler.getHandler($progressBar);
+					sourceUrl = handler.getSourceUrl();
+					handler.setSourceUrl(sourceUrl.replace(/stageId=\d/, 'stageId=' +
+							stageId));
+				}
+				return false;
+			}
+		});
+
+		$elements = $editorDecisionActions.add($progressBar);
 
 		$elements.each(function() {
 			var handler = $.pkp.classes.Handler.getHandler($(this));
@@ -82,10 +100,13 @@
 	$.pkp.pages.workflow.WorkflowHandler.prototype.dataChangedHandler_ =
 			function(callingElement, event, eventData) {
 
-		if ($(event.target, this.getHtmlElement()).children('a').
-				attr('id').match(/submissionEntry/)) {
+		var $childAnchors = $(event.target, this.getHtmlElement()).children('a'),
+				$formatsGrid;
+
+		if ($childAnchors.length &&
+				$childAnchors.attr('id').match(/submissionEntry/)) {
 			// Refresh the format grid on this page, if any.
-			var $formatsGrid = $('[id^="formatsGridContainer"]',
+			$formatsGrid = $('[id^="formatsGridContainer"]',
 					this.getHtmlElement()).children('div');
 			$formatsGrid.trigger('dataChanged', [eventData]);
 			$formatsGrid.trigger('notifyUser', [$formatsGrid]);

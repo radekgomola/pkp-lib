@@ -3,8 +3,8 @@
 /**
  * @file lib/pkp/controllers/grid/users/stageParticipant/form/PKPStageParticipantNotifyForm.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class InformationCenterNotifyForm
@@ -77,7 +77,7 @@ class PKPStageParticipantNotifyForm extends Form {
 		foreach ($userRoles as $userRole) {
 			if (in_array($userRole->getId(), array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT))) {
 				$emailTemplateDao = DAORegistry::getDAO('EmailTemplateDAO');
-				$customTemplates = $emailTemplateDao->getCustomTemplateKeys(ASSOC_TYPE_PRESS, $submission->getContextId());
+				$customTemplates = $emailTemplateDao->getCustomTemplateKeys(Application::getContextAssocType(), $submission->getContextId());
 				$templateKeys = array_merge($templateKeys, $customTemplates);
 				break;
 			}
@@ -95,6 +95,7 @@ class PKPStageParticipantNotifyForm extends Form {
 		foreach ($templateKeys as $templateKey) {
 			$template = $this->_getMailTemplate($submission, $templateKey);
 			$template->assignParams(array());
+			$template->replaceParams();
 			$templates[$templateKey] = $template->getSubject();
 		}
 
@@ -116,6 +117,8 @@ class PKPStageParticipantNotifyForm extends Form {
 	function readInputData($request) {
 		$this->readUserVars(array('message', 'users', 'template'));
 		import('lib.pkp.classes.controllers.listbuilder.ListbuilderHandler');
+
+		$this->setData('userIds', array($request->getUserVar('userId')));
 		$userData = $this->getData('users');
 		ListbuilderHandler::unpack($request, $userData);
 	}
@@ -124,6 +127,9 @@ class PKPStageParticipantNotifyForm extends Form {
 	 * @copydoc Form::execute()
 	 */
 	function execute($request) {
+		foreach ((array) $this->getData('userIds') as $userId) {
+			$this->sendMessage($userId, $submission, $request);
+		}
 		return parent::execute($request);
 	}
 
@@ -139,9 +145,14 @@ class PKPStageParticipantNotifyForm extends Form {
 		$submissionDao = Application::getSubmissionDAO();
 		$submission = $submissionDao->getById($this->_submissionId);
 
-		foreach ($newRowId as $id) {
-			$this->sendMessage($id, $submission, $request);
-		}
+		$this->setData('userIds', array_merge($this->getData('userIds'), $newRowId));
+	}
+
+	/**
+	 * @copydoc ListbuilderHandler::deleteEntry
+	 */
+	function deleteEntry($request, $rowId) {
+		$this->setData('userIds', array_diff($this->getData('userIds'), array($rowId)));
 	}
 
 	/**
@@ -166,29 +177,20 @@ class PKPStageParticipantNotifyForm extends Form {
 		if (isset($user)) {
 			$email->addRecipient($user->getEmail(), $user->getFullName());
 			$email->setBody($this->getData('message'));
-			list($page, $operation) = SubmissionsListGridCellProvider::getPageAndOperationByUserRoles($request, $submission, $user->getId());
-			$submissionUrl = $dispatcher->url($request, ROUTE_PAGE, null, $page, $operation, array('submissionId' => $submission->getId()));
+			$submissionUrl = SubmissionsListGridCellProvider::getUrlByUserRoles($request, $submission, $user->getId());
 
 			// Parameters for various emails
 			$email->assignParams(array(
-				// COPYEDIT_REQUEST
-				'copyeditorName' => $user->getFullName(),
-				'copyeditorUsername' => $user->getUsername(),
-				'submissionCopyeditingUrl' => $submissionUrl,
-				// LAYOUT_REQUEST
-				'layoutEditorName' => $user->getFullName(),
+				// COPYEDIT_REQUEST, LAYOUT_REQUEST, INDEX_REQUEST
+				'participantName' => $user->getFullName(),
+				'participantUsername' => $user->getUsername(),
 				'submissionUrl' => $submissionUrl,
-				'layoutEditorUsername' => $user->getUsername(),
 				// LAYOUT_COMPLETE, INDEX_COMPLETE, EDITOR_ASSIGN
 				'editorialContactName' => $user->getFullname(),
-				// INDEX_REQUEST
-				'indexerName' => $user->getFullName(),
-				'indexerUsername' => $user->getUsername(),
 				// EDITOR_ASSIGN
 				'editorUsername' => $user->getUsername(),
 			));
 
-			$this->_createNotifications($request, $submission, $user, $template);
 			$email->send($request);
 			// remove the INDEX_ and LAYOUT_ tasks if a user has sent the appropriate _COMPLETE email
 			switch ($template) {
@@ -203,12 +205,29 @@ class PKPStageParticipantNotifyForm extends Form {
 	}
 
 	/**
-	 * Delete a signoff
+	 * Get the available email template variable names for the given template name.
+	 * @param $emailKey string Email template key
+	 * @return array
 	 */
-	function deleteEntry($request, $rowId) {
-		// Dummy function; PHP throws a warning when this is not specified.
-		// The actual delete is done on the client side.
-		return true;
+	function getEmailVariableNames($emailKey) {
+		switch ($emailKey) {
+			case 'COPYEDIT_REQUEST':
+			case 'LAYOUT_REQUEST':
+			case 'INDEX_REQUEST':
+				return array(
+					'participantName' => __('user.name'),
+					'participantUsername' => __('user.username'),
+					'submissionUrl' => __('common.url'),
+				);
+			case 'LAYOUT_COMPLETE':
+			case 'INDEX_COMPLETE': return array(
+				'editorialContactName' => __('user.role.editor'),
+			);
+			case 'EDITOR_ASSIGN': return array(
+				'editorUsername' => __('user.username'),
+				'editorialContactName' => __('user.role.editor'),
+			);
+		}
 	}
 
 	/**
@@ -217,69 +236,6 @@ class PKPStageParticipantNotifyForm extends Form {
 	 */
 	function getStageId() {
 		return $this->_stageId;
-	}
-
-	/**
-	 * Internal method to create the necessary notifications, with user validation.
-	 * @param PKPRquest $request
-	 * @param Submission $submission
-	 * @param PKPUser $user
-	 * @param string $template
-	 */
-	function _createNotifications($request, $submission, $user, $template) {
-
-		$stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
-		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
-		$stageAssignments = $stageAssignmentDao->getBySubmissionAndStageId($submission->getId(), $this->getStageId(), null, $user->getId());
-		$notificationMgr = new NotificationManager();
-
-		switch ($template) {
-			case 'COPYEDIT_REQUEST':
-				while ($stageAssignment = $stageAssignments->next()) {
-					$userGroup = $userGroupDao->getById($stageAssignment->getUserGroupId());
-					if (in_array($userGroup->getRoleId(), array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT))) {
-						import('lib.pkp.classes.submission.SubmissionFile');
-						$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO');
-						$submissionFileSignoffDao = DAORegistry::getDAO('SubmissionFileSignoffDAO');
-						$submissionFiles = $submissionFileDao->getLatestRevisions($submission->getId(), SUBMISSION_FILE_COPYEDIT);
-						foreach ($submissionFiles as $submissionFile) {
-							$signoffFactory = $submissionFileSignoffDao->getAllBySymbolic('SIGNOFF_COPYEDITING', $submissionFile->getFileId());
-							while ($signoff = $signoffFactory->next()) {
-								$notificationMgr->updateNotification(
-									$request,
-									array(NOTIFICATION_TYPE_COPYEDIT_ASSIGNMENT),
-									array($user->getId()),
-									ASSOC_TYPE_SIGNOFF,
-									$signoff->getId()
-								);
-							}
-						}
-						return;
-					}
-				}
-				// User not in valid role for this task/notification.
-				break;
-			case 'LAYOUT_REQUEST':
-				while ($stageAssignment = $stageAssignments->next()) {
-					$userGroup = $userGroupDao->getById($stageAssignment->getUserGroupId());
-					if (in_array($userGroup->getRoleId(), array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT))) {
-						$this->_addUploadTaskNotification($request, NOTIFICATION_TYPE_LAYOUT_ASSIGNMENT, $user->getId(), $submission->getId());
-						return;
-					}
-				}
-				// User not in valid role for this task/notification.
-				break;
-			case 'INDEX_REQUEST':
-				while ($stageAssignment = $stageAssignments->next()) {
-					$userGroup = $userGroupDao->getById($stageAssignment->getUserGroupId());
-					if (in_array($userGroup->getRoleId(), array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT))) {
-						$this->_addUploadTaskNotification($request, NOTIFICATION_TYPE_INDEX_ASSIGNMENT, $user->getId(), $submission->getId());
-						return;
-					}
-				}
-				// User not in valid role for this task/notification.
-				break;
-		}
 	}
 
 	/**
@@ -362,10 +318,10 @@ class PKPStageParticipantNotifyForm extends Form {
 	}
 
 	/**
-	 * return app-specific mail template.
-	 * @param Submission $submission
-	 * @param String $templateKey
-	 * @param boolean $includeSignature
+	 * Return app-specific mail template.
+	 * @param $submission Submission
+	 * @param $templateKey string
+	 * @param $includeSignature boolean
 	 * @return array
 	 */
 	protected function _getMailTemplate($submission, $templateKey, $includeSignature = true) {

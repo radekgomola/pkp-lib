@@ -3,8 +3,8 @@
 /**
  * @file controllers/review/linkAction/ReviewNotesLinkAction.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReviewInfoCenterLinkAction
@@ -24,9 +24,9 @@ class ReviewNotesLinkAction extends LinkAction {
 	 * to show information about.
 	 * @param $submission Submission The reviewed submission.
 	 * @param $user User The user.
-	 * @param $icon String the icon to use
+	 * @param $isUnread bool Has a review been read
 	 */
-	function ReviewNotesLinkAction($request, $reviewAssignment, $submission, $user, $icon = null) {
+	function ReviewNotesLinkAction($request, $reviewAssignment, $submission, $user, $isUnread = null) {
 		// Instantiate the information center modal.
 		$router = $request->getRouter();
 		import('lib.pkp.classes.linkAction.request.AjaxModal');
@@ -49,14 +49,10 @@ class ReviewNotesLinkAction extends LinkAction {
 		$viewsDao = DAORegistry::getDAO('ViewsDAO');
 		$lastViewDate = $viewsDao->getLastViewDate(ASSOC_TYPE_REVIEW_RESPONSE, $reviewAssignment->getId(), $user->getId());
 
-		if (!$icon) {
-			$icon = ($lastViewDate) ? 'notes' : 'notes_new';
-		}
+		$icon = !$lastViewDate || $isUnread ? 'read_new_review' : null;
+
 		// Configure the link action.
-		parent::LinkAction(
-			'readReview', $ajaxModal,
-			'', $icon
-		);
+		parent::LinkAction( 'readReview', $ajaxModal, __('editor.review.readReview'), $icon );
 	}
 }
 

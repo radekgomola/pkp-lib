@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/settings/genre/GenreGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class GenreGridHandler
@@ -58,8 +58,6 @@ class GenreGridHandler extends SetupGridHandler {
 		// Set the grid title.
 		$this->setTitle('grid.genres.title');
 
-		$this->setInstructions('grid.genres.description');
-
 		// Add grid-level actions
 		$router = $request->getRouter();
 		$actionArgs = array('gridId' => $this->getId());
@@ -96,7 +94,7 @@ class GenreGridHandler extends SetupGridHandler {
 			new GridColumn('name',
 				'common.name',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$cellProvider
 			)
 		);
@@ -106,7 +104,7 @@ class GenreGridHandler extends SetupGridHandler {
 				'designation',
 				'common.designation',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$cellProvider
 			)
 		);
@@ -115,7 +113,7 @@ class GenreGridHandler extends SetupGridHandler {
 	/**
 	 * @copydoc GridHandler::loadData()
 	 */
-	function loadData($request, $filter) {
+	protected function loadData($request, $filter) {
 		// Elements to be displayed in the grid
 		$context = $request->getContext();
 		$genreDao = DAORegistry::getDAO('GenreDAO');
@@ -137,7 +135,7 @@ class GenreGridHandler extends SetupGridHandler {
 	 * @copydoc GridHandler::getRowInstance()
 	 * @return GenreGridRow
 	 */
-	function getRowInstance() {
+	protected function getRowInstance() {
 		return new GenreGridRow();
 	}
 
@@ -176,7 +174,7 @@ class GenreGridHandler extends SetupGridHandler {
 	 * An action to edit a Genre
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	function editGenre($args, $request) {
 		$genreId = isset($args['genreId']) ? (int) $args['genreId'] : null;
@@ -188,15 +186,14 @@ class GenreGridHandler extends SetupGridHandler {
 
 		$genreForm->initData($args, $request);
 
-		$json = new JSONMessage(true, $genreForm->fetch($request));
-		return $json->getString();
+		return new JSONMessage(true, $genreForm->fetch($request));
 	}
 
 	/**
 	 * Update a Genre
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	function updateGenre($args, $request) {
 		$genreId = isset($args['genreId']) ? (int) $args['genreId'] : null;
@@ -212,8 +209,7 @@ class GenreGridHandler extends SetupGridHandler {
 			$genreForm->execute($args, $request);
 			return DAO::getDataChangedEvent($genreForm->getGenreId());
 		} else {
-			$json = new JSONMessage(false);
-			return $json->getString();
+			return new JSONMessage(false);
 		}
 	}
 
@@ -221,7 +217,7 @@ class GenreGridHandler extends SetupGridHandler {
 	 * Delete a Genre.
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	function deleteGenre($args, $request) {
 		// Identify the Genre to be deleted
@@ -233,9 +229,8 @@ class GenreGridHandler extends SetupGridHandler {
 		if ($result) {
 			return DAO::getDataChangedEvent($genre->getId());
 		} else {
-			$json = new JSONMessage(false, __('manager.setup.errorDeletingItem'));
+			return new JSONMessage(false, __('manager.setup.errorDeletingItem'));
 		}
-		return $json->getString();
 	}
 
 	/**
@@ -243,14 +238,14 @@ class GenreGridHandler extends SetupGridHandler {
 	 * All default settings that were available when the context instance was created will be restored.
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string
+	 * @return JSONMessage JSON object
 	 */
 	function restoreGenres($args, $request) {
 		$context = $request->getContext();
 
 		// Restore all the genres in this context form the registry XML file
 		$genreDao = DAORegistry::getDAO('GenreDAO');
-		$genreDao->restoreByContextId($context->getId());
+		$genreDao->installDefaults($context->getId(), $context->getSupportedLocales());
 		return DAO::getDataChangedEvent();
 	}
 

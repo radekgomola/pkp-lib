@@ -5,8 +5,8 @@
 /**
  * @file js/classes/Helper.js
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Helper
@@ -39,6 +39,10 @@
 
 	/** @type {Object} */
 	$.pkp.plugins.generic = $.pkp.plugins.generic || {};
+
+
+	/** @type {Object} */
+	$.pkp.plugins.pubIds = $.pkp.plugins.pubIds || {};
 
 
 
@@ -76,8 +80,8 @@
 	 * http://www.broofa.com, adapted by PKP.
 	 *
 	 * Copyright (c) 2010 Robert Kieffer
-	 * Copyright (c) 2014 Simon Fraser University Library
-	 * Copyright (c) 2010-2014 John Willinsky
+	 * Copyright (c) 2014-2016 Simon Fraser University Library
+	 * Copyright (c) 2010-2016 John Willinsky
 	 * Distributed under the GNU GPL v2 and MIT licenses. For full
 	 * terms see the file docs/COPYING.
 	 *

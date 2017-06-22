@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/settings/user/form/UserDetailsForm.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserDetailsForm
@@ -27,7 +27,7 @@ class UserDetailsForm extends UserForm {
 	 * @param $author Author optional
 	 */
 	function UserDetailsForm($request, $userId = null, $author = null) {
-		parent::UserForm('controllers/grid/settings/user/form/userForm.tpl', $userId);
+		parent::UserForm('controllers/grid/settings/user/form/userDetailsForm.tpl', $userId);
 
 		if (isset($author)) {
 			$this->author =& $author;
@@ -57,6 +57,7 @@ class UserDetailsForm extends UserForm {
 		$this->addCheck(new FormValidatorUrl($this, 'userUrl', 'optional', 'user.profile.form.urlInvalid'));
 		$this->addCheck(new FormValidatorEmail($this, 'email', 'required', 'user.profile.form.emailRequired'));
 		$this->addCheck(new FormValidatorCustom($this, 'email', 'required', 'user.register.form.emailExists', array(DAORegistry::getDAO('UserDAO'), 'userExistsByEmail'), array($this->userId, true), true));
+		$this->addCheck(new FormValidatorORCID($this, 'orcid', 'optional', 'user.orcid.orcidInvalid'));
 		$this->addCheck(new FormValidatorPost($this));
 	}
 
@@ -91,17 +92,16 @@ class UserDetailsForm extends UserForm {
 				'email' => $user->getEmail(),
 				'userUrl' => $user->getUrl(),
 				'phone' => $user->getPhone(),
-				'fax' => $user->getFax(),
+				'orcid' => $user->getOrcid(),
 				'mailingAddress' => $user->getMailingAddress(),
 				'country' => $user->getCountry(),
 				'biography' => $user->getBiography(null), // Localized
-				'interestsKeywords' => $interestManager->getInterestsForUser($user),
-				'interestsTextOnly' => $interestManager->getInterestsString($user),
+				'interests' => $interestManager->getInterestsForUser($user),
 				'userLocales' => $user->getLocales(),
                                 'uco' => $user->getUCO()
 			);
 		} else if (isset($this->author)) {
-			$author =& $this->author;
+			$author = $this->author;
 			$data = array(
 				'salutation' => $author->getSalutation(),
 				'firstName' => $author->getFirstName(),
@@ -110,6 +110,7 @@ class UserDetailsForm extends UserForm {
 				'affiliation' => $author->getAffiliation(null), // Localized
 				'email' => $author->getEmail(),
 				'userUrl' => $author->getUrl(),
+				'orcid' => $author->getOrcid(),
 				'country' => $author->getCountry(),
 				'biography' => $author->getBiography(null), // Localized
                                 'uco' => $author->getUCO(), /*MUNIPRESS*/
@@ -118,6 +119,10 @@ class UserDetailsForm extends UserForm {
                                 'tituly_za' => $author->getTitulyZa(), /*MUNIPRESS*/ 
                                 'rodne_cislo' => $author->getRodneCislo(), /*MUNIPRESS*/
                                 'poznamka' => $author->getPoznamka(), /*MUNIPRESS*/
+			);
+		} else {
+			$data = array(
+				'mustChangePassword' => true,
 			);
 		}
 		foreach($data as $key => $value) {
@@ -188,12 +193,11 @@ class UserDetailsForm extends UserForm {
 			'email',
 			'userUrl',
 			'phone',
-			'fax',
+			'orcid',
 			'mailingAddress',
 			'country',
 			'biography',
-			'keywords',
-			'interestsTextOnly',
+			'interests',
 			'userLocales',
 			'generatePassword',
 			'sendNotify',
@@ -211,12 +215,6 @@ class UserDetailsForm extends UserForm {
 		if ($this->getData('username') != null) {
 			// Usernames must be lowercase
 			$this->setData('username', strtolower($this->getData('username')));
-		}
-
-		$keywords = $this->getData('keywords');
-		if ($keywords != null && is_array($keywords['interests'])) {
-			// The interests are coming in encoded -- Decode them for DB storage
-			$this->setData('interestsKeywords', array_map('urldecode', $keywords['interests']));
 		}
 	}
 
@@ -261,7 +259,7 @@ class UserDetailsForm extends UserForm {
 		$user->setEmail($this->getData('email'));
 		$user->setUrl($this->getData('userUrl'));
 		$user->setPhone($this->getData('phone'));
-		$user->setFax($this->getData('fax'));
+		$user->setOrcid($this->getData('orcid'));
 		$user->setMailingAddress($this->getData('mailingAddress'));
 		$user->setCountry($this->getData('country'));
 		$user->setBiography($this->getData('biography'), null); // Localized
@@ -337,10 +335,9 @@ class UserDetailsForm extends UserForm {
 			}
 		}
 
-		$interests = $this->getData('interestsKeywords') ? $this->getData('interestsKeywords') : $this->getData('interestsTextOnly');
 		import('lib.pkp.classes.user.InterestManager');
 		$interestManager = new InterestManager();
-		$interestManager->setInterestsForUser($user, $interests);
+		$interestManager->setInterestsForUser($user, $this->getData('interests'));
 
 		return $user;
 	}

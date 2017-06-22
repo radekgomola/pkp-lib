@@ -703,6 +703,22 @@ jQueryObject.prototype.filter = function(arg1) {};
 jQueryObject.prototype.find = function(selector) {};
 
 /**
+ * @param {(string|Object)=} arg1
+ * @param {(string|function(!jQuery.Event))=} selector
+ * @param {function(!jQuery.Event)=} handler
+ * @return {!jQueryObject}
+ */
+ jQueryObject.prototype.off = function(arg1, selector, handler) {};
+
+/**
+ * @param {string} arg1
+ * @param {Function|string} arg2
+ * @param {Function=} arg3
+ * @returns {jQueryObject}
+ */
+jQueryObject.prototype.on = function(arg1, arg2, arg3) {};
+
+/**
  * @return {jQueryObject}
  * @nosideeffects
  */
@@ -808,11 +824,10 @@ jQueryObject.prototype.insertAfter = function(target) {};
 jQueryObject.prototype.insertBefore = function(target) {};
 
 /**
- * @param {jQuerySelector} selector
+ * @param {(jQuerySelector|function(number)|jQueryObject|Element)} arg1
  * @return {boolean}
- * @nosideeffects
  */
-jQueryObject.prototype.is = function(selector) {};
+jQueryObject.prototype.is = function(arg1) {};
 
 /**
  * @param {(function(jQuery.Event)|Object)=} arg1
@@ -1272,8 +1287,8 @@ jQueryObject.prototype.unload = function(arg1, handler) {};
 jQueryObject.prototype.unwrap = function() {};
 
 /**
- * @param {(string|function(number,*))=} arg1
- * @return {(string|Array|jQueryObject)}
+ * @param {(string|Array.<string>|function(number,*))=} arg1
+ * @return {(string|number|Array.<string>|!jQueryObject)}
  */
 jQueryObject.prototype.val = function(arg1) {};
 
@@ -1300,3 +1315,9 @@ jQueryObject.prototype.wrapAll = function(wrappingElement) {};
  * @return {jQueryObject}
  */
 jQueryObject.prototype.wrapInner = function(arg1) {};
+
+var define = {amd: null};
+
+var exports = {};
+var module = {};
+var require = {};

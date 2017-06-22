@@ -3,8 +3,8 @@
 /**
  * @file pages/user/ProfileHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ProfileHandler
@@ -31,6 +31,16 @@ class ProfileHandler extends UserHandler {
 	 * @copydoc PKPHandler::authorize()
 	 */
 	function authorize($request, &$args, $roleAssignments) {
+
+		$operations = array(
+			'profile',
+		);
+
+		// Site access policy
+		import('lib.pkp.classes.security.authorization.PKPSiteAccessPolicy');
+		$this->addPolicy(new PKPSiteAccessPolicy($request, $operations, SITE_ACCESS_ALL_ROLES));
+
+		// User must be logged in
 		import('lib.pkp.classes.security.authorization.UserRequiredPolicy');
 		$this->addPolicy(new UserRequiredPolicy($request));
 
@@ -38,52 +48,21 @@ class ProfileHandler extends UserHandler {
 	}
 
 	/**
-	 * Display profile page.
+	 * Display user profile tabset.
 	 * @param $args array
 	 * @param $request PKPRequest
 	 */
 	function profile($args, $request) {
-		$this->setupTemplate($request);
-		$templateMgr = TemplateManager::getManager();
-		$templateMgr->display('user/profile.tpl');
-	}
-
-	/**
-	 * Display form to change user's password.
-	 */
-	function changePassword($args, $request) {
-		$this->setupTemplate($request, true);
-
-		$user = $request->getUser();
-		$site = $request->getSite();
-
-		import('lib.pkp.classes.user.form.ChangePasswordForm');
-		$passwordForm = new ChangePasswordForm($user, $site);
-		$passwordForm->initData($args, $request);
-		$passwordForm->display($args, $request);
-	}
-
-	/**
-	 * Save user's new password.
-	 */
-	function savePassword($args, $request) {
-		$this->setupTemplate($request, true);
-
-		$user = $request->getUser();
-		$site = $request->getSite();
-
-		import('lib.pkp.classes.user.form.ChangePasswordForm');
-		$passwordForm = new ChangePasswordForm($user, $site);
-		$passwordForm->readInputData();
-
-		$this->setupTemplate($request, true);
-		if ($passwordForm->validate()) {
-			$passwordForm->execute($request);
-			$request->redirect(null, $request->getRequestedPage());
-
-		} else {
-			$passwordForm->display($args, $request);
+		if ($anchor = array_shift($args)) {
+			// Some requests will try to specify a tab name in the args. Redirect
+			// to use this as an anchor name instead.
+			$request->redirect(null, null, null, null, null, $anchor);
 		}
+
+		$this->setupTemplate($request);
+
+		$templateMgr = TemplateManager::getManager($request);
+		$templateMgr->display('user/profile.tpl');
 	}
 }
 

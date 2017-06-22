@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/settings/preparedEmails/form/PreparedEmailForm.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PreparedEmailForm
@@ -13,7 +13,6 @@
  *
  * @brief Form for creating and modifying prepared emails.
  */
-
 
 import('lib.pkp.classes.form.Form');
 
@@ -30,10 +29,10 @@ class PreparedEmailForm extends Form {
 	 * @param $emailKey string
 	 * @param $context Context
 	 */
-	function PreparedEmailForm($emailKey = null, &$context) {
+	function PreparedEmailForm($emailKey = null, $context) {
 		parent::Form('controllers/grid/settings/preparedEmails/form/emailTemplateForm.tpl');
 
-		$this->_context =& $context;
+		$this->_context = $context;
 		$this->setEmailKey($emailKey);
 
 		// Validation checks for this form
@@ -63,7 +62,7 @@ class PreparedEmailForm extends Form {
 	 * Get the context
 	 * @return Context
 	 */
-	function &getContext() {
+	function getContext() {
 		return $this->_context;
 	}
 

@@ -6,8 +6,8 @@
 /**
  * @file plugins/metadata/mods34/schema/PKPMods34Schema.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPMods34Schema
@@ -344,13 +344,6 @@ class PKPMods34Schema extends MetadataSchema {
 		// values be parsed into subelements, they may also be listed as a string under topic.
 		$this->addProperty('subject/topic', $topicType, true, METADATA_PROPERTY_CARDINALITY_MANY);
 
-		// Use this subelement for geographic subject terms. If the geographic name is part of a
-		// corporate body (for example, United States. Senate), it is coded as name, not geographic
-		$this->addProperty('subject/geographic', $geographicType, true);
-
-		// Use this subelement for chronological subject terms or temporal coverage.
-		// The first version is expressed as a subject term (historical coverage)
-		$this->addProperty('subject/temporal', $temporalType, true);
 		// The second version is expressed as a structured date using the same data
 		// definition as MODS dates.
 		$this->addProperty('subject/temporal[@encoding="w3cdtf"]', METADATA_PROPERTY_TYPE_DATE);

@@ -4,11 +4,11 @@
 <!--
   * locale/uk_UA/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the uk_UA (Ukrainian) locale.
+  * Localization strings for the uk_UA (Українська) locale.
   *
   * Translated by Denys Solovianenko, 2011
   * V. I. Vernadsky National Library of Ukraine
@@ -218,8 +218,6 @@
 		<p>Експериментальна опція експорту цитат як тексту включає підтримку форматів цитування ABNT, APA, MLA та Vancouver. В цьому випадку ви отримаєте текстовий блок, який можна копіювати та вставити у текстову гранку статті (наприклад, у файл Microsoft Word або OpenOffice; Adobe InDesign тощо). Кожна цитата має вбудоване посилання для автоматичного пошуку посилань у Google Академії.</p></li>
 	</ul>]]></message>
 	<message key="submission.citations.editor.loadMessage">Будь ласка, зачекайте поки завантажиться Помічник розмітки цитат.</message>
-	<message key="submission.citations.editor.pleaseAddParserFilter"><![CDATA[Будь ласка, попросіть менеджера вашого журналу <a href="{$citationSetupUrl}">додати принаймні одну службу екстракції цитат</a>, щоб ви могли використовувати Помічник розмітки цитат.]]></message>
-	<message key="submission.citations.editor.pleaseConfigureOutputStyle"><![CDATA[Будь ласка, попросіть менеджера вашого журналу <a href="{$citationSetupUrl}">налаштувати вихідний формат цитат</a>, щоб ви могли використовувати Помічник розмітки цитат.]]></message>
 	<message key="submission.citations.editor.pleaseImportCitationsFirst"><![CDATA[<p>Ця стаття не має цитат.</p><p>Будь ласка, перейдіть до <a href="{$articleMetadataUrl}">сторінки метаданих</a> статті та введіть список пристатейної бібліографії або вручну додайте посилання, скориставшись кнопкою "Нова цитата" цього редактора.</p>]]></message>
 	<message key="submission.citations.editor.pleaseSelect">Будь ласка, оберіть...</message>
 	<message key="submission.citations.editor.pleaseSetup"><![CDATA[Будь ласка, попросіть менеджера вашого журналу <a href="{$citationSetupUrl}">дозволити редагування цитат</a>, щоб ви могли використовувати Помічник розмітки цитат.]]></message>
@@ -343,7 +341,7 @@
 	<message key="submission.page.summary">#{$id} Резюме</message>
 	<message key="submission.page.citations">#{$id} Цитати</message>
 	<message key="submission.peerReview">Наукове рецензування</message>
-	<message key="submission.recommendation">Рекомендація</message>
+	<message key="submission.recommendation">Рекомендація: {$recommendation}</message>
 	<message key="submission.rejected">Відхилено</message>
 	<message key="submission.request">Запит</message>
 	<message key="submission.response">Відповідь</message>
@@ -398,4 +396,8 @@
 	<message key="submission.reviewed">Рецензовані</message>
 	<message key="submission.createRemote">Створити віддалене</message>
        <message key="log.review.reviewerAssigned">{$reviewerName} був призначений для проведення {$round} раунду рецензування подання {$submissionId}.</message>
+
+       <!--  peer review -->
+       <message key="submission.reviewForm">Форма рецензування</message>
+       <message key="submission.reviewFormResponse">Заповнена форма рецензування</message>
 </locale>

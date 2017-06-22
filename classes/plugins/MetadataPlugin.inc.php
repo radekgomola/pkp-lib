@@ -3,8 +3,8 @@
 /**
  * @file classes/plugins/MetadataPlugin.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class MetadataPlugin
@@ -19,7 +19,7 @@ import('lib.pkp.classes.plugins.Plugin');
 // Define the well-known file name for controlled vocabulary data.
 define('METADATA_PLUGIN_VOCAB_DATAFILE', 'controlledVocabs.xml');
 
-class MetadataPlugin extends Plugin {
+abstract class MetadataPlugin extends Plugin {
 	/**
 	 * Constructor
 	 */
@@ -35,9 +35,9 @@ class MetadataPlugin extends Plugin {
 	 * @see Plugin::register()
 	 */
 	function register($category, $path) {
-		$success = parent::register($category, $path);
+		if (!parent::register($category, $path)) return false;
 		$this->addLocaleData();
-		return $success;
+		return true;
 	}
 
 	/**

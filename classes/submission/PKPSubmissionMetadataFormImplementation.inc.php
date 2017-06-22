@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/SubmissionMetadataFormImplementation.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionMetadataFormImplementation
@@ -16,21 +16,25 @@
 
 class PKPSubmissionMetadataFormImplementation {
 
-	/** @var Form Form that use this implementation */
+	/** @var Form Form that uses this implementation */
 	var $_parentForm;
 
 	/**
 	 * Constructor.
-	 *
 	 * @param $parentForm Form A form that can use this form.
 	 */
 	function PKPSubmissionMetadataFormImplementation($parentForm = null) {
+		assert(is_a($parentForm, 'Form'));
+		$this->_parentForm = $parentForm;
+	}
 
-		if (is_a($parentForm, 'Form')) {
-			$this->_parentForm = $parentForm;
-		} else {
-			assert(false);
-		}
+	/**
+	 * Determine whether or not abstracts are required.
+	 * @param $submission Submission
+	 * @return boolean
+	 */
+	function _getAbstractsRequired($submission) {
+		return true; // Required by default
 	}
 
 	/**
@@ -43,7 +47,10 @@ class PKPSubmissionMetadataFormImplementation {
 
 		// Validation checks.
 		$this->_parentForm->addCheck(new FormValidatorLocale($this->_parentForm, 'title', 'required', 'submission.submit.form.titleRequired'));
-		$this->_parentForm->addCheck(new FormValidatorLocale($this->_parentForm, 'abstract', 'required', 'submission.submit.form.abstractRequired'));
+		if ($this->_getAbstractsRequired($submission)) {
+			$this->_parentForm->addCheck(new FormValidatorLocale($this->_parentForm, 'abstract', 'required', 'submission.submit.form.abstractRequired'));
+		}
+
 		// Validates that at least one author has been added (note that authors are in grid, so Form does not
 		// directly see the authors value (there is no "authors" input. Hence the $ignore parameter.
 		$this->_parentForm->addCheck(new FormValidatorCustom(
@@ -65,10 +72,7 @@ class PKPSubmissionMetadataFormImplementation {
 				'prefix' => $submission->getPrefix(null), // Localized
 				'subtitle' => $submission->getSubtitle(null), // Localized
 				'abstract' => $submission->getAbstract(null), // Localized
-				'subjectClass' => $submission->getSubjectClass(null), // Localized
-				'coverageGeo' => $submission->getCoverageGeo(null), // Localized
-				'coverageChron' => $submission->getCoverageChron(null), // Localized
-				'coverageSample' => $submission->getCoverageSample(null), // Localized
+				'coverage' => $submission->getCoverage(null), // Localized
 				'type' => $submission->getType(null), // Localized
 				'source' =>$submission->getSource(null), // Localized
 				'rights' => $submission->getRights(null), // Localized
@@ -87,7 +91,7 @@ class PKPSubmissionMetadataFormImplementation {
                                 
                                 'urlWeb' => $submission->getUrlWeb(null), // Localized                                
                                 'poznamka' => $submission->getPoznamka(null), // Localized
-                                'dedikace' => $submission->getDedikace(null), // Localized
+                                'referenceMunipress' => $submission->getReferenceMunipress(null), // Localized
                                 
 			); 
 			foreach ($formData as $key => $data) {
@@ -122,15 +126,10 @@ class PKPSubmissionMetadataFormImplementation {
 //                        $this->_parentForm->setData('souvisejiciPublikace', $submissionSouvisejiciPublikaceDao->getSouvisejiciPublikace($submission->getId(), $locales));
 
                         
-                        
-                        
-                        
 			$this->_parentForm->setData('disciplines', $submissionDisciplineDao->getDisciplines($submission->getId(), $locales));
 			$this->_parentForm->setData('agencies', $submissionAgencyDao->getAgencies($submission->getId(), $locales));
-			
-
-			// include all submission metadata fields for submissions
-			$this->_parentForm->setData('submissionSettings', array('all' => true));
+			$this->_parentForm->setData('languages', $submissionLanguageDao->getLanguages($submission->getId(), $locales));
+			$this->_parentForm->setData('abstractsRequired', $this->_getAbstractsRequired($submission));
 		}
 	}
 
@@ -139,13 +138,12 @@ class PKPSubmissionMetadataFormImplementation {
 	 */
 	function readInputData() {
 		// 'keywords' is a tagit catchall that contains an array of values for each keyword/locale combination on the form.
-		$userVars = array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 
-                                'coverageChron', 'coverageSample', 'type', 'subjectClass', 
-                                'source', 'rights', 'keywords', 
+		$userVars = array('title', 'prefix', 'subtitle', 'abstract', 'coverage', 'type', 
+                                'source', 'rights', 'keywords', 'citations',
                                 'archivace', 'a_kol', 'cena', 'cena_ebook', 'urlOC', 'urlOC_ebook', 
                                 'datumVydani', 'muPracoviste',
                                 'poznamkaAdmin', 'urlWeb',
-                                'poznamka', 'dedikace',
+                                'poznamka', 'referenceMunipress',
                                 'languages', 'souvisejiciPublikace');
 		$this->_parentForm->readUserVars($userVars);
 	}
@@ -155,7 +153,7 @@ class PKPSubmissionMetadataFormImplementation {
 	 * @return array
 	 */
 	function getLocaleFieldNames() {
-		return array('title', 'prefix', 'subtitle', 'abstract', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'subjectClass', 'source', 'rights', 'poznamka', 'dedikace', 'urlWeb');
+		return array('title', 'prefix', 'subtitle', 'abstract', 'coverage', 'type', 'source', 'rights', 'poznamka', 'referenceMunipress', 'urlWeb');
 	}
 
 	/**
@@ -172,14 +170,12 @@ class PKPSubmissionMetadataFormImplementation {
 		$submission->setPrefix($this->_parentForm->getData('prefix'), null); // Localized
 		$submission->setSubtitle($this->_parentForm->getData('subtitle'), null); // Localized
 		$submission->setAbstract($this->_parentForm->getData('abstract'), null); // Localized
-		$submission->setCoverageGeo($this->_parentForm->getData('coverageGeo'), null); // Localized
-		$submission->setCoverageChron($this->_parentForm->getData('coverageChron'), null); // Localized
-		$submission->setCoverageSample($this->_parentForm->getData('coverageSample'), null); // Localized
+		$submission->setCoverage($this->_parentForm->getData('coverage'), null); // Localized
 		$submission->setType($this->_parentForm->getData('type'), null); // Localized
-		$submission->setSubjectClass($this->_parentForm->getData('subjectClass'), null); // Localized
 		$submission->setRights($this->_parentForm->getData('rights'), null); // Localized
 		$submission->setSource($this->_parentForm->getData('source'), null); // Localized
-                
+                $submission->setCitations($this->_parentForm->getData('citations'));
+    
                 /*MUNIPRESS*/
                 $submission->setArchivace($this->_parentForm->getData('archivace'));
                 $submission->setAKolektiv($this->_parentForm->getData('a_kol'));
@@ -193,7 +189,7 @@ class PKPSubmissionMetadataFormImplementation {
 
                 $submission->setUrlWeb($this->_parentForm->getData('urlWeb'), null); // Localized
                 $submission->setPoznamka($this->_parentForm->getData('poznamka'), null); // Localized
-                $submission->setDedikace($this->_parentForm->getData('dedikace'), null); // Localized
+                $submission->setReferenceMunipress($this->_parentForm->getData('referenceMunipress'), null); // Localized
                 
                 //
                 // Save the submission

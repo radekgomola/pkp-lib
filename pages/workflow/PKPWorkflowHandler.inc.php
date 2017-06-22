@@ -3,8 +3,8 @@
 /**
  * @file pages/workflow/PKPWorkflowHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class WorkflowHandler
@@ -14,6 +14,8 @@
  */
 
 import('classes.handler.Handler');
+import('lib.pkp.classes.workflow.WorkflowStageDAO');
+
 
 // import UI base classes
 import('lib.pkp.classes.linkAction.LinkAction');
@@ -38,7 +40,7 @@ abstract class PKPWorkflowHandler extends Handler {
 		$router = $request->getRouter();
 		$operation = $router->getRequestedOp($request);
 
-		if ($operation == 'access' || $operation == 'expedite') {
+		if ($operation == 'access') {
 			// Authorize requested submission.
 			import('lib.pkp.classes.security.authorization.internal.SubmissionRequiredPolicy');
 			$this->addPolicy(new SubmissionRequiredPolicy($request, $args, 'submissionId'));
@@ -46,11 +48,11 @@ abstract class PKPWorkflowHandler extends Handler {
 			// This policy will deny access if user has no accessible workflow stage.
 			// Otherwise it will build an authorized object with all accessible
 			// workflow stages and authorize user operation access.
-			import('classes.security.authorization.internal.UserAccessibleWorkflowStageRequiredPolicy');
+			import('lib.pkp.classes.security.authorization.internal.UserAccessibleWorkflowStageRequiredPolicy');
 			$this->addPolicy(new UserAccessibleWorkflowStageRequiredPolicy($request));
 		} else {
-			import('classes.security.authorization.WorkflowStageAccessPolicy');
-			$this->addPolicy(new WorkflowStageAccessPolicy($request, $args, $roleAssignments, 'submissionId', $this->_identifyStageId($request)));
+			import('lib.pkp.classes.security.authorization.WorkflowStageAccessPolicy');
+			$this->addPolicy(new WorkflowStageAccessPolicy($request, $args, $roleAssignments, 'submissionId', $this->identifyStageId($request, $args)));
 		}
 
 		return parent::authorize($request, $args, $roleAssignments);
@@ -78,39 +80,49 @@ abstract class PKPWorkflowHandler extends Handler {
 	/**
 	 * Redirect users to their most appropriate
 	 * submission workflow stage.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
 	function access($args, $request) {
 		$submission = $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION);
-		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
 		$reviewRoundDao = DAORegistry::getDAO('ReviewRoundDAO');
 
-		$stageId = $submission->getStageId();
+		$currentStageId = $submission->getStageId();
 		$accessibleWorkflowStages = $this->getAuthorizedContextObject(ASSOC_TYPE_ACCESSIBLE_WORKFLOW_STAGES);
 
 		// Get the closest workflow stage that user has an assignment.
 		$stagePath = null;
-		for ($workingStageId = $stageId; $workingStageId >= WORKFLOW_STAGE_ID_SUBMISSION; $workingStageId--) {
+		$workingStageId = null;
+
+		for ($workingStageId = $currentStageId; $workingStageId >= WORKFLOW_STAGE_ID_SUBMISSION; $workingStageId--) {
 			if (array_key_exists($workingStageId, $accessibleWorkflowStages)) {
-				$stagePath = $userGroupDao->getPathFromId($workingStageId);
 				break;
 			}
 		}
 
 		// If no stage was found, user still have access to future stages of the
 		// submission. Try to get the closest future workflow stage.
-		if (!$stagePath) {
-			for ($workingStageId = $stageId; $workingStageId <= WORKFLOW_STAGE_ID_PRODUCTION; $workingStageId++) {
+		if ($workingStageId == null || $workingStageId == 0) {
+			for ($workingStageId = $currentStageId; $workingStageId <= WORKFLOW_STAGE_ID_PRODUCTION; $workingStageId++) {
 				if (array_key_exists($workingStageId, $accessibleWorkflowStages)) {
-					$stagePath = $userGroupDao->getPathFromId($workingStageId);
 					break;
 				}
 			}
 		}
-
-		assert(!is_null($stagePath));
+                
+		assert($workingStageId);
 
 		$router = $request->getRouter();
-		$request->redirectUrl($router->url($request, null, 'workflow', $stagePath, $submission->getId()));
+		$request->redirectUrl($router->url($request, null, 'workflow', 'index', array($submission->getId(), $workingStageId)));
+	}
+
+	/**
+	 * Show the workflow stage, with the stage path as an #anchor.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function index($args, $request) {
+		$this->_displayWorkflow($args, $request);
 	}
 
 	/**
@@ -119,9 +131,7 @@ abstract class PKPWorkflowHandler extends Handler {
 	 * @param $request PKPRequest
 	 */
 	function submission($args, $request) {
-		// Render the view.
-		$templateMgr = TemplateManager::getManager($request);
-		$templateMgr->display('workflow/submission.tpl');
+		$this->_redirectToIndex($args, $request);
 	}
 
 	/**
@@ -130,10 +140,7 @@ abstract class PKPWorkflowHandler extends Handler {
 	 * @param $request PKPRequest
 	 */
 	function externalReview($args, $request) {
-		// Use different ops so we can identify stage by op.
-		$templateMgr = TemplateManager::getManager($request);
-		$templateMgr->assign('reviewRoundOp', 'externalReviewRound');
-		return $this->_review($args, $request);
+		$this->_redirectToIndex($args, $request);
 	}
 
 	/**
@@ -142,25 +149,37 @@ abstract class PKPWorkflowHandler extends Handler {
 	 * @param $args array
 	 */
 	function editorial(&$args, $request) {
-		// Render the view.
-		$templateMgr = TemplateManager::getManager($request);
-		$templateMgr->display('workflow/editorial.tpl');
+		$this->_redirectToIndex($args, $request);
 	}
 
 	/**
-	 * Expedites a submission through the submission process, if the submitter is a manager or editor.
-	 *  Implemented in sub classes.
+	 * Show the production stage
+	 * @param $request PKPRequest
+	 * @param $args array
+	 */
+	function production(&$args, $request) {
+		$this->_redirectToIndex($args, $request);
+	}
+
+	/**
+	 * Redirect all old stage paths to index
 	 * @param $args array
 	 * @param $request PKPRequest
 	 */
-	function expedite($args, $request) {
-		assert(false);
+	protected function _redirectToIndex(&$args, $request) {
+		// Translate the operation to a workflow stage identifier.
+		$submission = $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION);
+		$router = $request->getRouter();
+		$workflowPath = $router->getRequestedOp($request);
+		$stageId = WorkflowStageDAO::getIdFromPath($workflowPath);
+		$request->redirectUrl($router->url($request, null, 'workflow', 'index', array($submission->getId(), $stageId)));
 	}
 
 	/**
 	 * Fetch JSON-encoded editor decision options.
 	 * @param $args array
 	 * @param $request Request
+	 * @return JSONMessage JSON object
 	 */
 	function editorDecisionActions($args, $request) {
 		AppLocale::requireComponents(LOCALE_COMPONENT_APP_EDITOR);
@@ -197,6 +216,7 @@ abstract class PKPWorkflowHandler extends Handler {
 
 		// Iterate through the editor decisions and create a link action for each decision.
 		$editorActions = array();
+
 		$dispatcher = $request->getDispatcher();
 		import('lib.pkp.classes.linkAction.request.AjaxModal');
 		foreach($decisions as $decision => $action) {
@@ -224,34 +244,44 @@ abstract class PKPWorkflowHandler extends Handler {
 	}
 
 	/**
-	* Fetch the JSON-encoded submission header.
-	* @param $args array
-	* @param $request Request
-	*/
+	 * Fetch the JSON-encoded submission header.
+	 * @param $args array
+	 * @param $request Request
+	 * @return JSONMessage JSON object
+	 */
 	function submissionHeader($args, $request) {
 		$templateMgr = TemplateManager::getManager($request);
 		return $templateMgr->fetchJson('workflow/submissionHeader.tpl');
 	}
 
 	/**
-	* Fetch the JSON-encoded submission progress bar.
-	* @param $args array
-	* @param $request Request
-	*/
+	 * Fetch the JSON-encoded submission progress bar.
+	 * @param $args array
+	 * @param $request Request
+	 * @return JSONMessage JSON object
+	 */
 	function submissionProgressBar($args, $request) {
 		$templateMgr = TemplateManager::getManager($request);
 		$context = $request->getContext();
 
-		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
-		$workflowStages = $userGroupDao->getWorkflowStageKeysAndPaths();
+		$workflowStages = WorkflowStageDAO::getWorkflowStageKeysAndPaths();
 		$stageNotifications = array();
 		foreach (array_keys($workflowStages) as $stageId) {
 			$stageNotifications[$stageId] = $this->notificationOptionsByStage($request->getUser(), $stageId, $context->getId());
 		}
 
-		$templateMgr->assign('stageNotifications', $stageNotifications);
-
 		$submission = $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION);
+
+		$editDecisionDao = DAORegistry::getDAO('EditDecisionDAO'); /* @var $editDecisionDao EditDecisionDAO */
+		$stageDecisions = $editDecisionDao->getEditorDecisions($submission->getId());
+
+		$stagesWithDecisions = array();
+		foreach ($stageDecisions as $decision) {
+			$stagesWithDecisions[$decision['stageId']] = $decision['stageId'];
+		}
+
+		$workflowStages = WorkflowStageDAO::getStageStatusesBySubmission($submission, $stagesWithDecisions, $stageNotifications);
+		$templateMgr->assign('workflowStages', $workflowStages);
 		if ($this->isSubmissionReady($submission)) {
 			$templateMgr->assign('submissionIsReady', true);
 		}
@@ -269,12 +299,11 @@ abstract class PKPWorkflowHandler extends Handler {
 
 		$router = $request->getRouter();
 
-		$submission =& $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION);
+		$submission = $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION);
 		$stageId = $this->getAuthorizedContextObject(ASSOC_TYPE_WORKFLOW_STAGE);
 
 		// Construct array with workflow stages data.
-		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
-		$workflowStages = $userGroupDao->getWorkflowStageKeysAndPaths();
+		$workflowStages = WorkflowStageDAO::getWorkflowStageKeysAndPaths();
 
 		$templateMgr = TemplateManager::getManager($request);
 
@@ -286,115 +315,65 @@ abstract class PKPWorkflowHandler extends Handler {
 		$templateMgr->assign('submissionStageId', $submission->getStageId());
 		$templateMgr->assign('workflowStages', $workflowStages);
 
-		// Get the right notifications type based on current stage id.
-		$notificationMgr = new NotificationManager();
-		$editorAssignmentNotificationType = $this->getEditorAssignmentNotificationTypeByStageId($stageId);
-
-		// Define the workflow notification options.
-		$notificationRequestOptions = array(
-				NOTIFICATION_LEVEL_TASK => array(
-						$editorAssignmentNotificationType => array(ASSOC_TYPE_SUBMISSION, $submission->getId())
-				),
-				NOTIFICATION_LEVEL_TRIVIAL => array()
-		);
-
-		$signoffNotificationType = $this->_getSignoffNotificationTypeByStageId($stageId);
-		if (!is_null($signoffNotificationType)) {
-			$notificationRequestOptions[NOTIFICATION_LEVEL_TASK][$signoffNotificationType] = array(ASSOC_TYPE_SUBMISSION, $submission->getId());
-		}
-
-		$templateMgr->assign('workflowNotificationRequestOptions', $notificationRequestOptions);
-
 		import('controllers.modals.submissionMetadata.linkAction.SubmissionEntryLinkAction');
 		$templateMgr->assign(
-				'submissionEntryAction',
-				new SubmissionEntryLinkAction($request, $submission->getId(), $stageId)
+			'submissionEntryAction',
+			new SubmissionEntryLinkAction($request, $submission->getId(), $stageId)
 		);
 
 		import('lib.pkp.controllers.informationCenter.linkAction.SubmissionInfoCenterLinkAction');
 		$templateMgr->assign(
-				'submissionInformationCenterAction',
-				new SubmissionInfoCenterLinkAction($request, $submission->getId())
+			'submissionInformationCenterAction',
+			new SubmissionInfoCenterLinkAction($request, $submission->getId())
+		);
+
+		import('lib.pkp.controllers.modals.documentLibrary.linkAction.SubmissionLibraryLinkAction');
+		$templateMgr->assign(
+			'submissionLibraryAction',
+			new SubmissionLibraryLinkAction($request, $submission->getId())
 		);
 	}
 
 	//
 	// Protected helper methods
 	//
+
 	/**
-	 * Internal function to handle both internal and external reviews
-	 * @param $request PKPRequest
+	 * Displays the workflow tab structure.
 	 * @param $args array
+	 * @param $request Request
 	 */
-	protected function _review($args, $request) {
-		// Retrieve the authorized submission and stage id.
-		$submission = $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION);
-		$selectedStageId = $this->getAuthorizedContextObject(ASSOC_TYPE_WORKFLOW_STAGE);
-
+	private function _displayWorkflow($args, $request) {
 		$templateMgr = TemplateManager::getManager($request);
-
-		// Get all review rounds for this submission, on the current stage.
-		$reviewRoundDao = DAORegistry::getDAO('ReviewRoundDAO');
-		$reviewRoundsFactory = $reviewRoundDao->getBySubmissionId($submission->getId(), $selectedStageId);
-		if (!$reviewRoundsFactory->wasEmpty()) {
-			$reviewRoundsArray = $reviewRoundsFactory->toAssociativeArray();
-
-			// Get the review round number of the last review round to be used
-			// as the current review round tab index.
-			$lastReviewRoundNumber = end($reviewRoundsArray)->getRound();
-			$lastReviewRoundId = end($reviewRoundsArray)->getId();
-			reset($reviewRoundsArray);
-
-			// Add the round information to the template.
-			$templateMgr->assign('reviewRounds', $reviewRoundsArray);
-			$templateMgr->assign('lastReviewRoundNumber', $lastReviewRoundNumber);
-
-			if ($submission->getStageId() == $selectedStageId) {
-				$dispatcher = $request->getDispatcher();
-				$newRoundAction = new LinkAction(
-					'newRound',
-					new AjaxModal(
-						$dispatcher->url(
-							$request, ROUTE_COMPONENT, null,
-							'modals.editorDecision.EditorDecisionHandler',
-							'newReviewRound', null, array(
-								'submissionId' => $submission->getId(),
-								'decision' => SUBMISSION_EDITOR_DECISION_RESUBMIT,
-								'stageId' => $selectedStageId,
-								'reviewRoundId' => $lastReviewRoundId
-							)
-						),
-						__('editor.submission.newRound'),
-						'modal_add_item'
-					),
-					__('editor.submission.newRound'),
-					'add_item_small'
-				);
-				$templateMgr->assign('newRoundAction', $newRoundAction);
-			}
-		}
-
-		// Render the view.
-		$templateMgr->display('workflow/review.tpl');
+		$templateMgr->display('workflow/workflow.tpl');
 	}
 
 	/**
 	 * Translate the requested operation to a stage id.
 	 * @param $request Request
+	 * @param $args array
 	 * @return integer One of the WORKFLOW_STAGE_* constants.
 	 */
-	protected function _identifyStageId($request) {
+	protected function identifyStageId($request, $args) {
 		if ($stageId = $request->getUserVar('stageId')) {
 			return (int) $stageId;
 		}
 
-		// Retrieve the requested operation.
+		// Maintain the old check for previous path urls
 		$router = $request->getRouter();
-		$operation = $router->getRequestedOp($request);
+		$workflowPath = $router->getRequestedOp($request);
+		$stageId = WorkflowStageDAO::getIdFromPath($workflowPath);
+		if ($stageId) {
+			return $stageId;
+		}
+
+		// Finally, retrieve the requested operation, if the stage id is
+		// passed in via an argument in the URL, like index/submissionId/stageId
+		$stageId = $args[1];
 
 		// Translate the operation to a workflow stage identifier.
-		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
-		return $userGroupDao->getIdFromPath($operation);
+		assert(WorkflowStageDAO::getPathFromId($stageId) !== null);
+		return $stageId;
 	}
 
 	/**
@@ -403,21 +382,18 @@ abstract class PKPWorkflowHandler extends Handler {
 	 * @param $user PKPUser
 	 * @param $stageId integer
 	 * @param $contextId integer
+	 * @return boolean
 	 */
 	protected function notificationOptionsByStage($user, $stageId, $contextId) {
 		$submission = $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION);
 		$notificationDao = DAORegistry::getDAO('NotificationDAO');
 
-		$signOffNotificationType = $this->_getSignoffNotificationTypeByStageId($stageId);
 		$editorAssignmentNotificationType = $this->getEditorAssignmentNotificationTypeByStageId($stageId);
 
 		$editorAssignments = $notificationDao->getByAssoc(ASSOC_TYPE_SUBMISSION, $submission->getId(), null, $editorAssignmentNotificationType, $contextId);
-		if (isset($signOffNotificationType)) {
-			$signoffAssignments = $notificationDao->getByAssoc(ASSOC_TYPE_SUBMISSION, $submission->getId(), $user->getId(), $signOffNotificationType, $contextId);
-		}
 
 		// if the User has assigned TASKs in this stage check, return true
-		if (!$editorAssignments->wasEmpty() || (isset($signoffAssignments) && !$signoffAssignments->wasEmpty())) {
+		if (!$editorAssignments->wasEmpty()) {
 			return true;
 		}
 
@@ -429,10 +405,10 @@ abstract class PKPWorkflowHandler extends Handler {
 			}
 		}
 
-		if ($stageId == WORKFLOW_STAGE_ID_EXTERNAL_REVIEW || $stageId == WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
+		if ($stageId == WORKFLOW_STAGE_ID_INTERNAL_REVIEW || $stageId == WORKFLOW_STAGE_ID_EXTERNAL_REVIEW) {
 			$reviewRoundDao = DAORegistry::getDAO('ReviewRoundDAO');
 			$reviewRounds = $reviewRoundDao->getBySubmissionId($submission->getId(), $stageId);
-			$notificationTypes = array(NOTIFICATION_TYPE_REVIEW_ROUND_STATUS, NOTIFICATION_TYPE_ALL_REVIEWS_IN);
+			$notificationTypes = array(NOTIFICATION_TYPE_ALL_REVIEWS_IN);
 			while ($reviewRound = $reviewRounds->next()) {
 				foreach ($notificationTypes as $type) {
 					$notifications = $notificationDao->getByAssoc(ASSOC_TYPE_REVIEW_ROUND, $reviewRound->getId(), null, $type, $contextId);
@@ -463,25 +439,6 @@ abstract class PKPWorkflowHandler extends Handler {
 	 * @return boolean
 	 */
 	abstract protected function isSubmissionReady($submission);
-
-
-	//
-	// Private helper methods.
-	//
-	/**
-	* Return the signoff notification type based on stage id.
-	* @param $stageId
-	* @return int
-	*/
-	private function _getSignoffNotificationTypeByStageId($stageId) {
-		switch ($stageId) {
-			case WORKFLOW_STAGE_ID_EDITING:
-				return NOTIFICATION_TYPE_SIGNOFF_COPYEDIT;
-			case WORKFLOW_STAGE_ID_PRODUCTION:
-				return NOTIFICATION_TYPE_SIGNOFF_PROOF;
-		}
-		return null;
-	}
 }
 
 ?>

@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/settings/contributor/ContributorGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ContributorGridHandler
@@ -28,6 +28,7 @@ class ContributorGridHandler extends SetupGridHandler {
 		parent::SetupGridHandler();
 		$this->addRoleAssignment(array(ROLE_ID_MANAGER),
 				array('fetchGrid', 'addContributor', 'editContributor', 'updateContributor', 'deleteContributor'));
+		$this->setTitle('grid.contributor.title');
 	}
 
 	//
@@ -69,7 +70,7 @@ class ContributorGridHandler extends SetupGridHandler {
 				'institution',
 				'grid.columns.institution',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				null,
 				array('width' => 50, 'alignment' => COLUMN_ALIGNMENT_LEFT)
 			)
@@ -79,7 +80,7 @@ class ContributorGridHandler extends SetupGridHandler {
 				'url',
 				'grid.columns.url',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				null,
 				array('width' => 50, 'alignment' => COLUMN_ALIGNMENT_LEFT)
 			)
@@ -93,7 +94,7 @@ class ContributorGridHandler extends SetupGridHandler {
 	 * Get the row handler - override the default row handler
 	 * @return ContributorGridRow
 	 */
-	function getRowInstance() {
+	protected function getRowInstance() {
 		return new ContributorGridRow();
 	}
 
@@ -116,7 +117,7 @@ class ContributorGridHandler extends SetupGridHandler {
 	 * An action to edit a contributor
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	function editContributor($args, $request) {
 		$contributorId = isset($args['rowId']) ? $args['rowId'] : null;
@@ -129,15 +130,14 @@ class ContributorGridHandler extends SetupGridHandler {
 			$contributorForm->initData($args, $request);
 		}
 
-		$json = new JSONMessage(true, $contributorForm->fetch($request));
-		return $json->getString();
+		return new JSONMessage(true, $contributorForm->fetch($request));
 	}
 
 	/**
 	 * Update a contributor
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	function updateContributor($args, $request) {
 		// -> contributorId must be present and valid
@@ -169,7 +169,7 @@ class ContributorGridHandler extends SetupGridHandler {
 	 * Delete a contributor
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string Serialized JSON object
+	 * @return JSONMessage JSON object
 	 */
 	function deleteContributor($args, $request) {
 		$contributorId = isset($args['rowId']) ? $args['rowId'] : null;

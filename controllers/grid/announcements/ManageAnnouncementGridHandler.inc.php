@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/announcements/ManageAnnouncementGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPManageAnnouncementGridHandler
@@ -15,7 +15,7 @@
 
 import('lib.pkp.controllers.grid.announcements.AnnouncementGridHandler');
 import('lib.pkp.classes.controllers.grid.DataObjectGridCellProvider');
-import('controllers.grid.announcements.form.AnnouncementForm');
+import('lib.pkp.controllers.grid.announcements.form.AnnouncementForm');
 
 class ManageAnnouncementGridHandler extends AnnouncementGridHandler {
 	/**
@@ -77,7 +77,7 @@ class ManageAnnouncementGridHandler extends AnnouncementGridHandler {
 	/**
 	 * @copydoc GridHandler::getRowInstance()
 	 */
-	function getRowInstance() {
+	protected function getRowInstance() {
 		import('lib.pkp.controllers.grid.announcements.AnnouncementGridRow');
 		return new AnnouncementGridRow();
 	}
@@ -86,9 +86,19 @@ class ManageAnnouncementGridHandler extends AnnouncementGridHandler {
 	 * @copydoc GridHandler::authorize()
 	 */
 	function authorize($request, &$args, $roleAssignments) {
-		import('lib.pkp.classes.security.authorization.PkpContextAccessPolicy');
-		$this->addPolicy(new PkpContextAccessPolicy($request, $roleAssignments));
+		import('lib.pkp.classes.security.authorization.ContextAccessPolicy');
+		$this->addPolicy(new ContextAccessPolicy($request, $roleAssignments));
 		return parent::authorize($request, $args, $roleAssignments, false);
+	}
+
+	/**
+	 * @copydoc GridHandler::loadData()
+	 */
+	protected function loadData($request, $filter) {
+		$context = $request->getContext();
+		$announcementDao = DAORegistry::getDAO('AnnouncementDAO');
+		$rangeInfo = $this->getGridRangeInfo($request, $this->getId());
+		return $announcementDao->getByAssocId($context->getAssocType(), $context->getId(), $rangeInfo);
 	}
 
 
@@ -109,7 +119,7 @@ class ManageAnnouncementGridHandler extends AnnouncementGridHandler {
 	 * Display form to edit an announcement.
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string
+	 * @return JSONMessage JSON object
 	 */
 	function editAnnouncement($args, $request) {
 		$announcementId = (int)$request->getUserVar('announcementId');
@@ -119,15 +129,14 @@ class ManageAnnouncementGridHandler extends AnnouncementGridHandler {
 		$announcementForm = new AnnouncementForm($contextId, $announcementId);
 		$announcementForm->initData($args, $request);
 
-		$json = new JSONMessage(true, $announcementForm->fetch($request));
-		return $json->getString();
+		return new JSONMessage(true, $announcementForm->fetch($request));
 	}
 
 	/**
 	 * Save an edited/inserted announcement.
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string
+	 * @return JSONMessage JSON object
 	 */
 	function updateAnnouncement($args, $request) {
 
@@ -159,15 +168,15 @@ class ManageAnnouncementGridHandler extends AnnouncementGridHandler {
 			// Prepare the grid row data.
 			return DAO::getDataChangedEvent($announcementId);
 		} else {
-			$json = new JSONMessage(false);
+			return new JSONMessage(false);
 		}
-		return $json->getString();
 	}
 
 	/**
 	 * Delete an announcement.
 	 * @param $args array
 	 * @param $request
+	 * @return JSONMessage JSON object
 	 */
 	function deleteAnnouncement($args, $request) {
 		$announcementId = (int) $request->getUserVar('announcementId');

@@ -8,8 +8,8 @@
 /**
  * @file classes/payment/Payment.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Payment
@@ -38,6 +38,10 @@ class Payment {
 
 	/**
 	 * Constructor
+	 * @param $amount number
+	 * @param $currencyCode string
+	 * @param $userId int
+	 * @param $assocId int optional
 	 */
 	function Payment($amount = null, $currencyCode = null, $userId = null, $assocId = null) {
 		$this->amount = $amount;

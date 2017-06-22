@@ -3,8 +3,8 @@
 /**
  * @file classes/log/SubmissionFileEventLogEntry.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionFileEventLogEntry
@@ -37,10 +37,18 @@ class SubmissionFileEventLogEntry extends EventLogEntry {
 		parent::EventLogEntry();
 	}
 
+	/**
+	 * Set the associated file ID.
+	 * @param $fileId int File ID
+	 */
 	function setFileId($fileId) {
 		return $this->setAssocId($fileId);
 	}
 
+	/**
+	 * Get the associated file ID.
+	 * @return int File ID
+	 */
 	function getFileId() {
 		return $this->getAssocId();
 	}

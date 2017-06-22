@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/eventLog/SubmissionEventLogGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionEventLogGridHandler
@@ -34,8 +34,8 @@ class SubmissionEventLogGridHandler extends GridHandler {
 	function SubmissionEventLogGridHandler() {
 		parent::GridHandler();
 		$this->addRoleAssignment(
-			array(ROLE_ID_MANAGER, ROLE_ID_AUTHOR, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT),
-			array('fetchGrid', 'fetchRow')
+			array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR),
+			array('fetchGrid', 'fetchRow', 'viewEmail')
 		);
 	}
 
@@ -70,7 +70,7 @@ class SubmissionEventLogGridHandler extends GridHandler {
 	 * @param $roleAssignments array
 	 */
 	function authorize($request, &$args, $roleAssignments) {
-		import('classes.security.authorization.SubmissionAccessPolicy');
+		import('lib.pkp.classes.security.authorization.SubmissionAccessPolicy');
 		$this->addPolicy(new SubmissionAccessPolicy($request, $args, $roleAssignments));
 		return parent::authorize($request, $args, $roleAssignments);
 	}
@@ -99,7 +99,7 @@ class SubmissionEventLogGridHandler extends GridHandler {
 				'date',
 				'common.date',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				new DateGridCellProvider(
 					$cellProvider,
 					Config::getVar('general', 'date_format_short')
@@ -111,7 +111,7 @@ class SubmissionEventLogGridHandler extends GridHandler {
 				'user',
 				'common.user',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$cellProvider
 			)
 		);
@@ -120,7 +120,7 @@ class SubmissionEventLogGridHandler extends GridHandler {
 				'event',
 				'common.event',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$cellProvider,
 				array('width' => 60)
 			)
@@ -135,7 +135,7 @@ class SubmissionEventLogGridHandler extends GridHandler {
 	 * @see GridHandler::getRowInstance()
 	 * @return EventLogGridRow
 	 */
-	function getRowInstance() {
+	protected function getRowInstance() {
 		return new EventLogGridRow($this->getSubmission());
 	}
 
@@ -155,11 +155,57 @@ class SubmissionEventLogGridHandler extends GridHandler {
 	/**
 	 * @copydoc GridHandler::loadData
 	 */
-	function loadData($request, $filter = null) {
+	protected function loadData($request, $filter = null) {
 		$submissionEventLogDao = DAORegistry::getDAO('SubmissionEventLogDAO');
+		$submissionEmailLogDao = DAORegistry::getDAO('SubmissionEmailLogDAO');
+
 		$submission = $this->getSubmission();
+
 		$eventLogEntries = $submissionEventLogDao->getBySubmissionId($submission->getId());
-		return $eventLogEntries->toArray();
+		$emailLogEntries = $submissionEmailLogDao->getBySubmissionId($submission->getId());
+
+		$entries = array_merge($eventLogEntries->toArray(), $emailLogEntries->toArray());
+
+		// Sort the merged data by date
+		usort($entries, function($a, $b) {
+			$aDate = is_a($a, 'EventLogEntry') ? $a->getDateLogged() : $a->getDateSent();
+			$bDate = is_a($b, 'EventLogEntry') ? $b->getDateLogged() : $b->getDateSent();
+
+			if ($aDate == $bDate) return 0;
+
+			return $aDate > $bDate ? 1 : -1;
+		});
+
+		return $entries;
+	}
+
+	/**
+	 * Get the contents of the email
+	 * @param $args array
+	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
+	 */
+	function viewEmail($args, $request) {
+		$submissionEmailLogDao = DAORegistry::getDAO('SubmissionEmailLogDAO');
+		$emailLogEntry = $submissionEmailLogDao->getById((int) $args['emailLogEntryId']);
+		return new JSONMessage(true, $this->_formatEmail($emailLogEntry));
+	}
+
+	/**
+	 * Format the contents of the email
+	 * @param $emailLogEntry EmailLogEntry
+	 * @return string Formatted email
+	 */
+	function _formatEmail($emailLogEntry) {
+		assert(is_a($emailLogEntry, 'EmailLogEntry'));
+
+		$text = array();
+		$text[] = __('email.from') . ': ' . htmlspecialchars($emailLogEntry->getFrom());
+		$text[] =  __('email.to') . ': ' . htmlspecialchars($emailLogEntry->getRecipients());
+		$text[] =  __('email.subject') . ': ' . htmlspecialchars($emailLogEntry->getSubject());
+		$text[] = $emailLogEntry->getBody();
+
+		return nl2br(PKPString::stripUnsafeHtml(implode(PHP_EOL . PHP_EOL, $text)));
 	}
 }
 

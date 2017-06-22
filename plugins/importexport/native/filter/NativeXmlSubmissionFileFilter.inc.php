@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/native/filter/NativeXmlSubmissionFileFilter.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class NativeXmlSubmissionFileFilter
@@ -63,6 +63,7 @@ class NativeXmlSubmissionFileFilter extends NativeImportFilter {
 	function handleElement($node) {
 		$deployment = $this->getDeployment();
 		$stageName = $node->getAttribute('stage');
+		$fileId = $node->getAttribute('id');
 		$stageNameIdMapping = $deployment->getStageNameStageIdMapping();
 		assert(isset($stageNameIdMapping[$stageName]));
 		$stageId = $stageNameIdMapping[$stageName];
@@ -71,7 +72,7 @@ class NativeXmlSubmissionFileFilter extends NativeImportFilter {
 		// Handle metadata in subelements
 		for ($n = $node->firstChild; $n !== null; $n=$n->nextSibling) {
 			if (is_a($n, 'DOMElement')) {
-				$this->handleChildElement($n, $stageId, $submissionFiles);
+				$this->handleChildElement($n, $stageId, $fileId, $submissionFiles);
 			}
 		}
 		return $submissionFiles;
@@ -82,12 +83,13 @@ class NativeXmlSubmissionFileFilter extends NativeImportFilter {
 	 * any, to $submissionFiles
 	 * @param $node DOMElement
 	 * @param $stageId int SUBMISSION_FILE_...
+	 * @param $fileId int File id
 	 * @param $submissionFiles array
 	 */
-	function handleChildElement($node, $stageId, &$submissionFiles) {
+	function handleChildElement($node, $stageId, $fileId, &$submissionFiles) {
 		switch ($node->tagName) {
 			case 'revision':
-				$submissionFiles[] = $this->handleRevisionElement($node, $stageId);
+				$submissionFiles[] = $this->handleRevisionElement($node, $stageId, $fileId);
 				break;
 			default:
 				fatalError('Unknown element ' . $node->tagName);
@@ -97,38 +99,47 @@ class NativeXmlSubmissionFileFilter extends NativeImportFilter {
 	/**
 	 * Handle a revision element
 	 * @param $node DOMElement
+	 * @param $fileId int File id
 	 * @param $stageId int SUBMISSION_FILE_...
 	 */
-	function handleRevisionElement($node, $stageId) {
+	function handleRevisionElement($node, $stageId, $fileId) {
 		static $genresByContextId = array();
 
 		$deployment = $this->getDeployment();
 		$submission = $deployment->getSubmission();
 		$context = $deployment->getContext();
 
+		$revisionId = $node->getAttribute('number');
+
 		$genreName = $node->getAttribute('genre');
-		// Build a cached list of genres by context ID by name
-		if (!isset($genresByContextId[$context->getId()])) {
-			$genreDao = DAORegistry::getDAO('GenreDAO');
-			$genres = $genreDao->getByContextId($context->getId());
-			while ($genre = $genres->next()) {
-				foreach ($genre->getName(null) as $locale => $name) {
-					$genresByContextId[$context->getId()][$name] = $genre;
+		if ($genreName) {
+			// Build a cached list of genres by context ID by name
+			if (!isset($genresByContextId[$context->getId()])) {
+				$genreDao = DAORegistry::getDAO('GenreDAO');
+				$genres = $genreDao->getByContextId($context->getId());
+				while ($genre = $genres->next()) {
+					foreach ($genre->getName(null) as $locale => $name) {
+						$genresByContextId[$context->getId()][$name] = $genre;
+					}
 				}
 			}
+			if (!isset($genresByContextId[$context->getId()][$genreName])) {
+				fatalError('Unknown genre "' . $genreName . '"!');
+			}
+			$genre = $genresByContextId[$context->getId()][$genreName];
+			$genreId = $genre->getId();
+		} else {
+			$genreId = null;
 		}
-		if (!isset($genresByContextId[$context->getId()][$genreName])) {
-			fatalError('Unknown genre "' . $genreName . '"!');
-		}
-		$genre = $genresByContextId[$context->getId()][$genreName];
 
 		$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO');
-		$submissionFile = $submissionFileDao->newDataObjectByGenreId($genre->getId());
+		$submissionFile = $submissionFileDao->newDataObjectByGenreId($genreId);
 		$submissionFile->setSubmissionId($submission->getId());
-		$submissionFile->setGenreId($genre->getId());
+		$submissionFile->setGenreId($genreId);
 		$submissionFile->setFileStage($stageId);
 		$submissionFile->setDateUploaded(Core::getCurrentDate());
 		$submissionFile->setDateModified(Core::getCurrentDate());
+		if ($node->getAttribute('available') == 'true') $submissionFile->setViewable(true);
 
 		$submissionFile->setOriginalFileName($filename = $node->getAttribute('filename'));
 		for ($n = $node->firstChild; $n !== null; $n=$n->nextSibling) {
@@ -162,7 +173,13 @@ class NativeXmlSubmissionFileFilter extends NativeImportFilter {
 		$fileType = $node->getAttribute('filetype');
 		$submissionFile->setFileType($fileType);
 
-		$submissionFileDao->insertObject($submissionFile, $filename, false);
+		$submissionFile->setRevision($revisionId);
+
+		$insertedSubmissionFile = $submissionFileDao->insertObject($submissionFile, $filename, false);
+		$deployment->setFileDBId($fileId, $revisionId, $insertedSubmissionFile->getFileId());
+
+		$fileManager = new FileManager();
+		$fileManager->deleteFile($filename);
 		return $submissionFile;
 	}
 
@@ -177,9 +194,6 @@ class NativeXmlSubmissionFileFilter extends NativeImportFilter {
 		switch ($node->tagName) {
 			case 'name':
 				$submissionFile->setName($node->textContent, $node->getAttribute('locale'));
-				break;
-			case 'remote':
-				fatalError('UNIMPLEMENTED');
 				break;
 			case 'href':
 				$submissionFile->setFileType($node->getAttribute('mime_type'));

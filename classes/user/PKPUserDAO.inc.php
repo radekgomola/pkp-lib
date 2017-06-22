@@ -3,8 +3,8 @@
 /**
  * @file classes/user/PKPUserDAO.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPUserDAO
@@ -26,7 +26,6 @@ define('USER_FIELD_URL', 'url');
 define('USER_FIELD_INTERESTS', 'interests');
 define('USER_FIELD_INITIAL', 'initial');
 define('USER_FIELD_AFFILIATION', 'affiliation');
-//define('USER_FIELD_UCO', 'uco');
 define('USER_FIELD_NONE', null);
 
 class PKPUserDAO extends DAO {
@@ -39,7 +38,7 @@ class PKPUserDAO extends DAO {
 
 	/**
 	 * Construct a new User object.
-	 * @return User
+	 * @return PKPUser
 	 */
 	function newDataObject() {
 		return new PKPUser();
@@ -49,7 +48,7 @@ class PKPUserDAO extends DAO {
 	 * Retrieve a user by ID.
 	 * @param $userId int
 	 * @param $allowDisabled boolean
-	 * @return User
+	 * @return PKPUser
 	 */
 	function getById($userId, $allowDisabled = true) {
 		$result = $this->retrieve(                        
@@ -71,25 +70,25 @@ class PKPUserDAO extends DAO {
 	 * @param $allowDisabled boolean
 	 * @return User
 	 */
-        function &getByUCO($uco, $allowDisabled = true) {
-		$result = $this->retrieve(
-			'SELECT * FROM users WHERE uco = ?' . ($allowDisabled?'':' AND disabled = 0'),
-			array($username)
-		);
-
-		$returner = null;
-		if ($result->RecordCount() != 0) {
-			$returner =& $this->_returnUserFromRowWithData($result->GetRowAssoc(false));
-		}
-		$result->Close();
-		return $returner;
-	}
+//        function &getByUCO($uco, $allowDisabled = true) {
+//		$result = $this->retrieve(
+//			'SELECT * FROM users WHERE uco = ?' . ($allowDisabled?'':' AND disabled = 0'),
+//			array($username)
+//		);
+//
+//		$returner = null;
+//		if ($result->RecordCount() != 0) {
+//			$returner =& $this->_returnUserFromRowWithData($result->GetRowAssoc(false));
+//		}
+//		$result->Close();
+//		return $returner;
+//	}
 
 	/**
 	 * Retrieve a user by username.
 	 * @param $username string
 	 * @param $allowDisabled boolean
-	 * @return User
+	 * @return PKPUser
 	 */
 	function &getByUsername($username, $allowDisabled = true) {
 		$result = $this->retrieve(
@@ -129,7 +128,7 @@ class PKPUserDAO extends DAO {
 	 * Retrieve a user by email address.
 	 * @param $email string
 	 * @param $allowDisabled boolean
-	 * @return User
+	 * @return PKPUser
 	 */
 	function &getUserByEmail($email, $allowDisabled = true) {
 		$result = $this->retrieve(
@@ -150,7 +149,7 @@ class PKPUserDAO extends DAO {
 	 * @param $username string
 	 * @param $password string encrypted password
 	 * @param $allowDisabled boolean
-	 * @return User
+	 * @return PKPUser
 	 */
 	function &getUserByCredentials($username, $password, $allowDisabled = true) {
 		$result = $this->retrieve(
@@ -175,22 +174,22 @@ class PKPUserDAO extends DAO {
 	 */
 	function getReviewersForSubmission($contextId, $submissionId, $round) {
 		$result = $this->retrieve(
-				'SELECT	u.*
-				FROM	users u
-				LEFT JOIN user_user_groups uug ON (uug.user_id = u.user_id)
-				LEFT JOIN user_groups ug ON (ug.user_group_id = uug.user_group_id)
-				LEFT JOIN review_assignments r ON (r.reviewer_id = u.user_id)
-				WHERE	ug.context_id = ? AND
-				ug.role_id = ? AND
-				r.submission_id = ? AND
-				r.round = ?
-				ORDER BY last_name, first_name',
-				array(
-						(int) $contextId,
-						ROLE_ID_REVIEWER,
-						(int) $submissionId,
-						(int) $round
-				)
+			'SELECT	u.*
+			FROM	users u
+			LEFT JOIN user_user_groups uug ON (uug.user_id = u.user_id)
+			LEFT JOIN user_groups ug ON (ug.user_group_id = uug.user_group_id)
+			LEFT JOIN review_assignments r ON (r.reviewer_id = u.user_id)
+			WHERE	ug.context_id = ? AND
+			ug.role_id = ? AND
+			r.submission_id = ? AND
+			r.round = ?
+			ORDER BY last_name, first_name',
+			array(
+				(int) $contextId,
+				ROLE_ID_REVIEWER,
+				(int) $submissionId,
+				(int) $round
+			)
 		);
 
 		return new DAOResultFactory($result, $this, '_returnUserFromRowWithData');
@@ -211,18 +210,17 @@ class PKPUserDAO extends DAO {
 		if (!empty($name)) $params[] = $params[] = $params[] = $params[] = "%$name%";
 
 		$result = $this->retrieve(
-				'SELECT	DISTINCT u.*
-				FROM	users u
-				JOIN user_user_groups uug ON (uug.user_id = u.user_id)
-				JOIN user_groups ug ON (ug.user_group_id = uug.user_group_id AND ug.context_id = ? AND ug.role_id = ?)
-				JOIN user_group_stage ugs ON (ugs.user_group_id = ug.user_group_id AND ugs.stage_id = ?)
-				WHERE 0=(SELECT COUNT(r.reviewer_id)
-				FROM review_assignments r
-				WHERE r.submission_id = ? AND r.reviewer_id = u.user_id AND (r.review_round_id = ? OR' .
-				$reviewAssignmentDao->getIncompleteReviewAssignmentsWhereString() . '))' .
-				(!empty($name)?' AND (first_name LIKE ? OR last_name LIKE ? OR username LIKE ? OR email LIKE ?)':'') .
-				' ORDER BY last_name, first_name',
-				$params
+			'SELECT	DISTINCT u.*
+			FROM	users u
+			JOIN user_user_groups uug ON (uug.user_id = u.user_id)
+			JOIN user_groups ug ON (ug.user_group_id = uug.user_group_id AND ug.context_id = ? AND ug.role_id = ?)
+			JOIN user_group_stage ugs ON (ugs.user_group_id = ug.user_group_id AND ugs.stage_id = ?)
+			WHERE 0=(SELECT COUNT(r.reviewer_id)
+			FROM review_assignments r
+			WHERE r.submission_id = ? AND r.reviewer_id = u.user_id AND r.review_round_id = ?)' .
+			(!empty($name)?' AND (first_name LIKE ? OR last_name LIKE ? OR username LIKE ? OR email LIKE ?)':'') .
+			' ORDER BY last_name, first_name',
+			$params
 		);
 
 		return new DAOResultFactory($result, $this, '_returnUserFromRowWithData');
@@ -235,14 +233,14 @@ class PKPUserDAO extends DAO {
 	 */
 	function getAllReviewers($contextId) {
 		$result = $this->retrieve(
-				'SELECT	u.*
-				FROM	users u
-				LEFT JOIN user_user_groups uug ON (uug.user_id = u.user_id)
-				LEFT JOIN user_groups ug ON (ug.user_group_id = uug.user_group_id)
-				WHERE	ug.context_id = ? AND
-				ug.role_id = ?
-				ORDER BY last_name, first_name',
-				array((int) $contextId, ROLE_ID_REVIEWER)
+			'SELECT	u.*
+			FROM	users u
+			LEFT JOIN user_user_groups uug ON (uug.user_id = u.user_id)
+			LEFT JOIN user_groups ug ON (ug.user_group_id = uug.user_group_id)
+			WHERE	ug.context_id = ? AND
+			ug.role_id = ?
+			ORDER BY last_name, first_name',
+			array((int) $contextId, ROLE_ID_REVIEWER)
 		);
 
 		return new DAOResultFactory($result, $this, '_returnUserFromRowWithData');
@@ -251,6 +249,8 @@ class PKPUserDAO extends DAO {
 	/**
 	 * Given the ranges selected by the editor, produce a filtered list of reviewers
 	 * @param $contextId int
+	 * @param $stageId int WORKFLOW_STAGE_ID_...
+	 * @param $name string|null Partial string match with reviewer name
 	 * @param $doneMin int|null # of reviews completed int
 	 * @param $doneMax int|null
 	 * @param $avgMin int|null Average period of time in days to complete a review int
@@ -260,35 +260,47 @@ class PKPUserDAO extends DAO {
 	 * @param $activeMin int|null How many reviews are currently being considered or underway int
 	 * @param $activeMax int|null
 	 * @param $interests array
-	 * @param $submissionId int Filter out reviewers assigned to this submission
-	 * @param $reviewRoundId int Also filter users assigned to this round of the given submission
-	 * @return array Users
+	 * @param $submissionId int This parameter is in conjunction with the next two parameters i.e. reviewRoundId and reviewRound
+	 * @param $reviewRoundId int Exclude users assigned to this round of the given submission
+	 * @param $reviewRound int Filter users assigned to previous rounds of the given submission
+	 * @return DAOResultFactory Iterator for matching users
 	 */
-	function getFilteredReviewers($contextId, $stageId, $doneMin = null, $doneMax = null, $avgMin = null, $avgMax = null, $lastMin = null, $lastMax = null, $activeMin = null, $activeMax = null, $interests = array(), $submissionId = null, $reviewRoundId = null) {
+	function getFilteredReviewers($contextId, $stageId, $name = null, $doneMin = null, $doneMax = null, $avgMin = null, $avgMax = null, $lastMin = null, $lastMax = null, $activeMin = null, $activeMax = null, $interests = array(), $submissionId = null, $reviewRoundId = null, $reviewRound = null) {
+		// Timestamp math appears not to work in seconds in MySQL. Issue #1167.
+		switch (Config::getVar('database', 'driver')) {
+			case 'mysql':
+			case 'mysqli':
+				$dateDiffClause = 'DATEDIFF(rac.date_completed, rac.date_notified)';
+				break;
+			default:
+				$dateDiffClause = 'DATE_PART(\'day\', rac.date_completed - rac.date_notified)';
+		}
 		$result = $this->retrieve(
 			'SELECT	u.*,
-				COALESCE(COUNT(DISTINCT rac.review_id), 0) AS complete_count,
-				AVG(rac.date_completed - rac.date_notified) AS average_time,
+				COUNT(DISTINCT rac.review_id) AS complete_count,
+				AVG(' . $dateDiffClause . ') AS average_time,
 				MAX(raf.date_assigned) AS last_assigned,
-				COALESCE(COUNT(DISTINCT rai.review_id), 0) AS incomplete_count
+				COUNT(DISTINCT rai.review_id) AS incomplete_count
 			FROM	users u
 				JOIN user_user_groups uug ON (uug.user_id = u.user_id)
 				JOIN user_groups ug ON (ug.user_group_id = uug.user_group_id AND ug.role_id = ? AND ug.context_id = ?)
 				JOIN user_group_stage ugs ON (ugs.user_group_id = ug.user_group_id AND ugs.stage_id = ?)
-				LEFT JOIN review_assignments ras ON (ras.submission_id = ? AND ras.reviewer_id=u.user_id)
+				LEFT JOIN review_assignments ras ON (ras.submission_id = ? AND ras.stage_id = ? AND ras.review_round_id = ? AND ras.reviewer_id=u.user_id)
 				LEFT JOIN review_assignments rac ON (rac.reviewer_id = u.user_id AND rac.date_notified IS NOT NULL AND rac.date_completed IS NOT NULL)
 				LEFT JOIN review_assignments raf ON (raf.reviewer_id = u.user_id)
 				LEFT JOIN review_assignments ran ON (ran.reviewer_id = u.user_id AND ran.review_id > raf.review_id)
 				LEFT JOIN review_assignments rai ON (rai.reviewer_id = u.user_id AND rai.date_notified IS NOT NULL AND rai.date_completed IS NULL AND rai.cancelled = 0 AND rai.declined = 0 AND rai.replaced = 0)
 			WHERE	ras.review_id IS NULL
 				AND ran.review_id IS NULL' .
-				str_repeat(' AND u.user_id IN (SELECT ui.user_id FROM user_interests ui JOIN controlled_vocab_entry_settings cves ON (ui.controlled_vocab_entry_id = cves.controlled_vocab_entry_id) WHERE cves.setting_name = \'interest\' AND LOWER(cves.setting_value) = ?)', count($interests)) . '
+				($reviewRound !== null ? ' AND rac.submission_id = ? AND rac.stage_id = ? AND rac.round < ?':'') .
+				str_repeat(' AND u.user_id IN (SELECT ui.user_id FROM user_interests ui JOIN controlled_vocab_entry_settings cves ON (ui.controlled_vocab_entry_id = cves.controlled_vocab_entry_id) WHERE cves.setting_name = \'interest\' AND LOWER(cves.setting_value) = ?)', count($interests)) .
+				($name !== null?' AND (u.first_name LIKE ? OR u.middle_name LIKE ? OR u.last_name LIKE ? OR u.username LIKE ? OR u.email LIKE ?)':'') . '
 			GROUP BY u.user_id
 			HAVING 1=1' .
 				($doneMin !== null?' AND COUNT(DISTINCT rac.review_id) >= ?':'') .
 				($doneMax !== null?' AND COUNT(DISTINCT rac.review_id) <= ?':'') .
-				($avgMin !== null?' AND (AVG(rac.date_completed - rac.date_notified) >= ? OR AVG(rac.date_completed - rac.date_notified) IS NULL)':'') .
-				($avgMax !== null?' AND (AVG(rac.date_completed - rac.date_notified) <= ? OR AVG(rac.date_completed - rac.date_notified) IS NULL)':'') .
+				($avgMin !== null?" AND AVG($dateDiffClause) >= ?":'') .
+				($avgMax !== null?" AND AVG($dateDiffClause) <= ?":'') .
 				($activeMin !== null?' AND COUNT(DISTINCT rai.review_id) >= ?':'') .
 				($activeMax !== null?' AND COUNT(DISTINCT rai.review_id) <= ?':'') .
 				($lastMin !== null?' AND MAX(raf.date_assigned) <= ' . ($this->datetimeToDB(time() - ((int) $lastMin * 86400))):'') .
@@ -300,8 +312,16 @@ class PKPUserDAO extends DAO {
 					(int) $contextId,
 					(int) $stageId,
 					(int) $submissionId, // null gets cast to 0 which doesn't exist
+					(int) $stageId,
+					(int) $reviewRoundId,
 				),
-				array_map(array('String', 'strtolower'), $interests),
+				$reviewRound !== null?array((int) $submissionId, (int) $stageId, (int) $reviewRound):array(),
+				array_map(array('PKPString', 'strtolower'), $interests),
+				$name !== null?array('%'.(string) $name.'%'):array(),
+				$name !== null?array('%'.(string) $name.'%'):array(),
+				$name !== null?array('%'.(string) $name.'%'):array(),
+				$name !== null?array('%'.(string) $name.'%'):array(),
+				$name !== null?array('%'.(string) $name.'%'):array(),
 				$doneMin !== null?array((int) $doneMin):array(),
 				$doneMax !== null?array((int) $doneMax):array(),
 				$avgMin !== null?array((int) $avgMin):array(),
@@ -310,7 +330,6 @@ class PKPUserDAO extends DAO {
 				$activeMax !== null?array((int) $activeMax):array()
 			)
 		);
-
 		return new DAOResultFactory($result, $this, '_returnUserFromRowWithReviewerStats');
 	}
 
@@ -331,10 +350,10 @@ class PKPUserDAO extends DAO {
 	}
 
 	/**
-	 * Return a user object from a DB row, including dependent data.
+	 * Create and return a complete PKPUser object from a given row.
 	 * @param $row array
 	 * @param $callHook boolean
-	 * @return User
+	 * @return PKPUser
 	 */
 	function &_returnUserFromRowWithData($row, $callHook = true) {
 		$user =& $this->_returnUserFromRow($row, false);
@@ -350,7 +369,7 @@ class PKPUserDAO extends DAO {
 	 * Internal function to return a User object from a row.
 	 * @param $row array
 	 * @param $callHook boolean
-	 * @return User
+	 * @return PKPUser
 	 */
 	function &_returnUserFromRow($row, $callHook = true) {
 		$user = $this->newDataObject();
@@ -367,7 +386,6 @@ class PKPUserDAO extends DAO {
 		$user->setEmail($row['email']);
 		$user->setUrl($row['url']);
 		$user->setPhone($row['phone']);
-		$user->setFax($row['fax']);
 		$user->setMailingAddress($row['mailing_address']);
 		$user->setBillingAddress($row['billing_address']);
 		$user->setCountry($row['country']);
@@ -382,7 +400,7 @@ class PKPUserDAO extends DAO {
 		$user->setAuthId($row['auth_id']);
 		$user->setAuthStr($row['auth_str']);
 		$user->setInlineHelp($row['inline_help']);
-                $user->setUCO($row['uco']);
+//                $user->setUCO($row['uco']);
 		if ($callHook) HookRegistry::call('UserDAO::_returnUserFromRow', array(&$user, &$row));
 
 		return $user;
@@ -401,9 +419,9 @@ class PKPUserDAO extends DAO {
 		}
 		$this->update(
 			sprintf('INSERT INTO users
-				(username, password, salutation, first_name, middle_name, initials, last_name, suffix, gender, email, url, phone, fax, mailing_address, billing_address, country, locales, date_last_email, date_registered, date_validated, date_last_login, must_change_password, disabled, disabled_reason, auth_id, auth_str, inline_help, uco)
+				(username, password, salutation, first_name, middle_name, initials, last_name, suffix, gender, email, url, phone, mailing_address, billing_address, country, locales, date_last_email, date_registered, date_validated, date_last_login, must_change_password, disabled, disabled_reason, auth_id, auth_str, inline_help)
 				VALUES
-				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, %s, %s, %s, %s, ?, ?, ?, ?, ?, ?, ?)',
+				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, %s, %s, %s, %s, ?, ?, ?, ?, ?, ?, ?)',
 				$this->datetimeToDB($user->getDateLastEmail()), $this->datetimeToDB($user->getDateRegistered()), $this->datetimeToDB($user->getDateValidated()), $this->datetimeToDB($user->getDateLastLogin())),
 			array(
 				$user->getUsername(),
@@ -418,7 +436,6 @@ class PKPUserDAO extends DAO {
 				$user->getEmail(),
 				$user->getUrl(),
 				$user->getPhone(),
-				$user->getFax(),
 				$user->getMailingAddress(),
 				$user->getBillingAddress(),
 				$user->getCountry(),
@@ -429,7 +446,7 @@ class PKPUserDAO extends DAO {
 				$user->getAuthId()=='' ? null : (int) $user->getAuthId(),
 				$user->getAuthStr(),
 				(int) $user->getInlineHelp(),
-                                $user->getUCO(),
+//                                $user->getUCO(),
 			)
 		);
 
@@ -438,11 +455,26 @@ class PKPUserDAO extends DAO {
 		return $user->getId();
 	}
 
+	/**
+	 * @copydoc DAO::getLocaleFieldNames
+	 */
 	function getLocaleFieldNames() {
 		return array('biography', 'signature', 'gossip', 'affiliation');
 	}
 
-	function updateLocaleFields(&$user) {
+	/**
+	 * @copydoc DAO::getAdditionalFieldNames()
+	 */
+	function getAdditionalFieldNames() {
+		return array_merge(parent::getAdditionalFieldNames(), array(
+			'orcid',
+		));
+	}
+
+	/**
+	 * @copydoc DAO::updateLocaleFields
+	 */
+	function updateLocaleFields($user) {
 		$this->updateDataObjectSettings('user_settings', $user, array(
 			'user_id' => (int) $user->getId()
 		));
@@ -450,9 +482,9 @@ class PKPUserDAO extends DAO {
 
 	/**
 	 * Update an existing user.
-	 * @param $user User
+	 * @param $user PKPUser
 	 */
-	function updateObject(&$user) {
+	function updateObject($user) {
 		if ($user->getDateLastLogin() == null) {
 			$user->setDateLastLogin(Core::getCurrentDate());
 		}
@@ -473,7 +505,6 @@ class PKPUserDAO extends DAO {
 					email = ?,
 					url = ?,
 					phone = ?,
-					fax = ?,
 					mailing_address = ?,
 					billing_address = ?,
 					country = ?,
@@ -486,8 +517,7 @@ class PKPUserDAO extends DAO {
 					disabled_reason = ?,
 					auth_id = ?,
 					auth_str = ?,
-					inline_help = ?,
-                                        uco = ?
+					inline_help = ?
 				WHERE	user_id = ?',
 				$this->datetimeToDB($user->getDateLastEmail()), $this->datetimeToDB($user->getDateValidated()), $this->datetimeToDB($user->getDateLastLogin())),
 			array(
@@ -503,7 +533,6 @@ class PKPUserDAO extends DAO {
 				$user->getEmail(),
 				$user->getUrl(),
 				$user->getPhone(),
-				$user->getFax(),
 				$user->getMailingAddress(),
 				$user->getBillingAddress(),
 				$user->getCountry(),
@@ -514,7 +543,7 @@ class PKPUserDAO extends DAO {
 				$user->getAuthId()=='' ? null : (int) $user->getAuthId(),
 				$user->getAuthStr(),
 				(int) $user->getInlineHelp(),
-                                $user->getUCO(),
+//                                $user->getUCO(),
 				(int) $user->getId(),                               
 			)
 		);
@@ -524,7 +553,7 @@ class PKPUserDAO extends DAO {
 	 * Delete a user.
 	 * @param $user User
 	 */
-	function deleteObject(&$user) {
+	function deleteObject($user) {
 		return $this->deleteUserById($user->getId());
 	}
 
@@ -539,7 +568,7 @@ class PKPUserDAO extends DAO {
 
 	/**
 	 * Retrieve a user's name.
-	 * @param int $userId
+	 * @param $userId int
 	 * @param $allowDisabled boolean
 	 * @return string
 	 */
@@ -561,7 +590,7 @@ class PKPUserDAO extends DAO {
 
 	/**
 	 * Retrieve a user's email address.
-	 * @param int $userId
+	 * @param $userId int
 	 * @param $allowDisabled boolean
 	 * @return string
 	 */
@@ -588,10 +617,9 @@ class PKPUserDAO extends DAO {
 	 * @param $value mixed the value to match
 	 * @param $allowDisabled boolean
 	 * @param $dbResultRange object The desired range of results to return
-	 * @return array matching Users
+	 * @return DAOResultFactory
 	 */
-
-	function &getUsersByField($field = USER_FIELD_NONE, $match = null, $value = null, $allowDisabled = true, $dbResultRange = null, $sortBy = null, $sortDirection = SORT_DIRECTION_ASC) {
+	function getUsersByField($field = USER_FIELD_NONE, $match = null, $value = null, $allowDisabled = true, $dbResultRange = null, $sortBy = null, $sortDirection = SORT_DIRECTION_ASC) {
 		$sql = 'SELECT DISTINCT u.* FROM users u';
 		switch ($field) {
 			case USER_FIELD_USERID:
@@ -638,25 +666,23 @@ class PKPUserDAO extends DAO {
 		if ($field != USER_FIELD_NONE) $result = $this->retrieveRange($sql . ($allowDisabled?'':' AND u.disabled = 0') . $orderSql, $var, $dbResultRange);
 		else $result = $this->retrieveRange($sql . ($allowDisabled?'':' WHERE u.disabled = 0') . $orderSql, false, $dbResultRange);
 
-		$returner = new DAOResultFactory($result, $this, '_returnUserFromRowWithData');
-		return $returner;
+		return new DAOResultFactory($result, $this, '_returnUserFromRowWithData');
 	}
 
 	/**
 	 * Retrieve an array of users with no role defined.
 	 * @param $allowDisabled boolean
 	 * @param $dbResultRange object The desired range of results to return
-	 * @return array matching Users
+	 * @return DAOResultFactory
 	 */
-	function &getUsersWithNoRole($allowDisabled = true, $dbResultRange = null) {
+	function getUsersWithNoRole($allowDisabled = true, $dbResultRange = null) {
 		$sql = 'SELECT u.* FROM users u LEFT JOIN roles r ON u.user_id=r.user_id WHERE r.role_id IS NULL';
 
 		$orderSql = ' ORDER BY u.last_name, u.first_name'; // FIXME Add "sort field" parameter?
 
 		$result = $this->retrieveRange($sql . ($allowDisabled?'':' AND u.disabled = 0') . $orderSql, false, $dbResultRange);
 
-		$returner = new DAOResultFactory($result, $this, '_returnUserFromRowWithData');
-		return $returner;
+		return new DAOResultFactory($result, $this, '_returnUserFromRowWithData');
 	}
 
 	/**

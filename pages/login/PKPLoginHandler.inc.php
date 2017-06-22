@@ -3,8 +3,8 @@
 /**
  * @file pages/login/PKPLoginHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPLoginHandler
@@ -25,13 +25,26 @@ class PKPLoginHandler extends Handler {
 	}
 
 	/**
+	 * @copydoc PKPHandler::authorize()
+	 */
+	function authorize($request, &$args, $roleAssignments) {
+		switch ($op = $request->getRequestedOp()) {
+			case 'signInAsUser':
+				import('lib.pkp.classes.security.authorization.RoleBasedHandlerOperationPolicy');
+				$this->addPolicy(new RoleBasedHandlerOperationPolicy($request, array(ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN), array('signInAsUser')));
+				break;
+		}
+		return parent::authorize($request, $args, $roleAssignments);
+	}
+
+	/**
 	 * Display user login form.
 	 * Redirect to user index page if user is already validated.
 	 */
 	function index($args, $request) {
 		$this->setupTemplate($request);
 		if (Validation::isLoggedIn()) {
-			$request->redirect(null, 'dashboard');
+			$this->sendHome($request);
 		}
 
 		if (Config::getVar('security', 'force_login_ssl') && $request->getProtocol() != 'https') {
@@ -58,11 +71,11 @@ class PKPLoginHandler extends Handler {
 		// For force_login_ssl with base_url[...]: make sure SSL used for login form
 		$loginUrl = $this->_getLoginUrl($request);
 		if (Config::getVar('security', 'force_login_ssl')) {
-			$loginUrl = String::regexp_replace('/^http:/', 'https:', $loginUrl);
+			$loginUrl = PKPString::regexp_replace('/^http:/', 'https:', $loginUrl);
 		}
 		$templateMgr->assign('loginUrl', $loginUrl);
 
-		$templateMgr->display('user/login.tpl');
+		$templateMgr->display('frontend/pages/userLogin.tpl');
 	}
 
 	/**
@@ -85,14 +98,12 @@ class PKPLoginHandler extends Handler {
 	 * This is the function that Shibboleth redirects to - after the user has authenticated.
 	 */
 	function implicitAuthReturn($args, $request) {
-		if (Validation::isLoggedIn()) {
-			$request->redirect(null, 'dashboard');
+		if (!Validation::isLoggedIn()) {
+			// Login - set remember to false
+			$user = Validation::login($request->getUserVar('username'), $request->getUserVar('password'), $reason, false);
 		}
 
-		// Login - set remember to false
-		$user = Validation::login($request->getUserVar('username'), $request->getUserVar('password'), $reason, false);
-
-		$request->redirect(null, 'dashboard');
+		$this->sendHome($request);
 	}
 
 	/**
@@ -109,9 +120,7 @@ class PKPLoginHandler extends Handler {
 	 */
 	function signIn($args, $request) {
 		$this->setupTemplate($request);
-		if (Validation::isLoggedIn()) {
-			$request->redirect(null, 'dashboard');
-		}
+		if (Validation::isLoggedIn()) $this->sendHome($request);
 
 		if (Config::getVar('security', 'force_login_ssl') && $request->getProtocol() != 'https') {
 			// Force SSL connections for login
@@ -148,7 +157,7 @@ class PKPLoginHandler extends Handler {
 			$templateMgr->assign('showRemember', Config::getVar('general', 'session_lifetime') > 0);
 			$templateMgr->assign('error', $reason===null?'user.login.loginError':($reason===''?'user.login.accountDisabled':'user.login.accountDisabledWithReason'));
 			$templateMgr->assign('reason', $reason);
-			$templateMgr->display('user/login.tpl');
+			$templateMgr->display('frontend/pages/userLogin.tpl');
 		}
 	}
 
@@ -175,7 +184,7 @@ class PKPLoginHandler extends Handler {
 	function lostPassword($args, $request) {
 		$this->setupTemplate($request);
 		$templateMgr = TemplateManager::getManager($request);
-		$templateMgr->display('user/lostPassword.tpl');
+		$templateMgr->display('frontend/pages/userLostPassword.tpl');
 	}
 
 	/**
@@ -191,7 +200,7 @@ class PKPLoginHandler extends Handler {
 
 		if ($user == null || ($hash = Validation::generatePasswordResetHash($user->getId())) == false) {
 			$templateMgr->assign('error', 'user.login.lostPassword.invalidUser');
-			$templateMgr->display('user/lostPassword.tpl');
+			$templateMgr->display('frontend/pages/userLostPassword.tpl');
 
 		} else {
 			$site = $request->getSite();
@@ -210,7 +219,7 @@ class PKPLoginHandler extends Handler {
 			$templateMgr->assign('message', 'user.login.lostPassword.confirmationSent');
 			$templateMgr->assign('backLink', $request->url(null, $request->getRequestedPage()));
 			$templateMgr->assign('backLinkLabel',  'user.login');
-			$templateMgr->display('common/message.tpl');
+			$templateMgr->display('frontend/pages/message.tpl');
 		}
 	}
 
@@ -231,12 +240,11 @@ class PKPLoginHandler extends Handler {
 
 		$templateMgr = TemplateManager::getManager($request);
 
-		$hash = Validation::generatePasswordResetHash($user->getId());
-		if ($hash == false || $confirmHash != $hash) {
+		if (!Validation::verifyPasswordResetHash($user->getId(), $confirmHash)) {
 			$templateMgr->assign('errorMsg', 'user.login.lostPassword.invalidHash');
 			$templateMgr->assign('backLink', $request->url(null, null, 'lostPassword'));
 			$templateMgr->assign('backLinkLabel',  'user.login.resetPassword');
-			$templateMgr->display('common/error.tpl');
+			$templateMgr->display('frontend/pages/error.tpl');
 
 		} else {
 			// Reset password
@@ -264,7 +272,7 @@ class PKPLoginHandler extends Handler {
 			$this->_setMailFrom($request, $mail, $site);
 			$mail->assignParams(array(
 				'username' => $user->getUsername(),
-				'password' => $newPassword,
+				'password' => $newPassword, // DEPRECATED: This should only exist in old templates
 				'siteTitle' => $site->getLocalizedTitle()
 			));
 			$mail->addRecipient($user->getEmail(), $user->getFullName());
@@ -273,7 +281,7 @@ class PKPLoginHandler extends Handler {
 			$templateMgr->assign('message', 'user.login.lostPassword.passwordSent');
 			$templateMgr->assign('backLink', $request->url(null, $request->getRequestedPage()));
 			$templateMgr->assign('backLinkLabel',  'user.login');
-			$templateMgr->display('common/message.tpl');
+			$templateMgr->display('frontend/pages/message.tpl');
 		}
 	}
 
@@ -309,12 +317,76 @@ class PKPLoginHandler extends Handler {
 			if ($passwordForm->execute()) {
 				$user = Validation::login($passwordForm->getData('username'), $passwordForm->getData('password'), $reason);
 			}
-			$request->redirect(null, 'dashboard');
-
+			$this->sendHome($request);
 		} else {
 			$passwordForm->display($request);
 		}
 	}
+
+	/**
+	 * Sign in as another user.
+	 * @param $args array ($userId)
+	 * @param $request PKPRequest
+	 */
+	function signInAsUser($args, $request) {
+		if (isset($args[0]) && !empty($args[0])) {
+			$userId = (int)$args[0];
+			$session = $request->getSession();
+
+			if (!Validation::canAdminister($userId, $session->getUserId())) {
+				$this->setupTemplate($request);
+				// We don't have administrative rights
+				// over this user. Display an error.
+				$templateMgr = TemplateManager::getManager($request);
+				$templateMgr->assign('pageTitle', 'manager.people');
+				$templateMgr->assign('errorMsg', 'manager.people.noAdministrativeRights');
+				$templateMgr->assign('backLink', $request->url(null, null, 'people', 'all'));
+				$templateMgr->assign('backLinkLabel', 'manager.people.allUsers');
+				return $templateMgr->display('frontend/pages/error.tpl');
+			}
+
+			$userDao = DAORegistry::getDAO('UserDAO');
+			$newUser = $userDao->getById($userId);
+
+			if (isset($newUser) && $session->getUserId() != $newUser->getId()) {
+				$session->setSessionVar('signedInAs', $session->getUserId());
+				$session->setSessionVar('userId', $userId);
+				$session->setUserId($userId);
+				$session->setSessionVar('username', $newUser->getUsername());
+				$this->sendHome($request);
+			}
+		}
+
+		$request->redirect(null, $request->getRequestedPage());
+	}
+
+	/**
+	 * Restore original user account after signing in as a user.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function signOutAsUser($args, $request) {
+		$session = $request->getSession();
+		$signedInAs = $session->getSessionVar('signedInAs');
+
+		if (isset($signedInAs) && !empty($signedInAs)) {
+			$signedInAs = (int)$signedInAs;
+
+			$userDao = DAORegistry::getDAO('UserDAO');
+			$oldUser = $userDao->getById($signedInAs);
+
+			$session->unsetSessionVar('signedInAs');
+
+			if (isset($oldUser)) {
+				$session->setSessionVar('userId', $signedInAs);
+				$session->setUserId($signedInAs);
+				$session->setSessionVar('username', $oldUser->getUsername());
+			}
+		}
+
+		$this->sendHome($request);
+	}
+
 
 	/**
 	 * Helper function - set mail From
@@ -326,6 +398,16 @@ class PKPLoginHandler extends Handler {
 	function _setMailFrom($request, $mail, $site) {
 		$mail->setReplyTo($site->getLocalizedContactEmail(), $site->getLocalizedContactName());
 		return true;
+	}
+
+	/**
+	 * Send the user "home" (typically to the dashboard, but that may not
+	 * always be available).
+	 * @param $request PKPRequest
+	 */
+	protected function sendHome($request) {
+		if ($request->getContext()) $request->redirect(null, 'submissions');
+		else $request->redirect(null, 'user');
 	}
 }
 

@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/reviewRound/ReviewRoundDAO.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReviewRoundDAO
@@ -63,7 +63,7 @@ class ReviewRoundDAO extends DAO {
 
 	/**
 	 * Construct a new data object corresponding to this DAO.
-	 * @return SignoffEntry
+	 * @return ReviewRound
 	 */
 	function newDataObject() {
 		return new ReviewRound();
@@ -381,7 +381,7 @@ class ReviewRoundDAO extends DAO {
 	/**
 	 * Internal function to return a review round object from a row.
 	 * @param $row array
-	 * @return Signoff
+	 * @return ReviewRound
 	 */
 	function _fromRow($row) {
 		$reviewRound = $this->newDataObject();

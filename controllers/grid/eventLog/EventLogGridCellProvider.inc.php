@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/eventLog/EventLogGridCellProvider.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EventLogGridCellProvider
@@ -39,11 +39,11 @@ class EventLogGridCellProvider extends DataObjectGridCellProvider {
 		assert(is_a($element, 'DataObject') && !empty($columnId));
 		switch ($columnId) {
 			case 'date':
-				return array('label' => $element->getDateLogged());
+				return array('label' => is_a($element, 'EventLogEntry') ? $element->getDateLogged() : $element->getDateSent());
 			case 'event':
-				return array('label' => $element->getTranslatedMessage());
+				return array('label' => is_a($element, 'EventLogEntry') ? $element->getTranslatedMessage() : $element->getPrefixedSubject());
 			case 'user':
-				return array('label' => $element->getUserFullname());
+				return array('label' => is_a($element, 'EventLogEntry') ? $element->getUserFullName() : $element->getSenderFullName());
 			default:
 				assert(false);
 		}

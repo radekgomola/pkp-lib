@@ -8,8 +8,8 @@
 /**
  * @file classes/mail/Mail.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Mail
@@ -17,7 +17,6 @@
  *
  * @brief Class defining basic operations for handling and sending emails.
  */
-
 
 define('MAIL_WRAP', 76);
 
@@ -64,7 +63,7 @@ class Mail extends DataObject {
 		}
 		array_push($recipients, array('name' => $name, 'email' => $email));
 
-		return $this->setData('recipients', $recipients);
+		$this->setData('recipients', $recipients);
 	}
 
 	/**
@@ -78,11 +77,17 @@ class Mail extends DataObject {
 
 	/**
 	 * Get the envelope sender (bounce address) for the message, if set.
+	 * Override any set envelope sender if force_default_envelope_sender config option is in effect.
 	 * @return string
 	 */
 	function getEnvelopeSender() {
-		return $this->getData('envelopeSender');
+		if (Config::getVar('email', 'force_default_envelope_sender') && Config::getVar('email', 'default_envelope_sender')) {
+			return Config::getVar('email', 'default_envelope_sender');
+		} else {
+			return $this->getData('envelopeSender');
+		}
 	}
+
 
 	/**
 	 * Get the message content type (MIME)
@@ -97,7 +102,7 @@ class Mail extends DataObject {
 	 * @param $contentType string
 	 */
 	function setContentType($contentType) {
-		return $this->setData('content_type', $contentType);
+		$this->setData('content_type', $contentType);
 	}
 
 	/**
@@ -113,7 +118,7 @@ class Mail extends DataObject {
 	 * @param $recipients array
 	 */
 	function setRecipients($recipients) {
-		return $this->setData('recipients', $recipients);
+		$this->setData('recipients', $recipients);
 	}
 
 	/**
@@ -127,7 +132,7 @@ class Mail extends DataObject {
 		}
 		array_push($ccs, array('name' => $name, 'email' => $email));
 
-		return $this->setData('ccs', $ccs);
+		$this->setData('ccs', $ccs);
 	}
 
 	/**
@@ -143,7 +148,7 @@ class Mail extends DataObject {
 	 * @param $ccs array
 	 */
 	function setCcs($ccs) {
-		return $this->setData('ccs', $ccs);
+		$this->setData('ccs', $ccs);
 	}
 
 	/**
@@ -157,7 +162,7 @@ class Mail extends DataObject {
 		}
 		array_push($bccs, array('name' => $name, 'email' => $email));
 
-		return $this->setData('bccs', $bccs);
+		$this->setData('bccs', $bccs);
 	}
 
 	/**
@@ -173,7 +178,7 @@ class Mail extends DataObject {
 	 * @param $bccs array
 	 */
 	function setBccs($bccs) {
-		return $this->setData('bccs', $bccs);
+		$this->setData('bccs', $bccs);
 	}
 
 	/**
@@ -224,7 +229,7 @@ class Mail extends DataObject {
 			array_push($headers, array('name' => $name,'content' => $content));
 		}
 
-		return $this->setData('headers', $headers);
+		$this->setData('headers', $headers);
 	}
 
 	/**
@@ -240,7 +245,7 @@ class Mail extends DataObject {
 	 * @param $headers array
 	 */
 	function setHeaders(&$headers) {
-		return $this->setData('headers', $headers);
+		$this->setData('headers', $headers);
 	}
 
 	/**
@@ -262,7 +267,7 @@ class Mail extends DataObject {
 		}
 
 		if (empty($contentType)) {
-			$contentType = String::mime_content_type($filePath);
+			$contentType = PKPString::mime_content_type($filePath);
 			if (empty($contentType)) $contentType = 'application/x-unknown-content-type';
 		}
 
@@ -272,7 +277,7 @@ class Mail extends DataObject {
 			'content-type' => $contentType
 		));
 
-		return $this->setData('attachments', $attachments);
+		$this->setData('attachments', $attachments);
 	}
 
 	/**
@@ -299,7 +304,7 @@ class Mail extends DataObject {
 	 * @param $name string optional
 	 */
 	function setFrom($email, $name = '') {
-		return $this->setData('from', array('name' => $name, 'email' => $email));
+		$this->setData('from', array('name' => $name, 'email' => $email));
 	}
 
 	/**
@@ -317,7 +322,7 @@ class Mail extends DataObject {
 	 */
 	function setReplyTo($email, $name = '') {
 		if ($email === null) $this->setData('replyTo', null);
-		return $this->setData('replyTo', array('name' => $name, 'email' => $email));
+		$this->setData('replyTo', array('name' => $name, 'email' => $email));
 	}
 
 	/**
@@ -329,11 +334,24 @@ class Mail extends DataObject {
 	}
 
 	/**
+	 * Return a string containing the reply-to address.
+	 * @return string
+	 */
+	function getReplyToString($send = false) {
+		$replyTo = $this->getReplyTo();
+		if (!array_key_exists('email', $replyTo) || $replyTo['email'] == null) {
+			return null;
+		} else {
+			return (Mail::encodeDisplayName($replyTo['name'], $send) . ' <'.$replyTo['email'].'>');
+		}
+	}
+
+	/**
 	 * Set the subject of the message.
 	 * @param $subject string
 	 */
 	function setSubject($subject) {
-		return $this->setData('subject', $subject);
+		$this->setData('subject', $subject);
 	}
 
 	/**
@@ -349,7 +367,7 @@ class Mail extends DataObject {
 	 * @param $body string
 	 */
 	function setBody($body) {
-		return $this->setData('body', $body);
+		$this->setData('body', $body);
 	}
 
 	/**
@@ -362,15 +380,15 @@ class Mail extends DataObject {
 
 	/**
 	 * Return a string containing the from address.
+	 * Override any from address if force_default_envelope_sender config option is in effect.
 	 * @return string
 	 */
 	function getFromString($send = false) {
 		$from = $this->getFrom();
 		if ($from == null) {
 			return null;
-		} else {
-			return (Mail::encodeDisplayName($from['name'], $send) . ' <'.$from['email'].'>');
-		}
+		} 
+		return (Mail::encodeDisplayName($from['name'], $send) . ' <'.$from['email'].'>');
 	}
 
 	/**
@@ -442,8 +460,9 @@ class Mail extends DataObject {
 			}
 		}
 
-		require_once('lib/pkp/lib/phpmailer/class.phpmailer.php');
+		require_once('lib/pkp/lib/vendor/phpmailer/phpmailer/class.phpmailer.php');
 		$mailer = new PHPMailer();
+		$mailer->IsHTML(true);
 		if (Config::getVar('email', 'smtp')) {
 			$mailer->IsSMTP();
 			$mailer->Port = Config::getVar('email', 'smtp_port');
@@ -480,6 +499,7 @@ class Mail extends DataObject {
 		}
 		$mailer->Subject = $this->getSubject();
 		$mailer->Body = $mailBody;
+		$mailer->AltBody = PKPString::html2text($mailBody);
 
 		$remoteAddr = $mailer->SecureHeader(Request::getRemoteAddr());
 		if ($remoteAddr != '') $mailer->AddCustomHeader("X-Originating-IP: $remoteAddr");
@@ -493,10 +513,10 @@ class Mail extends DataObject {
 			);
 		}
 
-		if (!$mailer->Send()) {
-			if (Config::getVar('debug', 'display_errors')) {
-				fatalError($mailer->ErrorInfo);
-			}
+		try {
+			$mailer->Send();
+		} catch (phpmailerException $e) {
+			error_log($mailer->ErrorInfo);
 			return false;
 		}
 		return true;
@@ -509,8 +529,8 @@ class Mail extends DataObject {
 	 * @return string
 	 */
 	function encodeDisplayName($displayName, $send = false) {
-		if (String::regexp_match('!^[-A-Za-z0-9\!#\$%&\'\*\+\/=\?\^_\`\{\|\}~]+$!', $displayName)) return $displayName;
-		return ('"' . ($send ? String::encode_mime_header(str_replace(
+		if (PKPString::regexp_match('!^[-A-Za-z0-9\!#\$%&\'\*\+\/=\?\^_\`\{\|\}~]+$!', $displayName)) return $displayName;
+		return ('"' . ($send ? PKPString::encode_mime_header(str_replace(
 			array('"', '\\'),
 			'',
 			$displayName

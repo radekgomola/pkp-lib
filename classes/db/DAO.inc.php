@@ -8,8 +8,8 @@
 /**
  * @file classes/db/DAO.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DAO
@@ -35,7 +35,7 @@ class DAO {
 	 * Get db conn.
 	 * @return ADONewConnection
 	 */
-	function &getDataSource() {
+	function getDataSource() {
 		return $this->_dataSource;
 	}
 
@@ -43,8 +43,8 @@ class DAO {
 	 * Set db conn.
 	 * @param $dataSource ADONewConnection
 	 */
-	function setDataSource(&$dataSource) {
-		$this->_dataSource =& $dataSource;
+	function setDataSource($dataSource) {
+		$this->_dataSource = $dataSource;
 	}
 
 	/**
@@ -422,10 +422,21 @@ class DAO {
 		return $value;
 	}
 
+	/**
+	 * Cast the given parameter to an int, or leave it null.
+	 * @param $value mixed
+	 * @return string|null
+	 */
 	function nullOrInt($value) {
 		return (empty($value)?null:(int) $value);
 	}
 
+	/**
+	 * Get a list of additional field names to store in this DAO.
+	 * This can be used to extend the table with virtual "columns",
+	 * typically using the ..._settings table.
+	 * @return array List of strings representing field names.
+	 */
 	function getAdditionalFieldNames() {
 		$returner = array();
 		// Call hooks based on the calling entity, assuming
@@ -437,6 +448,12 @@ class DAO {
 		return $returner;
 	}
 
+	/**
+	 * Get locale field names. Like getAdditionalFieldNames, but for
+	 * localized (multilingual) fields.
+	 * @see getAdditionalFieldNames
+	 * @return array Array of string field names.
+	 */
 	function getLocaleFieldNames() {
 		$returner = array();
 		// Call hooks based on the calling entity, assuming
@@ -454,7 +471,7 @@ class DAO {
 	 * @param $dataObject DataObject
 	 * @param $idArray array
 	 */
-	function updateDataObjectSettings($tableName, &$dataObject, $idArray) {
+	function updateDataObjectSettings($tableName, $dataObject, $idArray) {
 		// Initialize variables
 		$idFields = array_keys($idArray);
 		$idFields[] = 'locale';
@@ -479,7 +496,8 @@ class DAO {
 		// Loop over all fields and update them in the settings table
 		$updateArray = $idArray;
 		$noLocale = 0;
-		$staleMetadataSettings = array();
+		$staleSettings = array();
+
 		foreach ($settingFields as $isTranslated => $fieldTypes) {
 			foreach ($fieldTypes as $isMetadata => $fieldNames) {
 				foreach ($fieldNames as $fieldName) {
@@ -515,17 +533,17 @@ class DAO {
 							$this->replace($tableName, $updateArray, $idFields);
 						}
 					} else {
-						// Meta-data fields are maintained "sparsly". Only set fields will be
+						// Data is maintained "sparsely". Only set fields will be
 						// recorded in the settings table. Fields that are not explicity set
 						// in the data object will be deleted.
-						if ($isMetadata) $staleMetadataSettings[] = $fieldName;
+						$staleSettings[] = $fieldName;
 					}
 				}
 			}
 		}
 
-		// Remove stale meta-data
-		if (count($staleMetadataSettings)) {
+		// Remove stale data
+		if (count($staleSettings)) {
 			$removeWhere = '';
 			$removeParams = array();
 			foreach ($idArray as $idField => $idValue) {
@@ -533,14 +551,21 @@ class DAO {
 				$removeWhere .= $idField.' = ?';
 				$removeParams[] = $idValue;
 			}
-			$removeWhere .= rtrim(' AND setting_name IN ( '.str_repeat('? ,', count($staleMetadataSettings)), ',').')';
-			$removeParams = array_merge($removeParams, $staleMetadataSettings);
+			$removeWhere .= rtrim(' AND setting_name IN ( '.str_repeat('? ,', count($staleSettings)), ',').')';
+			$removeParams = array_merge($removeParams, $staleSettings);
 			$removeSql = 'DELETE FROM '.$tableName.' WHERE '.$removeWhere;
 			$this->update($removeSql, $removeParams);
 		}
 	}
 
-	function getDataObjectSettings($tableName, $idFieldName, $idFieldValue, &$dataObject) {
+	/**
+	 * Get contents of the _settings table, storing entries in the specified
+	 * data object.
+	 * @param $tableName string Settings table name
+	 * @param $idFieldName string Name of ID column
+	 * @param $dataObject DataObject Object in which to store retrieved values
+	 */
+	function getDataObjectSettings($tableName, $idFieldName, $idFieldValue, $dataObject) {
 		if ($idFieldName !== null) {
 			$sql = "SELECT * FROM $tableName WHERE $idFieldName = ?";
 			$params = array($idFieldValue);
@@ -570,7 +595,7 @@ class DAO {
 	 * @return string
 	 */
 	function getDriver() {
-		$conn =& DBConnection::getInstance();
+		$conn = DBConnection::getInstance();
 		return $conn->getDriver();
 	}
 
@@ -595,15 +620,17 @@ class DAO {
 	 * to the client to refresh itself according to changes
 	 * in the DB.
 	 *
-	 * @param $elementId string To refresh a single element
-	 * give the element ID here. Otherwise all elements will
-	 * be refreshed.
-	 * @param $parentElementId string To refresh a single element
-	 * that is associated with another one give the parent element
-	 * ID here.
-	 * @return string A rendered JSON message.
+	 * @param $elementId string (Optional) To refresh a single element
+	 *  give the element ID here. Otherwise all elements will
+	 *  be refreshed.
+	 * @param $parentElementId string (Optional) To refresh a single
+	 *  element that is associated with another one give the parent
+	 *  element ID here.
+	 * @param $content mixed (Optional) Additional content to pass back
+	 *  to the handler of the JSON message.
+	 * @return JSONMessage
 	 */
-	static function getDataChangedEvent($elementId = null, $parentElementId = null) {
+	static function getDataChangedEvent($elementId = null, $parentElementId = null, $content = '') {
 		// Create the event data.
 		$eventData = null;
 		if ($elementId) {
@@ -616,9 +643,9 @@ class DAO {
 		// Create and render the JSON message with the
 		// event to be triggered on the client side.
 		import('lib.pkp.classes.core.JSONMessage');
-		$json = new JSONMessage(true);
+		$json = new JSONMessage(true, $content);
 		$json->setEvent('dataChanged', $eventData);
-		return $json->getString();
+		return $json;
 	}
 
 	/**
@@ -636,7 +663,7 @@ class DAO {
 		$today = getDate();
 		$todayTimestamp = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']);
 		if ($date != null) {
-			$dueDateParts = explode('-', $date);
+			$dateParts = explode('-', $date);
 
 			// If we don't accept past dates...
 			if (!$acceptPastDate && $todayTimestamp > strtotime($date)) {
@@ -644,7 +671,7 @@ class DAO {
 				return date('Y-m-d H:i:s', $todayTimestamp);
 			} else {
 				// Return the passed date.
-				return date('Y-m-d H:i:s', mktime(0, 0, 0, $dueDateParts[1], $dueDateParts[2], $dueDateParts[0]));
+				return date('Y-m-d H:i:s', mktime(0, 0, 0, $dateParts[1], $dateParts[2], $dateParts[0]));
 			}
 		} elseif (isset($defaultNumWeeks)) {
 			// Add the equivalent of $numWeeks weeks, measured in seconds, to $todaysTimestamp.

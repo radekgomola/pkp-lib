@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/plugins/PluginGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PluginGridHandler
@@ -14,22 +14,19 @@
  */
 
 import('lib.pkp.classes.controllers.grid.CategoryGridHandler');
+import('lib.pkp.controllers.grid.plugins.form.UploadPluginForm');
 
-class PluginGridHandler extends CategoryGridHandler {
+abstract class PluginGridHandler extends CategoryGridHandler {
 	/**
 	 * Constructor
 	 * @param $roles array
 	 */
 	function PluginGridHandler($roles) {
-		if (is_null($roles)) {
-			fatalError('Direct access not allowed!');
-		}
-
 		$this->addRoleAssignment($roles,
-			array('fetchGrid, fetchCategory', 'fetchRow'));
+			array('enable', 'disable', 'manage', 'fetchGrid, fetchCategory', 'fetchRow'));
 
 		$this->addRoleAssignment(ROLE_ID_SITE_ADMIN,
-			array('installPlugin', 'upgradePlugin', 'deletePlugin'));
+			array('uploadPlugin', 'upgradePlugin', 'deletePlugin'));
 
 		parent::CategoryGridHandler();
 	}
@@ -39,7 +36,7 @@ class PluginGridHandler extends CategoryGridHandler {
 	// Overridden template methods
 	//
 	/**
-	 * @see GridHandler::initialize()
+	 * @copydoc GridHandler::initialize()
 	 */
 	function initialize($request) {
 		parent::initialize($request);
@@ -60,9 +57,12 @@ class PluginGridHandler extends CategoryGridHandler {
 			new GridColumn('name',
 				'common.name',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$pluginCellProvider,
-				array('multiline' => true)
+				array(
+					'showTotalItemsNumber' => true,
+					'collapseAllColumnsInCategories' => true
+				)
 			)
 		);
 
@@ -70,7 +70,7 @@ class PluginGridHandler extends CategoryGridHandler {
 				'description',
 				'common.description',
 				null,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$pluginCellProvider
 		);
 		$descriptionColumn->addFlag('html', true);
@@ -95,24 +95,24 @@ class PluginGridHandler extends CategoryGridHandler {
 			// Install plugin.
 			$this->addAction(
 				new LinkAction(
-					'install',
+					'upload',
 					new AjaxModal(
-						$router->url($request, null, null, 'installPlugin'),
-						__('manager.plugins.install'), 'modal_add_file'),
-					__('manager.plugins.install'),
+						$router->url($request, null, null, 'uploadPlugin'),
+						__('manager.plugins.upload'), 'modal_add_file'),
+					__('manager.plugins.upload'),
 					'add'));
 		}
 	}
 
 	/**
-	 * @see GridHandler::getFilterForm()
+	 * @copydoc GridHandler::getFilterForm()
 	 */
-	function getFilterForm() {
+	protected function getFilterForm() {
 		return 'controllers/grid/plugins/pluginGridFilter.tpl';
 	}
 
 	/**
-	 * @see GridHandler::getFilterSelectionData()
+	 * @copydoc GridHandler::getFilterSelectionData()
 	 */
 	function getFilterSelectionData($request) {
 		$category = $request->getUserVar('category');
@@ -126,7 +126,7 @@ class PluginGridHandler extends CategoryGridHandler {
 	}
 
 	/**
-	 * @see GridHandler::renderFilter()
+	 * @copydoc GridHandler::renderFilter()
 	 */
 	function renderFilter($request) {
 		$categoriesSymbolic = $this->loadData($request, null);
@@ -140,17 +140,17 @@ class PluginGridHandler extends CategoryGridHandler {
 	}
 
 	/**
-	 * @see CategoryGridHandler::getCategoryRowInstance()
+	 * @copydoc CategoryGridHandler::getCategoryRowInstance()
 	 */
-	function getCategoryRowInstance() {
+	protected function getCategoryRowInstance() {
 		import('lib.pkp.controllers.grid.plugins.PluginCategoryGridRow');
 		return new PluginCategoryGridRow();
 	}
 
 	/**
-	 * @see CategoryGridHandler::getCategoryData()
+	 * @copydoc CategoryGridHandler::loadCategoryData()
 	 */
-	function getCategoryData($categoryDataElement, $filter) {
+	function loadCategoryData($request, $categoryDataElement, $filter) {
 		$plugins =& PluginRegistry::loadCategory($categoryDataElement);
 
 		$versionDao = DAORegistry::getDAO('VersionDAO');
@@ -158,7 +158,8 @@ class PluginGridHandler extends CategoryGridHandler {
 		$fileManager = new FileManager();
 
 		$notHiddenPlugins = array();
-		foreach ($plugins as $plugin) {
+
+		foreach ((array) $plugins as $plugin) {
 			if (!$plugin->getHideManagement()) {
 				$notHiddenPlugins[$plugin->getName()] = $plugin;
 			}
@@ -173,7 +174,7 @@ class PluginGridHandler extends CategoryGridHandler {
 						1, 0, 0, 0, // Major, minor, revision, build
 						Core::getCurrentDate(), // Date installed
 						1,	// Current
-						'plugins.'.$category, // Type
+						'plugins.'.$plugin->getCategory(), // Type
 						basename($plugin->getPluginPath()), // Product
 						'',	// Class name
 						0,	// Lazy load
@@ -200,16 +201,16 @@ class PluginGridHandler extends CategoryGridHandler {
 	}
 
 	/**
-	 * @see CategoryGridHandler::getCategoryRowIdParameterName()
+	 * @copydoc CategoryGridHandler::getCategoryRowIdParameterName()
 	 */
 	function getCategoryRowIdParameterName() {
 		return 'category';
 	}
 
 	/**
-	 * @see GridHandler::loadData()
+	 * @copydoc GridHandler::loadData()
 	 */
-	function loadData($request, $filter) {
+	protected function loadData($request, $filter) {
 		$categories = PluginRegistry::getCategories();
 		if (is_array($filter) && isset($filter['category']) && array_search($filter['category'], $categories) !== false) {
 			return array($filter['category'] => $filter['category']);
@@ -223,42 +224,58 @@ class PluginGridHandler extends CategoryGridHandler {
 	// Public handler methods.
 	//
 	/**
-	 * Perform plugin-specific management functions.
+	 * Manage a plugin.
 	 * @param $args array
-	 * @param $request object
+	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
-	function plugin($args, $request) {
-		$verb = (string) $request->getUserVar('verb');
-
-		$this->setupTemplate($request, true);
-
+	function manage($args, $request) {
 		$plugin = $this->getAuthorizedContextObject(ASSOC_TYPE_PLUGIN); /* @var $plugin Plugin */
-		$message = $messageParams = $pluginModalContent = null;
-		if (!is_a($plugin, 'Plugin') || !$plugin->manage($verb, $args, $message, $messageParams, $pluginModalContent)) {
-			HookRegistry::call('PluginGridHandler::plugin', array($verb, $args, $message, $messageParams, $plugin));
-			if ($message) {
-				$notificationManager = new NotificationManager();
-				$user = $request->getUser();
-				$notificationManager->createTrivialNotification($user->getId(), $message, $messageParams);
-
-				return DAO::getDataChangedEvent($request->getUserVar('plugin'), $request->getUserVar($this->getCategoryRowIdParameterName()));
-			}
-		}
-		if ($pluginModalContent) {
-			$json = new JSONMessage(true, $pluginModalContent);
-			$json->setEvent('refreshForm', $pluginModalContent);
-			return $json->getString();
-		}
+		return $plugin->manage($args, $request);
 	}
 
 	/**
-	 * Show upload plugin form to install a new plugin.
+	 * Enable a plugin.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
+	 */
+	function enable($args, $request) {
+		$plugin = $this->getAuthorizedContextObject(ASSOC_TYPE_PLUGIN); /* @var $plugin Plugin */
+		if ($plugin->getCanEnable()) {
+			$plugin->setEnabled(true);
+			$user = $request->getUser();
+			$notificationManager = new NotificationManager();
+			$notificationManager->createTrivialNotification($user->getId(), NOTIFICATION_TYPE_PLUGIN_ENABLED, array('pluginName' => $plugin->getDisplayName()));
+		}
+		return DAO::getDataChangedEvent($request->getUserVar('plugin'), $request->getUserVar($this->getCategoryRowIdParameterName()));
+	}
+
+	/**
+	 * Disable a plugin.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
+	 */
+	function disable($args, $request) {
+		$plugin = $this->getAuthorizedContextObject(ASSOC_TYPE_PLUGIN); /* @var $plugin Plugin */
+		if ($plugin->getCanDisable()) {
+			$plugin->setEnabled(false);
+			$user = $request->getUser();
+			$notificationManager = new NotificationManager();
+			$notificationManager->createTrivialNotification($user->getId(), NOTIFICATION_TYPE_PLUGIN_DISABLED, array('pluginName' => $plugin->getDisplayName()));
+		}
+		return DAO::getDataChangedEvent($request->getUserVar('plugin'), $request->getUserVar($this->getCategoryRowIdParameterName()));
+	}
+
+	/**
+	 * Show upload plugin form to upload a new plugin.
 	 * @param $args array
 	 * @param $request PKPRequest
 	 * @return string
 	 */
-	function installPlugin($args, $request) {
-		return $this->_showUploadPluginForm('install', $request);
+	function uploadPlugin($args, $request) {
+		return $this->_showUploadPluginForm(PLUGIN_ACTION_UPLOAD, $request);
 	}
 
 	/**
@@ -268,15 +285,16 @@ class PluginGridHandler extends CategoryGridHandler {
 	 * @return string
 	 */
 	function upgradePlugin($args, $request) {
-		return $this->_showUploadPluginForm('upgrade', $request);
+		return $this->_showUploadPluginForm(PLUGIN_ACTION_UPGRADE, $request);
 	}
 
 	/**
 	 * Upload a plugin file.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
-	function uploadPlugin($args, $request) {
+	function uploadPluginFile($args, $request) {
 		import('lib.pkp.classes.file.TemporaryFileManager');
 		$temporaryFileManager = new TemporaryFileManager();
 		$user = $request->getUser();
@@ -287,23 +305,20 @@ class PluginGridHandler extends CategoryGridHandler {
 			$json->setAdditionalAttributes(array(
 				'temporaryFileId' => $temporaryFile->getId()
 			));
+			return $json;
 		} else {
-			$json = new JSONMessage(false, __('manager.plugins.uploadError'));
+			return new JSONMessage(false, __('manager.plugins.uploadError'));
 		}
-
-		return $json->getString();
 	}
 
 	/**
 	 * Save upload plugin file form.
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string
+	 * @return JSONMessage JSON object
 	 */
 	function saveUploadPlugin($args, $request) {
 		$function = $request->getUserVar('function');
-
-		import('lib.pkp.controllers.grid.plugins.form.UploadPluginForm');
 		$uploadPluginForm = new UploadPluginForm($function);
 		$uploadPluginForm->readInputData();
 
@@ -313,18 +328,17 @@ class PluginGridHandler extends CategoryGridHandler {
 			}
 		}
 
-		$json = new JSONMessage(false);
-		return $json->getString();
+		return new JSONMessage(false);
 	}
 
 	/**
 	 * Delete plugin.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function deletePlugin($args, $request) {
-		$this->setupTemplate($request);
-		$plugin =& $this->getAuthorizedContextObject(ASSOC_TYPE_PLUGIN);
+		$plugin = $this->getAuthorizedContextObject(ASSOC_TYPE_PLUGIN);
 		$category = $plugin->getCategory();
 		$productName = basename($plugin->getPluginPath());
 
@@ -362,17 +376,15 @@ class PluginGridHandler extends CategoryGridHandler {
 	/**
 	 * Fetch upload plugin form.
 	 * @param $function string
-	 * @return string
+	 * @param $request PKPRequest Request object
+	 * @return JSONMessage JSON object
 	 */
 	function _showUploadPluginForm($function, $request) {
-		$this->setupTemplate($request, true);
-
 		import('lib.pkp.controllers.grid.plugins.form.UploadPluginForm');
 		$uploadPluginForm = new UploadPluginForm($function);
 		$uploadPluginForm->initData();
 
-		$json = new JSONMessage(true, $uploadPluginForm->fetch($request));
-		return $json->getString();
+		return new JSONMessage(true, $uploadPluginForm->fetch($request));
 	}
 }
 

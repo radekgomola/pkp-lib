@@ -4,8 +4,8 @@
 <!--
   * locale/id_ID/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings.
@@ -217,8 +217,6 @@ Pastikan Anda mengatur tipe judul yang valid. Nilai dukungan adalah "disingkat",
 		<p>Pilihan ekspor teks eksperimental termasuk ABNT, APA, MLA dan model output Sitiran vancouver. Pilihan ini menyediakan output teks yang dapat disalin ke dalam galley artikel text-based (sebagai contoh: ke dalam Microsoft Word atau OpenOffice; Adobe InDesign; dll.). Tiap Sitiran termasuk tautan yang dimasukkan untuk secara otomatis mencari Sitiran di Google Scholar.</p></li>
 	</ul>]]></message>
 	<message key="submission.citations.editor.loadMessage">Tunggu bantuan Koreksi Sitiran untuk dimuat.</message>
-	<message key="submission.citations.editor.pleaseAddParserFilter"><![CDATA[Minta Jurnal Manajer untuk <a href="{$citationSetupUrl}">menambah setidaknya satu layanan ekstrasi Sitiran </a> sebelum Anda dapat menggunakannya bantuan Koreksi Sitiran.]]></message>
-	<message key="submission.citations.editor.pleaseConfigureOutputStyle"><![CDATA[Minta manajer jurnal Anda untuk <a href="{$citationSetupUrl}">mengkonfigurasi model ekspor Sitiran</a> sebelum Anda dapat menggunakan bantuan Koreksi Sitiran.]]></message>
 	<message key="submission.citations.editor.pleaseImportCitationsFirst"><![CDATA[<p>Tidak ada Sitiran untuk artikel ini.</p><p>Pergi ke <a href="{$articleMetadataUrl}">halaman metadata artikel</a> dan masukkan daftar referensi atau tambahkan referensi secara manual dengan menggunakan tombol tambah item dari editor.</p>]]></message>
 	<message key="submission.citations.editor.pleaseSelect">Pilih...</message>
 	<message key="submission.citations.editor.pleaseSetup"><![CDATA[Minta manajer jurnal untuk <a href="{$citationSetupUrl}">memudahkan pengeditan Sitiran</a> sebelum Anda dapat mengakses bantuan koreksi Sitiran.]]></message>
@@ -227,7 +225,7 @@ Pastikan Anda mengatur tipe judul yang valid. Nilai dukungan adalah "disingkat",
 	<message key="submission.citations.editor.unprocessedCitationsButtonTitle">Klik untuk merefresh daftar Sitiran.</message>
 	<message key="submission.citations.filter.invalidMetadata">Eror terjadi di{$filterName}: salah satu elemen data yang dikembalikan dari sumber data (contoh: layanan web) One of the data elements returned from the data source (e.g. a web service) tidak mengkonfirmasi ke format meta-data internal. Maka dari itu, hasil sumber data ditolak. File-kan ini sebagai bug.</message>
 	<message key="submission.citations.filter.noResultFromFilterError">Beberapa layanan Sitiran tidak mengembalikan hasil apapun. Anda dapat mencoba untuk mengedit secara manual bidang Sitiran dan kemudian menanyakan layanan Sitiran lagi untuk meningkatkan hasil. Jika ini tidak membantu, maka Sitiran tidak ada di database terkoneksi manapun.</message>
-	<message key="submission.citations.filter.unsupportedPublicationType">Tipe penerbitan yang hilang atau yang tidak didukung. Edit Sitiran secara manual dan masukkan tipe penerbitan (tipe yang diperbolehkan adalah 'buku', 'jurnal', 'tesis' dan 'conf-proc').</message>
+	<message key="submission.citations.filter.unsupportedPublicationType">Tipe penerbitan yang hilang atau yang tidak didukung. Edit Sitiran secara manual dan masukkan tipe penerbitan (tipe yang diperbolehkan adalah 'book', 'journal', 'thesis' dan 'conf-proc').</message>
 	<message key="submission.citations.filter.webserviceError"> {$filterName}panggilan layanan web telah mengembalikan eror saat dipanggil dengan URL berikut ini: {$webserviceUrl}. Mungkin layanan web ini tidak tersedia sementara waktu. Anda masih akan bisa bekerja dengan layanan yang ada dan menyimpan hasil Anda. Anda juga dapat mencobanya lagi nanti. Jika eror masih ada, maka minta manajer jurnal untuk tidak mengaktifkan layanan ini dan membuka laporan bug.</message>
 	<message key="submission.citations.filter.webserviceResultTransformationError">Eror terjadi di {$filterName}: Transformasi hasil XML  (contoh: dari layanan web) ke meta-data field-based gagal. Alasannya mungkin karena layanan web mengembalikan data yang tidak lengkap atau tidak valid. File-kan ini sebagai bug.</message>
 	<message key="submission.citations.metadata.changeWarning">Apakah Anda yakin ingin meng-update daftar referensi Anda? Jika Anda klik OK, perubahan apapun yang dibuat oleh Editor akan ditimpa. Jika Anda tidak yakin apakah Anda harus membuat perubahan ke daftar referensi, hubungi Editor yang bertanggung jawab dengan penyerahan Anda.</message>
@@ -342,7 +340,7 @@ Pastikan Anda mengatur tipe judul yang valid. Nilai dukungan adalah "disingkat",
 	<message key="submission.page.summary">#{$id} Ringkasan</message>
 	<message key="submission.page.citations">#{$id} Sitiran</message>
 	<message key="submission.peerReview">Peer&amp;nbsp;Review</message>
-	<message key="submission.recommendation">Rekomendasi</message>
+	<message key="submission.recommendation">Rekomendasi: {$recommendation}</message>
 	<message key="submission.rejected">Tolak</message>
 	<message key="submission.request">Permintaan</message>
 	<message key="submission.response">Respon</message>
@@ -387,4 +385,8 @@ Pastikan Anda mengatur tipe judul yang valid. Nilai dukungan adalah "disingkat",
 	<message key="submission.date.mmdd">MM-DD</message>
 	<message key="submission.date.yyyymmdd">YYYY-MM-DD</message>
 	<message key="log.review.reviewerAssigned">{$reviewerName} telah ditugaskan untuk mereview naskah {$submissionId} untuk tahapan review {$round}.</message>
+
+	<!--  peer review -->
+	<message key="submission.reviewForm">Form Review</message>
+	<message key="submission.reviewFormResponse">Respon Form Review</message>
 </locale>

@@ -1,8 +1,8 @@
 /**
  * @file js/controllers/form/FileUploadFormHandler.js
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FileUploadFormHandler
@@ -89,10 +89,9 @@
 	$.pkp.controllers.form.FileUploadFormHandler.prototype.
 			uploaderSetup = function($uploader) {
 
-		var pluploader = $uploader.plupload('getUploader');
-
+		var uploadHandler = $.pkp.classes.Handler.getHandler($uploader);
 		// Subscribe to uploader events.
-		pluploader.bind('FileUploaded',
+		uploadHandler.pluploader.bind('FileUploaded',
 				this.callbackWrapper(this.handleUploadResponse));
 	};
 

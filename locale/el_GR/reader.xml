@@ -4,11 +4,11 @@
 <!--
   * locale/el_GR/reader.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the el_GR (Greek) locale.
+  * Localization strings for the el_GR (ελληνικά) locale.
   *
   -->
 
@@ -128,7 +128,6 @@
 	<message key="rt.metadata.pkp.publisher">Φορέας οργάνωσης, τοποθεσία</message>
 	<message key="rt.metadata.pkp.source"> Περιοδικό/τίτλος συνεδρίου, τόμος, αρ. (έτος)</message>
 	<message key="rt.metadata.pkp.sponsors">Χορηγός(-οί)</message>
-	<message key="rt.metadata.pkp.subjectClass">Ταξινόμηση θέματος</message>
 	<message key="rt.metadata.pkp.subject">Λέξη-κλειδί (λέξεις-κλειδιά)</message>
 	<message key="rt.metadata.pkp.suppFiles">Συμπλ. Αρχεία </message>
 	<message key="rt.metadata.pkp.title">Τίτλος εγγράφου</message>
@@ -160,13 +159,13 @@
 	<message key="comments.titleRequired">Απαιτείται ένα τίτλος σχολίου.</message>
 	<message key="rt.admin.sharing">Διαμοιρασμός (Sharing)</message>
 	<message key="rt.admin.sharing.enabled">Ενεργοποίηση Διαμοιρασμού</message>
-	<message key="rt.admin.sharing.description"><![CDATA[Για την ενεργοποίηση της δυνατότητας των αναγνωστών σας να μοιράζονται άρθρα περιοδικών, δημιουργήστε έναν λογαριασμό στο <a href="http://addthis.com">addthis.com</a>, και Αντιγράψτε και Επικολλήστε τον κώδικο του κουμπιού Διαμοιρασμού παρακάτω.]]></message>
+	<message key="rt.admin.sharing.description"><![CDATA[Για την ενεργοποίηση της δυνατότητας των αναγνωστών σας να μοιράζονται άρθρα περιοδικών, δημιουργήστε έναν λογαριασμό στο <a href="http://www.addthis.com">addthis.com</a>, και Αντιγράψτε και Επικολλήστε τον κώδικο του κουμπιού Διαμοιρασμού παρακάτω.]]></message>
 	<message key="rt.admin.sharing.basic">Βασικές Ρυθμίσες</message>
 	<message key="rt.admin.sharing.userNameLabel">AddThis.com όνομα χρήστη</message>
 	<message key="rt.admin.sharing.buttonStyleLabel">Στύλ κουμπιού</message>
 	<message key="rt.admin.sharing.dropDownMenuLabel">Χρήση drop-down μενού</message>
 	<message key="rt.admin.sharing.advanced">Προωθημένες Ρυθμίσεις (προαιρετικά)</message>
-	<message key="rt.admin.sharing.customizationLink"><![CDATA[Δείτε <a href="http://www.addthis.com/help/customize/custom-button/">AddThis.com customization documentation</a> για τεκμηρίωση.]]></message>
+	<message key="rt.admin.sharing.customizationLink"><![CDATA[Δείτε <a href="http://support.addthis.com/customer/portal/articles/381236-custom-buttons">AddThis.com customization documentation</a> για τεκμηρίωση.]]></message>
 	<message key="rt.admin.sharing.brandLabel">Brand</message>
 	<message key="rt.admin.sharing.dropDownLabel"><![CDATA[Επιλογές Drop-down μενού <br /> (comma separated list)]]></message>
 	<message key="rt.admin.sharing.languageLabel">Γλώσσα</message>

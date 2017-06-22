@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/settings/genre/form/GenreForm.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class GenreForm
@@ -70,10 +70,11 @@ class GenreForm extends Form {
 				'sortable' => $genre->getSortable(),
 				'category' => $genre->getCategory(),
 				'dependent' => $genre->getDependent(),
+				'supplementary' => $genre->getSupplementary(),
 			);
 		} else {
 			$this->_data = array(
-				'name' => '',
+				'name' => array(),
 				'designation' => ''
 			);
 		}
@@ -90,8 +91,11 @@ class GenreForm extends Form {
 	 */
 	function fetch($request) {
 		$templateMgr = TemplateManager::getManager($request);
-		$templateMgr->assign('submissionFileCategories', array(GENRE_CATEGORY_DOCUMENT => __('submission.document'),
-					GENRE_CATEGORY_ARTWORK => __('submission.art')));
+		$templateMgr->assign('submissionFileCategories', array(
+			GENRE_CATEGORY_DOCUMENT => __('submission.document'),
+			GENRE_CATEGORY_ARTWORK => __('submission.art'),
+			GENRE_CATEGORY_SUPPLEMENTARY => __('submission.supplementary'),
+		));
 
 		AppLocale::requireComponents(LOCALE_COMPONENT_APP_MANAGER);
 		return parent::fetch($request);
@@ -102,8 +106,7 @@ class GenreForm extends Form {
 	 * @see Form::readInputData()
 	 */
 	function readInputData() {
-		$this->readUserVars(array('genreId', 'name', 'designation', 'sortable', 'category', 'dependent'));
-		$this->readUserVars(array('gridId', 'rowId'));
+		$this->readUserVars(array('genreId', 'name', 'designation', 'sortable', 'category', 'dependent', 'supplementary', 'gridId', 'rowId'));
 	}
 
 	/**
@@ -128,6 +131,7 @@ class GenreForm extends Form {
 		$genre->setSortable($this->getData('sortable'));
 		$genre->setCategory($this->getData('category'));
 		$genre->setDependent($this->getData('dependent'));
+		$genre->setSupplementary($this->getData('supplementary'));
 
 		if (!$this->getGenreId()) {
 			$this->setGenreId($genreDao->insertObject($genre));

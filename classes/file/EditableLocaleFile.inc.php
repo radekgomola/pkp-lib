@@ -3,8 +3,8 @@
 /**
  * @file classes/file/EditableLocaleFile.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EditableLocaleFile
@@ -61,7 +61,7 @@ class EditableLocaleFile extends LocaleFile {
 	 */
 	function update($key, $value) {
 		$matches = null;
-		$quotedKey = String::regexp_quote($key);
+		$quotedKey = PKPString::regexp_quote($key);
 		preg_match(
 			"/<message[\W]+key=\"$quotedKey\">/",
 			$this->getContents(),
@@ -88,7 +88,7 @@ class EditableLocaleFile extends LocaleFile {
 	 */
 	function delete($key) {
 		$matches = null;
-		$quotedKey = String::regexp_quote($key);
+		$quotedKey = PKPString::regexp_quote($key);
 		preg_match(
 			"/[ \t]*<message[\W]+key=\"$quotedKey\">/",
 			$this->getContents(),

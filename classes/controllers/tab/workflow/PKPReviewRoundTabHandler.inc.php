@@ -3,8 +3,8 @@
 /**
  * @file controllers/tab/workflow/PKPReviewRoundTabHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReviewRoundTabHandler
@@ -45,6 +45,7 @@ class PKPReviewRoundTabHandler extends Handler {
 	 * JSON fetch the external review round info (tab).
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function externalReviewRound($args, $request) {
 		return $this->_reviewRound($args, $request);
@@ -67,6 +68,7 @@ class PKPReviewRoundTabHandler extends Handler {
 	 * Internal function to handle both internal and external reviews round info (tab content).
 	 * @param $request PKPRequest
 	 * @param $args array
+	 * @return JSONMessage JSON object
 	 */
 	protected function _reviewRound($args, $request) {
 		$this->setupTemplate($request);

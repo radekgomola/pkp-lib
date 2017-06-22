@@ -1,8 +1,8 @@
 /**
  * @file js/controllers/PageHandler.js
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PageHandler
@@ -97,10 +97,22 @@
 		var $sourceLinkElement = $('a', event.target),
 				linkActionHandler = $.pkp.classes.Handler.getHandler($sourceLinkElement),
 				linkUrl = linkActionHandler.getUrl(),
-				// Get all grids inside this widget that have a
-				// link action with the same url of the sourceLinkElement.
-				$grids = $('.pkp_controllers_grid', this.getHtmlElement())
-					.has('a[href=' + linkUrl + ']');
+				$grids;
+
+		// Get all grids inside this widget that have a
+		// link action with the same url of the sourceLinkElement.
+		// (Not using "has" due to potential escaping issues; see
+		// http://stackoverflow.com/questions/739695/jquery-selector-value-escaping
+		$grids = $('.pkp_controllers_grid', this.getHtmlElement())
+					.filter(function() {
+					var matches = 0;
+					$(this).find('a').each(function() {
+						if ($(this).attr('href') == linkUrl) {
+							matches++;
+						}
+					});
+					return matches > 0;
+				});
 
 		// Trigger the dataChanged event on found grids,
 		// so they can refresh themselves.

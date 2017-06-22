@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/admin/languages/PKPAdminLanguageGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AdminLanguageGridHandler
@@ -115,12 +115,6 @@ class PKPAdminLanguageGridHandler extends LanguageGridHandler {
 			$this->addManagementColumns();
 		}
 
-		if ($this->_canManage($request)) {
-			$instructions = 'manager.languages.languageInstructions';
-		} else {
-			$instructions = 'admin.languages.supportedLocalesInstructions';
-		}
-		$this->setInstructions($instructions);
 		$this->setFootNote('admin.locale.maybeIncomplete');
 	}
 
@@ -131,14 +125,14 @@ class PKPAdminLanguageGridHandler extends LanguageGridHandler {
 	/**
 	 * @copydoc GridHandler::getRowInstance()
 	 */
-	function getRowInstance() {
+	protected function getRowInstance() {
 		return new LanguageGridRow();
 	}
 
 	/**
 	 * @copydoc GridHandler::loadData()
 	 */
-	function loadData($request, $filter) {
+	protected function loadData($request, $filter) {
 		$site = $request->getSite();
 		$data = array();
 
@@ -186,20 +180,21 @@ class PKPAdminLanguageGridHandler extends LanguageGridHandler {
 	 * Open a form to select locales for installation.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function installLocale($args, $request) {
 		// Form handling.
 		$installLanguageForm = new InstallLanguageForm();
 		$installLanguageForm->initData($request);
-		$json = new JSONMessage(true, $installLanguageForm->fetch($request));
+		return new JSONMessage(true, $installLanguageForm->fetch($request));
 
-		return $json->getString();
 	}
 
 	/**
 	 * Save the install language form.
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function saveInstallLocale($args, $request) {
 		$installLanguageForm = new InstallLanguageForm();
@@ -223,6 +218,7 @@ class PKPAdminLanguageGridHandler extends LanguageGridHandler {
 	 * Download a locale from the PKP web site.
 	 * @param $args array
 	 * @param $request object
+	 * @return JSONMessage JSON object
 	 */
 	function downloadLocale($args, $request) {
 		$this->setupTemplate($request, true);
@@ -258,13 +254,14 @@ class PKPAdminLanguageGridHandler extends LanguageGridHandler {
 		$installLanguageForm = new InstallLanguageForm();
 		$installLanguageForm->initData($request);
 		$json->setEvent('refreshForm', $installLanguageForm->fetch($request));
-		return $json->getString();
+		return $json;
 	}
 
 	/**
 	 * Uninstall a locale.
 	 * @param $args array
 	 * @param $request Request
+	 * @return JSONMessage JSON object
 	 */
 	function uninstallLocale($args, $request) {
 		$site = $request->getSite();
@@ -306,6 +303,7 @@ class PKPAdminLanguageGridHandler extends LanguageGridHandler {
 	 * Enable an existing locale.
 	 * @param $args array
 	 * @param $request Request
+	 * @return JSONMessage JSON object
 	 */
 	function enableLocale($args, $request) {
 		$rowId = $request->getUserVar('rowId');
@@ -329,6 +327,7 @@ class PKPAdminLanguageGridHandler extends LanguageGridHandler {
 	 * Disable an existing locale.
 	 * @param $args array
 	 * @param $request Request
+	 * @return JSONMessage JSON object
 	 */
 	function disableLocale($args, $request) {
 		$rowId = $request->getUserVar('rowId');
@@ -361,6 +360,7 @@ class PKPAdminLanguageGridHandler extends LanguageGridHandler {
 	 * Reload locale.
 	 * @param $args array
 	 * @param $request Request
+	 * @return JSONMessage JSON object
 	 */
 	function reloadLocale($args, $request) {
 		$site = $request->getSite();
@@ -385,6 +385,7 @@ class PKPAdminLanguageGridHandler extends LanguageGridHandler {
 	 * Set primary locale.
 	 * @param $args array
 	 * @param $request Request
+	 * @return JSONMessage JSON object
 	 */
 	function setPrimaryLocale($args, $request) {
 		$rowId = $request->getUserVar('rowId');

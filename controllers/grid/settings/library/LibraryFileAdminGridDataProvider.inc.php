@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/settings/library/LibraryFileAdminGridDataProvider.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FilesGridDataProvider
@@ -42,8 +42,8 @@ class LibraryFileAdminGridDataProvider extends CategoryGridDataProvider {
 	 */
 	function getAuthorizationPolicy($request, $args, $roleAssignments) {
 		$this->_context = $request->getContext();
-		import('lib.pkp.classes.security.authorization.PkpContextAccessPolicy');
-		return new PkpContextAccessPolicy($request, $roleAssignments);
+		import('lib.pkp.classes.security.authorization.ContextAccessPolicy');
+		return new ContextAccessPolicy($request, $roleAssignments);
 	}
 
 	/**
@@ -72,9 +72,9 @@ class LibraryFileAdminGridDataProvider extends CategoryGridDataProvider {
 
 
 	/**
-	 * @copydoc CategoryGridHandler::getCategoryData()
+	 * @copydoc CategoryGridHandler::loadCategoryData()
 	 */
-	function getCategoryData(&$fileType, $filter = null) {
+	function loadCategoryData($request, &$fileType, $filter = null) {
 
 		// Elements to be displayed in the grid
 		$libraryFileDao = DAORegistry::getDAO('LibraryFileDAO');

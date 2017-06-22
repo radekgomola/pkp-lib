@@ -4,8 +4,8 @@
 <!--
   * locale/de_DE/common.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
   * Please contact Marco Tullney, marco.tullney@fu-berlin.de, with any questions regarding this translation.
@@ -19,7 +19,6 @@
 	<message key="about.aboutSite">Über uns</message>
 	<message key="about.contact">Kontakt</message>
 	<message key="about.contact.email">E-Mail</message>
-	<message key="about.contact.fax">Fax</message>
 	<message key="about.contact.phone">Telefon</message>
 	<message key="about.contact.principalContact">Hauptkontakt </message>
 	<message key="about.contact.supportContact">Kontakt bei technischen Fragen</message>
@@ -33,9 +32,11 @@
 	<message key="announcement.noneExist">Es wurden keine Mitteilungen veröffentlicht.</message>
 	<message key="announcement.posted">Veröffentlicht</message>
 	<message key="announcement.postedOn">Veröffentlicht am {$postDate}</message>
-	<message key="announcement.viewLink">Weiter…</message>
 	<message key="announcement.view">Mitteilungen ansehen</message>
-	<message key="common.navigation">Navigation</message>
+	<message key="common.navigation.sidebar">Sidebar</message>
+	<message key="common.navigation.site">Website-Navigation</message>
+	<message key="common.navigation.siteContext">Website-Kontext-Navigation</message>
+	<message key="common.navigation.user">Benutzer-Navigation</message>
 	<message key="common.tasks">Aufgaben</message>
 	<message key="common.list">Liste</message>
 	<message key="common.grid">Grid</message>
@@ -60,6 +61,7 @@
 	<message key="common.applyAction">Anwenden</message>
 	<message key="common.assign">Zuweisen</message>
 	<message key="common.assigned">Zugewiesen</message>
+	<message key="common.assigned.date">Zugewiesen: {$dateAssigned}</message>
 	<message key="common.available">Verfügbar</message>
 	<message key="common.back">Zurück</message>
 	<message key="common.between">zwischen</message>
@@ -97,7 +99,6 @@
 	<message key="common.confirm">Bestätigen</message>
 	<message key="common.content">Inhalt</message>
 	<message key="common.contents">Inhalte</message>
-	<message key="common.considered">Zugestimmt</message>
 	<message key="common.continue">Fortfahren</message>
 	<message key="common.copy">Kopieren</message>
 	<message key="common.country">Land</message>
@@ -220,8 +221,8 @@
 	<message key="common.source">Quelle</message>
 	<message key="common.status">Status</message>
 	<message key="common.startTyping">Eingabe beginnen</message>
-	<message key="common.subject">Gegenstand</message>
-	<message key="common.subjects">Gegenstände</message>
+	<message key="common.subject">Thema</message>
+	<message key="common.subjects">Themen</message>
 	<message key="common.subtitle">Untertitel</message>
 	<message key="common.suggest">Vorschlagen</message>
 	<message key="common.title">Titel</message>
@@ -238,7 +239,6 @@
 	<message key="common.uploadFailed">Die Datei konnte nicht hochgeladen werden. Bitte probieren Sie es erneut oder benachrichtigen Sie den/die Administrator/in, wenn das Problem weiter besteht.</message>
 	<message key="common.fileUpload.maxFileSizeStatus"><![CDATA[Dieser Server erlaubt beim Hochladen von Dateien eine maximale Dateigröße von {$fileSize}.  Wenn Sie Unterstützung benötigen, wenden Sie sich bitte an <a href="mailto:{$supportEmail}">{$supportName}</a>.]]></message>
 	<message key="common.invalidFileType">Keine Datei hochgeladen oder ungültiger Dateityp!</message>
-	<message key="common.pageHeader.altText">Kopfzeile</message>
 	<message key="common.homepageImage.altText">Bild auf der Startseite</message>
 	<message key="common.up">Aufwärts</message>
 	<message key="common.url">URL</message>
@@ -308,8 +308,6 @@
 	<message key="form.invalidImage">Es wurde ein ungültiges Bild hochgeladen. Akzeptierte Formate sind .png, .gif und .jpg.</message>
 	<message key="help.contents">Inhalt</message>
 	<message key="help.help">Hilfe</message>
-	<message key="help.toggleInlineHelpOn">Hilfe ein</message>
-	<message key="help.toggleInlineHelpOff">Hilfe aus</message>
 	<message key="help.helpIndex">Hilfe-Verzeichnis</message>
 	<message key="help.matchesFound">{$matches} Resultate</message>
 	<message key="help.noMatchingTopics">Es wurden keine entsprechende Hilfethemen gefunden.</message>
@@ -349,10 +347,10 @@
 	<message key="informationCenter.pastHistory">Frühere Versionen</message>
 	<message key="informationCenter.history.noItems">Es gibt keine protokollierten Ereignisse.</message>
 	<message key="informationCenter.history.notePosted">Neue Anmerkung veröffentlicht.</message>
-	<message key="informationCenter.history.messageSent">Benachrichtung an Nutzer/innen geschickt.</message>
+	<message key="informationCenter.history.messageSent">Benachrichtigung an Nutzer/innen geschickt.</message>
 
 	<!-- Stage Participants -->
-	<message key="stageParticipants.history.messageSent">Benachrichtung an Nutzer/innen geschickt.</message>
+	<message key="stageParticipants.history.messageSent">Benachrichtigung an Nutzer/innen geschickt.</message>
 	<message key="stageParticipants.notify.chooseMessage">Bitte wählen Sie eine vordefinierte Nachricht aus oder füllen Sie das Formular unten aus.</message>
 	<message key="stageParticipants.notify.message">Nachricht</message>
 	<message key="stageParticipants.notify.warning">Bitte stellen Sie sicher, dass Sie das Nachrichtenfeld ausgefüllt und mindestens eine/n Empfänger/in ausgewählt haben.</message>
@@ -416,14 +414,14 @@
 	<message key="notification.mailList.submit"><![CDATA[<a href="{$submitUrl}">Beitrag einreichen</a>]]></message>
 	<message key="notification.mailList.register">Sie können sich hier registrieren für ...</message>
 	<message key="notification.mailList.review"><![CDATA[Nehmen Sie am <a href="{$reviewUrl}">Begutachtungsprozess</a> teil]]></message>
-	<message key="notification.noneExist">Sie haben zurzeit keine Benachrichtungen.</message>
+	<message key="notification.noneExist">Sie haben zurzeit keine Benachrichtigungen.</message>
 	<message key="notification.addedNote">Anmerkung veröffentlicht.</message>
 	<message key="notification.removedNote">Anmerkung gelöscht.</message>
 	<message key="notification.removedFile">Datei entfernt.</message>
 	<message key="notification.notification">Benachrichtigung</message>
 	<message key="notification.notifications">Benachrichtigungen</message>
 	<message key="notification.notificationsNew">({$numNew} neu)</message>
-	<message key="notification.notificationsDescription"><![CDATA[Sie haben {$unreadCount} ungelesene und {$readCount} gelesene Benachrichtungen.  <a href="{$settingsUrl}">Klicken Sie hier</a>, um Ihre Benachrichtungseinstellungen zu verändern.]]></message>
+	<message key="notification.notificationsDescription"><![CDATA[Sie haben {$unreadCount} ungelesene und {$readCount} gelesene Benachrichtigungen.  <a href="{$settingsUrl}">Klicken Sie hier</a>, um Ihre Benachrichtigungseinstellungen zu verändern.]]></message>
 	<message key="notification.sentNotification">Benachrichtigung gesendet.</message>
 	<message key="notification.settings">Benachrichtigungseinstellungen</message>
 	<message key="notification.settingsDescription">Wählen Sie die System-Ereignisse aus, über die Sie benachrichtigt werden wollen. Nicht gewählte Elemente führen dazu, dass die jeweiligen Ereignisse nicht in Ihrem Benachrichtigungs-Feed angezeigt werden.</message>
@@ -455,7 +453,7 @@
 	<message key="search.deleteFilter">Löschen</message>
 	<message key="search.discipline">Fachgebiet(e)</message>
 	<message key="search.fullText">Volltext</message>
-	<message key="search.indexTerms">Schlagworte</message>
+	<message key="search.indexTerms">Indexfelder</message>
 	<message key="search.indexTermsLong">Alle Indexfelder</message>
 	<message key="search.matchAll">In allen Kategorien übereinstimmen</message>
 	<message key="search.noKeywordError">Geben Sie mindestens einen Suchbegriff ein.</message>
@@ -466,7 +464,7 @@
 	<message key="search.searchAllCategories">Suchen nach</message>
 	<message key="search.searchCategories">Suchkategorien</message>
 	<message key="search.searchResults">Ergebnis der Suche</message>
-	<message key="search.subject">Thema</message>
+	<message key="search.subject">Schlagworte</message>
 	<message key="search.titleIndex">Titelverzeichnis durchsuchen</message>
 	<message key="search.title">Titel</message>
 	<message key="search.typeMethodApproach">Forschungsansatz, -methode und -verfahren</message>
@@ -480,7 +478,6 @@
 	<message key="grid.action.showReviewPolicy">Lesen Sie aktuelle Begutachtungsgrundsätze</message>
 
 	<message key="dashboard.tasks">Aufgaben</message>
-	<message key="dashboard.submissions">Beiträge</message>
 
 	<message key="review.blindPeerReview">
 		<![CDATA[<p>Um die Integrität des Blind Peer Review sicherzustellen, sollte bei Einreichungen gewährleistet werden, dass die Identitäten von Autor/innen und Gutachter/innen voreinander zu verbergen. Autor/innen, Redakteur/innen und Gutachter/innen (die Dokumente im Rahmen ihrer Begutachtung hochladen) sollten die Einhaltung der folgenden Schritte in Bezug auf den jeweiligen Text und die Dateieigenschaften erledigt worden sind:</p>
@@ -511,4 +508,46 @@
 	<message key="navigation.archives">Archiv</message>
 	<message key="user.authorization.authorRoleMissing">Sie verfügen nicht über ausreichende Rechte, um die Einreichung anzusehen. Bitte überarbeiten Sie Ihr Profil, um zu gewährleisten, dass Sie für die entsprechenden Rollen registriert sind.</message>
 	<message key="user.authorization.submissionAuthor">Der/die aktuelle Nutzer/in ist nicht Autor/in der entsprechenden Einreichung. Bitte stellen Sie sicher, dass Sie mit dem richtigen Benutzer/innenkonto angemeldet sind.</message>
+	<message key="common.closePanel">Panel schließen</message>
+	<message key="common.completed.date">Beendet: {$dateCompleted}</message>
+	<message key="common.confirmed.date">Bestätigt: {$dateConfirmed}</message>
+	<message key="common.homepageNavigationLabel">Home</message>
+	<message key="common.favicon.altText">Favicon der Zeitschrift</message>
+	<message key="common.notified.date">Benachrichtigt: {$dateNotified}</message>
+	<message key="common.pageNumber">Seite {$pageNumber}</message>
+	<message key="common.percentage">{$percentage}%</message>
+	<message key="common.queue.long.active">Alle aktiven</message>
+	<message key="common.range">{$min}-{$max}</message>
+	<message key="common.readMore">Mehr lesen</message>
+	<message key="common.readMoreWithTitle">Lesen Sie mehr über {$title}</message>
+	<message key="common.reminded.date">Erinnert: {$dateReminded}</message>
+	<message key="common.searchQuery">Suchanfrage</message>
+	<message key="common.uploadedDate">Datum des Hochladens</message>
+	<message key="common.upload.addFile">Datei hochladen</message>
+	<message key="common.upload.changeFile">Datei ändern</message>
+	<message key="common.upload.dragFile">Ziehen Sie eine Datei per Drag and drop hierher, um das Hochladen zu beginnen</message>
+	<message key="common.viewProfile">Profil ansehen</message>
+	<message key="email.senderName">Absender/in-Name</message>
+	<message key="email.senderEmail">Absender/in-E-Mail</message>
+	<message key="form.url.invalid">Die angegebene URL ist ungültig. Bitte überprüfen Sie die Adresse und versuchen es erneut.</message>
+	<message key="help.previous">zurück</message>
+	<message key="help.next">weiter</message>
+	<message key="navigation.breadcrumbLabel">Sie sind hier:</message>
+	<message key="navigation.breadcrumbSeparator">/</message>
+	<message key="navigation.items.shownTotal">{$shown} von {$total} Treffern</message>
+	<message key="navigation.switchJournals">Zeitschrift wechseln</message>
+	<message key="navigation.viewFrontend">Website ansehen</message>
+	<message key="notification.addedQuery">Diskussion hinzugefügt</message>
+	<message key="search.searchAgain">Erneut suchen</message>
+	<message key="grid.action.deleteNotification">Aufgabe löschen</message>
+	<message key="grid.action.markNew">Neu markieren</message>
+	<message key="grid.action.markRead">Gelesen markieren</message>
+	<message key="common.tasks.titleAndTask">{$acronym}: "{$title}": {$task}</message>
+	<message key="dashboard.myQueue">Meine Warteschlange</message>
+	<message key="notification.type.newAnnouncement">Neue Ankündigung.</message>
+	<message key="notification.type.metadataModified">Metadaten von "{$title}" wurden verändert.</message>
+	<message key="notification.type.reviewerComment">Gutachter/in hat "{$title}" kommentiert.</message>
+	<message key="user.authorization.invalidRepresentation">Ungültige Repräsentation</message>
+	<message key="notification.type.queryActivity">Gesprächsaktivität.</message>
+	<message key="notification.type.queryAdded">Gespräch ergänzt.</message>
 </locale>

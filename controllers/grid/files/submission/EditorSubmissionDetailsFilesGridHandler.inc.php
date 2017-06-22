@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/files/submission/EditorSubmissionDetailsFilesGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EditorSubmissionDetailsFilesGridHandler
@@ -25,7 +25,7 @@ class EditorSubmissionDetailsFilesGridHandler extends FileListGridHandler {
 		parent::FileListGridHandler(
 			$dataProvider,
 			WORKFLOW_STAGE_ID_SUBMISSION,
-			FILE_GRID_ADD|FILE_GRID_DELETE|FILE_GRID_VIEW_NOTES|FILE_GRID_DOWNLOAD_ALL
+			FILE_GRID_ADD|FILE_GRID_DELETE|FILE_GRID_VIEW_NOTES|FILE_GRID_DOWNLOAD_ALL|FILE_GRID_EDIT
 		);
 
 		$this->addRoleAssignment(

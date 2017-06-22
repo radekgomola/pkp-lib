@@ -4,8 +4,8 @@
 <!--
   * locale/ja_JP/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ja_JP (日本語) locale.
@@ -132,7 +132,7 @@
 	<message key="submission.page.review">#{$id} 査読</message>
 	<message key="submission.page.summary">#{$id} 概要</message>
 	<message key="submission.peerReview">査読</message>
-	<message key="submission.recommendation">審査結果</message>
+	<message key="submission.recommendation">審査結果: {$recommendation}</message>
 	<message key="submission.rejected">不採用</message>
 	<message key="submission.request">依頼</message>
 	<message key="submission.response">回答</message>
@@ -296,8 +296,6 @@
 	<message key="submission.citations.editor.details.processRawCitationTitle">オリジナルの引用情報の修正</message>
 	<message key="submission.citations.editor.details.processRawCitationWarning">オリジナルの引用テクストを編集しようとしています。この操作によりすべてのフィールドが新たに生成された値に置き換えられます。これによってすでにマニュアルで修正された結果は削除されます。</message>
 	<message key="submission.citations.editor.export.foundUnapprovedCitationsMessage"><![CDATA[<p>すべての引用がまだ承認されていません。 Please go to the <strong>引用情報の修正</strong> タブからエクスポートしようとしている全ての引用が承認されているかどうか確認してください。承認された引用は左に青紺色のストライプでマークされています。</p>]]></message>
-	<message key="submission.citations.editor.pleaseAddParserFilter"><![CDATA[引用マークアップ支援機能を使用する前に， <a href="{$citationSetupUrl}"> に少なくともひとつ引用抽出サービスを追加するように雑誌管理者へ依頼してください。]]></message>
-	<message key="submission.citations.editor.pleaseConfigureOutputStyle"><![CDATA[引用マークアップ支援機能を使用する前に， <a href="{$citationSetupUrl}"> 引用エクスポート形式を設定</a> するように雑誌管理者へ依頼してください。]]></message>
 	<message key="submission.citations.editor.pleaseImportCitationsFirst"><![CDATA[<p>この論文には引用情報がありません。</p><p>論文の <a href="{$articleMetadataUrl}">メタデータページ</a> で参考文献リストを入力するか，編集者のアイテム追加ボタンを使用して手動で参考文献を追加してください。</p>]]></message>
 	<message key="submission.citations.editor.pleaseSetup"><![CDATA[引用マークアップ支援機能にアクセスする前に，<a href="{$citationSetupUrl}">引用の編集を可能にする</a> ように雑誌管理者へ依頼してください。]]></message>
 	<message key="submission.citations.editor.unprocessedCitations">この論文の引用情報はサーバで処理途中です。現在表示されているものは処理が完了した引用情報のみです。再読み込みボタンをクリックして処理された引用情報を確認してください。</message>
@@ -323,7 +321,6 @@
 	<message key="submission.citations.editor.details.sourceResultsUseAll">すべて使用</message>
 	<message key="submission.citations.editor.introduction">概要</message>
 	<message key="submission.citations.filter.noResultFromFilterError">いくつかの引用サービスから結果が得られませんでした。よい結果を得るために，引用フィールドをマニュアルで修正して再度引用サービスを検索してください。うまくいかない場合は，引用情報が接続しているデータベースに存在していません。</message>
-	<message key="submission.citations.filter.unsupportedPublicationType">サポートされていな不明な出版種別です。マニュアルで引用を編集して許可されている出版種別(図書，雑誌，学位論文，会議録)を入力してください。</message>
 	<message key="submission.citations.editor.details.databaseQueryExplanation">下記にこの雑誌で設定された引用サービスのリストが表示されます。雑誌管理者がこの雑誌に最も関連のあると判断したサービスがあらかじめ選択されています。好みに応じてサービスを追加して検索したり除外することができます。</message>
 	<message key="submission.citations.editor.details.sourceResultsUseAllExplanation">クリックすると情報源から得られたすべてのフィールドが直接あなたのフィールドリストに移動します。</message>
 	<message key="submission.citations.filter.invalidMetadata">{$filterName} でエラーが発生しました: 情報源(例: Webサービス)から返ってきたデータ要素が内部のメタデータフォーマットに一致しませんでした。そのためデータソースの結果が拒絶されました。バグとして報告して下さい。</message>
@@ -348,5 +345,7 @@
 		<p>左側のリストにある引用を編集するには，それをクリックしてこのウィンドウを開いてください。著者によって記述されたオリジナルの引用情報と自動抽出支援機能が表示されます。オリジナルの引用情報についてマニュアルで修正，新しい引用の一部あるいはすべてを編集，設定済の引用データベースでの再チェック，Google Scholarの検索，引用情報の詳細について著者への問合せ，がおこなえます。</p>
 		<p>
 満足のいく結果が得られて引用の編集を終了する場合は，<strong>保存して承認</strong> ボタンをクリックすると，リストにある次の未承認の引用に自動的に遷移します。このように大量の引用情報を迅速に処理することができます。すべての引用情報が承認されると，<strong>引用をエクスポート</strong> ページに移動します。</p>]]></message>
-  <message key="log.review.reviewerAssigned">{$reviewerName}が投稿物 {$submissionId} の{$round}回目の査読の査読者に任命された。</message>
+	<message key="log.review.reviewerAssigned">{$reviewerName}が投稿物 {$submissionId} の{$round}回目の査読の査読者に任命された。</message>
+	<message key="submission.reviewForm">査読フォーム</message>
+	<message key="submission.reviewFormResponse">査読フォームレスポンス</message>
 </locale>

@@ -3,8 +3,8 @@
 /**
  * @file classes/validation/ValidatorRegExp.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ValidatorRegExp
@@ -41,7 +41,7 @@ class ValidatorRegExp extends Validator {
 	 * @return boolean
 	 */
 	function isValid($value) {
-		return (boolean)String::regexp_match_get($this->_regExp, $value, $this->_matches);
+		return (boolean)PKPString::regexp_match_get($this->_regExp, $value, $this->_matches);
 	}
 
 

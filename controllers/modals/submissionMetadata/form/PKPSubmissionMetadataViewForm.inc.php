@@ -3,8 +3,8 @@
 /**
  * @file controllers/modals/submissionMetadata/form/PKPSubmissionMetadataViewForm.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPSubmissionMetadataViewForm
@@ -67,7 +67,7 @@ class PKPSubmissionMetadataViewForm extends Form {
 	 * Get the Submission
 	 * @return Submission
 	 */
-	function &getSubmission() {
+	function getSubmission() {
 		return $this->_submission;
 	}
 
@@ -111,6 +111,7 @@ class PKPSubmissionMetadataViewForm extends Form {
 		);
 
 		$this->_metadataFormImplem->initData($this->getSubmission());
+		parent::initData();
 	}
 
 	/**
@@ -121,10 +122,21 @@ class PKPSubmissionMetadataViewForm extends Form {
 	function fetch($request) {
 		$submission = $this->getSubmission();
 		$templateMgr = TemplateManager::getManager($request);
-		$templateMgr->assign('submissionId', $submission->getId());
-		$templateMgr->assign('stageId', $this->getStageId());
-		$templateMgr->assign('formParams', $this->getFormParams());
-		$templateMgr->assign('isPublished', $submission->getDatePublished() != null ? true : false);
+		$templateMgr->assign(array(
+			'submissionId' =>$submission->getId(),
+			'stageId' => $this->getStageId(),
+			'formParams' => $this->getFormParams(),
+		));
+
+		// Tell the form what fields are enabled (and which of those are required)
+		import('lib.pkp.controllers.grid.settings.metadata.MetadataGridHandler');
+		$context = $request->getContext();
+		foreach (array_keys(MetadataGridHandler::getNames()) as $field) {
+			$templateMgr->assign(array(
+				$field . 'Enabled' => $context->getSetting($field . 'EnabledWorkflow'),
+				$field . 'Required' => $context->getSetting($field . 'Required')
+			));
+		}
 
 		return parent::fetch($request);
 	}
@@ -142,6 +154,7 @@ class PKPSubmissionMetadataViewForm extends Form {
 	 */
 	function execute($request) {
 		$submission = $this->getSubmission();
+		parent::execute($submission);
 		// Execute submission metadata related operations.
 		$this->_metadataFormImplem->execute($submission, $request);
 	}

@@ -3,8 +3,8 @@
 /**
  * @file classes/search/SubmissionSearch.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionSearch
@@ -61,13 +61,13 @@ class SubmissionSearch {
 
 		$submissionSearchIndex = new SubmissionSearchIndex();
 
-		$notOperator = String::strtolower(__('search.operator.not'));
-		$andOperator = String::strtolower(__('search.operator.and'));
-		$orOperator = String::strtolower(__('search.operator.or'));
+		$notOperator = PKPString::strtolower(__('search.operator.not'));
+		$andOperator = PKPString::strtolower(__('search.operator.and'));
+		$orOperator = PKPString::strtolower(__('search.operator.or'));
 		while ($pos < $total) {
 			if (!empty($signTokens[$pos])) $sign = $signTokens[$pos];
 			else if (empty($sign)) $sign = '+';
-			$token = String::strtolower($tokens[$pos++]);
+			$token = PKPString::strtolower($tokens[$pos++]);
 			switch ($token) {
 				case $notOperator:
 					$sign = '-';
@@ -79,7 +79,7 @@ class SubmissionSearch {
 				default:
 					$postBool = '';
 					if ($pos < $total) {
-						$peek = String::strtolower($tokens[$pos]);
+						$peek = PKPString::strtolower($tokens[$pos]);
 						if ($peek == $orOperator) {
 							$postBool = 'or';
 							$pos++;
@@ -182,7 +182,6 @@ class SubmissionSearch {
 				}
 			}
 		}
-
 		return $mergedResults;
 	}
 
@@ -215,7 +214,7 @@ class SubmissionSearch {
 	 * $keywords[SUBMISSION_SEARCH_AUTHOR] = array('John', 'Doe');
 	 * $keywords[SUBMISSION_SEARCH_...] = array(...);
 	 * $keywords[null] = array('Matches', 'All', 'Fields');
-     * @param $request Request
+	 * @param $request Request
 	 * @param $context object The context to search
 	 * @param $keywords array List of keywords
 	 * @param $error string a reference to a variable that will
@@ -251,9 +250,10 @@ class SubmissionSearch {
 		// If no search plug-in is activated then fall back to the
 		// default database search implementation.
 		if ($results === false) {
+
 			// Parse the query.
-			foreach($keywords as $searchType => $query) {
-				$keywords[$searchType] = $this->_parseQuery($query);
+			foreach($keywords as $searchType => $query) {                            
+				$keywords[$searchType] = $this->_parseQuery($query);                                
 			}
 
 			// Fetch all the results from all the keywords into one array
@@ -261,7 +261,7 @@ class SubmissionSearch {
 			// = sum of all the occurences for all keywords associated with
 			// that article ID.
 			$mergedResults = $this->_getMergedArray($context, $keywords, $publishedFrom, $publishedTo);
-
+                        
 			// Convert mergedResults into an array (frequencyIndicator =>
 			// $submissionId).
 			// The frequencyIndicator is a synthetically-generated number,

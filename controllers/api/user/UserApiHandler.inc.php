@@ -6,8 +6,8 @@
 /**
  * @file controllers/api/user/UserApiHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserApiHandler
@@ -56,7 +56,7 @@ class UserApiHandler extends PKPHandler {
 	 * displayed or not.
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string a JSON message
+	 * @return JSONMessage JSON object
 	 */
 	function updateUserMessageState($args, $request) {
 		// Exit with a fatal error if request parameters are missing.
@@ -94,9 +94,23 @@ class UserApiHandler extends PKPHandler {
 		$userSettingsDao->updateSetting($user->getId(), $settingName, $settingValue, $settingType);
 
 		// Return a success message.
-		$json = new JSONMessage(true);
-		return $json->getString();
+		return new JSONMessage(true);
+	}
 
+
+	/**
+	 * Get a suggested username, making sure it's not already used.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
+	 */
+	function suggestUsername($args, $request) {
+		$suggestion = Validation::suggestUsername(
+			$request->getUserVar('firstName'),
+			$request->getUserVar('lastName')
+		);
+
+		return new JSONMessage(true, $suggestion);
 	}
 
 

@@ -3,8 +3,8 @@
 /**
  * @file plugins/citationLookup/isbndb/filter/IsbndbIsbnNlm30CitationSchemaFilter.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class IsbndbIsbnNlm30CitationSchemaFilter
@@ -77,15 +77,15 @@ class IsbndbIsbnNlm30CitationSchemaFilter extends IsbndbNlm30CitationSchemaFilte
 		if (is_null($metadata =& $this->transformWebServiceResults($resultDOM, dirname(__FILE__).DIRECTORY_SEPARATOR.'isbndb.xsl'))) return $nullVar;
 
 		// Extract place and publisher from the combined entry.
-		$metadata['publisher-loc'] = String::trimPunctuation(String::regexp_replace('/^(.+):.*/', '\1', $metadata['place-publisher']));
-		$metadata['publisher-name'] = String::trimPunctuation(String::regexp_replace('/.*:([^,]+),?.*/', '\1', $metadata['place-publisher']));
+		$metadata['publisher-loc'] = PKPString::trimPunctuation(PKPString::regexp_replace('/^(.+):.*/', '\1', $metadata['place-publisher']));
+		$metadata['publisher-name'] = PKPString::trimPunctuation(PKPString::regexp_replace('/.*:([^,]+),?.*/', '\1', $metadata['place-publisher']));
 		unset($metadata['place-publisher']);
 
 		// Reformat the publication date
-		$metadata['date'] = String::regexp_replace('/^[^\d{4}]+(\d{4}).*/', '\1', $metadata['date']);
+		$metadata['date'] = PKPString::regexp_replace('/^[^\d{4}]+(\d{4}).*/', '\1', $metadata['date']);
 
 		// Clean non-numerics from ISBN
-		$metadata['isbn'] = String::regexp_replace('/[^\dX]*/', '', $isbn);
+		$metadata['isbn'] = PKPString::regexp_replace('/[^\dX]*/', '', $isbn);
 
 		// Set the publicationType
 		$metadata['[@publication-type]'] = NLM30_PUBLICATION_TYPE_BOOK;

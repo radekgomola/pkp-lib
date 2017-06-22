@@ -4,11 +4,11 @@
 <!--
   * locale/ru_RU/submission.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the ru_RU (Russian) locale.
+  * Localization strings for the ru_RU (Русский) locale.
   *
   -->
 
@@ -132,7 +132,7 @@
 	<message key="submission.page.review">#{$id} Рецензии</message>
 	<message key="submission.page.summary">#{$id} Резюме</message>
 	<message key="submission.peerReview">Рецензия</message>
-	<message key="submission.recommendation">Рекомендации</message>
+	<message key="submission.recommendation">Рекомендации: {$recommendation}</message>
 	<message key="submission.rejected">Отказ</message>
 	<message key="submission.request">Запросы</message>
 	<message key="submission.response">Ответ</message>
@@ -196,4 +196,5 @@
 	<message key="submission.date.mmdd">ММ-ДД</message>
 	<message key="submission.date.yyyymmdd">ГГГГ-ММ-ДД</message>
 	<message key="submission.form.replaceExisting">Заменить существующий файл?</message>
+	<message key="submission.reviewForm">Форма Рецензента</message>
 </locale>

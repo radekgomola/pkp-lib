@@ -3,8 +3,8 @@
 /**
  * @file classes/core/DataObject.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DataObject
@@ -16,7 +16,7 @@
 
 
 class DataObject {
-	/** Array of object data */
+	/** @var array Array of object data */
 	var $_data = array();
 
 	/** @var boolean whether this objects loads meta-data adapters from the database */
@@ -81,12 +81,12 @@ class DataObject {
 	 */
 	function &getData($key, $locale = null) {
 		if (is_null($locale)) {
-			if (isset($this->_data[$key])) {
+			if (array_key_exists($key, $this->_data)) {
 				return $this->_data[$key];
 			}
 		} else {
 			// see http://bugs.php.net/bug.php?id=29848
-			if (isset($this->_data[$key]) && is_array($this->_data[$key]) && isset($this->_data[$key][$locale])) {
+			if (array_key_exists($key, $this->_data) && is_array($this->_data[$key]) && array_key_exists($locale, $this->_data[$key])) {
 				return $this->_data[$key][$locale];
 			}
 		}
@@ -116,7 +116,7 @@ class DataObject {
 			// This is either a non-localized value or we're
 			// passing in all locales at once.
 			if (is_null($value)) {
-				if (isset($this->_data[$key])) unset($this->_data[$key]);
+				if (array_key_exists($key, $this->_data)) unset($this->_data[$key]);
 			} else {
 				$this->_data[$key] = $value;
 			}
@@ -124,8 +124,8 @@ class DataObject {
 			// (Un-)set a single localized value.
 			if (is_null($value)) {
 				// see http://bugs.php.net/bug.php?id=29848
-				if (isset($this->_data[$key])) {
-					if (is_array($this->_data[$key]) && isset($this->_data[$key][$locale])) unset($this->_data[$key][$locale]);
+				if (array_key_exists($key, $this->_data)) {
+					if (is_array($this->_data[$key]) && array_key_exists($locale, $this->_data[$key])) unset($this->_data[$key][$locale]);
 					// Was this the last entry for the data variable?
 					if (empty($this->_data[$key])) unset($this->_data[$key]);
 				}
@@ -143,10 +143,10 @@ class DataObject {
 	 */
 	function hasData($key, $locale = null) {
 		if (is_null($locale)) {
-			return isset($this->_data[$key]);
+			return array_key_exists($key, $this->_data);
 		} else {
 			// see http://bugs.php.net/bug.php?id=29848
-			return isset($this->_data[$key]) && is_array($this->_data[$key]) && isset($this->_data[$key][$locale]);
+			return array_key_exists($key, $this->_data) && is_array($this->_data[$key]) && array_key_exists($locale, $this->_data[$key]);
 		}
 	}
 
@@ -179,7 +179,7 @@ class DataObject {
 	 * @param $id int
 	 */
 	function setId($id) {
-		return $this->setData('id', $id);
+		$this->setData('id', $id);
 	}
 
 
@@ -196,9 +196,6 @@ class DataObject {
 	 * then objects that need more complicated casting behavior
 	 * must override these methods.
 	 *
-	 * Our implementation also implies that the target has to inherit
-	 * from the source object and thereby implicitly from DataObject.
-	 *
 	 * Note: Data in the target object will be overwritten. We do not
 	 * clone the target object before we upcast.
 	 *
@@ -207,10 +204,6 @@ class DataObject {
 	 * @return DataObject The upcast target object.
 	 */
 	function upcastTo($targetObject) {
-		// Make sure that target is really inheriting
-		// from this class.
-		assert(is_a($targetObject, get_class($this)));
-
 		// Copy data from the source to the target.
 		$targetObject->setAllData($this->getAllData());
 

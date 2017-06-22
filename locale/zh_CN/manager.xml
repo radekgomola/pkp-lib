@@ -2,10 +2,10 @@
 <!DOCTYPE locale SYSTEM "../../dtd/locale.dtd">
 
 <!--
-  * locale/en_US/manager.xml
+  * locale/zh_CN/manager.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the en_US (English) locale.
@@ -148,7 +148,6 @@
 	<message key="manager.setup.layout.unselected">没有选择的</message>
 	<message key="manager.setup.loggingAndAuditing">日志记录与审计</message>
 	<message key="manager.setup.pageHeaderLogoImageInvalid">无效的页面头部Logo图片格式或者上传失败，有效的格式有 .gif, .jpg, or .png.</message>
-	<message key="manager.setup.pageHeaderTitleImageInvalid">无效的页面头部标题图片格式或者上传失败，有效的格式有 .gif, .jpg, or .png.</message>
 	<message key="manager.setup.selectOne">选择</message>
 	<message key="manager.statistics"><![CDATA[状态 &amp; 报告]]></message>
 	<message key="manager.statistics.statistics.count.value">{$count} ({$percentage}%)</message>
@@ -177,7 +176,6 @@
 	<message key="manager.reviewerSearch.interests">审阅兴趣</message>
 	<message key="manager.setup.citationAssistant">引文标记助理</message>
 	<message key="manager.setup.citationFilterParser">引文提取</message>
-	<message key="manager.reviewerSearch.advancedSearch">高级审稿人检索</message>
 	<message key="manager.setup.citationFilterLookup">引文检查</message>
 	<message key="manager.setup.citationOutput">引文输出</message>
 	<message key="manager.setup.errorDeletingItem">在删除这个项目过程中发生了一个错误</message>
@@ -199,8 +197,6 @@
 	<message key="manager.announcements.datePublish">已出版</message>
 	<message key="manager.emails.addEmail">添加电子邮件模版</message>
 	<message key="manager.emails.details">模板详细</message>
-	<message key="manager.navigation">导航</message>
-	<message key="manager.reviewerSearch.advancedSearch.short">高级搜索</message>
 	<message key="manager.reviewerSearch.searchByName.short">根据名字检索</message>
 	<message key="manager.emails.data">模板信息数据</message>
 	<message key="manager.emails.disable.message">你是要禁用此电子邮件模板。如果有使用此模板的系统进程，他们不会用它了。你要确认此操作？</message>
@@ -224,13 +220,13 @@
 		<p><strong>注释：</strong> 为了保证引用检查过程及时有效地完成， <tt>引用_检查_最大值_进程</tt> 您配置文件中的导则必须设置成合理值。更多信息请参阅<tt>config.inc.php</tt>中的常规设置部分。</p>]]></message>
 	<message key="manager.setup.citationOutputStyleDescription">选择您出版提交中使用的引用样式。引用标记助理工具帮您将作者的引用版本和您从XML中生成的版本进行对比，如此您可以轻而易举地发现错误：</message>
 	<message key="manager.setup.filter.lookup.grid.description.iSBNdb"><![CDATA[<p>该过滤器连接到<a href="http://isbndb.com/" target="_blank">ISBNdb.com</a> 书和ISBN数据库。</p>
-	<p>ISBNdb API 密匙为强制性的。有关生成密匙的信息，请参阅<a href="http://isbndb.com/docs/api/30-keys.html" target="_blank">在线文档</a>.</p>]]></message>
+	<p>ISBNdb API 密匙为强制性的。有关生成密匙的信息，请参阅<a href="http://isbndb.com/api/v1/docs/keys" target="_blank">在线文档</a>.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.crossRef"><![CDATA[<p>该文件连接到CrossRef 引用数据库，采用CrossRef的 <a href="http://www.crossref.org/02publishers/openurl_info.html" target="_blank">OpenURL 查询界面</a>.</p>
 	<p>您可以使用您的CrossRef系统账户，或注册一个CrossRef有效电子信箱来使用该过滤器<a]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.pubMed"><![CDATA[<p>该过滤器连接到PubMed<a href="http://www.ncbi.nlm.nih.gov/gquery/gquery.fcgi" target="_blank">Entrez</a>的 跨数据库搜索引擎。</p>
 	<p>注册邮箱不是强制性的，但如果您碰到连接问题的时候会需要它。更多信息请参阅<a href="http://www.be-md.ncbi.nlm.nih.gov/bookshelf/br.fcgi?book=helpeutils&part=chapter2#chapter2.Usage_Guidelines_and_Requiremen" target="_blank">Entrez文档中的</a>使用准则和要求部分。</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.worldCat"><![CDATA[<p>该过滤器连接到OCLC服务上<a href="http://www.worldcat.org/affiliate/webservices/xisbn/app.jsp" target="_blank">xISBN</a> and <a href="http://www.worldcat.org/" target="_blank">Worldcat</a> (optional).</p>
-	<p>如果您有 Worldcat <a href="http://www.worldcat.org/devnet/wiki/SearchAPIWhoCanUse" target="_blank">API key</a> 您可以通过输入下列密匙来连接到Worldcat。</p>]]></message>
+	<p>如果您有 Worldcat <a href="http://oclc.org/developer/develop/web-services.html" target="_blank">API key</a> 您可以通过输入下列密匙来连接到Worldcat。</p>]]></message>
 	<message key="manager.setup.filter.parser.grid.description.freeCite"><![CDATA[<p>该提取过滤器连接到<a href="http://freecite.library.brown.edu/" target="_blank">FreeCite</a> web服务上。</p>]]></message>
 	<message key="manager.setup.filter.parser.grid.description.paraCite"><![CDATA[<p>该提取过滤器使用 <a href="http://paracite.eprints.org/developers/" target="_blank">ParaTools</a> Perl 模块来提供 <a href="http://paracite.eprints.org" target="_blank">ParaCite</a> 引文分析功能。为了使其恰当运作，您必须安装Perl, 和<a href="http://search.cpan.org/~mjewell/Biblio-Citation-Parser-1.10/" target="_blank">Biblio::Citation::Parser</a> 和 <a href="http://search.cpan.org/~sburke/Text-Unidecode-0.04/" target="_blank">Text::Unidecode</a> CPAN 模块。您必须还要对您配置文件中的<tt>perl</tt>导则进行配置。该导则可以在<tt>config.inc.php</tt>外部指令部分中找到。</p>
 	<p>您还可以选择使用哪种分析模块。您可以在标准， <a href="http://search.cpan.org/~mjewell/Biblio-Citation-Parser-1.10/lib/Biblio/Citation/Parser/Jiao.pm" target="_blank">Jiao</a>, 和 <a href="http://search.cpan.org/~mjewell/Biblio-Citation-Parser-1.10/lib/Biblio/Citation/Parser/Citebase.pm" target="_blank">Citebase</a> 间选择分析模块。</p>]]></message>
@@ -243,4 +239,39 @@
 	<message key="plugins.categories.oaiMetadataFormats">OAI源数据插件</message>
 	<message key="plugins.categories.oaiMetadataFormats.description">这些格式插件表达OAI通信的元数据.</message>
 	<message key="manager.website">网站</message>
+
+	<!-- Review forms -->
+	<message key="manager.reviewFormElement.changeType">警告：将审稿表单元素类型从一个多选修改为开放式类型，会导致多选选项被删除。</message>
+	<message key="manager.reviewFormElements">表单项目</message>
+	<message key="manager.reviewFormElements.addResponseItem">添加选择</message>
+	<message key="manager.reviewFormElements.checkboxes">多选框(你可以选择一个或者多个)</message>
+	<message key="manager.reviewFormElements.chooseType">选择项目类型</message>
+	<message key="manager.reviewFormElements.confirmDelete">您确认删除正在使用中的审稿表单元素?</message>
+	<message key="manager.reviewFormElements.copyTo">复制到:</message>
+	<message key="manager.reviewFormElements.create">创建新项目</message>
+	<message key="manager.reviewFormElements.dropdownbox">下拉框</message>
+	<message key="manager.reviewFormElements.edit">编辑表单项目</message>
+	<message key="manager.reviewFormElements.elementType">项目类型</message>
+	<message key="manager.reviewFormElements.form.elementTypeRequired">要求一个项目类型</message>
+	<message key="manager.reviewFormElements.form.questionRequired">要求一个问题</message>
+	<message key="manager.reviewFormElements.noneCreated">没有表单项目被创建</message>
+	<message key="manager.reviewFormElements.possibleResponse">选择</message>
+	<message key="manager.reviewFormElements.question">项目</message>
+	<message key="manager.reviewFormElements.radiobuttons">单选框 (你只能选择一个)</message>
+	<message key="manager.reviewFormElements.required">R要求审稿人完成项目</message>
+	<message key="manager.reviewFormElements.smalltextfield">单字文本框</message>
+	<message key="manager.reviewFormElements.textarea">扩展文本框</message>
+	<message key="manager.reviewFormElements.textfield">单行文本框</message>
+	<message key="manager.reviewForms">审稿表单管理</message>
+	<message key="manager.reviewForms.completed">完成</message>
+	<message key="manager.reviewForms.create">创建审阅表单</message>
+	<message key="manager.reviewForms.description">描述</message>
+	<message key="manager.reviewForms.edit">审稿表单</message>
+	<message key="manager.reviewForms.form.titleRequired">审稿表单的标题是必须的。</message>
+	<message key="manager.reviewForms.inReview">审阅中</message>
+	<message key="manager.reviewForms.list.description">在这里创建的审稿表单是专门为审稿人准备的。在这里可以创建专门为期刊的某个栏目而设计的审稿表单，编辑可以在指派审稿的时候选择不同的表单。所有的表单都提供了一个选择功能，让编辑可以根据需要把审稿表单的内容与作者分享。</message>
+	<message key="manager.reviewForms.noneChosen">None / Free Form Review</message>
+	<message key="manager.reviewForms.noneCreated">无已创建表单</message>
+	<message key="manager.reviewForms.preview">预览表单</message>
+	<message key="manager.reviewForms.title">名称</message>
 </locale>

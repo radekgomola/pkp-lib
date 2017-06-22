@@ -7,8 +7,8 @@
 /**
  * @file plugins/citationLookup/isbndb/filter/IsbndbNlm30CitationSchemaFilter.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class IsbndbNlm30CitationSchemaFilter
@@ -58,7 +58,7 @@ class IsbndbNlm30CitationSchemaFilter extends Nlm30CitationSchemaFilter {
 	 * @return boolean
 	 */
 	function isValidIsbn($isbn) {
-		return is_string($isbn) && is_numeric($isbn) && String::strlen($isbn) == 13;
+		return is_string($isbn) && is_numeric($isbn) && PKPString::strlen($isbn) == 13;
 	}
 }
 ?>

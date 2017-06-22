@@ -4,8 +4,8 @@
 /**
  * @file js/controllers/wizard/fileUpload/FileUploadWizardHandler.js
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FileUploadWizardHandler
@@ -41,9 +41,10 @@
 
 		// Bind events of the nested upload forms.
 		this.bind('fileUploaded', this.handleFileUploaded);
+		this.bind('filesRemoved', this.handleRemovedFiles);
 
 		// Initially disable the continue button.
-		this.getContinueButton().button('disable');
+		this.disableContinueButton();
 	};
 	$.pkp.classes.Helper.inherits(
 			$.pkp.controllers.wizard.fileUpload.FileUploadWizardHandler,
@@ -96,17 +97,17 @@
 	 * @inheritDoc
 	 */
 	$.pkp.controllers.wizard.fileUpload.FileUploadWizardHandler.
-			prototype.tabsSelect = function(tabsElement, event, ui) {
+			prototype.tabsBeforeActivate = function(tabsElement, event, ui) {
 
 		// The last two tabs require a file to be uploaded.
-		if (ui.index > 0) {
+		if (ui.newTab.index() > 0) {
 			if (!this.uploadedFile_) {
 				throw new Error('Uploaded file missing!');
 			}
 
 			// Set the correct URLs.
 			var $wizard = this.getHtmlElement(), newUrl = '';
-			switch (ui.index) {
+			switch (ui.newTab.index()) {
 				case 1:
 					newUrl = this.metadataUrl_;
 					break;
@@ -120,11 +121,11 @@
 			}
 
 			newUrl = newUrl + '&fileId=' + this.uploadedFile_.fileId;
-			$wizard.tabs('url', ui.index, newUrl);
+			ui.newTab.find('.ui-tabs-anchor').attr('href', newUrl);
 		}
 
 		return /** @type {boolean} */ (
-				this.parent('tabsSelect', tabsElement, event, ui));
+				this.parent('tabsBeforeActivate', tabsElement, event, ui));
 	};
 
 
@@ -158,7 +159,7 @@
 		$wizard.tabs('enable', targetStep);
 
 		// Advance to the target step.
-		$wizard.tabs('select', targetStep);
+		$wizard.tabs('option', 'active', targetStep);
 
 		// Disable the previous step if it is the first one.
 		if (currentStep === 0) {
@@ -169,9 +170,9 @@
 		// continue button to finish.
 		if (targetStep === lastStep) {
 			$continueButton = this.getContinueButton();
-			$continueButton.button('option', 'label',
+			$continueButton.text(
 					/** @type {string} */ (this.getFinishButtonText()));
-			$continueButton.button('enable');
+			this.enableContinueButton();
 		}
 	};
 
@@ -188,12 +189,11 @@
 
 		// In the last step: Bind click a event to the button that re-starts
 		// the upload process.
-		if (ui.index === 2) {
+		if (ui.tab.index() === 2) {
 			$newFileButton = $('#newFile', $wizard);
 			if ($newFileButton.length !== 1) {
 				throw new Error('Did not find "new file" button!');
 			}
-			$newFileButton.button();
 			$newFileButton.bind('click', this.callbackWrapper(this.startWizard));
 		}
 
@@ -287,6 +287,41 @@
 
 		// Save the uploaded file information.
 		this.uploadedFile_ = uploadedFile;
+	};
+
+
+	/**
+	 * Handle the filesRemoved event triggered by the associated form. The
+	 * original event is triggered by plupload and passed via
+	 * FileUploadFormHandler.
+	 *
+	 * See the TODO note under FileUPloadFormHandler::handleFilesRemoved
+	 *
+	 * @param {$.pkp.controllers.form.AjaxFormHandler} callingForm The form
+	 *  that triggered the event.
+	 * @param {Event} event The upload event.
+	 * @param {Object} pluploader plupload component that fired the original
+	 *  event.
+	 * @param {Array} file Array of files removed
+	 */
+	$.pkp.controllers.wizard.fileUpload.FileUploadWizardHandler.
+			prototype.handleRemovedFiles =
+			function(callingForm, event, pluploader, file) {
+
+		var i;
+
+		if (typeof file === 'undefined' || !file.length) {
+			return;
+		}
+
+		// There's no error handling done for the response because we don't
+		// really have an elegant way to handle or display a failed deletion
+		for (i in file) {
+			if (typeof file[i].storedData === 'undefined') {
+				return;
+			}
+			$.post(this.deleteUrl_, file[i].storedData);
+		}
 	};
 
 

@@ -2,8 +2,8 @@
 /**
  * @file controllers/informationCenter/linkAction/FileNotesLinkAction.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FileNotesLinkAction
@@ -38,6 +38,12 @@ class FileNotesLinkAction extends FileLinkAction {
 		);
 	}
 
+	/**
+	 * Get the notes icon state for a submission file and user combo.
+	 * @param $submissionFile SubmissionFile
+	 * @param $user User
+	 * @return string CSS class representing icon state
+	 */
 	function getNotesState($submissionFile, $user) {
 		$noteDao = DAORegistry::getDAO('NoteDAO');
 

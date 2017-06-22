@@ -3,8 +3,8 @@
 /**
  * @file classes/metadata/DateStringNormalizerFilter.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DateStringNormalizerFilter
@@ -50,7 +50,7 @@ class DateStringNormalizerFilter extends Filter {
 		);
 		$normalizedDate = null;
 		foreach($dateExpressions as $dateExpression) {
-			if (String::regexp_match_get($dateExpression, $input, $parsedDate) ){
+			if (PKPString::regexp_match_get($dateExpression, $input, $parsedDate) ){
 				if (isset($parsedDate['year'])) {
 					$normalizedDate = $parsedDate['year'];
 

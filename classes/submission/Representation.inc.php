@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/Representation.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Representation
@@ -39,7 +39,7 @@ class Representation extends DataObject {
 	 * @param $sequence float
 	 */
 	function setSeq($seq) {
-		return $this->setData('seq', $seq);
+		$this->setData('seq', $seq);
 	}
 
 	/**
@@ -52,10 +52,11 @@ class Representation extends DataObject {
 
 	/**
 	 * Get the format name (if applicable).
+	 * @param $locale string
 	 * @return string
 	 */
-	function getName() {
-		return $this->getData('name');
+	function getName($locale) {
+		return $this->getData('name', $locale);
 	}
 
 	/**
@@ -64,7 +65,7 @@ class Representation extends DataObject {
 	 * @param $locale
 	 */
 	function setName($name, $locale = null) {
-		return $this->setData('name', $name, $locale);
+		$this->setData('name', $name, $locale);
 	}
 
         /**
@@ -96,7 +97,7 @@ class Representation extends DataObject {
 	 * @param $submissionId int
 	 */
 	function setSubmissionId($submissionId) {
-		return $this->setData('submissionId', $submissionId);
+		$this->setData('submissionId', $submissionId);
 	}
 
 	/**
@@ -105,6 +106,22 @@ class Representation extends DataObject {
 	 */
 	function getSubmissionId() {
 		return $this->getData('submissionId');
+	}
+
+	/**
+	 * Determines if a representation is approved or not.
+	 * @return boolean
+	 */
+	function getIsApproved() {
+		return (boolean) $this->getData('isApproved');
+	}
+
+	/**
+	 * Sets whether a representation is approved or not.
+	 * @param boolean $isApproved
+	 */
+	function setIsApproved($isApproved) {
+		return $this->setData('isApproved', $isApproved);
 	}
 
 	/**
@@ -126,7 +143,23 @@ class Representation extends DataObject {
 	 * @param $pubId string
 	 */
 	function setStoredPubId($pubIdType, $pubId) {
-		return $this->setData('pub-id::'.$pubIdType, $pubId);
+		$this->setData('pub-id::'.$pubIdType, $pubId);
+	}
+
+	/**
+	 * Get the remote URL at which this representation is retrievable.
+	 * @return string
+	 */
+	function getRemoteURL() {
+		return $this->getData('remoteUrl');
+	}
+
+	/**
+	 * Set the remote URL for retrieving this representation.
+	 * @param $remoteURL string
+	 */
+	function setRemoteURL($remoteURL) {
+		return $this->setData('remoteUrl', $remoteURL);
 	}
 
 	/**

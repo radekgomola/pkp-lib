@@ -2,8 +2,8 @@
 /**
  * @file classes/filter/Filter.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Filter
@@ -283,7 +283,7 @@ class Filter extends DataObject {
 		// for persistence.
 		$runtimeSettings = $this->supportedRuntimeEnvironmentSettings();
 		foreach($runtimeSettings as $runtimeSetting => $defaultValue) {
-			$methodName = 'get'.String::ucfirst($runtimeSetting);
+			$methodName = 'get'.PKPString::ucfirst($runtimeSetting);
 			$this->setData($runtimeSetting, $runtimeEnvironment->$methodName());
 		}
 	}

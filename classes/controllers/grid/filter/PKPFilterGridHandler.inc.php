@@ -3,8 +3,8 @@
 /**
  * @file classes/controllers/grid/filter/PKPFilterGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPFilterGridHandler
@@ -150,7 +150,7 @@ class PKPFilterGridHandler extends GridHandler {
 				'displayName',
 				'manager.setup.filter.grid.filterDisplayName',
 				false,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$cellProvider
 			)
 		);
@@ -159,7 +159,7 @@ class PKPFilterGridHandler extends GridHandler {
 				'settings',
 				'manager.setup.filter.grid.filterSettings',
 				false,
-				'controllers/grid/gridCell.tpl',
+				null,
 				$cellProvider
 			)
 		);
@@ -170,9 +170,9 @@ class PKPFilterGridHandler extends GridHandler {
 	// Overridden methods from GridHandler
 	//
 	/**
-	 * @see GridHandler::getRowInstance()
+	 * @copydoc GridHandler::getRowInstance()
 	 */
-	function getRowInstance() {
+	protected function getRowInstance() {
 		// Return a filter row
 		return new PKPFilterGridRow();
 	}
@@ -195,6 +195,7 @@ class PKPFilterGridHandler extends GridHandler {
 	 * Edit a filter
 	 * @param $args array
 	 * @param $request PKPRequest
+	 * @return JSONMessage JSON object
 	 */
 	function editFilter(&$args, $request, $newFilter = false) {
 		// Identify the filter to be edited
@@ -211,15 +212,14 @@ class PKPFilterGridHandler extends GridHandler {
 
 		$filterForm->initData($this->getGridDataElements($request));
 
-		$json = new JSONMessage(true, $filterForm->fetch($request));
-		return $json->getString();
+		return new JSONMessage(true, $filterForm->fetch($request));
 	}
 
 	/**
 	 * Update a filter
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string
+	 * @return JSONMessage JSON object
 	 */
 	function updateFilter(&$args, $request) {
 		if(!$request->isPost()) fatalError('Cannot update filter via GET request!');
@@ -243,8 +243,7 @@ class PKPFilterGridHandler extends GridHandler {
 		} else {
 			// Re-display the filter form with error messages
 			// so that the user can fix it.
-			$json = new JSONMessage(false, $filterForm->fetch($request));
-			return $json->getString();
+			return new JSONMessage(false, $filterForm->fetch($request));
 		}
 	}
 
@@ -252,7 +251,7 @@ class PKPFilterGridHandler extends GridHandler {
 	 * Delete a filter
 	 * @param $args array
 	 * @param $request PKPRequest
-	 * @return string
+	 * @return JSONMessage JSON object
 	 */
 	function deleteFilter(&$args, $request) {
 		// Identify the filter to be deleted
@@ -264,9 +263,8 @@ class PKPFilterGridHandler extends GridHandler {
 		if ($result) {
 			return DAO::getDataChangedEvent();
 		} else {
-			$json = new JSONMessage(false, __('manager.setup.filter.grid.errorDeletingFilter'));
+			return new JSONMessage(false, __('manager.setup.filter.grid.errorDeletingFilter'));
 		}
-		return $json->getString();
 	}
 
 

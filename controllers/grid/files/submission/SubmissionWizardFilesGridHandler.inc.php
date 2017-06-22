@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/files/submission/SubmissionWizardFilesGridHandler.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionWizardFilesGridHandler
@@ -26,7 +26,7 @@ class SubmissionWizardFilesGridHandler extends FileListGridHandler {
 		parent::FileListGridHandler(
 			new SubmissionFilesGridDataProvider(SUBMISSION_FILE_SUBMISSION),
 			WORKFLOW_STAGE_ID_SUBMISSION,
-			FILE_GRID_ADD|FILE_GRID_DELETE|FILE_GRID_VIEW_NOTES
+			FILE_GRID_ADD|FILE_GRID_DELETE|FILE_GRID_VIEW_NOTES|FILE_GRID_EDIT
 		);
 		$this->addRoleAssignment(
 			array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT, ROLE_ID_AUTHOR),
@@ -35,7 +35,6 @@ class SubmissionWizardFilesGridHandler extends FileListGridHandler {
 
 		// Set grid title.
 		$this->setTitle('submission.submit.submissionFiles');
-		$this->setInstructions('submission.submit.upload.description');
 	}
 
 	/**

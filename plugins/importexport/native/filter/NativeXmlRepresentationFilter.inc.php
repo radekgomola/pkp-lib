@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/native/filter/NativeXmlRepresentationFilter.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class NativeXmlRepresentationFilter
@@ -57,6 +57,7 @@ class NativeXmlRepresentationFilter extends NativeImportFilter {
 		for ($n = $node->firstChild; $n !== null; $n=$n->nextSibling) if (is_a($n, 'DOMElement')) switch($n->tagName) {
 			case 'name': $representation->setName($n->textContent, $n->getAttribute('locale')); break;
 			case 'seq': $representation->setSeq($n->textContent); break;
+			case 'remote': $representation->setRemoteURL($n->getAttribute('src')); break;
 
 		}
 

@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/SubmissionLanguageDAO.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionLanguageDAO
@@ -22,7 +22,7 @@ class SubmissionLanguageDAO extends ControlledVocabDAO {
 	/**
 	 * Constructor
 	 */
-	function submissionLanguageDAO() {
+	function SubmissionLanguageDAO() {
 		parent::ControlledVocabDAO();
 	}
 
@@ -91,7 +91,7 @@ class SubmissionLanguageDAO extends ControlledVocabDAO {
 
 	/**
 	 * Get an array of submissionIds that have a given language
-	 * @param $content string
+	 * @param $language string
 	 * @return array
 	 */
 	function getSubmissionIdsByLanguage($language) {

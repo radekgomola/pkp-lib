@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/native/filter/SubmissionFileNativeXmlFilter.inc.php
  *
- * Copyright (c) 2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2014-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionFileNativeXmlFilter
@@ -86,8 +86,9 @@ class SubmissionFileNativeXmlFilter extends NativeExportFilter {
 
 		$genreDao = DAORegistry::getDAO('GenreDAO');
 		$genre = $genreDao->getById($submissionFile->getGenreId());
-		assert($genre);
-		$revisionNode->setAttribute('genre', $genre->getName($context->getPrimaryLocale()));
+		if ($genre) {
+			$revisionNode->setAttribute('genre', $genre->getName($context->getPrimaryLocale()));
+		}
 
 		$revisionNode->setAttribute('filename', $submissionFile->getOriginalFileName());
 		$revisionNode->setAttribute('viewable', $submissionFile->getViewable()?'true':'false');
