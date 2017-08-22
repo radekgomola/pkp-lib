@@ -37,7 +37,6 @@
 		disableMailingSection=true
 		disableSignatureSection=true
 		extraContentSectionUnfolded=true
-                disableEmailSection=true
 		countryRequired=false
 	}
 

@@ -337,7 +337,7 @@ abstract class PKPAuthorDAO extends DAO {
                                         druhe_prijmeni = ?, 
                                         zobraz_hlavicka = ?, 
                                         zobraz_autori = ?, 
-                                        zobraz_ostatni= ?,
+                                        zobraz_ostatni= ?
 				WHERE	author_id = ?',
 				array(
 						(int) $author->getUCO(),
