@@ -272,8 +272,6 @@
 		<field name="tituly_za" type="C2" size="80" />
                 <field name="poznamka" type="X"/>
                 <field name="druhe_prijmeni" type="C2" size="120" />
-                <field name="obcanske_jmeno" type="C2" size="120" />
-                <field name="obcanske_prijmeni" type="C2" size="120" />
                 <field name="zobraz_hlavicka" type="I1" />
                 <field name="zobraz_autori" type="I1" />
                 <field name="zobraz_ostatni" type="I1" /> 
