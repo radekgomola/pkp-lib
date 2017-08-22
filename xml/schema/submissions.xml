@@ -326,11 +326,6 @@
 			<NOTNULL/>
 		</field>
                 <field name="pocet_stran" type="I4" />                
-                <field name="licence_typ_prepinac" type="I1" />
-                <field name="licence_typ" type="C2" size="100" />
-                <field name="licence_drzitel" type="C2" size="100" />
-                <field name="licence_expirace" type="D" />
-                <field name="licence_vznik" type="D" />
                 <field name="datum_vydani" type="D" />
                 <field name="poradi_vydani" type="C2" size="120" />
                 <descr>Munipress metadata for publication formats</descr>
