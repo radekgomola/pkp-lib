@@ -253,4 +253,89 @@
 			<UNIQUE />
 		</index>
 	</table>
+        
+        <!--
+	  *
+	  * TABLE munipress_author_metadata
+	  *
+	  -->
+	<table name="munipress_author_metadata">
+		<field name="munipress_author_id" type="I8">
+			<KEY />
+			<AUTOINCREMENT/>
+		</field>
+		<field name="author_id" type="I8">
+			<NOTNULL/>
+		</field>		
+		<field name="uco" type="I4" />
+		<field name="mu" type="I4" />
+		<field name="tituly_pred" type="C2" size="80"/>
+		<field name="tituly_za" type="C2" size="80" />
+                <field name="poznamka" type="X"/>
+                <field name="druhe_prijmeni" type="C2" size="120" />
+                <field name="obcanske_jmeno" type="C2" size="120" />
+                <field name="obcanske_prijmeni" type="C2" size="120" />
+                <field name="zobraz_hlavicka" type="I1" />
+                <field name="zobraz_autori" type="I1" />
+                <field name="zobraz_ostatni" type="I1" /> 
+                <descr>Munipress metadata for authors.</descr>
+		<index name="munipress_authors_id">
+			<col>author_id</col>
+		</index>
+	</table>
+        
+        <!--
+	  *
+	  * TABLE munipress_metadata
+	  *
+	  -->
+	<table name="munipress_metadata">
+		<field name="munipress_submission_id" type="I8">
+			<KEY />
+			<AUTOINCREMENT/>
+		</field>
+		<field name="submission_id" type="I8">
+			<NOTNULL/>
+		</field>
+                <field name="a_kol" type="I1" />
+                <field name="cena" type="I4" />
+                <field name="cena_ebook" type="I4" />
+                <field name="url_munishop" type="I8" />
+                <field name="url_munishop_ebook" type="I8" />                
+                <field name="archiv" type="I1" />                
+                <field name="poznamka_admin" type="X" />                  
+                <field name="datum_vydani" type="D" />             
+                
+                <descr>Munipress metadata for submissions.</descr>
+		<index name="munipress_submission_id">
+			<col>submission_id</col>
+		</index>
+	</table>
+        
+         <!--
+	  *
+	  * TABLE munipress_publication_formats
+	  *
+	  -->
+        <table name="munipress_publication_formats">
+		<field name="munipress_publication_format_id" type="I8">
+			<KEY />
+			<AUTOINCREMENT/>
+		</field>
+		<field name="publication_format_id" type="I8">
+			<NOTNULL/>
+		</field>
+                <field name="pocet_stran" type="I4" />                
+                <field name="licence_typ_prepinac" type="I1" />
+                <field name="licence_typ" type="C2" size="100" />
+                <field name="licence_drzitel" type="C2" size="100" />
+                <field name="licence_expirace" type="D" />
+                <field name="licence_vznik" type="D" />
+                <field name="datum_vydani" type="D" />
+                <field name="poradi_vydani" type="C2" size="120" />
+                <descr>Munipress metadata for publication formats</descr>
+		<index name="munipress_submission_id">
+			<col>publication_format_id</col>
+                </index>
+	</table>
 </schema>
