@@ -275,6 +275,74 @@ class Identity extends DataObject {
 	function setBiography($biography, $locale) {
 		$this->setData('biography', $biography, $locale);
 	}
+        
+        /*******************************
+         * MUNIPRESS
+         *******************************/
+        
+        /**
+	 * Get UČO.
+	 * @return int
+	 */
+	function getUCO() {
+		return $this->getData('uco');
+	}
+
+	/**
+	 * Set UČO.
+	 * @param $uco int
+	 */
+	function setUCO($uco) {
+		return $this->setData('uco', $uco);
+	}
+        
+        /**
+	 * Get tituly před jménem.
+	 * @return string
+	 */
+	function getTitulyPred() {
+		return $this->getData('tituly_pred');
+	}
+
+	/**
+	 * Set tituly před jménem.
+	 * @param $tituly_pred string
+	 */
+	function setTitulyPred($tituly_pred) {
+		return $this->setData('tituly_pred', $tituly_pred);
+	}
+        
+        /**
+	 * Get tituly za jménem.
+	 * @return string
+	 */
+	function getTitulyZa() {
+		return $this->getData('tituly_za');
+	}
+
+	/**
+	 * Set tituly za jménem.
+	 * @param $tituly_za string
+	 */
+	function setTitulyZa($tituly_za) {
+		return $this->setData('tituly_za', $tituly_za);
+	}
+        
+        /**
+	 * Get poznámka.
+	 * @return string
+	 */
+	function getPoznamka() {
+		return $this->getData('poznamka');
+	}
+
+	/**
+	 * Set poznámka.
+	 * @param $poznamka string
+	 */
+	function setPoznamka($poznamka) {
+		return $this->setData('poznamka', $poznamka);
+	}
 }
 
 ?>

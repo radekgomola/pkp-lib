@@ -277,6 +277,21 @@ class PKPSubmissionSubmitStep1Form extends SubmissionSubmitForm {
 			$authorUserGroupId = (int) $this->getData('authorUserGroupId');
 			$author->setUserGroupId($authorUserGroupId);
 
+                        /********************
+                         * MUNIPRESS
+                         * ******************/
+                                                 
+                        $authorUCO = (int) $this->getData('uco');
+			$author->setUCO($authorUCO);
+                        $author->setTitulyPred($this->getData('tituly_pred'));
+                        $author->setTitulyZa($this->getData('tituly_za'));
+                        $author->setPoznamka($this->getData('poznamka'));  
+                        $author->setDruhePrijmeni($this->getData('druhePrijmeni'));
+                        $author->setZobrazHlavicka($this->getData('zobrazHlavicka'));
+                        $author->setZobrazAutori($this->getData('zobrazAutori'));
+                        $author->setZobrazOstatni($this->getData('zobrazOstatni'));
+                        /********************/
+                        
 			$author->setSubmissionId($this->submissionId);
 			$authorDao->insertObject($author);
 

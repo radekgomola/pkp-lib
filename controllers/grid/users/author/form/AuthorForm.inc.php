@@ -123,6 +123,17 @@ class AuthorForm extends Form {
 				'biography' => $author->getBiography(null),
 				'primaryContact' => $author->getPrimaryContact(),
 				'includeInBrowse' => $author->getIncludeInBrowse(),
+                            
+                                /*MUNIPRESS*/
+                                'uco' => $author->getUCO(), 
+                                'tituly_pred' => $author->getTitulyPred(), 
+                                'tituly_za' => $author->getTitulyZa(), 
+                                'poznamka' => $author->getPoznamka(), 
+                                'druhePrijmeni'=> $author->getDruhePrijmeni(),
+                                'zobrazHlavicka'=> $author->getZobrazHlavicka(), 
+                                'zobrazAutori'=> $author->getZobrazAutori(), 
+                                'zobrazOstatni'=> $author->getZobrazOstatni(),
+                                /**********/
 			);
 		} else {
 			// assume authors should be listed unless otherwise specified.
@@ -178,6 +189,17 @@ class AuthorForm extends Form {
 			'biography',
 			'primaryContact',
 			'includeInBrowse',
+                    
+                        /*MUNIPRESS*/
+                        'uco', 
+                        'tituly_pred', 
+                        'tituly_za', 
+                        'poznamka', 
+                        'druhePrijmeni', 
+                        'zobrazHlavicka', 
+                        'zobrazAutori', 
+                        'zobrazOstatni',
+                        /***********/
 		));
 	}
 
@@ -218,6 +240,19 @@ class AuthorForm extends Form {
 		// in order to be able to use the hook
 		parent::execute();
 
+                /**
+                 * MUNIPRESS
+                 */
+                $author->setUCO($this->getData('uco'));
+                $author->setTitulyPred($this->getData('tituly_pred'));
+                $author->setTitulyZa($this->getData('tituly_za'));
+                $author->setPoznamka($this->getData('poznamka'));
+                $author->setDruhePrijmeni($this->getData('druhePrijmeni'));
+                $author->setZobrazHlavicka($this->getData('zobrazHlavicka'));
+                $author->setZobrazAutori($this->getData('zobrazAutori'));
+                $author->setZobrazOstatni($this->getData('zobrazOstatni'));
+                /**************/
+                
 		if ($existingAuthor) {
 			$authorDao->updateObject($author);
 			$authorId = $author->getId();

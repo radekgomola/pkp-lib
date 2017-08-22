@@ -37,14 +37,40 @@
 		disableMailingSection=true
 		disableSignatureSection=true
 		extraContentSectionUnfolded=true
-		countryRequired=true
+                disableEmailSection=true
+		countryRequired=false
 	}
 
+        {********************
+            MUNIPRESS
+        **********************}
+        {if $isUserLoggedIn }
+            {fbvFormArea id="munipress" }
+                    {fbvFormSection label="author.munipress"}
+                         {fbvElement type="text" label="author.munipress.titulyPred" name="tituly_pred" id="tituly_pred" value=$tituly_pred inline=true size=$fbvStyles.size.SMALL}
+                         {fbvElement type="text" label="author.munipress.tituly_za" name="tituly_za" id="tituly_za" value=$tituly_za inline=true size=$fbvStyles.size.SMALL}
+                         {fbvElement type="text" label="author.munipress.uco" name="uco" id="uco" value=$uco maxlength="24" inline=true size=$fbvStyles.size.SMALL}
+                         {fbvElement type="text" label="author.munipress.druhePrijmeni" name="druhePrijmeni" id="druhePrijmeni" value=$druhePrijmeni inline=true size=$fbvStyles.size.SMALL}
+                    {/fbvFormSection}
+
+                    {fbvFormSection for="poznamka"}
+                            {fbvElement type="textarea" label="author.munipress.poznamka" name="poznamka" id="poznamka" rich=true value=$poznamka}
+                    {/fbvFormSection}
+                    
+                    {fbvFormSection list="true" label="author.munipress.stylZobrazeni"}
+                        {fbvElement type="checkbox" label="author.munipress.zobrazeni.zobrazitVHlavicce" id="zobrazHlavicka" checked=$zobrazHlavicka inline=true}
+                        {fbvElement type="checkbox" label="author.munipress.zobrazeni.zobrazitMeziAutory" id="zobrazAutori" checked=$zobrazAutori inline=true}
+                        {fbvElement type="checkbox" label="author.munipress.zobrazeni.zobrazitVOstatnich" id="zobrazOstatni" checked=$zobrazOstatni inline=true}
+                    {/fbvFormSection}
+            {/fbvFormArea}
+        {/if}
+        {********************}
+        
 	{fbvFormArea id="submissionSpecific"}
 		{fbvFormSection id="userGroupId" title="submission.submit.contributorRole" list=true required=true}
 			{iterate from=authorUserGroups item=userGroup}
 				{if $userGroupId == $userGroup->getId()}{assign var="checked" value=true}{else}{assign var="checked" value=false}{/if}
-				{fbvElement type="radio" id="userGroup"|concat:$userGroup->getId() name="userGroupId" value=$userGroup->getId() checked=$checked label=$userGroup->getLocalizedName() translate=false}
+				{fbvElement type="radio" id="userGroup"|concat:$userGroup->getId() name="userGroupId" value=$userGroup->getId() checked=$checked label=$userGroup->getLocalizedName() translate=false inline=true}
 			{/iterate}
 		{/fbvFormSection}
 		{fbvFormSection list="true"}

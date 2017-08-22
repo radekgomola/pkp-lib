@@ -36,8 +36,10 @@ abstract class PKPAuthorDAO extends DAO {
 		if ($submissionId !== null) $params[] = (int) $submissionId;
 		$result = $this->retrieve(
 			'SELECT a.*,
+                                munia.*,
 				ug.show_title
 			FROM	authors a
+                                LEFT JOIN munipress_author_metadata munia ON (a.author_id = munia.author_id)
 				JOIN user_groups ug ON (a.user_group_id=ug.user_group_id)
 			WHERE	a.author_id = ?'
 				. ($submissionId !== null?' AND a.submission_id = ?':''),
@@ -66,8 +68,9 @@ abstract class PKPAuthorDAO extends DAO {
 		if ($useIncludeInBrowse) $params[] = 1;
 
 		$result = $this->retrieve(
-			'SELECT	a.*, ug.show_title
+			'SELECT	a.*, munia.*, ug.show_title
 			FROM	authors a
+                                LEFT JOIN munipress_author_metadata munia ON (a.author_id = munia.author_id)
 				JOIN user_groups ug ON (a.user_group_id=ug.user_group_id)
 			WHERE	a.submission_id = ? ' .
 			($useIncludeInBrowse ? ' AND a.include_in_browse = ?' : '')
@@ -142,6 +145,16 @@ abstract class PKPAuthorDAO extends DAO {
 		$author->setSequence($row['seq']);
 		$author->setIncludeInBrowse($row['include_in_browse']);
 		$author->_setShowTitle($row['show_title']); // Dependent
+                
+                /*MUNIPRESS*/
+                $author->setUCO($row['uco']);
+                $author->setTitulyPred($row['tituly_pred']);
+                $author->setTitulyZa($row['tituly_za']);
+                $author->setPoznamka($row['poznamka']);
+                $author->setDruhePrijmeni($row['druhe_prijmeni']);
+                $author->setZobrazHlavicka($row['zobraz_hlavicka']);
+                $author->setZobrazAutori($row['zobraz_autori']);
+                $author->setZobrazOstatni($row['zobraz_ostatni']);
 
 		$this->getDataObjectSettings('author_settings', 'author_id', $row['author_id'], $author);
 
@@ -170,6 +183,16 @@ abstract class PKPAuthorDAO extends DAO {
 		$author->setPrimaryContact($row['primary_contact']);
 		$author->setSequence($row['seq']);
 		$author->setIncludeInBrowse($row['include_in_browse'] == 1 ? true : false);
+                
+                /*MUNIPRESS*/
+                $author->setUCO($row['uco']);
+                $author->setTitulyPred($row['tituly_pred']);
+                $author->setTitulyZa($row['tituly_za']);
+                $author->setPoznamka($row['poznamka']);
+                $author->setDruhePrijmeni($row['druhe_prijmeni']);
+                $author->setZobrazHlavicka($row['zobraz_hlavicka']);
+                $author->setZobrazAutori($row['zobraz_autori']);
+                $author->setZobrazOstatni($row['zobraz_ostatni']);
 
 		$author->setAffiliation($row['affiliation_l'], $row['locale']);
 		$author->setAffiliation($row['affiliation_pl'], $row['primary_locale']);
@@ -241,6 +264,26 @@ abstract class PKPAuthorDAO extends DAO {
 		);
 
 		$author->setId($this->getInsertId());
+                /*MUNIPRESS*/
+                $this->update(
+                        'INSERT INTO munipress_author_metadata
+				(author_id, uco, tituly_pred, tituly_za, poznamka, druhe_prijmeni, zobraz_hlavicka, zobraz_autori, zobraz_ostatni)
+				VALUES
+				(?, ?, ?, ?, ?, ?, ?, ?, ?)',
+				array(
+						(int) $author->getId(),
+						(int) $author->getUCO(),
+						$author->getTitulyPred(),
+						$author->getTitulyZa(),
+						$author->getPoznamka(), 
+                                                $author->getDruhePrijmeni(), 
+                                                $author->getZobrazHlavicka()? 1:0, 
+                                                $author->getZobrazAutori()? 1:0, 
+                                                $author->getZobrazOstatni()? 1:0,
+				)
+		);
+                /*********/
+                
 		$this->updateLocaleFields($author);
 
 		return $author->getId();
@@ -284,6 +327,31 @@ abstract class PKPAuthorDAO extends DAO {
 				(int) $author->getId()
 			)
 		);
+                
+                $this->update(
+                        'UPDATE	munipress_author_metadata
+				SET	uco = ?,
+					tituly_pred = ?,
+					tituly_za = ?,
+					poznamka = ?,
+                                        druhe_prijmeni = ?, 
+                                        zobraz_hlavicka = ?, 
+                                        zobraz_autori = ?, 
+                                        zobraz_ostatni= ?,
+				WHERE	author_id = ?',
+				array(
+						(int) $author->getUCO(),
+						$author->getTitulyPred(),
+						$author->getTitulyZa(),
+						$author->getPoznamka(),
+                                                $author->getDruhePrijmeni(), 
+                                                $author->getZobrazHlavicka() ? 1:0, 
+                                                $author->getZobrazAutori() ? 1:0, 
+                                                $author->getZobrazOstatni() ? 1:0,
+						(int) $author->getId()
+				)
+		);
+                
 		$this->updateLocaleFields($author);
 		return $returner;
 	}
@@ -310,6 +378,7 @@ abstract class PKPAuthorDAO extends DAO {
 			$params
 		);
 		$this->update('DELETE FROM author_settings WHERE author_id = ?', array((int) $authorId));
+                $this->update('DELETE FROM munipress_author_metadata WHERE author_id = ?', array((int) $authorId));
 	}
 
 	/**
@@ -344,9 +413,10 @@ abstract class PKPAuthorDAO extends DAO {
 	 */
 	function getPrimaryContact($submissionId) {
 		$result = $this->retrieve(
-			'SELECT a.*, ug.show_title
+			'SELECT a.*, munia.*, ug.show_title
 				FROM authors a
-			JOIN user_groups ug ON (a.user_group_id=ug.user_group_id)
+                                LEFT JOIN munipress_author_metadata munia ON (a.author_id = munia.author_id)
+                                JOIN user_groups ug ON (a.user_group_id=ug.user_group_id)
 			WHERE submission_id = ? AND primary_contact = 1',
 			(int) $submissionId
 		);
