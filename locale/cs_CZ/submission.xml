@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE locale SYSTEM "../../dtd/locale.dtd">
+
+<!--
+  * locale/cs_CZ/submission.xml
+  *
+  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
+  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
+  *
+  * Localization strings for the cs_CZ (Čeština) locale.
+  * Translated by František Chmelik, frantisek.chmelik 'at' upol.cz
+  * Corrections, migration to the OCS 2.3.x by Ivo Vesely and Petr Petyovsky (petyovsky 'at' feec.vutbr.cz)
+  *
+  -->
+
+<locale name="cs_CZ" full_name = "Čeština">
+	<message key="submission.agencies">Agentury</message>
+	<message key="submission.abstractViews">Zobrazení abstraktu</message>
+	<message key="submission.accepted">Přijata</message>
+	<message key="submission.acknowledge">Poděkovat</message>
+	<message key="submission.addSuppFile">Přidat doplňkový soubor</message>
+	<message key="submission.ask">Vyžádáno</message>
+	<message key="submission.backToSubmissionEditing">Zpět na editaci příspěvku</message>
+	<message key="submission.changeComments">Změnit na</message>
+	<message key="submission.citations">Reference</message>
+	<message key="submission.citations.jQueryRequired"><![CDATA[Editace citací vyžaduje doplněk jQuery. Prosím, navštivte <a target="_blank" href="{$genericPluginsUrl}">stránku Obecné doplňky</a> a zde povolte doplněk jQuery.]]></message>
+	<message key="submission.citations.grid.fields">Název pole</message>
+	<message key="submission.citations.grid.values">Hodnota pole</message>
+	<message key="submission.citations.grid.title">Upravit citace</message>
+	<message key="submission.citations.grid.importCitations">Importovat citace</message>
+	<message key="submission.citations.grid.exportCitations">Exportovat citace</message>
+	<message key="submission.citations.grid.editCheckCitation">Upravit/Kontrolovat</message>
+	<message key="submission.citations.grid.checkCitationAgain">Znovu zkontrolovat</message>
+	<message key="submission.citations.grid.editedCitation">Text citace</message>
+	<message key="submission.citations.grid.editedCitationRequired">Je vyžadován text citace</message>
+	<message key="submission.citations.grid.publicationTypeRequired">Prosím ujistěte se, že jste skutečně správně nastavili typ publikace. Možné varianty jsou: kniha (pro knihu nebo kapitolu v knize) a časopis (pro článek v časopise). Jinak nebude citace zobrazena ve správném formátu.</message>
+	<message key="submission.citations.grid.errorDeletingCitation">Při mazání citace došlo k chybě.</message>
+	<message key="submission.citations.form.title">Upravit citaci</message>
+	<message key="submission.citations.form.loadMessage">Prosím, vyčkejte na načtení editoru citací.</message>
+	<message key="submission.citations.form.description">Pokud nejste spokojen(a) s obsahem citací, můžete citace ručně upravit editací jednotlivých položek a poté provést opětovnou kontrolu.</message>
+	<message key="submission.citations.form.unsavedChanges">Citace obsahuje data z externích databází, které nejsou dosud uloženy. Prosím přečtěte si a případně upravte datová pole. Poté zvolte "OK" pro uložení změn, nebo zvolte tlačítko "Zrušit", kterým provedené změny neuložíte.</message>
+	<message key="submission.citations.form.filterError">Analýza nebo vyhledávání nevrátily žádné výsledky. Úpravou textu citace pravděpodobně získáte lepší výsledek.</message>
+	<message key="submission.citations.output.unsupportedPublicationType">Nepodporovaný nebo chybějící typ publikace. Prosím upravte citaci ručně a zadejte typ publikace (buď "book", "journal", "thesis" nebo "conf-proc").</message>
+	<message key="submission.citations.output.exportDescription">Prosím, zkopírujte obsah tohoto dialogového okna a vložte jej do dokumentu.</message>
+	<!-- FIXME: move to meta-data plug-in -->
+	<message key="metadata.property.displayName.author">Autoři</message>
+	<message key="metadata.property.validationMessage.author">Pro lepší výsledky, by autoři měli být vkládání v následujícím formátu: Novák, Petr Malý</message>
+	<message key="metadata.property.displayName.editor">Editoři</message>
+	<message key="metadata.property.validationMessage.editor">Pro lepší výsledky, by redaktoři měli být vkládání v následujícím formátu: Novák, Petr Malý</message>
+
+	<!-- NLM-specific messages -->
+	<message key="metadata.property.displayName.article-title">Název článku/práce</message>
+	<message key="metadata.property.validationMessage.article-title">Prosím, zadejte platný název článku/práce</message>
+	<message key="metadata.property.displayName.source">Název publikace</message>
+	<message key="metadata.property.validationMessage.source">Prosím, zadejte platný titul publikace.</message>
+	<message key="metadata.property.displayName.date">Datum publikování</message>
+	<message key="metadata.property.validationMessage.date">Prosím, zadejte platné datum publikování (formát: RRRR-MM-DD).</message>
+	<message key="metadata.property.displayName.access-date">Datum přístupu</message>
+	<message key="metadata.property.validationMessage.access-date">Prosím zadejte platné datum přístupu (formát: RRRR-MM-DD).</message>
+	<message key="metadata.property.displayName.issue">Vydání</message>
+	<message key="metadata.property.validationMessage.issue">Prosím zadejte platné vydání.</message>
+	<message key="metadata.property.displayName.volume">Svazek</message>
+	<message key="metadata.property.validationMessage.volume">Prosím, zadejte platný svazek.</message>
+	<message key="metadata.property.displayName.season">Ročník</message>
+	<message key="metadata.property.validationMessage.season">Prosím, zadejte platný identifikátor ročníku.</message>
+	<message key="metadata.property.displayName.chapter-title">Název kapitoly</message>
+	<message key="metadata.property.validationMessage.chapter-title">Prosím, zadejte platný název kapitoly.</message>
+	<message key="metadata.property.displayName.edition">Vydání</message>
+	<message key="metadata.property.validationMessage.edition">Prosím zadejte platné vydání.</message>
+	<message key="metadata.property.displayName.series">Edice</message>
+	<message key="metadata.property.validationMessage.series">Prosím, zadejte platné edice.</message>
+	<message key="metadata.property.displayName.supplement">Dodatek</message>
+	<message key="metadata.property.validationMessage.supplement">Prosím, vložte platný dodatek.</message>
+	<message key="metadata.property.displayName.conf-date">Datum konference</message>
+	<message key="metadata.property.validationMessage.conf-date">Prosím, zadejte platné datum konference (format: RRRR-MM-DD).</message>
+	<message key="metadata.property.displayName.conf-loc">Místo konání konference</message>
+	<message key="metadata.property.validationMessage.conf-loc">Prosím, zadejte platné místo konání konference</message>
+	<message key="metadata.property.displayName.conf-name">Název konference</message>
+	<message key="metadata.property.validationMessage.conf-name">Prosím, zadejte platný název konference.</message>
+	<message key="metadata.property.displayName.conf-sponsor">Sponzor konference</message>
+	<message key="metadata.property.validationMessage.conf-sponsor">Prosím, zadejte platného sponzora konference.</message>
+	<message key="metadata.property.displayName.institution">Organizace</message>
+	<message key="metadata.property.validationMessage.institution">Prosím, zadejte platnou organizaci.</message>
+	<message key="metadata.property.displayName.fpage">První strana</message>
+	<message key="metadata.property.validationMessage.fpage">Prosím, zadejte platnou první stranu (musí být číselná hodnota).</message>
+	<message key="metadata.property.displayName.lpage">Poslední strana</message>
+	<message key="metadata.property.validationMessage.lpage">Prosím, zadejte platnou poslední stranu (musí být číselná hodnota).</message>
+	<message key="metadata.property.displayName.size">Počet stran</message>
+	<message key="metadata.property.validationMessage.size">Prosím, zadejte platný počet stran (musí být číselná hodnota).</message>
+	<message key="metadata.property.displayName.publisher-loc">Místo vydání</message>
+	<message key="metadata.property.validationMessage.publisher-loc">Prosím, zadejte platné místo vydání.</message>
+	<message key="metadata.property.displayName.publisher-name">Vydavatel</message>
+	<message key="metadata.property.validationMessage.publisher-name">Prosím zadejte platného vydavatele.</message>
+	<message key="metadata.property.displayName.isbn">ISBN</message>
+	<message key="metadata.property.validationMessage.isbn">prosím zadejte platnou hodnotu ISBN (9 nebo 13 čísel).</message>
+	<message key="metadata.property.displayName.issn">Tiskové ISSN</message>
+	<message key="metadata.property.validationMessage.issn">Prosím, zadejte platnou hodnotu tiskového ISSN.</message>
+	<message key="metadata.property.displayName.eissn">eISSN</message>
+	<message key="metadata.property.validationMessage.eissn">rosím, zadejte platnou hodnotu eISSN.</message>
+	<message key="metadata.property.displayName.doi">DOI</message>
+	<message key="metadata.property.validationMessage.doi">rosím, zadejte platnou hodnotu DOI.</message>
+	<message key="metadata.property.displayName.publisher-id">Vlastní ID publikace</message>
+	<message key="metadata.property.validationMessage.publisher-id">rosím, zadejte platnou hodnotu Vlastního ID publikace.</message>
+	<message key="metadata.property.displayName.coden">CODEN</message>
+	<message key="metadata.property.validationMessage.coden">rosím, zadejte platnou hodnotu CODEN.</message>
+	<message key="metadata.property.displayName.sici">SICI</message>
+	<message key="metadata.property.validationMessage.sici">rosím, zadejte platnou hodnotu SICI.</message>
+	<message key="metadata.property.displayName.pmid">PMID</message>
+	<message key="metadata.property.validationMessage.pmid">rosím, zadejte platnou hodnotu PMID.</message>
+	<message key="metadata.property.displayName.uri">Odkaz na publikaci</message>
+	<message key="metadata.property.validationMessage.uri">Prosím, zadejte platny alternativní odkaz na publikaci</message>
+	<message key="metadata.property.displayName.comment">Komentář</message>
+	<message key="metadata.property.validationMessage.comment">Prosím, zadejte platný komentář.</message>
+	<message key="metadata.property.displayName.annotation">Anotace</message>
+	<message key="metadata.property.validationMessage.annotation">Prosím, zadejte platnou anotaci.</message>
+	<message key="metadata.property.displayName.publication-type">Typ publikace</message>
+	<message key="metadata.property.validationMessage.publication-type">Prosím ujistěte se, že máte správně nastavený typ publikace. Podporované hodnoty jsou kniha (pro knihy a kapitoly) a časopis (pro časopisové články). V opačném případě nebude generátor citací fungovaat správně.</message>
+
+	<!-- MODS-specific messages -->
+	<message key="metadata.property.displayName.title-type">Typ názvu</message>
+    <message key="metadata.property.validationMessage.title-type">Ujistěte se prosím, že jste zadal/a platný typ názvu. Podporované hodnoty jsou "zkrácený", "přeložený", "alternativní" a "jednotný".</message>
+    <message key="metadata.property.displayName.nonSort">Ignorovat část názvu při třídění</message>
+    <message key="metadata.property.validationMessage.nonSort">Zadejte prosím pouze ty počáteční znaky, které má systém ignorovat při třídění názvů.</message>
+    <message key="metadata.property.displayName.title">Název</message>
+    <message key="metadata.property.validationMessage.title">Zadejte prosím platný název.</message>
+    <message key="metadata.property.displayName.subTitle">Podtitul</message>
+    <message key="metadata.property.validationMessage.subTitle">Zadejte prosím platný podtitul.</message>
+    <message key="metadata.property.displayName.partNumber">Číslo dílu</message>
+    <message key="metadata.property.validationMessage.partNumber">Zadejte prosím platné číslo dílu.</message>
+    <message key="metadata.property.displayName.partName">Název dílu</message>
+    <message key="metadata.property.validationMessage.partName">Zadejte prosím platný název dílu.</message>
+    <message key="metadata.property.displayName.name-type">Typ autora</message>
+    <message key="metadata.property.validationMessage.name-type">Ujistěte se prosím, že jste zadal/a platný typ autora. Podporované hodnoty jsou "osobní", "společný" a "konferenční".</message>
+	<!-- FIXME: end -->
+
+	<message key="common.queue.long.submissionsUnassigned">Nepřiřazené příspěvky</message>
+	<message key="common.queue.long.myAssigned">Mé přiřazené příspěvky</message>
+	<message key="common.queue.long.submissionsArchived">Archivované příspěvky</message>
+	<message key="submission.authors">Autoři</message>
+	<message key="submission.mySubmissions">Mé autorské příspěvky</message>
+	<message key="submission.addFile">Nahrát soubor</message>
+	<message key="submission.agencies">Agentůry</message>
+	<message key="submission.abstractViews">Shlédnutí abstraktu</message>
+	<message key="submission.accepted">Přijato</message>
+	<message key="submission.acknowledge">Potvrzeno</message>
+	<message key="submission.addSuppFile">Přidat doplňkové soubory</message>
+	<message key="submission.ask">Zeptat se</message>
+	<message key="submission.attachedFile">Přidělené soubory</message>
+	<message key="submission.backToSubmissionEditing">Zpět k editování příspěvku</message>
+	<message key="submission.changeComments">Změnit na</message>
+	<message key="submission.citations">Reference</message>
+	<message key="submission.citations.editor.citationlist.approved">Schváleno</message>
+	<message key="submission.citations.editor.citationlist.deleteCitationConfirmation">Opravdu chcete odstranit tuto citaci?</message>
+    <message key="submission.citations.editor.citationlist.errorDeletingCitation">Odstranění citace se nezdařilo. Odešlete prosím chybové hlášení.</message>
+    <message key="submission.citations.editor.citationlist.newCitation">Nová citace</message>
+    <message key="submission.citations.editor.citationlist.notApproved">Neschváleno</message>
+    <message key="submission.citations.editor.citationlist.title">Upravit citace</message>
+    <message key="submission.citations.editor.clickToEdit">Kliknutím upravte.</message>
+    <message key="submission.citations.editor.details.authorQuery">Zeptat se autora</message>
+    <message key="submission.citations.editor.details.authorQueryBody">Vaše zpráva pro autora:</message>
+    <message key="submission.citations.editor.details.authorQueryExplanation">Můžete požádat autora o další informace vztahující se k této citaci. Zprávu odešlete e-mailem kliknutím na tlačítko Odeslat.</message>
+    <message key="submission.citations.editor.details.authorQuerySubject">Předmět:</message>
+    <message key="submission.citations.editor.details.cannotSelectDefaultForLabel">Popisek pole nelze odstranit. Odstraňte prosím celé pole, pokud jej nepotřebujete.</message>
+    <message key="submission.citations.editor.details.checkInGoogleScholar">Zkontrolovat ve službě Google Scholar</message>
+    <message key="submission.citations.editor.details.changeFieldInfo">Vyberte zadáním několika prvních písmen...</message>
+    <message key="submission.citations.editor.details.citationExportPreview">Náhled exportu citace</message>
+    <message key="submission.citations.editor.details.citationImprovementResultsActive">Kontrola výstupů vnitřních citačních služeb (kliknutím zavřete)</message>
+    <message key="submission.citations.editor.details.citationImprovementResultsInactive">Kontrola výstupů vnitřních citačních služeb (kliknutím otevřete)</message>
+    <message key="submission.citations.editor.details.citationServices">Citační služby</message>
+    <message key="submission.citations.editor.details.clickToDismissMessage">Kliknutím na text označíte zprávu za přečtenou.</message>
+    <message key="submission.citations.editor.details.databaseQueryExplanation">Níže najdete seznam citačních služeb nastavených pro váš časopis. Služby, které váš správce považuje za nejrelevantnější, byly vybrány předem. Při vyhledávání můžete podle potřeby zahrnout dodatečné služby nebo naopak vyjmout stávající.</message>
+    <message key="submission.citations.editor.details.dataSaved">Změny byly uloženy.</message>
+    <message key="submission.citations.editor.details.editRawCitationDatabaseServices">Vybrat služby citačních databází:</message>
+    <message key="submission.citations.editor.details.editRawCitationExpertSettingsActive">Export nastavení citací (Kliknutím zavřete)</message>
+    <message key="submission.citations.editor.details.editRawCitationExpertSettingsInactive">Export nastavení citací (Kliknutím otevřete)</message>
+    <message key="submission.citations.editor.details.editRawCitationExtractionServices">Vybrat služby pro extrakci citací:</message>
+    <message key="submission.citations.editor.details.editRawCitationFilterValidationError">Vnitřní chyba: Neplatný výběr filtru. Odešlete prosím chybové hlášení.</message>
+    <message key="submission.citations.editor.details.explainImprovementOptions">Pokud jste při použití výchozího nastavení neobdržel/a uspokojivé výsledky, máte několik dalších možností, jak citaci vylepšit. Často pomůže ruční úprava důležitých polí (např. název a autor) a následný opětovný pokus. Pokud to nestačí, můžete se obrátit na službu Google Scholar nebo požádat autora o podrobnosti.</message>
+    <message key="submission.citations.editor.details.googleScholar">Google Scholar</message>
+    <message key="submission.citations.editor.details.googleScholarExplanation">I když daná citace nebyla nalezena ani jednou z připojených citačních služeb, můžete stále využít vyhledávání položky ve službě Google Scholar. Google Scholar bohužel neposkytuje použitelné rozhraní pro jednotlivá pole, proto neexistuje možnost automatického propojení nalezených výsledků s tímto asistentem. Informace z výsledku hledání budete muset zkopírovat ručně.</message>
+    <message key="submission.citations.editor.details.manualEditing">Ruční úpravy</message>
+    <message key="submission.citations.editor.details.messages">Upozornění (Kliknutím na text označíte zprávu za přečtenou)</message>
+    <message key="submission.citations.editor.details.newFieldInfo">... Kliknutím sem přidáte nové pole...</message>
+    <message key="submission.citations.editor.details.queryCitation">Opětovný požadavek na citační služby</message>
+    <message key="submission.citations.editor.details.queryGoogleScholar">Hledat ve službě Google Scholar</message>
+    <message key="submission.citations.editor.details.pleaseClickOnCitationToStartEditing">
+      <![CDATA[<p>Vítejte v procesu úpravy citací. Kliknutím na citaci v seznamu vlevo otevřete položku v tomto okně, kde můžete zkontrolovat přesnost citování. Budete rovněž moci citaci porovnat s výsledky hledání v citačních databázích, které nastavil správce časopisu, a také ji ručně upravovat.</p> <h4>Orientace v rozhraní</h4> <p>Kliknutím na jednu z citací vlevo zahájíte úpravy.</p> <p>Světle modrým oddělovačem mezi oknem a sloupcem lze posouvat. Pohybujte s ním oběma směry podle toho, zda právě potřebujete lepší přehled o seznamu citací, nebo naopak více prostoru pro úpravy.</p> <p>Prostor rozhraní rozšíříte kliknutím na tlačítko <strong>Celá obrazovka</strong>. K návratu zpět do normálního zobrazení klikněte na tlačítko <strong>Ukončit režim celé obrazovky</strong>.</p> <h4>Přidávání a odstraňování citací</h4> <p>Citace lze přidávat kliknutím na ikonu <strong>Nová citace</strong> v pravém horním rohu sloupce se seznamem citací. Citace lze odstraňovat kliknutím na červenou ikonu <strong>Odstranit</strong> nalevo od citace.</p> <h4>Úprava citací</h4> <p>Kliknutím na jednu z položek se citace otevře v tomto okně, kde ji můžete upravovat. Zobrazí se vám původní verze tak, jak ji vytvořil autor, spolu s verzí extrahovanou z databáze, kterou se automaticky pokusil vyhledat průvodce. Původní citaci nebo její části budete moci ručně upravit, porovnat ji s výsledky nastavených citačních databází; vyhledat položku ve službě Google Scholar a také poslat žádost o další informace autorovi.</p> <p>Jakmile úpravy uspokojivě dokončíte, kliknutím na tlačítko <strong>Schválit a uložit</strong> se automaticky přesunete na další neschválenou citaci. Tímto způsobem můžete velmi rychle zpracovat i rozsáhlý seznam citací. Po schválení všech citací vás průvodce přesune na stránku <strong>Export citací</strong>.</p>]]>
+    </message>
+    <message key="submission.citations.editor.details.processRawCitation">Proces</message>
+    <message key="submission.citations.editor.details.processRawCitationGoAhead">Pokračovat</message>
+    <message key="submission.citations.editor.details.processRawCitationTitle">Změnit původní citaci</message>
+    <message key="submission.citations.editor.details.processRawCitationWarning">Chystáte se změnit původní text citace. Tato změna nahradí obsah všech polí nově vytvořenými hodnotami. Odstraní se tak všechny případné ruční úpravy.</message>
+    <message key="submission.citations.editor.details.saveAndApprove">Schválit a uložit</message>
+    <message key="submission.citations.editor.details.saveAndRevokeApproval">Zrušit schválení</message>
+    <message key="submission.citations.editor.details.sendAuthorQuery">Odeslat zprávu</message>
+    <message key="submission.citations.editor.details.sendAuthorQuerySuccess">Zpráva byla odeslána!</message>
+    <message key="submission.citations.editor.details.sourceResultsUse">Použít</message>
+    <message key="submission.citations.editor.details.sourceResultsUseAll">Použít vše</message>
+    <message key="submission.citations.editor.details.sourceResultsUseAllExplanation">Kliknutím přesunete všechny výsledky z tohoto zdroje přímo do vašeho seznamu polí.</message>
+    <message key="submission.citations.editor.details.sourceResultsUseExplanation">Kliknutím přesunete tento výsledek přímo do vašeho seznamu polí.</message>
+    <message key="submission.citations.editor.details.rawCitation">Původní text citace</message>
+    <message key="submission.citations.editor.details.rawCitationRequired">Je třeba zadat text citace.</message>
+    <message key="submission.citations.editor.details.unsavedChanges">Citace obsahuje neuložená data. Kliknutím na tlačítko Uložit změny zachováte. Tlačítko Zrušit změny odstraní.</message>
+    <message key="submission.citations.editor.details.dontShowMessageAgain">Tuto zprávu příště nezobrazovat.</message>
+    <message key="submission.citations.editor.edit">Upravit citace</message>
+    <message key="submission.citations.editor.export">Exportovat citace</message>
+    <message key="submission.citations.editor.export.exportDescription">
+      <![CDATA[<a id="markForExport" href="">Kliknutím sem</a> vyberete všechna výstupní data. Text pak můžete zkopírovat a vložit do dokumentu.]]>
+    </message>
+    <message key="submission.citations.editor.export.filterSelectionDescription">Vyberte jednu z následujících možností exportu.</message>
+    <message key="submission.citations.editor.export.filterSelectionError">Nevybral/a jste ani jednu z možností.</message>
+    <message key="submission.citations.editor.export.foundUnapprovedCitationsMessage">
+      <![CDATA[<p>Zatím nebyly schváleny všechny citace. Před exportem prosím navštivte kartu <strong>Upravit citace</strong> a ujistěte se, že jste schválil/a všechny citace. Schválené citace jsou po levé straně označeny tmavě modrým pruhem.</p>]]>
+    </message>
+    <message key="submission.citations.editor.export.noExportOutput">Výstupní filtr "{$filterName}" způsobil chybu. Odešlete prosím chybové hlášení.</message>
+    <message key="submission.citations.editor.export.pleaseSelectXmlFilter">Možnosti výstupu XML:</message>
+    <message key="submission.citations.editor.export.pleaseSelectPlaintextFilter">Citační styl výstupu (experimentální funkce!):</message>
+    <message key="submission.citations.editor.introduction">Úvod</message>
+    <message key="submission.citations.editor.introduction.introductionMessage">
+      <![CDATA[<h4>Vítejte v Průvodci formátováním citací!</h4> <p>Můžete zde označovat citace poskytnuté autorem a připravit je k exportu podle formátu NLM 2.3 nebo XML 3.0, popřípadě jako textový výstup. Tento nástroj se nejprve pokusí extrahovat a rozpoznat citace tak, jak byly vloženy, můžete ale kdykoli zasáhnout a výsledky upravit.</p> <ul> <li><p><strong>Nastavení průvodce</strong></p> <p>Průvodce formátováním citací nastavuje správce časopisu v rámci sekce <a href="{$citationSetupUrl}">Nastavení časopisu (krok 3.7): Průvodce formátováním citací</a>. Lze zde přidávat, nastavovat i odstraňovat různé nástroje pro extrakci a kontrolu citací. Více informací vám poskytne správce časopisu.</p></li> <li><p><strong>Orientace v rozhraní průvodce</strong></p> <p>Klikáním na jednotlivé karty přepínáte mezi sekcemi <strong>Úvod</strong>, <strong>Úprava citací</strong> a <strong>Export citací</strong>. Prostor rozhraní rozšíříte kliknutím na tlačítko <strong>Celá obrazovka</strong>. K návratu zpět do normálního zobrazení klikněte na tlačítko <strong>Ukončit režim celé obrazovky</strong>. Chcete-li tuto úvodní kartu zcela odebrat, klikněte na tlačítko níže.</p></li> <li><p><strong>Vyžádání citací</strong></p> <p>Pokud správce časopisu povolí Průvodce formátováním citací, autorům se během vkládání příspěvku do systému zobrazí výzva k vložení seznamu zdrojů. Tento seznam bude vyžádán odděleně od vlastního rukopisu. Po vložení příspěvku autoři také mohou tento seznam zdrojů kdykoli pozměnit tím, že upraví metadata příspěvku. (Pozor, tento krok přepíše všechny úpravy, které jste v citacích provedl/a prostřednictvím tohoto nástroje.)</p></li> <li><p><strong>Úprava citací</strong></p> <p>Průvodce formátováním citací se pokusí rozpoznat a extrahovat jednotlivé citace z autorova seznamu zdrojů. Můžete systematicky kontrolovat přesnost každého pokusu o extrakci pomocí porovnání s externími databázemi, upravovat nebo doplňovat nesprávné informace v citačních záznamech, stejně jako schvalovat, odstraňovat a vytvářet nové citace.</p> <p>Všechny konečné verze citací musí být před exportem schváleny.</p></li> <li><p><strong>Export citací</strong></p> <p>Citace lze exportovat jako soubor XML nebo jako prostý text. Možnosti exportu do XML aktuálně zahrnují formáty <a href="http://dtd.nlm.nih.gov/publishing/">NLM Journal Publishing</a> 2.3 a <a href="http://www.ncbi.nlm.nih.gov/pmc/pmcdoc/tagging-guidelines/article/tags.html#el-reflist">ref-list XML</a> 3.0. Výběrem jedné z těchto možností vytvoříte část kódu ve formátu XML, který lze přidat do kódu NLM XML.</p> <p>Experimentální možnosti exportu zahrnují citační formáty ABNT, APA, MLA a Vancouver. Tyto možnosti poskytují textové výstupy, které lze vložit do textové sazby článku (např. při použití programů Microsoft Word, Open Office, Adove InDesign atd.). Každá citace zahrnuje vložený odkaz, který danou citaci automaticky vyhledá ve službě Google Scholar.</p></li> </ul>]]>
+    </message>
+    <message key="submission.citations.editor.loadMessage">Počkejte prosím na načtení průvodce formátováním citací.</message>
+    <message key="submission.citations.editor.pleaseAddParserFilter">
+      <![CDATA[Než budete průvodce formátováním citací používat, požádejte prosím správce vašeho časopisu, aby <a href="{$citationSetupUrl}">do systému přidal alespoň jednu službu pro extrakci citací</a>.]]>
+    </message>
+    <message key="submission.citations.editor.pleaseConfigureOutputStyle">
+      <![CDATA[Než budete průvodce formátováním citací používat, požádejte prosím správce vašeho časopisu, aby <a href="{$citationSetupUrl}">nastavil styl exportovaných citací</a>.]]>
+    </message>
+    <message key="submission.citations.editor.pleaseImportCitationsFirst">
+      <![CDATA[<p>V tomto článku nejsou žádné citace.</p><p>Otevřete prosím <a href="{$articleMetadataUrl}">metadata</a> článku a zadejte seznam zdrojů nebo citace vložte ručně v editoru kliknutím na tlačítko Přidat položku.</p>]]>
+    </message>
+    <message key="submission.citations.editor.pleaseSelect">Vyberte prosím...</message>
+    <message key="submission.citations.editor.pleaseSetup">
+      <![CDATA[Než budete průvodce formátováním citací používat, požádejte prosím správce vašeho časopisu, aby <a href="{$citationSetupUrl}">povolil úpravu citací</a>.]]>
+    </message>
+    <message key="submission.citations.editor.unprocessedCitations">Systém zatím stále zpracovává citace z tohoto článku. Aktuální seznam citací obsahuje pouze ty citace, které již byly zpracovány. Kliknutím na tlačítko Aktualizovat zobrazíte položky, jejichž zpracování bylo mezitím dokončeno.</message>
+    <message key="submission.citations.editor.unprocessedCitationsButton">Aktualizovat seznam citací</message>
+    <message key="submission.citations.editor.unprocessedCitationsButtonTitle">Kliknutím aktualizujete seznam citací.</message>
+    <message key="submission.citations.filter.invalidMetadata">Ve filtru "{$filterName}" došlo k chybě: Jedna z informací získaných ze zdroje dat (např. webové služby) neodpovídala vnitřnímu formátu metadat. Výsledky hledání byly proto odmítnuty. Odešlete prosím chybové hlášení.</message>
+    <message key="submission.citations.filter.noResultFromFilterError">Některé citační služby nenalezly žádné výsledky. Můžete se pokusit o zpřesněné vyhledávání tím, že pole ručně upravíte a zadáte požadavek znovu. Pokud to nepomůže, hledaná citace v žádné připojené databázi neexistuje.</message>
+    <message key="submission.citations.filter.unsupportedPublicationType">Nepodporovaný nebo chybějící typ publikace. Upravte prosím citaci ručně a zadejte typ publikace (povolené typy jsou "kniha", "časopis", "závěrečná práce" a "zápis z konference").</message>
+    <message key="submission.citations.filter.webserviceError">Webová služba filtru "{$filterName}" odpověděla chybou při pokusu o zpracování následující adresy: {$webserviceUrl}. Je možné, že je tato webová služba dočasně nedostupná. Můžete ale stále pracovat se zbývajícími službami a také uložit své výsledky. Rovněž to můžete zkusit později. Pokud chyba přetrvává, požádejte prosím správce časopisu o deaktivaci této služby a odešlete hlášení o chybě.</message>
+    <message key="submission.citations.filter.webserviceResultTransformationError">Ve filtru "{$filterName}" došlo k chybě: Převod výsledků ve formátu XML (např. z webové služby) na textová metadata do jednotlivých polí selhal. Webová služba pravděpodobně poskytla neplatná nebo nekompletní data. Odešlete prosím hlášení o chybě.</message>
+    <message key="submission.citations.metadata.changeWarning">Opravdu chcete aktualizovat svůj seznam zdrojů? Kliknutím na tlačítko OK přepíšete jakékoli změny provedené editory. Pokud si nejste jist/á, zda byste měl/a zasahovat do seznamu odkazů, obraťte se na editora, který má na starosti váš příspěvek.</message>
+	<message key="submission.comments.addComment">Přidat komentář</message>
+	<message key="submission.comments.comments">Komentáře</message>
+	<message key="submission.comments.confirmDelete">Jste si jistý, že chcete smazat tento komentář?</message>
+	<message key="submission.comments.corrections">Korekce</message>
+	<message key="submission.comments.editComment">Upravit komentář</message>
+	<message key="submission.comments.importPeerReviews">Importovat recenzní posudky</message>
+	<message key="submission.comments.importPeerReviews.reviewerLetter">Recenzent {$reviewerLetter}:</message>
+        <message key="submission.comments.addReviews">Přidat recenze k e-mailu</message>
+	<message key="submission.comments.noComments">Žádné komentáře</message>
+	<message key="submission.comments.noReviews">Žádné recenze</message>
+	<message key="submission.comments.review">Recenze</message>
+	<message key="submission.comments.sendDecisionToReviewers">Poslat recenzentům rozhodnutí editora</message>
+	<message key="submission.comments.subject">Předmět</message>
+	<message key="submission.complete">Dokončit</message>
+	<message key="submission.contributors">Seznam spolupracovníků</message>
+	<message key="submission.contributorsDescription">Seznam spolupracovníků přidružený k tomuto příspěvku může obsahovat odalší autoryy; jednotlivé autory kapitol vydání; redaktory vydání; a nebo překladatele. Jeden ze spolupracovníků by měl být určen jako primární kontakt pro korespondenci s redaktory; toto nutně nemusí být přispívající autor.</message>
+	<message key="submission.copyedited">Redigováno</message>
+    <message key="submission.copyediting">Redakce</message>
+    <message key="submission.coverage">Informace o záběru</message>
+    <message key="submission.coverage.tip">Následující pole poskytují informace o záběru vašeho příspěvku. Mohou zahrnovat historická období (1920-1940, 17. století) a geografická umístění ("Boston, MA" nebo "severní Anglie"). Pokud chcete, můžete vložit pole s příkladem záběru, který bude relevantní pro obor, kterým se zabýváte.</message>
+    <message key="submission.coverage.chron">Časový nebo historický záběr</message>
+    <message key="submission.coverage.geo">geo-prostorový záběr</message>
+    <message key="submission.coverage.sample">Příklad záběru</message>
+	<message key="submission.done">Hotovo</message>
+	<message key="submission.dueDate">Termín splnění</message>
+	<message key="submission.due">Termín</message>
+	<message key="submission.editing">Editování</message>
+        <message key="submission.editorial">Redigování</message>
+	<message key="submission.editMetadata">Editovat metadata</message>
+	<message key="submission.email.backToEmailLog">Zpět k protokolu emailů</message>
+	<message key="submission.email.confirmClearLog">Jste si jistý, že chcete vyčistit protokol emailů pro tento příspěvek?</message>
+	<message key="submission.email.confirmDeleteLogEntry">Jste si jistý, že chcete smazat tento záznam protokolu emailů?</message>
+	<message key="submission.email.deleteLogEntry">Smazat záznam protokolu</message>
+	<message key="submission.emailLog">Log e-mailů</message>
+	<message key="submission.event.backToEventLog">Zpět k protokolu událostí</message>
+	<message key="submission.event.confirmClearLog">Jste si jistý, že chcete vyčistit protokol událostí pro tento příspěvek?</message>
+	<message key="submission.event.confirmDeleteLogEntry">Jste si jistý, že chcete smazat tento záznam protokolu událostí?</message>
+	<message key="submission.event.deleteLogEntry">Smazat záznam protokolu</message>
+	<message key="submission.event.submissionSubmitted">Zahájení příspěvku dokončeno.</message>
+	<message key="submission.event.fileUploaded">Soubor "{$name}" (ID souboru {$fileId}-{$revision}) byl nahrán.</message>
+	<message key="submission.event.fileRevised">Oprava "{$name}" (ID souboru {$fileId}-{$revision}) byla nahrána.</message>
+	<message key="submission.event.general.metadataUpdated">Metadata příspěvku byla aktualizována</message>
+	<message key="submission.event.general.suppFileUpdated">Soubor příspěvku byl aktualizován</message>
+	<message key="submission.event.reviewer.reviewAcceptedByProxy">Přidělení recenze akceptováno náhradníkem</message>
+	<message key="submission.event.reviewer.reviewAccepted">Přidělení recenze akceptováno</message>
+	<message key="submission.event.reviewer.reviewCancelled">Přidělená recenze zrušena</message>
+	<message key="submission.event.reviewer.reviewDeclined">Přidělení recenze odmítnuto</message>
+	<message key="submission.event.reviewer.reviewDueDate">Změněn termín splnění recenze</message>
+	<message key="submission.event.reviewer.reviewerAssigned">Recenzent přidělen k příspěvku</message>
+	<message key="submission.event.reviewer.reviewerRated">Hodnocení recenzenta odesláno</message>
+	<message key="submission.event.reviewer.reviewerUnassigned">Recenzent odebrán od příspěvku</message>
+	<message key="submission.event.reviewer.reviewFile">Soubor s recenzí aktualizován</message>
+	<message key="submission.event.reviewer.reviewInitiated">Přidělená recenze zahájena</message>
+	<message key="submission.event.reviewer.reviewRecommendation">Soubor s recenzním doporučením</message>
+	<message key="submission.event.reviewer.reviewReinitiated">Přidělená recenze znovu zahájena</message>
+	<message key="submission.event.reviewer.reviewResubmitted">Recenze znovu odeslána</message>
+	<message key="submission.event.reviewer.reviewRevision">Recenzentův soubor s recenzí aktualizován</message>
+	<message key="submission.files">Soubory</message>
+        <message key="submission.files.downloadAll">Stáhnout všechny soubory</message>
+	<message key="submission.galley">Sazebnice</message>
+	<message key="submission.history.clearLog">Vyčistit protokol</message>
+	<message key="submission.history">Historie</message>
+	<message key="submission.history.noLogEntries">Žádné protokolové záznamy.</message>
+	<message key="submission.history.recentLogEntries">Nedávné záznamy</message>
+	<message key="submission.history.submissionEmailLog">Protokol emailů</message>
+	<message key="submission.history.submissionEventLog">Protokol událostí</message>
+	<message key="submission.history.submissionNotes">Poznámky k příspěvku</message>
+	<message key="submission.history.viewLog">Zobrazit protokol</message>
+	<message key="submission.indexing">Indexace</message>
+	<message key="submission.initiated">Zahájeno</message>
+
+	<!-- Information Center -->
+	<message key="submission.informationCenter.submissionInfo">Informace k příspěvku</message>
+	<message key="submission.informationCenter.metadata">Metadata</message>
+	<message key="submission.informationCenter.notes">Poznámky</message>
+	<message key="submission.informationCenter.history">Historie</message>
+	<message key="submission.informationCenter.history.allEvents">Zobrazit události z předchozích verzí</message>
+
+	<!-- Stage Participants -->
+	<message key="submission.stageParticipants.notify">Oznámit</message>
+
+	<message key="submission.lastModified">Naposledy změněno</message>
+	<message key="submission.layout.addGalley">Přidat sazebnici</message>
+	<message key="submission.layout.confirmDeleteGalley">Jste si jistý, že chcete trvale smazat tuto sazebnici?</message>
+	<message key="submission.layout.confirmDeleteGalleyImage">Jste si jistý, že chcete odstranit tento soubor ze sazebnice?</message>
+	<message key="submission.layout.confirmDeleteSupplementaryFile">Jste si jistý, že chcete trvale smazat tento doplňkový soubor?</message>
+	<message key="submission.layout.deleteGalleyStylesheet">Smazat tento stylesheet.</message>
+	<message key="submission.layout.editGalley">Editovat sazebnici</message>
+	<message key="submission.layout.galleyFileData">Informace o souboru sazebnice</message>
+	<message key="submission.layout.galleyFormat">Formát sazebnice</message>
+	<message key="submission.layout.galleyHTMLData">HTML soubory sazebnice</message>
+	<message key="submission.layout.galleyImages">Obrázky</message>
+	<message key="submission.layout.galleyLabelInstructions">Popisek sazebnice je používán pro identifikaci formátu souboru (např. HTML, PDF atd.).</message>
+	<message key="submission.layout.galleyLabel">Popisek</message>
+	<message key="submission.layout.galleyLabelRequired">Je vyžadován popisek sazebnice.</message>
+	<message key="submission.layout.galleyLanguageRequired">Je vyžadován jazyk sazebnice.</message>
+	<message key="submission.layout.galleyLocaleRequired">Je vyžadováno umístění sazebnice.</message>
+  <message key="submission.layout.galleyRemoteURL">Adresa URL</message>
+	<message key="submission.layout.galleyRemoteURLValid">Prosím, zadejte platnou adresu URL (včetně http://).</message>
+	<message key="submission.layout.galleyNoImages">Žádné obrázky</message>
+	<message key="submission.layout.galleys">Sazebnice</message>
+	<message key="submission.layout.galleyStylesheet">Stylesheet sazebnice</message>
+	<message key="submission.layout.galleyStyle">Styl</message>
+	<message key="submission.layout.initialGalleyCreation">Úvodní vytvoření sazebnice</message>
+	<message key="submission.layout.layoutFile">Soubor pro typografické úpravy</message>
+	<message key="submission.layout">Typografická úprava</message>
+	<message key="submission.layout.layoutVersion">Verze typografa</message>
+	<message key="submission.layout.newGalley">Vytvořit novou sazebnici</message>
+	<message key="submission.layout.newSupplementaryFile">Nahrát nový doplňkový soubor</message>
+	<message key="submission.layout.noStyleFile">K této sazebnici nebyl přidán žádný stylesheet.</message>
+	<message key="submission.layout.supplementaryFiles">Přehled doplňkových souborů</message>
+	<message key="submission.layout.viewingGalley">Prohlížení sazebnice příspěvků</message>
+	<message key="submission.layout.viewProof">Zobrazit pro korekci</message>
+	<message key="submission.metadata">Metadata příspěvku</message>
+	<message key="submission.noReviewAssignments">Žádné přidělené recenze</message>
+	<message key="submission.notes.addNewNote">Přidat novou poznámku</message>
+	<message key="submission.notes.attachedFile">Přiložený soubor</message>
+	<message key="submission.notes.backToSubmissionNotes">Zpět na poznámky k příspěvku</message>
+	<message key="submission.notes.breadcrumb">Poznámky</message>
+	<message key="submission.notes.clearAllNotes">Vyprázdnit všechny poznámky</message>
+	<message key="submission.notes.collapseNotes">Zaklapnout poznámky</message>
+	<message key="submission.notes.confirmDeleteAll">Odstranit všechny poznámky k příspěvku?</message>
+	<message key="submission.notes.confirmDelete">Odstranit tuto poznámku k příspěvku?</message>
+	<message key="submission.notes.createNewNote">Vytvořit novou poznámku</message>
+	<message key="submission.notes.deleteNote">Smazat poznámku</message>
+	<message key="submission.notes.editNote">Upravit poznámku</message>
+	<message key="submission.notes.expandNotes">Rozšířit poznámky</message>
+	<message key="submission.notes.noSubmissionNotes">Žádné poznámky k příspěvku</message>
+	<message key="submission.notes.removeUploadedFile">Odstranit nahraný soubor</message>
+	<message key="submission.notes">Poznámky k příspěvku</message>
+	<message key="submission.notes.updateNote">Aktualizovat poznámku</message>
+	<message key="submission.notes.viewNotes">Zobrazit poznámky</message>
+	<message key="submission.originalFile">Původní soubor</message>
+	<message key="submission.page.editing">#{$id} Editování</message>
+	<message key="submission.page.history">#{$id} Historie</message>
+	<message key="submission.page.review">#{$id} Recenze</message>
+	<message key="submission.page.summary">#{$id} Souhrn</message>
+	<message key="submission.page.citations">#{$id} Citace</message>
+	<message key="submission.peerReview"><![CDATA[Recenzní&nbsp;řízení]]></message>
+	<message key="submission.recommendation">Doporučení: {$recommendation}</message>
+	<message key="submission.rejected">Zamítnut</message>
+	<message key="submission.request">Požádat</message>
+	<message key="submission.response">Odpověď</message>
+	<message key="submission.restrictions">Omezení</message>
+	<message key="submission.reviewMetadata">Zkontrolovat metadata</message>
+	<message key="submission.review">Recenze</message>
+        <message key="submission.reviewed">Recenzováno</message>
+	<message key="submission.reviewVersion">Verze recenze</message>
+        <message key="submission.rights">Práva</message>
+	<message key="submission.rights.tip">Pokud chcete můžete poskytnout úplne prohlášení o přístupových právek držených k tomuto příspěvku.</message>
+	<message key="submissions.active">Aktivní</message>
+	<message key="submissions.archived">Archivované</message>
+	<message key="submission.saveMetadata">Uložit metadata</message>
+	<message key="submissions.completed">Dokončeno</message>
+	<message key="submissions.declined">Nepřijaté</message>
+	<message key="submissions.incomplete">Nekompletní</message>
+	<message key="submissions.noSubmissions">Žádné příspěvky</message>
+	<message key="submissions.queuedEditing">Ve frontě k editování</message>
+	<message key="submissions.queued">Ve frontě</message>
+	<message key="submissions.queuedUnassigned">Čeká na přidělení</message>
+	<message key="submissions.ruling">Rozhodnuto</message>
+	<message key="submission.source">Zdroj</message>
+	<message key="submission.source.tip">Je tento příspěvek odvozen od jiného zdroje? Pokud ano, poskytněte URL adresu nebo popis zdroje.</message>
+	<message key="submission.subjectClass">Předmět příspěvku</message>
+	<message key="submission.subjectClass.tip">Prosím, popište svůj příspěvek za použití několik klíčových frází. Můžete také specifikovat předmět pomocí několika klíčových slov později ve formuláři.</message>
+	<message key="submissions.submit">Odeslat</message>
+	<message key="submissions.submitted">Odeslané</message>
+        <message key="submission.submission">Příspěvek</message>
+	<message key="submission.start">Zahájit</message>
+	<message key="submission.submissionHistory">Historie příspěvku</message>
+	<message key="submission.submissionManuscript">Rukopis příspěvku</message>
+	<message key="submission.submissionReview">Recenze příspěvku</message>
+	<message key="submission.submitter">Odesílatel</message>
+	<message key="submission.submit.finishSubmission">Dokončit příspěvek</message>
+	<message key="submission.submit.selectFile">Vybrat soubor</message>
+	<message key="submission.submit.fileInformation">Informace o souboru</message>
+	<message key="submission.submit.fileAdded">Přidat soubor</message>
+	<message key="submission.submit.newFile">Zaslat nový soubor</message>
+	<message key="submission.submit.errorDeletingAuthor">Vyskytla se chyba při odstranění autora.</message>
+	<message key="submission.submit.metadataForm">Další upřesnění</message>
+	<message key="submission.submit.metadataForm.tip">Zadejte další upřesňující informace k Vašemu příspěvku. Stiskněte "enter" po každém vloženém termínu.</message>
+	<message key="submission.submit.submissionLocale">Jazyk příspěvku</message>
+	<message key="submission.submit.submissionLocaleDescription">Toto nakladatelství přijímá příspěvky v několika. Prozím zvolte základní jazyk příspěvku v nabídce níže.</message>
+	<message key="submission.submit.submissionFiles">Soubory příspěvku</message>
+	<message key="submission.submit.dependentFiles">Přidružené soubory</message>
+	<message key="submission.manageDependentFiles">Spravovat přidružené soubory</message>
+	<message key="submission.upload.dependent">Nahrát přidružený soubor</message>
+	<message key="submission.dependent.upload.description">Nahrejte soubor, který potřeba k tomuto příspěvku, aby se zobrazoval správně (např. HTML, CSS apod.)</message>
+	<message key="submission.summary">Souhrn</message>
+	<message key="submission.supplementaryFiles">Doplňkové soubory</message>
+	<message key="submission.supportingAgencies">Podporující instituce (granty)</message>
+	<message key="submission.currentAgencies">Současné agentury</message>
+	<message key="submission.indexingInformation">Informace o indexování</message>
+	<message key="submission.titleAndAbstract">Název a abstrakt</message>
+	<message key="submission.type.tip"><![CDATA[Typ příspěvku je obvykle 'text', 'obrázek' nebo jiný multimediální typ jako je 'software' nebo 'interaktivní aplikace'. Prosím, zvolte neblížší typ pro Váš příspěvěk. Příklady můžete nalézt na <a target="_blank" href="http://dublincore.org/documents/2001/04/12/usageguide/generic.shtml#type">http://dublincore.org/documents/2001/04/12/usageguide/generic.shtml#type</a>]]></message>
+	<message key="submission.underway">Zpracovává se</message>
+	<message key="submission.uploadFileTo">Nahrát soubor k</message>
+	<message key="submission.createRemote">Vytvořit vzdálený přístup</message>
+	<message key="submission.viewMetadata">Zobrazit metadata</message>
+	<message key="submission.views">Zobrazení</message>
+	<message key="submission.uploadSuccessful">Váš soubor byl nahrán</message>
+	<message key="submission.uploadSuccessfulContinue">Váš soubor byl nahrán. Pokračujte na úpravu metadat souboru.</message>
+	<message key="submission.loadMessage">Prosím čekejte, Váš soubor je nahráván na server.</message>
+        <message key="submission.artworkFileDetails">Detaily souboru obrázku</message>
+	<message key="submission.fileDetails">Detaily souboru</message>
+	<message key="submission.nameRequired">Prosím, vyplňte položku jméno.</message>
+	<message key="submission.date.mmdd">MM-DD</message>
+	<message key="submission.date.yyyymmdd">RRRR-MM-DD</message>
+	<message key="submission.submit.selectPrincipalContact">Hlavní kontakt pro korespondenci s redakcí.</message>
+	<message key="submission.submit.contributorRole">Role spolupracovníka</message>
+	<message key="submission.submit.addAuthor">Přidat spolupracovníka</message>
+
+	<!-- Author Submission -->
+	<message key="author.submit.submissionCitations">Uveďte formátovaný seznam referencí pro práce citované v tomto příspěvku.</message>
+	<message key="log.review.reviewerAssigned">{$reviewerName} byl přidělen pro recenzování příspěvku {$submissionId} v recenzním kole {$round}.</message>
+
+	<message key="submission.reviewForm">Formulář posudku</message>
+	<message key="submission.reviewFormResponse">Odpovědi na formulář posudku</message>
+</locale>
