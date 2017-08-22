@@ -185,6 +185,17 @@
 	<complexType name="author">
 		<complexContent>
 			<extension base="pkp:identity">
+                                <sequence>
+                                    <!--MUNIPRESS-->
+                                        <element name="uco" type="int" minOccurs="0" maxOccurs="1" />
+                                        <element name="titulyPred" type="string" minOccurs="0" maxOccurs="1"/>
+                                        <element name="titulyZa" type="string" minOccurs="0" maxOccurs="1"/>
+                                        <element name="poznamka" type="string" minOccurs="0" maxOccurs="unbounded"/>
+                                        <element name="druhePrijmeni" type="string" minOccurs="0" maxOccurs="unbounded"/>
+                                        <element name="zobrazHlavicka" type="string" minOccurs="0" maxOccurs="1"/>
+                                        <element name="zobrazAutori" type="string" minOccurs="0" maxOccurs="1"/>
+                                        <element name="zobrazOstatni" type="string" minOccurs="0" maxOccurs="1"/>
+                                </sequence>
 				<attribute name="primary_contact" type="boolean" default="false" />
 				<attribute name="user_group_ref" type="pkp:user_group_ref" use="required" />
 				<attribute name="include_in_browse" type="boolean" default="true" />

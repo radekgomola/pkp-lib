@@ -99,6 +99,19 @@ class PKPAuthorNativeXmlFilter extends NativeExportFilter {
 		$this->createOptionalNode($doc, $authorNode, 'url', $author->getUrl());
 
 		$this->createLocalizedNodes($doc, $authorNode, 'biography', $author->getBiography(null));
+                
+                /***********
+                 * MUNIPRESS
+                 ***********/
+                $this->createOptionalNode($doc, $authorNode, 'uco', $author->getUCO());               
+                $this->createOptionalNode($doc, $authorNode, 'titulyPred', $author->getTitulyPred());
+                $this->createOptionalNode($doc, $authorNode, 'titulyZa', $author->getTitulyZa());
+                $this->createOptionalNode($doc, $authorNode, 'poznamka', $author->getPoznamka());
+                $this->createOptionalNode($doc, $authorNode, 'druhePrijmeni', $author->getDruhePrijmeni());
+                $this->createOptionalNode($doc, $authorNode, 'zobrazHlavicka', $author->getZobrazHlavicka());   
+                $this->createOptionalNode($doc, $authorNode, 'zobrazAutori', $author->getZobrazAutori());   
+                $this->createOptionalNode($doc, $authorNode, 'zobrazOstatni', $author->getZobrazOstatni());
+                /*****************/
 
 		return $authorNode;
 	}

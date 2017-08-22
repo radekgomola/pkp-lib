@@ -106,6 +106,19 @@ class NativeXmlPKPAuthorFilter extends NativeImportFilter {
 				if (empty($locale)) $locale = $submission->getLocale();
 				$author->setBiography($n->textContent, $locale);
 				break;
+                                
+                        /**************
+                         * MUNIPRESS
+                        ***************/
+                        case 'uco': $author->setUCO($n->textContent); break;                        
+                        case 'titulyPred': $author->setTitulyPred($n->textContent); break;
+                        case 'titulyZa': $author->setTitulyZa($n->textContent); break;
+                        case 'poznamka': $author->setPoznamka($n->textContent);   break;
+                        case 'druhePrijmeni': $author->setDruhePrijmeni($n->textContent); break;
+                        case 'zobrazHlavicka': $author->setZobrazHlavicka($n->textContent); break;
+                        case 'zobrazAutori': $author->setZobrazAutori($n->textContent); break;
+                        case 'zobrazOstatni': $author->setZobrazOstatni($n->textContent); break;
+                        /****************/
 		}
 
 		$authorDao->insertObject($author);
