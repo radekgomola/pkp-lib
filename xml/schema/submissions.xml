@@ -268,7 +268,6 @@
 			<NOTNULL/>
 		</field>		
 		<field name="uco" type="I4" />
-		<field name="mu" type="I4" />
 		<field name="tituly_pred" type="C2" size="80"/>
 		<field name="tituly_za" type="C2" size="80" />
                 <field name="poznamka" type="X"/>
