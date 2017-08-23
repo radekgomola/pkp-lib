@@ -174,7 +174,22 @@ class SubmissionNativeXmlFilter extends NativeExportFilter {
 		$this->createLocalizedNodes($doc, $submissionNode, 'source', $submission->getSource(null));
 		$this->createLocalizedNodes($doc, $submissionNode, 'rights', $submission->getRights(null));
 
-		// add controlled vocabularies
+                 /***********
+                 * MUNIPRESS
+                 ***********/
+                $this->createOptionalNode($doc, $submissionNode, 'archivace', $submission->getArchivace());
+                $this->createOptionalNode($doc, $submissionNode, 'a_kol', $submission->getAKolektiv());
+                $this->createOptionalNode($doc, $submissionNode, 'cena', $submission->getCena()); 
+                $this->createOptionalNode($doc, $submissionNode, 'cena_ebook', $submission->getCenaEbook()); 		
+                $this->createOptionalNode($doc, $submissionNode, 'urlMunishop', $submission->getUrlMunishop());
+                $this->createOptionalNode($doc, $submissionNode, 'urlMunishop_ebook', $submission->getUrlMunishopEbook());
+                $this->createOptionalNode($doc, $submissionNode, 'poznamkaAdmin', $submission->getPoznamkaAdmin());                             
+                $this->createOptionalNode($doc, $submissionNode, 'datumVydani', $submission->getDatumVydani());
+                $this->createLocalizedNodes($doc, $submissionNode, 'urlWeb', $submission->getUrlWeb(null));
+                $this->createLocalizedNodes($doc, $submissionNode, 'poznamka', $submission->getPoznamka(null));
+                /*-------------*/
+                
+                // add controlled vocabularies
 		// get the supported locale keys
 		$supportedLocales = array_keys(AppLocale::getSupportedFormLocales());
 		$controlledVocabulariesMapping = $this->_getControlledVocabulariesMappings();
@@ -341,6 +356,7 @@ class SubmissionNativeXmlFilter extends NativeExportFilter {
 				'agencies' => array('SubmissionAgencyDAO', 'getAgencies', 'agency'),
 				'disciplines' => array('SubmissionDisciplineDAO', 'getDisciplines', 'disciplin'),
 				'subjects' => array('SubmissionSubjectDAO', 'getSubjects', 'subject'),
+                                'languages' => array('SubmissionLanguageDAO', 'getLanguages', 'language'),
 		);
 	}
 }

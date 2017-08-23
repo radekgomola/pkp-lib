@@ -232,10 +232,25 @@
 			<element name="type" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded" />
 			<element name="source" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded" />
 			<element name="rights" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded" />
+                        
+                        <!--MUNIPRESS-->
+                        <element name="archivace" type="string" minOccurs="0" maxOccurs="1"/>
+                        <element name="a_kol" type="string" minOccurs="0" maxOccurs="1"/>
+                        <element name="cena" type="int" minOccurs="0" maxOccurs="1"/>
+                        <element name="cena_ebook" type="int" minOccurs="0" maxOccurs="1"/>
+                        <element name="urlMunishop" type="string" minOccurs="0" maxOccurs="1"/>
+                        <element name="urlMunishop_ebook" type="string" minOccurs="0" maxOccurs="1"/>
+                        <element name="poznamkaAdmin" type="string" minOccurs="0" maxOccurs="1"/>
+                        <element name="datumVydani" type="date" minOccurs="0" maxOccurs="1"/>
+                        <element name="urlWeb" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded"/>
+                        <element name="poznamka" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded"/>
+                        <!-- MUNIPRESS END -->
+                        
 			<element ref="pkp:keywords" minOccurs="0" maxOccurs="unbounded" />
 			<element ref="pkp:agencies" minOccurs="0" maxOccurs="unbounded" />
 			<element ref="pkp:disciplines" minOccurs="0" maxOccurs="unbounded" />
 			<element ref="pkp:subjects" minOccurs="0" maxOccurs="unbounded" />
+                        <element ref="pkp:languages" minOccurs="0" maxOccurs="unbounded" />
 			<element ref="pkp:authors" minOccurs="1" maxOccurs="1" />
 			<element ref="pkp:submission_file" minOccurs="0" maxOccurs="unbounded" />
 			<element ref="pkp:representation" minOccurs="0" maxOccurs="unbounded" />
@@ -338,6 +353,14 @@
 		<complexType>
 			<sequence>
 				<element name="subject" type="string" minOccurs="1" maxOccurs="unbounded" />
+			</sequence>
+			<attribute name="locale" type="string" />
+		</complexType>
+	</element>
+        <element name="languages">
+		<complexType>
+			<sequence>
+				<element name="language" type="string" minOccurs="1" maxOccurs="unbounded" />
 			</sequence>
 			<attribute name="locale" type="string" />
 		</complexType>

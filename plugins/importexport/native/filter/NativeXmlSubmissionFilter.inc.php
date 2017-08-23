@@ -162,6 +162,29 @@ class NativeXmlSubmissionFilter extends NativeImportFilter {
 			case 'submission_file':
 				$this->parseSubmissionFile($n, $submission);
 				break;
+                            
+                        /***********
+                         * MUNIPRESS
+                         **********/
+                        case 'archivace':
+                                $submission->setArchivace($n->textContent);
+				break;
+                        case 'a_kol':
+                                $submission->setAKolektiv($n->textContent);
+				break;
+                        case 'cena': $submission->setCena($n->textContent);
+				break; 
+                        case 'cena_ebook': $submission->setCenaEbook($n->textContent);
+				break; 		
+                        case 'urlMunishop': $submission->setUrlMunishop($n->textContent);
+				break;
+                        case 'urlMunishop_ebook': $submission->setUrlMunishopEbook($n->textContent);
+				break;                                                   
+                        case 'datumVydani': $submission->setDatumVydani($n->textContent);
+				break;
+                        case 'poznamkaAdmin': $submission->setPoznamkaAdmin($n->textContent);
+				break;
+                        /*------------------*/
 			default:
 				$deployment->addError(ASSOC_TYPE_SUBMISSION, $submission->getId(), __('plugins.importexport.common.error.unknownElement', array('param' => $n->tagName)));
 		}
@@ -258,6 +281,11 @@ class NativeXmlSubmissionFilter extends NativeImportFilter {
 			'type' => 'setType',
 			'source' => 'setSource',
 			'rights' => 'setRights',
+                    
+                        //MUNIPRESS
+                        'urlWeb' => 'setUrlWeb',                               
+                        'poznamka' => 'setPoznamka',
+                        /*----------*/
 		);
 	}
 
@@ -271,6 +299,7 @@ class NativeXmlSubmissionFilter extends NativeImportFilter {
 			'agencies' => array('SubmissionAgencyDAO', 'insertAgencies'),
 			'disciplines' => array('SubmissionDisciplineDAO', 'insertDisciplines'),
 			'subjects' => array('SubmissionSubjectDAO', 'insertSubjects'),
+                        'languages' => array('SubmissionLanguageDAO', 'insertLanguages'),
 		);
 	}
 
