@@ -297,8 +297,8 @@
                 <field name="a_kol" type="I1" />
                 <field name="cena" type="I4" />
                 <field name="cena_ebook" type="I4" />
-                <field name="url_munishop" type="I8" />
-                <field name="url_munishop_ebook" type="I8" />                
+                <field name="url_munishop" type="C2" />
+                <field name="url_munishop_ebook" type="C2" />                
                 <field name="archiv" type="I1" />                
                 <field name="poznamka_admin" type="X" />                  
                 <field name="datum_vydani" type="D" />             
