@@ -31,6 +31,7 @@ define('STATUS_DECLINED', 4);
 define ('PERMISSIONS_FIELD_LICENSE_URL', 1);
 define ('PERMISSIONS_FIELD_COPYRIGHT_HOLDER', 2);
 define ('PERMISSIONS_FIELD_COPYRIGHT_YEAR', 3);
+define ('EDITOR_USER_GROUP', 14);
 
 abstract class Submission extends DataObject {
 	/**
@@ -277,7 +278,16 @@ abstract class Submission extends DataObject {
 		$lastUserGroupId = null;
 		$author = null;
 		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
+		
+                $i = 0; //Munipress
 		foreach($authors as $author) {
+                    /*Munipress*/
+                    if ($spotlight && $i == 3){
+                        $str .= "<br /> &#8230;";
+                        break;
+                    }
+                    if($author->getZobrazHlavicka() == 1){
+                    /*-----------*/    
 			if (!empty($str)) {
 				if ($lastUserGroupId != $author->getUserGroupId()) {
 					$userGroup = $userGroupDao->getById($lastUserGroupId);
@@ -289,6 +299,13 @@ abstract class Submission extends DataObject {
 			}
 			$str .= $lastOnly ? $author->getLastName() : $author->getFullName();
 			$lastUserGroupId = $author->getUserGroupId();
+                    /*MUNIPRESS*/    
+                        if ($lastUserGroupId == EDITOR_USER_GROUP){
+                            $str .= " (ed.)";
+                        }
+                    }
+                    $i++;
+                    /*----------*/
 		}
 
 		// If there needs to be a trailing user group title, add it
@@ -1029,6 +1046,220 @@ abstract class Submission extends DataObject {
 	 * @return string|null
 	 */
 	abstract function _getContextLicenseFieldValue($locale, $field);
+        
+        /***********
+         * MUNIPRESS
+         *************/
+        
+        /**
+	 * Vrací hodnotu moznosti "a kolektiv"
+	 * @return boolean
+	 */
+	function getArchivace() {
+		return $this->getData('archivace');
+        }
+
+	/**
+	 * Nastavuje hodnotu moznosti "a kolektiv"
+	 * @param $a_kol boolean
+	 */
+	function setArchivace($archivace) {
+		return $this->setData('archivace', $archivace);
+	}
+        
+        /**
+	 * Vrací hodnotu moznosti "a kolektiv"
+	 * @return boolean
+	 */
+	function getAKolektiv() {
+		return $this->getData('a_kol');
+        }
+
+	/**
+	 * Nastavuje hodnotu moznosti "a kolektiv"
+	 * @param $a_kol boolean
+	 */
+	function setAKolektiv($a_kol) {
+		return $this->setData('a_kol', $a_kol);
+	}
+
+        /**
+	 * Vrací cenu
+	 * @return int
+	 */
+	function getCena() {
+		return $this->getData('cena');
+        }
+
+	/**
+	 * Nastavuje cenu
+	 * @param $cena int
+	 */
+	function setCena($cena) {
+		return $this->setData('cena', $cena);
+	}
+
+        /**
+	 * Vrací cenu e-knihy
+	 * @return int
+	 */
+	function getCenaEbook() {
+		return $this->getData('cena_ebook');
+        }
+
+	/**
+	 * Nastavuje cenu e-knihy
+	 * @param $cena_ebook int
+	 */
+	function setCenaEbook($cena_ebook) {
+		return $this->setData('cena_ebook', $cena_ebook);
+	}
+
+        /**
+	 * Vrací ID pro url pro Munishop
+	 * @return int
+	 */
+	function getUrlMunishop() {
+		return $this->getData('urlMunishop');
+        }
+
+	/**
+	 * Nastavuje ID pro url pro Munishop
+	 * @param $urlMunihop int
+	 */
+	function setUrlMunishop($urlMunishop) {
+		return $this->setData('urlMunishop', $urlMunishop);
+	}
+
+        /**
+	 * Vrací ID pro url pro Munishop pro e-kniha
+	 * @return int 
+	 */
+	function getUrlMunishopEbook() {
+		return $this->getData('urlMunishop_ebook');
+        }
+
+	/**
+	 * Nastavuje ID pro url pro Munishop
+	 * @param $urlMunishop_ebook int
+	 */
+	function setUrlMunishopEbook($urlMunishop_ebook) {
+		return $this->setData('urlMunishop_ebook', $urlMunishop_ebook);
+	}
+        
+        /**
+	 * Vrací pocet stran
+	 * @return int
+	 */
+	function getPocetStran() {
+		return $this->getData('pocetStran');
+        }
+
+	/**
+	 * Nastavuje pocet stran
+	 * @param $pocetStran int
+	 */
+	function setPocetStran($pocetStran) {
+		return $this->setData('pocetStran', $pocetStran);
+	}
+        
+        /**
+	 * Vrací číslo vydání
+	 * @return int
+	 */
+	function getCisloVydani() {
+		return $this->getData('cisloVydani');
+        }
+
+	/**
+	 * Nastavuje číslo vydání
+	 * @param $cisloVydani int
+	 */
+	function setCisloVydani($cisloVydani) {
+		return $this->setData('cisloVydani', $cisloVydani);
+	}
+        
+        /**
+	 * Vraci lokalizovanou adresu webu
+	 * @return string
+	 */
+	function getLocalizedUrlWeb() {
+		return $this->getLocalizedData('urlWeb');
+	}
+        /**
+	 * Vrací url webu
+	 * @return string
+	 */
+	function getUrlWeb($locale) {
+		return $this->getData('urlWeb', $locale);
+        }
+
+	/**
+	 * Nastavuje url webu
+	 * @param $urlWeb string
+	 */
+	function setUrlWeb($urlWeb, $locale) {
+		return $this->setData('urlWeb', $urlWeb, $locale);
+	}      
+              
+        /**
+	 * Vraci lokalizovanou poznámku
+	 * @return string
+	 */
+	function getLocalizedPoznamka() {
+		return $this->getLocalizedData('poznamka');
+	}
+
+	/**
+	 * Vrací poznámku
+	 * @param $locale
+	 * @return string
+	 */
+	function getPoznamka($locale) {
+		return $this->getData('poznamka', $locale);
+	}
+        
+        /**
+	 * Nastavuje poznámku
+	 * @param $poznamka string
+	 * @param $locale
+	 */
+	function setPoznamka($poznamka, $locale) {
+		return $this->setData('poznamka', $poznamka, $locale);
+	}
+        
+        /**
+	 * Get datum vydani - obecny.
+	 * @return date
+	 */
+	function getDatumVydani() {
+		return $this->getData('datumVydani');
+	}
+
+	/**
+	 * Set datum vydani - obecny.
+	 * @param $datumVydani date
+	 */
+	function setDatumVydani($datumVydani) {
+		return $this->setData('datumVydani', $datumVydani);
+	}
+        
+        /**
+	 * Get poznamka neverejna
+	 * @return text
+	 */
+	function getPoznamkaAdmin() {
+		return $this->getData('poznamkaAdmin');
+	}
+
+	/**
+	 * Set poznamka neverejna.
+	 * @param $poznamkaAdmin text
+	 */
+	function setPoznamkaAdmin($poznamkaAdmin) {
+		return $this->setData('poznamkaAdmin', $poznamkaAdmin);
+	}
+        /*---------------------*/
 }
 
 ?>

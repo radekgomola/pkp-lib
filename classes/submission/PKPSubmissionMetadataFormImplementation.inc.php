@@ -78,6 +78,19 @@ class PKPSubmissionMetadataFormImplementation {
 				'rights' => $submission->getRights(null), // Localized
 				'citations' => $submission->getCitations(),
 				'locale' => $submission->getLocale(),
+                            
+                                /*MUNIPRESS*/
+                                'archivace' => $submission->getArchivace(),
+                                'a_kol' => $submission->getAKolektiv(),
+                                'cena' => $submission->getCena(), 
+                                'cena_ebook' => $submission->getCenaEbook(), 		
+                                'urlMunishop' => $submission->getUrlMunishop(),
+                                'urlMunishop_ebook' => $submission->getUrlMunishopEbook(),
+                                'poznamkaAdmin' => $submission->getPoznamkaAdmin(),                             
+                                'datumVydani' => $submission->getDatumVydani(),
+                                'urlWeb' => $submission->getUrlWeb(null), // Localized                                
+                                'poznamka' => $submission->getPoznamka(null), // Localized
+                                /*-------------*/
 			);
 
 			foreach ($formData as $key => $data) {
@@ -108,7 +121,8 @@ class PKPSubmissionMetadataFormImplementation {
 	 */
 	function readInputData() {
 		// 'keywords' is a tagit catchall that contains an array of values for each keyword/locale combination on the form.
-		$userVars = array('title', 'prefix', 'subtitle', 'abstract', 'coverage', 'type', 'source', 'rights', 'keywords', 'citations', 'locale');
+		$userVars = array('title', 'prefix', 'subtitle', 'abstract', 'coverage', 'type', 'source', 'rights', 'keywords', 'citations', 'locale', 
+                                'archivace', 'a_kol', 'cena', 'cena_ebook', 'urlMunishop', 'urlMunishop_ebook', 'datumVydani', 'poznamkaAdmin', 'urlWeb', 'poznamka');
 		$this->_parentForm->readUserVars($userVars);
 	}
 
@@ -117,7 +131,7 @@ class PKPSubmissionMetadataFormImplementation {
 	 * @return array
 	 */
 	function getLocaleFieldNames() {
-		return array('title', 'prefix', 'subtitle', 'abstract', 'coverage', 'type', 'source', 'rights');
+		return array('title', 'prefix', 'subtitle', 'abstract', 'coverage', 'type', 'source', 'rights', 'urlWeb', 'poznamka');
 	}
 
 	/**
@@ -139,6 +153,20 @@ class PKPSubmissionMetadataFormImplementation {
 		$submission->setRights($this->_parentForm->getData('rights'), null); // Localized
 		$submission->setSource($this->_parentForm->getData('source'), null); // Localized
 		$submission->setCitations($this->_parentForm->getData('citations'));
+                
+                /*MUNIPRESS*/
+                $submission->setArchivace($this->_parentForm->getData('archivace'));
+                $submission->setAKolektiv($this->_parentForm->getData('a_kol'));
+                $submission->setCena($this->_parentForm->getData('cena'));                
+                $submission->setCenaEbook($this->_parentForm->getData('cena_ebook'));
+                $submission->setUrlMunishop($this->_parentForm->getData('urlMunishop'));
+                $submission->setUrlMunishopEbook($this->_parentForm->getData('urlMunishop_ebook'));
+                $submission->setPoznamkaAdmin($this->_parentForm->getData('poznamkaAdmin'));
+                $submission->setDatumVydani($this->_parentForm->getData('datumVydani')); 
+
+                $submission->setUrlWeb($this->_parentForm->getData('urlWeb'), null); // Localized
+                $submission->setPoznamka($this->_parentForm->getData('poznamka'), null); // Localized
+                /*---------------------*/
 
 		// Update submission locale
 		$newLocale = $this->_parentForm->getData('locale');

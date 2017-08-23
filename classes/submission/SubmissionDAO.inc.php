@@ -64,6 +64,7 @@ abstract class SubmissionDAO extends DAO implements PKPPubIdPluginDAO {
 			'coverage',
 			'type', 'sponsor', 'source', 'rights',
 			'copyrightHolder',
+                        'urlWeb', 'poznamka',
 		));
 	}
 
@@ -111,7 +112,19 @@ abstract class SubmissionDAO extends DAO implements PKPPubIdPluginDAO {
 		$submission->setLastModified($this->datetimeFromDB($row['last_modified']));
 		$submission->setLanguage($row['language']);
 		$submission->setCitations($row['citations']);
-
+                
+                /*MUNIPRESS*/
+                
+                $submission->setAKolektiv($row['a_kol']);
+                $submission->setCena($row['cena']);
+                $submission->setCenaEbook($row['cena_ebook']);
+                $submission->setUrlMunishop($row['url_munishop']);
+                $submission->setUrlMunishopEbook($row['url_munishop_ebook']);
+                $submission->setArchivace($row['archiv']);
+                $submission->setPoznamkaAdmin($row['poznamka_admin']);
+                $submission->setDatumVydani($this->dateFromDB($row['datum_vydani']));
+                /*-----------*/
+                
 		$this->getDataObjectSettings('submission_settings', 'submission_id', $submission->getId(), $submission);
 
 		return $submission;
@@ -214,6 +227,7 @@ abstract class SubmissionDAO extends DAO implements PKPPubIdPluginDAO {
 
 		$this->update('DELETE FROM submission_settings WHERE submission_id = ?', (int) $submissionId);
 		$this->update('DELETE FROM submissions WHERE submission_id = ?', (int) $submissionId);
+                $this->update('DELETE FROM munipress_metadata WHERE submission_id = ?', (int) $submissionId);
 	}
 
 	/**
@@ -340,10 +354,11 @@ abstract class SubmissionDAO extends DAO implements PKPPubIdPluginDAO {
 		if ($contextId) $params[] = (int) $contextId;
 
 		$result = $this->retrieve(
-			'SELECT	s.*, ps.date_published,
+			'SELECT	s.*, ps.date_published, munis.*,
 				' . $this->getFetchColumns() . '
 			FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
+                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
 				' . $this->getFetchJoins() . '
 			WHERE	s.submission_id = ?
 				' . ($contextId?' AND s.context_id = ?':''),
@@ -386,13 +401,14 @@ abstract class SubmissionDAO extends DAO implements PKPPubIdPluginDAO {
 		if ($contextId) $params[] = (int) $contextId;
 
 		$result = $this->retrieve(
-			'SELECT	s.*, ps.date_published,
+			'SELECT	s.*, ps.date_published, munis.*,
 				' . $this->getFetchColumns() . '
 			FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
 				' . $this->getCompletionJoins() . '
 				LEFT JOIN stage_assignments asa ON (asa.submission_id = s.submission_id)
 				LEFT JOIN user_groups aug ON (asa.user_group_id = aug.user_group_id AND aug.role_id = ?)
+                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
 				' . $this->_getFetchJoins() . '
 			WHERE	s.submission_id = ?
 				' . $this->getCompletionConditions(false) . ' AND
@@ -423,10 +439,11 @@ abstract class SubmissionDAO extends DAO implements PKPPubIdPluginDAO {
 		$params[] = (int) $contextId;
 
 		$result = $this->retrieve(
-			'SELECT	s.*, ps.date_published,
+			'SELECT	s.*, ps.date_published, munis.*,
 				' . $this->getFetchColumns() . '
 			FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
+                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
 				' . $this->getFetchJoins() . '
 			WHERE	s.context_id = ?
 			ORDER BY s.submission_id',
@@ -450,10 +467,11 @@ abstract class SubmissionDAO extends DAO implements PKPPubIdPluginDAO {
 		if ($contextId) $params[] = (int) $contextId;
 
 		$result = $this->retrieve(
-			'SELECT	s.*, ps.date_published,
+			'SELECT	s.*, ps.date_published, munis.*,
 				' . $this->getFetchColumns() . '
 			FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
+                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
 				' . $this->getFetchJoins() . '
 			WHERE	s.submission_id IN (SELECT asa.submission_id FROM stage_assignments asa, user_groups aug WHERE asa.user_group_id = aug.user_group_id AND aug.role_id = ? AND asa.user_id = ?)' .
 				($contextId?' AND s.context_id = ?':'') .
@@ -494,10 +512,11 @@ abstract class SubmissionDAO extends DAO implements PKPPubIdPluginDAO {
 		if ($sectionId) $params[] = (int) $sectionId;
 
 		$result = $this->retrieveRange(
-			'SELECT	s.*, ps.date_published,
+			'SELECT	s.*, ps.date_published, munis.*,
 				' . $this->getFetchColumns() . '
 			FROM	submissions s
 				LEFT JOIN published_submissions ps ON s.submission_id = ps.submission_id
+                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
 				' . $this->getCompletionJoins() . '
 				' . ($title?' LEFT JOIN submission_settings ss ON (s.submission_id = ss.submission_id)':'') . '
 				' . ($author?' LEFT JOIN authors au ON (s.submission_id = au.submission_id)':'') . '
@@ -544,10 +563,11 @@ abstract class SubmissionDAO extends DAO implements PKPPubIdPluginDAO {
 		if ($sectionId) $params[] = (int) $sectionId;
 
 		$result = $this->retrieveRange(
-			'SELECT	s.*, ps.date_published,
+			'SELECT	s.*, ps.date_published, munis.*,
 				' . $this->getFetchColumns() . '
 			FROM	submissions s
-				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)' .
+				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
+                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)' .
 				$this->getCompletionJoins() .
 				($title?' LEFT JOIN submission_settings ss ON (s.submission_id = ss.submission_id)':'') .
 				$this->getFetchJoins() .
@@ -591,10 +611,11 @@ abstract class SubmissionDAO extends DAO implements PKPPubIdPluginDAO {
 		if ($sectionId) $params[] = (int) $sectionId;
 
 		$result = $this->retrieveRange(
-			'SELECT s.*, ps.date_published,
+			'SELECT s.*, ps.date_published, munis.*,
 				' . $this->getFetchColumns() . '
 			FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
+                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
 				LEFT JOIN review_assignments ra ON (s.submission_id = ra.submission_id AND ra.reviewer_id = ? AND ra.declined = true)
 				LEFT JOIN review_assignments ra2 ON (s.submission_id = ra2.submission_id AND ra2.reviewer_id = ? AND ra2.declined = true AND ra2.review_id > ra.review_id)
 				' . ($title?' LEFT JOIN submission_settings ss ON (s.submission_id = ss.submission_id)':'') . '
@@ -652,10 +673,11 @@ abstract class SubmissionDAO extends DAO implements PKPPubIdPluginDAO {
 		if ($sectionId) $params[] = (int) $sectionId;
 
 		$result = $this->retrieveRange(
-			'SELECT	s.*, ps.date_published,
+			'SELECT	s.*, ps.date_published, munis.*,
 				' . $this->getFetchColumns() . '
 			FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
+                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
 				' . ($userId?
 					'LEFT JOIN stage_assignments sa ON (s.submission_id = sa.submission_id AND sa.user_id = ?)
 					LEFT JOIN stage_assignments sa2 ON (s.submission_id = sa2.submission_id AND sa2.user_id = ? AND sa2.stage_assignment_id > sa.stage_assignment_id)
@@ -709,10 +731,11 @@ abstract class SubmissionDAO extends DAO implements PKPPubIdPluginDAO {
 		if ($sectionId) $params[] = (int) $sectionId;
 
 		$result = $this->retrieveRange($sql =
-			'SELECT s.*, ps.date_published,
+			'SELECT s.*, ps.date_published, munis.*,
 				' . $this->getFetchColumns() . '
 			FROM submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
+                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
 				' . $this->getCompletionJoins() . '
 				LEFT JOIN stage_assignments sa ON (s.submission_id = sa.submission_id AND sa.user_id = ?)
 				LEFT JOIN user_groups aug ON (sa.user_group_id = aug.user_group_id AND aug.role_id = ?)
@@ -768,10 +791,11 @@ abstract class SubmissionDAO extends DAO implements PKPPubIdPluginDAO {
 		if ($editor) array_push($params, (int) ROLE_ID_MANAGER, (int) ROLE_ID_SUB_EDITOR, $editorQuery = '%' . $editor . '%', $editorQuery);
 
 		$result = $this->retrieveRange(
-			'SELECT	s.*, ps.date_published,
+			'SELECT	s.*, ps.date_published, munis.*,
 				' . $this->getFetchColumns() . '
 			FROM	submissions s
 				LEFT JOIN published_submissions ps ON (s.submission_id = ps.submission_id)
+                                LEFT JOIN munipress_metadata munis ON (s.submission_id = munis.submission_id)
 				' . $this->getCompletionJoins() . '
 				' . ($title?' LEFT JOIN submission_settings ss ON (s.submission_id = ss.submission_id)':'') . '
 				' . ($author?' LEFT JOIN authors au ON (s.submission_id = au.submission_id)':'') . '
