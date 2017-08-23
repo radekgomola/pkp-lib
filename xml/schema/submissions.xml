@@ -279,8 +279,7 @@
 		<index name="munipress_authors_id">
 			<col>author_id</col>
 		</index>
-	</table>
-        
+	</table>        
         <!--
 	  *
 	  * TABLE munipress_metadata
@@ -297,8 +296,8 @@
                 <field name="a_kol" type="I1" />
                 <field name="cena" type="I4" />
                 <field name="cena_ebook" type="I4" />
-                <field name="url_munishop" type="C2" />
-                <field name="url_munishop_ebook" type="C2" />                
+                <field name="url_munishop" type="C2" size="250"/>
+                <field name="url_munishop_ebook" type="C2" size="250"/>                
                 <field name="archiv" type="I1" />                
                 <field name="poznamka_admin" type="X" />                  
                 <field name="datum_vydani" type="D" />             
@@ -308,7 +307,7 @@
 			<col>submission_id</col>
 		</index>
 	</table>
-        
+         
          <!--
 	  *
 	  * TABLE munipress_publication_formats
@@ -325,8 +324,9 @@
                 <field name="pocet_stran" type="I4" />                
                 <field name="datum_vydani" type="D" />
                 <field name="poradi_vydani" type="C2" size="120" />
+                
                 <descr>Munipress metadata for publication formats</descr>
-		<index name="munipress_submission_id">
+		<index name="munipress_publication_format_id">
 			<col>publication_format_id</col>
                 </index>
 	</table>
