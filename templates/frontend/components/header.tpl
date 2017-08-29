@@ -140,20 +140,6 @@
                             </li>
                         {/if}
                     </ul>
-                    {* <div class="header__lang" role="navigation" style="">
-                    <p class="header__lang__selected">
-                    {if $currentLocale == "en_US"}
-                    <a href="{url router=$smarty.const.ROUTE_PAGE page="user" op="setLocale" path='cs_CZ' source=$smarty.server.REQUEST_URI}" class="header__lang__selected__link">
-                    {translate key="navigation.czech"}
-                    </a>
-                    {else}
-                    <a href="{url router=$smarty.const.ROUTE_PAGE page="user" op="setLocale" path='en_US' source=$smarty.server.REQUEST_URI}" class="header__lang__selected__link">
-                    {translate key="navigation.english"}
-                    </a>
-                    {/if}
-
-                    </p>
-                    </div>*}
                 </nav><!-- .pkp_navigation_user_wrapper -->
 
             </div><!-- .pkp_head_wrapper -->

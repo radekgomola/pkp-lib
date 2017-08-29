@@ -1188,29 +1188,29 @@ class PKPTemplateManager extends Smarty {
 		if (is_a($router, 'PageRouter')) {
 			$requestedArgs = $router->getRequestedArgs($this->_request);
 		}
-
+                /*MUNIPRESS*/
 		if ($page>1) {
 			$params[$paramName] = 1;
-			$value .= '<a href="' . $this->_request->url(null, null, null, $requestedArgs, $params, $anchor) . '"' . $allExtra . '>&lt;&lt;</a>&nbsp;';
+			$value .= '<a href="' . $this->_request->url(null, null, null, $requestedArgs, $params, $anchor) . '"' . $allExtra . ' class="paging__pages__prev link-icon--before"><span class="icon icon-backward"></span></a>&nbsp;&nbsp;';
 			$params[$paramName] = $page - 1;
-			$value .= '<a href="' . $this->_request->url(null, null, null, $requestedArgs, $params, $anchor) . '"' . $allExtra . '>&lt;</a>&nbsp;';
+			$value .= '<a href="' . $this->_request->url(null, null, null, $requestedArgs, $params, $anchor) . '"' . $allExtra . 'class="paging__pages__prev paging__pages__prev__step link-icon--before"><span class="icon icon-step-backward"></span></a>';
 		}
 
 		for ($i=$pageBase; $i<min($pageBase+$numPageLinks, $pageCount+1); $i++) {
 			if ($i == $page) {
-				$value .= "<strong>$i</strong>&nbsp;";
+				$value .= "<strong class=\"paging__pages__item is-active\">$i</strong>";
 			} else {
 				$params[$paramName] = $i;
-				$value .= '<a href="' . $this->_request->url(null, null, null, $requestedArgs, $params, $anchor) . '"' . $allExtra . '>' . $i . '</a>&nbsp;';
+				$value .= '<a href="' . $this->_request->url(null, null, null, $requestedArgs, $params, $anchor) . '"' . $allExtra . ' class="paging__pages__item">' . $i . '</a>&nbsp;';
 			}
 		}
 		if ($page < $pageCount) {
 			$params[$paramName] = $page + 1;
-			$value .= '<a href="' . $this->_request->url(null, null, null, $requestedArgs, $params, $anchor) . '"' . $allExtra . '>&gt;</a>&nbsp;';
+			$value .= '<a href="' . $this->_request->url(null, null, null, $requestedArgs, $params, $anchor) . '"' . $allExtra . 'class="paging__pages__next paging__pages__next__step link-icon--after"><span class="icon icon-step-forward"></span></a>&nbsp;&nbsp;';
 			$params[$paramName] = $pageCount;
-			$value .= '<a href="' . $this->_request->url(null, null, null, $requestedArgs, $params, $anchor) . '"' . $allExtra . '>&gt;&gt;</a>&nbsp;';
+			$value .= '<a href="' . $this->_request->url(null, null, null, $requestedArgs, $params, $anchor) . '"' . $allExtra . 'class="paging__pages__next link-icon--after"><span class="icon icon-forward"></span></a>';
 		}
-
+                /************/
 		return $value;
 	}
 
