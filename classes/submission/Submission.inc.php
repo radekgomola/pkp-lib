@@ -271,7 +271,7 @@ abstract class Submission extends DataObject {
 	 * @param $userGroupSeparator string Separator for user groups (default semicolon+space)
 	 * @return string
 	 */
-	function getAuthorString($lastOnly = false, $nameSeparator = ', ', $userGroupSeparator = '; ') {
+	function getAuthorString($lastOnly = false, $nameSeparator = ', ', $userGroupSeparator = '; ', $spotlight = false) {
 		$authors = $this->getAuthors(true);
 
 		$str = '';
