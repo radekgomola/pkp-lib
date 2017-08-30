@@ -49,6 +49,7 @@
 	{$metaCustomHeaders}
         {if $currentJournal} 
             {if $currentJournal->getSetting('externiCasopis')}
+                <meta name="robots" content="noindex, nofollow" />
                 {if $requestedPage== "issue" && $currentJournal->getSetting('odkazCislo') && $currentJournal->getSetting('odkazCislo') != ""}
                     <meta http-equiv="refresh" content="0;url={$currentJournal->getSetting('odkazCislo')}" />
                     <script> window.location.replace("{$currentJournal->getSetting('odkazCislo')}"); </script>
@@ -239,18 +240,31 @@
     {translate|assign:"help" key="languages.help"}
     <span id="{if $help == "cestina"}help_cz{else}help_en{/if}"></span>
 <div id="header">
+        {if $currentJournal}
+        {assign var=headerLinkTitle value=$currentJournal->getLocalizedSetting('headerLinkTitle')}
+        {assign var=headerLinkLogo value=$currentJournal->getLocalizedSetting('headerLinkLogo')}
+    {else}
+        {assign var=headerLinkTitle value=""}
+        {assign var=headerLinkLogo value=""}
+    {/if}
 <div id="headerTitle">
-{*přídán odkaz v hlavičce a upraveno zobrazování loga*}
-<h1>
-<a href="{url page="index"}" class="header_link" style="text-decoration:none; outline:none;">
-
+    <h1>
+        {if $headerLinkLogo != ""}
+            <a href="{$headerLinkLogo}" class="header_link" style="text-decoration:none; outline:none;">
+        {else}
+            <a href="{url page="index"}" class="header_link" style="text-decoration:none; outline:none;">
+        {/if}
 {if $displayPageHeaderLogo && is_array($displayPageHeaderLogo)}
 <div class="header_logo">
-	<img src="{$publicFilesDir}/{$displayPageHeaderLogo.uploadName|escape:"url"}" width="{$displayPageHeaderLogo.width|escape}" height="{$displayPageHeaderLogo.height|escape}" {if $displayPageHeaderLogoAltText != ''}alt="{$displayPageHeaderLogoAltText|escape}"{else}alt="{translate key="common.pageHeaderLogo.altText"}"{/if} />
+	<img class="right_header_logo" src="{$publicFilesDir}/{$displayPageHeaderLogo.uploadName|escape:"url"}" width="{$displayPageHeaderLogo.width|escape}" height="{$displayPageHeaderLogo.height|escape}" {if $displayPageHeaderLogoAltText != ''}alt="{$displayPageHeaderLogoAltText|escape}"{else}alt="{translate key="common.pageHeaderLogo.altText"}"{/if} />
 </div>
 {/if}
 {if $displayPageHeaderTitle && is_array($displayPageHeaderTitle)}
-	<img src="{$publicFilesDir}/{$displayPageHeaderTitle.uploadName|escape:"url"}" style="display: inline" width="{$displayPageHeaderTitle.width|escape}" height="{$displayPageHeaderTitle.height|escape}" {if $displayPageHeaderTitleAltText != ''}alt="{$displayPageHeaderTitleAltText|escape}"{else}alt="{translate key="common.pageHeader.altText"}"{/if} />
+    {if $headerLinkTitle != ""}
+        </a>
+        <a href="{$headerLinkTitle}" class="header_link" style="text-decoration:none; outline:none;">
+    {/if}
+	<img class="left_header_logo" src="{$publicFilesDir}/{$displayPageHeaderTitle.uploadName|escape:"url"}" style="display: inline" width="{$displayPageHeaderTitle.width|escape}" height="{$displayPageHeaderTitle.height|escape}" {if $displayPageHeaderTitleAltText != ''}alt="{$displayPageHeaderTitleAltText|escape}"{else}alt="{translate key="common.pageHeader.altText"}"{/if} />
 {elseif $displayPageHeaderTitle}
 	{$displayPageHeaderTitle}
 {elseif $alternatePageHeader}

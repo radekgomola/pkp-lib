@@ -698,7 +698,7 @@ class PKPTemplateManager extends Smarty {
 				$disabled = (isset($params['disabled']) && !empty($params['disabled']));
 				if (!isset($params['path'])) $params['path'] = 'lib/pkp/templates/images/icons/';
 				$iconHtml = '<img class="iconImg" src="' . $smarty->get_template_vars('baseUrl') . '/' . $params['path'];
-				$iconHtml .= $params['name'] . ($disabled ? '_disabled' : '') . '.gif" width="16" height="14" alt="';
+				$iconHtml .= $params['name'] . ($disabled ? '_disabled' : '') . '.gif" width="20" alt="';
 
 				// if alt parameter specified use it, otherwise use localization version
 				if (isset($params['alt'])) {
@@ -815,6 +815,7 @@ class PKPTemplateManager extends Smarty {
 			// Extract the variables named in $paramList, and remove them
 			// from the parameters array. Variables remaining in params will be
 			// passed along to Request::url as extra parameters.
+                    
 			$context = array();
 			$contextList = Application::getContextList();
 			foreach ($contextList as $contextName) {

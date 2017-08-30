@@ -53,7 +53,7 @@
 	<message key="user.login.accountDisabled">Váš účet byl zablokován. Pro více informací kontaktujte prosím administrátora.</message>
 	<message key="user.login.accountNotValidated">Vaše emailová adresa nebyla ověřena. Zkontrolujte prosím Váš email a postupujte podle poskytnutých instrukcí. Pokud Vám email nepřišel, budete možná muset kontaktovat administrátora a požádat o asistenci.</message>
 	<message key="user.login.activate">Aktivovat účet</message>
-	<message key="user.login.activated">Děkujeme za aktivaci Vašeho účtu. Nyní se můžete pomocí údajů poskytnutých při vyváření Vašeho účtu přihlásit.</message>
+	<message key="user.login.activated">Děkujeme za aktivaci Vašeho účtu. Nyní se můžete pomocí údajů poskytnutých při vytváření Vašeho účtu přihlásit.</message>
 	<message key="user.login.changePasswordInstructions"><![CDATA[Musíte si zvolit nové heslo před tím, než se budete moci přihlásit na tuto stránku.<br /><br />Pro změnu hesla k Vašemu účet vložte prosím níže Vaše uživatelské jméno a Vaše současné a nové heslo.]]></message>
 	<message key="user.login.forgotPassword">Zapomenuté heslo?</message>
 	<message key="user.login.loginError">Neplatné uživatelské jméno nebo heslo. Zkuste to prosím znovu.</message>

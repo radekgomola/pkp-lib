@@ -79,6 +79,21 @@ class GroupMembershipDAO extends DAO {
 		$returner = new DAOResultFactory($result, $this, '_returnMembershipFromRow');
 		return $returner;
 	}
+        
+        /**
+	 * Retrieve memberships by group ID lexicographically sorted in EN.
+	 * @param $groupId int
+	 * @return ItemIterator
+	 */
+	function &getMembershipsLexicographicallyEN($groupId) {
+		$result =& $this->retrieveRange(
+			'SELECT * FROM group_memberships m, users u WHERE group_id = ? AND u.user_id = m.user_id ORDER BY u.last_name COLLATE utf8_general_ci',
+			$groupId
+		);
+
+		$returner = new DAOResultFactory($result, $this, '_returnMembershipFromRow');
+		return $returner;
+	}
 
 	/**
 	 * Instantiate a new data object.
