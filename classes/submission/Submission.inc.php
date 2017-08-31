@@ -1259,6 +1259,8 @@ abstract class Submission extends DataObject {
 	function setPoznamkaAdmin($poznamkaAdmin) {
 		return $this->setData('poznamkaAdmin', $poznamkaAdmin);
 	}
+        
+        
         /*---------------------*/
 }
 

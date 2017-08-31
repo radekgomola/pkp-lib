@@ -53,10 +53,10 @@ class SubmissionFileManager extends BaseSubmissionFileManager {
 	 * @return SubmissionFile
 	 */
 	function uploadSubmissionFile($fileName, $fileStage, $uploaderUserId,
-			$uploaderUserGroupId, $revisedFileId = null, $genreId = null, $assocType = null, $assocId = null) {
+			$uploaderUserGroupId, $revisedFileId = null, $genreId = null, $assocType = null, $assocId = null/*, $flipbookChecker = null*/) {
 		return $this->_handleUpload(
 			$fileName, $fileStage, $uploaderUserId,
-			$uploaderUserGroupId, $revisedFileId, $genreId, $assocType, $assocId
+			$uploaderUserGroupId, $revisedFileId, $genreId, $assocType, $assocId/*, $flipbookChecker*/
 		);
 	}
 
@@ -97,7 +97,6 @@ class SubmissionFileManager extends BaseSubmissionFileManager {
 			$mediaType = $submissionFile->getFileType();
 			$returner = parent::downloadFile($filePath, $mediaType, $inline, $filename);
 		}
-
 		return $returner;
 	}
 
@@ -127,10 +126,10 @@ class SubmissionFileManager extends BaseSubmissionFileManager {
 	 * @param $assocType integer
 	 * @return integer the file ID (false if upload failed)
 	 */
-	function temporaryFileToSubmissionFile($temporaryFile, $fileStage, $uploaderUserId, $uploaderUserGroupId, $revisedFileId, $genreId, $assocType, $assocId) {
+	function temporaryFileToSubmissionFile($temporaryFile, $fileStage, $uploaderUserId, $uploaderUserGroupId, $revisedFileId, $genreId, $assocType, $assocId/*, $flipbookChecker*/) {
 		// Instantiate and pre-populate the new target submission file.
 		$sourceFile = $temporaryFile->getFilePath();
-		$submissionFile = $this->_instantiateSubmissionFile($sourceFile, $fileStage, $revisedFileId, $genreId, $assocType, $assocId);
+		$submissionFile = $this->_instantiateSubmissionFile($sourceFile, $fileStage, $revisedFileId, $genreId, $assocType, $assocId/*, $flipbookChecker*/);
 
 		// Transfer data from the temporary file to the submission file.
 		$submissionFile->setFileType($temporaryFile->getFileType());
@@ -139,7 +138,13 @@ class SubmissionFileManager extends BaseSubmissionFileManager {
 		// Set the user and user group ids
 		$submissionFile->setUploaderUserId($uploaderUserId);
 		$submissionFile->setUserGroupId($uploaderUserGroupId);
-
+                
+                /*MUNIPRESS*/
+                //Flipbook checker
+//                $submissionFile->setFlipbookChecker($flipbookChecker);
+                /****************/
+                
+                
 		// Copy the temporary file to its final destination and persist
 		// its metadata to the database.
 		$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO'); /* @var $submissionFileDao SubmissionFileDAO */
@@ -218,7 +223,7 @@ class SubmissionFileManager extends BaseSubmissionFileManager {
 	 * @return SubmissionFile the uploaded submission file or null if an error occured.
 	 */
 	function _handleUpload($fileName, $fileStage, $uploaderUserId, $uploaderUserGroupId,
-			$revisedFileId = null, $genreId = null, $assocType = null, $assocId = null) {
+			$revisedFileId = null, $genreId = null, $assocType = null, $assocId = null/*, $flipbookChecker = null*/) {
 
 		// Ensure that the file has been correctly uploaded to the server.
 		if (!$this->uploadedFileExists($fileName)) return null;
@@ -227,7 +232,7 @@ class SubmissionFileManager extends BaseSubmissionFileManager {
 		$sourceFile = $this->getUploadedFilePath($fileName);
 
 		// Instantiate and pre-populate a new submission file object.
-		$submissionFile = $this->_instantiateSubmissionFile($sourceFile, $fileStage, $revisedFileId, $genreId, $assocType, $assocId);
+		$submissionFile = $this->_instantiateSubmissionFile($sourceFile, $fileStage, $revisedFileId, $genreId, $assocType, $assocId/*, $flipbookChecker*/);
 		if (is_null($submissionFile)) return null;
 
 		// Retrieve and copy the file type of the uploaded file.
@@ -243,6 +248,12 @@ class SubmissionFileManager extends BaseSubmissionFileManager {
 		// Set the uploader's user and user group id.
 		$submissionFile->setUploaderUserId($uploaderUserId);
 		$submissionFile->setUserGroupId($uploaderUserGroupId);
+                
+                /*MUNIPRESS*/
+                //Flipbook checker
+//                $submissionFile->setFlipbookChecker($flipbookChecker);
+                /****************/
+                
 
 		// Copy the uploaded file to its final destination and
 		// persist its meta-data to the database.
@@ -260,7 +271,7 @@ class SubmissionFileManager extends BaseSubmissionFileManager {
 	 * @param $assocType integer optional
 	 * @return SubmissionFile returns the instantiated submission file or null if an error occurs.
 	 */
-	function _instantiateSubmissionFile($sourceFilePath, $fileStage, $revisedFileId = null, $genreId = null, $assocType = null, $assocId = null) {
+	function _instantiateSubmissionFile($sourceFilePath, $fileStage, $revisedFileId = null, $genreId = null, $assocType = null, $assocId = null/*, $flipbookChecker=null*/) {
 		$revisedFile = null;
 
 		// Retrieve the submission file DAO.
@@ -342,6 +353,12 @@ class SubmissionFileManager extends BaseSubmissionFileManager {
 		$submissionFile->setDateUploaded(Core::getCurrentDate());
 		$submissionFile->setDateModified(Core::getCurrentDate());
 
+                /*MUNIPRESS*/
+                //Flipbook checker
+//                $submissionFile->setFlipbookChecker($flipbookChecker);
+                /****************/
+                
+                
 		// Is the submission file associated to another entity?
 		if(isset($assocId)) {
 			assert(isset($assocType));

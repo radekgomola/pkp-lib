@@ -445,6 +445,9 @@ class SubmissionFile extends PKPFile {
 	 * Return a context-aware file path.
 	 */
 	function getFilePath() {
+                if($this->getData('filePath')){
+                    return $this->getData('filePath');
+                }
 		// Get the context ID
 		$submissionDao = Application::getSubmissionDAO();
 		$submission = $submissionDao->getById($this->getSubmissionId());
@@ -653,6 +656,79 @@ class SubmissionFile extends PKPFile {
 	function getDAO() {
 		return DAORegistry::getDAO('SubmissionFileDAO');
 	}
+        
+        /*MUNIPRES*/
+        /**
+	 * @param $flipbookChecker int
+	 */
+//	function setFlipbookChecker($flipbookChecker) {
+//		$this->setData('flipbookChecker', $flipbookChecker);
+//	}
+
+	/**
+	 * @return int
+	 */
+//	function getFlipbookChecker() {
+//		return $this->getData('flipbookChecker');
+//	}
+
+        /**
+	 * Cestu do složky, kde bude uložený flipbook.
+	 */
+	function getFlipbookFolderPath() {
+		// Get the context ID
+		$submissionDao = Application::getSubmissionDAO();
+		$submission = $submissionDao->getById($this->getSubmissionId());
+		if (!$submission) return null;
+		$contextId = $submission->getContextId();
+		unset($submission);
+
+		// Construct the file path
+		import('lib.pkp.classes.file.SubmissionFileManager');
+		$submissionFileManager = new SubmissionFileManager($contextId, $this->getSubmissionId());
+		return $submissionFileManager->getBasePath() . $this->_fileStageToPath($this->getFileStage()) . '/' . $this->getServerFolderName();
+	}
+        
+        /**
+	 * Generate the unique foldername for this flipbook submission file.
+	 * @return string
+	 */
+	function _generateFolderName() {
+		// Generate a human readable time stamp.
+		$timestamp = date('Ymd', strtotime($this->getDateUploaded()));
+
+		// Make the folder name unique across all files and file revisions.
+		// Also make sure that files can be ordered sensibly by file name.
+		return	$this->getSubmissionId() . '-'.
+			$this->getGenreId() . '-' .
+			$this->getFileId() . '-' .
+			$this->getRevision() . '-' .
+			$this->getFileStage() . '-' .
+			$timestamp;
+	}
+        
+         /**
+	 * Generate the folder name from identification data rather than
+	 * retrieving it from the database.
+	 */
+	function getServerFolderName() {
+		return $this->_generateFolderName();
+	}
+        
+        function flipbookFileExists(){
+                import('lib.pkp.classes.file.FileManager');
+		$fileManager = new FileManager();
+		return $fileManager->fileExists($this->getFlipbookFolderPath()."/index.html");
+        }
+        
+        function getFlipbookPath(){
+		return $this->getFlipbookFolderPath()."/index.html";
+        }
+       
+	function setFilePath($filePath) {
+		$this->setData('filePath', $filePath);
+	}
+        /***************/
 }
 
 ?>

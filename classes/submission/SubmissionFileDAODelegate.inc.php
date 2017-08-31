@@ -18,6 +18,8 @@
 import('lib.pkp.classes.db.DAO');
 import('lib.pkp.classes.submission.SubmissionFile');
 
+define('SUBMISSION_FLIPBOOK_GENRE_ID', 17);
+
 class SubmissionFileDAODelegate extends DAO {
 	/**
 	 * Constructor
@@ -88,7 +90,18 @@ class SubmissionFileDAODelegate extends DAO {
 		if (!$fileId) {
 			$submissionFile->setFileId($this->_getInsertId('submission_files', 'file_id'));
 		}
-
+                /*MUNIPRESS*/
+//                $this->update('INSERT INTO munipress_submission_files
+//				(file_id, flipbook)
+//				VALUES
+//				(?, ?)',
+//			array(
+//                                (int) $submissionFile->getFileId(),
+//				$submissionFile->getFlipbookChecker() ? 1:0,
+//			)
+//		);
+                /**************/
+                
 		$reviewStage = in_array($submissionFile->getFileStage(), array(
 				SUBMISSION_FILE_REVIEW_FILE, SUBMISSION_FILE_REVIEW_ATTACHMENT, SUBMISSION_FILE_REVIEW_REVISION
 		));
@@ -121,6 +134,12 @@ class SubmissionFileDAODelegate extends DAO {
 				assert(is_readable($sourceFile));
 				$success = $fileManager->copyFile($sourceFile, $targetFilePath);
 			}
+                        $fileType = $submissionFile->getFileType();
+                        if($success && $submissionFile->getGenreId() == SUBMISSION_FLIPBOOK_GENRE_ID && ($fileType == "application/zip")) {
+                            $targetFlipbookPath = $submissionFile->getFlipbookFolderPath();
+                            //vytvoř flipbook složku se soubory
+                            $flipsuccess = $fileManager->createFlipbook($targetFilePath,$targetFlipbookPath);
+                        }
 			if (!$success) {
 				// If the copy/upload operation fails then remove
 				// the already inserted meta-data.
@@ -237,6 +256,8 @@ class SubmissionFileDAODelegate extends DAO {
 		if ($result->RecordCount() == 0) {
 			$this->update('DELETE FROM submission_file_settings WHERE file_id = ?',
 			array((int) $submissionFile->getFileId()));
+//                        $this->update('DELETE FROM munipress_submission_files WHERE file_id = ?',
+//			array((int) $submissionFile->getFileId()));
 		}
 
 		// Delete all dependent objects.
@@ -280,6 +301,7 @@ class SubmissionFileDAODelegate extends DAO {
 		$submissionFile->setDateModified($this->datetimeFromDB($row['date_modified']));
 		$submissionFile->setDirectSalesPrice($row['direct_sales_price']);
 		$submissionFile->setSalesType($row['sales_type']);
+//                $submissionFile->setFlipbookChecker($row['flipboook']);
 
 		$this->getDataObjectSettings('submission_file_settings', 'file_id', $row['submission_file_id'], $submissionFile);
 

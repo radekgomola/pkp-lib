@@ -187,7 +187,11 @@
 				{fbvElement type="select" name="genreId" id="genreId" from=$submissionFileGenres translate=false defaultLabel=$defaultLabel defaultValue="" required="true" selected=$genreId required=true}
 			{/fbvFormSection}
 		{/if}
-
+               {* 
+                {fbvFormSection}
+			{fbvElement type="checkbox" name="flipbookChecker" id="flipbookChecker" value="1" checked=$flipbookChecker label="submission.upload.flipbookChecker"}
+                {/fbvFormSection}
+*}
 		{fbvFormSection}
 			{* The uploader widget *}
 			{include file="controllers/fileUploadContainer.tpl" id="plupload"}

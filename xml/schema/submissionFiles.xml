@@ -136,7 +136,7 @@
 	  * TABLE munipress_submission_files
 	  *
 	  -->
-        <table name="munipress_submission_files">
+<!--        <table name="munipress_submission_files">
 		<field name="munipress_file_id" type="I8">
 			<KEY />
 			<AUTOINCREMENT/>
@@ -149,5 +149,5 @@
 		<index name="munipress_file_id">
 			<col>file_id</col>
                 </index>
-	</table>
+	</table>-->
 </schema>

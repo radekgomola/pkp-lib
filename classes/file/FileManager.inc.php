@@ -405,6 +405,7 @@ class FileManager {
 			case 'application/x-zip-compressed':
 			case 'application/x-compress':
 			case 'application/x-compressed':
+                        case 'application/x-7z-compressed':
 			case 'multipart/x-zip':
 				return DOCUMENT_TYPE_ZIP;
 			case 'application/epub':
@@ -610,6 +611,38 @@ class FileManager {
 			return $filePath . '.gz';
 		}
 	}
+        /*MUNIPRESS*/
+        /**
+	 * Create flipbook folder.
+	 * @param $fileName string the name of the file used in the POST form
+	 * @param $dest string the path where the file is to be extracted
+	 * @return boolean returns true if successful
+	 */
+	function createFlipbook($fileName, $destFolderName) {
+                
+		$destDir = $destFolderName;
+                $zip = new ZipArchive;
+                
+		if (!$this->fileExists($destDir, 'dir')) {
+			// Try to create the destination directory
+			$this->mkdirtree($destDir);
+		}
+		if (!isset($fileName)) return false;
+                $res = $zip->open($fileName);
+                if ($res === TRUE) {
+                    error_log('otevreni probehlo v pohode');
+                    $zip->extractTo($destDir);
+                    $zip->close();
+                    return true;
+                } else {
+                    return false;
+                    error_log('otevreni neprobehlo v pohode, code:' . $res);
+                }
+		return false;
+	}
+
+        /********************/
+        
 }
 
 ?>

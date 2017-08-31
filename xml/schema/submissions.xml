@@ -324,6 +324,7 @@
                 <field name="pocet_stran" type="I4" />                
                 <field name="datum_vydani" type="D" />
                 <field name="poradi_vydani" type="C2" size="120" />
+                <field name="flipbook" type="C2" size="250" />
                 
                 <descr>Munipress metadata for publication formats</descr>
 		<index name="munipress_publication_format_id">
