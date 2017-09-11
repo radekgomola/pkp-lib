@@ -27,13 +27,26 @@
 
 {if !$pageTitleTranslated}{translate|assign:"pageTitleTranslated" key=$pageTitle}{/if}
 {include file="frontend/components/headerHead.tpl"}
-<body {*class="pkp_page_{$requestedPage|escape|default:"index"} pkp_op_{$requestedOp|escape|default:"index"}{if $showingLogo} has_site_logo{/if}" *}dir="{$currentLocaleLangDir|escape|default:"ltr"}">
+<body dir="{$currentLocaleLangDir|escape|default:"ltr"}">
     <div class="pkp_structure_page">            
+
+        <header class="header header--nav-under">
+            <div class="row-main">
+                <div class="header__menu-main">
+                <nav id="menu-main" role="navigation" class="header__menu" aria-label="{translate|escape key="common.navigation.site"}">
+                    <ul class="header__menu__primary">
+                        <li class="header__menu__primary__item">
+                            <a href="{url router=$smarty.const.ROUTE_PAGE page="catalog"}" class="header__menu__primary__link" >
+                                {translate key="navigation.catalog"}
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                {* Search form *}
+                {include file="frontend/components/searchForm_simple.tpl" header=True}
+
+                </div>
+            </div><!-- .pkp_head_wrapper -->
+        </header>
         <div class="pkp_structure_content">
-            {*<div style="height:50px; content:' '; ">
-                    {* Search form 
-                    {include file="frontend/components/searchForm_simple.tpl" header=True}
-
-
-            </div><!-- .pkp_head_wrapper -->*}
             <div id="pkp_content_main" class="pkp_structure_main" role="main">
