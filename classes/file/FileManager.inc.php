@@ -601,6 +601,10 @@ class FileManager {
 			return $filePath . '.gz';
 		}
 	}
+        
+        function _fileMimeType($filePath) {
+		return String::mime_content_type($filePath);
+	}
 }
 
 ?>

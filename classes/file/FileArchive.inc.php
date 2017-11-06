@@ -57,6 +57,34 @@ class FileArchive {
 
 		return $archivePath;
 	}
+        
+        function createSuppZip($files) {
+		// Create a temporary file.
+		$archivePath = tempnam('/tmp', 'sf-');
+
+		// attempt to use Zip first, if it is available.  Otherwise
+		// fall back to the tar CLI.
+		$zipTest = false;
+		if ($this->zipFunctional()) {
+			$zipTest = true;
+			$zip = new ZipArchive();
+			if ($zip->open($archivePath, ZIPARCHIVE::CREATE) == true) {
+				foreach ($files as $key => $file) {
+					$zip->addFile($key, basename($file));
+				}
+				$zip->close();
+			}
+		} else {
+			// Create the archive and download the file.
+			exec(Config::getVar('cli', 'tar') . ' -c -z ' .
+					'-f ' . escapeshellarg($archivePath) . ' ' .
+					'-C ' . escapeshellarg($filesDir) . ' ' .
+					implode(' ', array_map('escapeshellarg', $files))
+			);
+		}
+
+		return $archivePath;
+	}
 
 	/**
 	 * Return true if PHP is new enough and has the zip extension loaded.
