@@ -264,10 +264,8 @@ class Core {
 	 * false if it was not possible to remove it.
 	 */
 	function removeBaseUrl($url) {
-		list($baseUrl, $contextPath) = Core::_getBaseUrlAndPath($url);
-
+                list($baseUrl, $contextPath) = Core::_getBaseUrlAndPath($url);
 		if (!$baseUrl) return false;
-
 		// Remove base url from url, if any.
 		$url = str_replace($baseUrl, '', $url);
 
@@ -323,7 +321,6 @@ class Core {
 
 		// Check for override base url settings.
 		$contextBaseUrls =& Config::getContextBaseUrls();
-
 		if (empty($contextBaseUrls)) {
 			$baseUrl = Config::getVar('general', 'base_url');
 		} else {
@@ -360,7 +357,6 @@ class Core {
 				}
 			}
 		}
-
 		return array($baseUrl, $contextPath);
 	}
 
