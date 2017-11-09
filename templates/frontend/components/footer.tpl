@@ -98,5 +98,6 @@
 {load_script context="frontend"}
 
 {call_hook name="Templates::Common::Footer::PageFooter"}
+
 </body>
 </html>

@@ -88,4 +88,6 @@
 		<p>2. Složka pro ukládání souborů musí být vytvořena a musí mít povolen zápius.(Viz. "Nastavení složky File" níže).</p>]]>
 	</message>
 	<message key="installer.configureXSLMessage"><![CDATA[<p>Vaše instalace PHP nemá povolen XSL module. Buď jej povolte nebo nastavte paramter xslt_command ve svém konfiguračním souboru config.inc.php.</p>]]></message>
+	<message key="installer.beacon">Beacon</message>
+	<message key="installer.beacon.enable">Poskytnout unikátní ID stránky a základní URL adresu OAI pro statistické a bezpečnostní potřeby PKP</message>
 </locale>

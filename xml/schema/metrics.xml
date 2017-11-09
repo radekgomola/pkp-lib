@@ -63,4 +63,21 @@
 		</index>
 		<!-- TODO: more indexes, depending on use cases. -->
 	</table>
+        
+        <!--
+	  *
+	  * TABLE munipress_languages
+	  *
+	  -->
+	<table name="munipress_languages">
+		<field name="iso" type="C2" size="5">
+			<NOTNULL />
+		</field>
+		<field name="cz_name" type="C2" size="255" />
+		<field name="en_name" type="C2" size="255" />
+                <descr>Ïso tabulka jazyků</descr>
+		<index name="munipress_languages_iso">
+			<col>iso</col>
+		</index>
+	</table>
 </schema>
