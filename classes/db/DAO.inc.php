@@ -93,7 +93,7 @@ class DAO {
 				return $value;
 			}
 		}
-
+                
 		$start = Core::microtime();
 		$dataSource = $this->getDataSource();
 		$result = $dataSource->execute($sql, $params !== false && !is_array($params) ? array($params) : $params);

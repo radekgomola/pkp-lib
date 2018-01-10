@@ -30,4 +30,7 @@
     <message key="reviewer.complete.whatNext">Děkujeme za účast v tomto recenzním řízení. Váš posudek byl úspěšně předložen. Vážíme si toho, že jste přispěl k udržení kvality děl, která vydáváme.</message>
     <message key="reviewer.aboutDueDates">Termíny</message>
     <message key="reviewer.aboutDueDates.text">Redaktor Vás žádá, abyste dodržel/a uvedené termíny, jak pro vyjádření se k účasti v recenzním řízení, tak pro případné vypracování posudku.</message>
-  </locale>
+  	<message key="submission.comments.canShareWithAuthor">Pro autora a editora</message>
+	<message key="submission.comments.cannotShareWithAuthor">Pouze pro editora</message>
+	<message key="user.authorization.submissionReviewer">Uživatel není přidělen jako recenzent pro daný dokument.</message>
+</locale>
