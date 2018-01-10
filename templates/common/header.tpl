@@ -86,7 +86,7 @@
                 }
                 // -->
                 {/literal}</script>
-                {else}
+                    {else}
                     <script type="text/javascript" src="{$baseUrl}/lib/pkp/js/lib/jquery/jquery.min.js"></script>
                     <script type="text/javascript" src="{$baseUrl}/lib/pkp/js/lib/jquery/plugins/jqueryUi.min.js"></script>
                     {/if}
@@ -142,97 +142,97 @@
 
                         <!-- Form validation -->
                         <script type="text/javascript" src="{$baseUrl}/lib/pkp/js/lib/jquery/plugins/validate/jquery.validate.js"></script>
-                            <script type="text/javascript">
-                                <!--
-                                    // initialise plugins
-                                {literal}
-                                    $(function () {
-                                        jqueryValidatorI18n("{/literal}{$baseUrl}{literal}", "{/literal}{$currentLocale}{literal}"); // include the appropriate validation localization
-                                {/literal}{if $validateId}{literal}
-                                        $("form[name={/literal}{$validateId}{literal}]").validate({
-                                            errorClass: "error",
-                                            highlight: function (element, errorClass) {
-                                                $(element).parent().parent().addClass(errorClass);
-                                            },
-                                            unhighlight: function (element, errorClass) {
-                                                $(element).parent().parent().removeClass(errorClass);
-                                            }
-                                        });
-                                {/literal}{/if}{literal}
-                                        $(".tagit").live('click', function () {
-                                            $(this).find('input').focus();
-                                        });
+                        <script type="text/javascript">
+                            <!--
+                                // initialise plugins
+                            {literal}
+                                $(function () {
+                                    jqueryValidatorI18n("{/literal}{$baseUrl}{literal}", "{/literal}{$currentLocale}{literal}"); // include the appropriate validation localization
+                            {/literal}{if $validateId}{literal}
+                                    $("form[name={/literal}{$validateId}{literal}]").validate({
+                                        errorClass: "error",
+                                        highlight: function (element, errorClass) {
+                                            $(element).parent().parent().addClass(errorClass);
+                                        },
+                                        unhighlight: function (element, errorClass) {
+                                            $(element).parent().parent().removeClass(errorClass);
+                                        }
                                     });
-                                    // -->
+                            {/literal}{/if}{literal}
+                                    $(".tagit").live('click', function () {
+                                        $(this).find('input').focus();
+                                    });
+                                });
+                                // -->
 
-                                {/literal}
-                            </script>
+                            {/literal}
+                        </script>
 
 
+                        <script type="text/javascript">
+                            {literal}
+                                function detectIE() {
+                                    var ua = window.navigator.userAgent;
+                                    var msie = ua.indexOf('MSIE ');
+                                    var trident = ua.indexOf('Trident/');
+
+                                    if (msie > 0) {
+                                        // IE 10 or older => return version number
+                                        return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+                                    }
+
+                                    if (trident > 0) {
+                                        // IE 11 (or newer) => return version number
+                                        var rv = ua.indexOf('rv:');
+                                        return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+                                    }
+
+                                    // other browser
+                                    return false;
+                                }
+                                function vypisKdyzIE(IE10, IE11, vypis) {
+                                    if (detectIE() == 10) {
+                                        document.write(IE10);
+                                        document.write(vypis);
+                                    }
+                                    if (detectIE() == 11) {
+                                        document.write(IE11);
+                                        document.write(vypis);
+                                    }
+                                }
+
+                                function toggle_visibility(id) {
+                                    var e = document.getElementById(id);
+                                    if (e.style.display == 'block')
+                                        e.style.display = 'none';
+                                    else
+                                        e.style.display = 'block';
+                                }
+                            {/literal}
+                        </script>
+
+
+                        {if $hasSystemNotifications}
+                            {url|assign:fetchNotificationUrl page='notification' op='fetchNotification' escape=false}
                             <script type="text/javascript">
-                                {literal}
-                                    function detectIE() {
-                                        var ua = window.navigator.userAgent;
-                                        var msie = ua.indexOf('MSIE ');
-                                        var trident = ua.indexOf('Trident/');
-
-                                        if (msie > 0) {
-                                            // IE 10 or older => return version number
-                                            return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
-                                        }
-
-                                        if (trident > 0) {
-                                            // IE 11 (or newer) => return version number
-                                            var rv = ua.indexOf('rv:');
-                                            return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
-                                        }
-
-                                        // other browser
-                                        return false;
-                                    }
-                                    function vypisKdyzIE(IE10, IE11, vypis) {
-                                        if (detectIE() == 10) {
-                                            document.write(IE10);
-                                            document.write(vypis);
-                                        }
-                                        if (detectIE() == 11) {
-                                            document.write(IE11);
-                                            document.write(vypis);
-                                        }
-                                    }
-
-                                    function toggle_visibility(id) {
-                                        var e = document.getElementById(id);
-                                        if (e.style.display == 'block')
-                                            e.style.display = 'none';
-                                        else
-                                            e.style.display = 'block';
-                                    }
-                                {/literal}
+                                $(function (){ldelim}
+                                        $.get('{$fetchNotificationUrl}', null,
+                                                function (data){ldelim}
+                                                                    var notifications = data.content;
+                                                                    var i, l;
+                                                                    if (notifications && notifications.general) {ldelim}
+                                                                                            $.each(notifications.general, function (notificationLevel, notificationList) {ldelim}
+                                                                                                                        $.each(notificationList, function (notificationId, notification) {ldelim}
+                                                                                                                                                        $.pnotify(notification);
+                                {rdelim});
+                                {rdelim});
+                                {rdelim}
+                                {rdelim}, 'json');
+                                {rdelim});
                             </script>
+                        {/if}{* hasSystemNotifications *}
 
-
-                            {if $hasSystemNotifications}
-                                {url|assign:fetchNotificationUrl page='notification' op='fetchNotification' escape=false}
-                                <script type="text/javascript">
-                                    $(function (){ldelim}
-                                            $.get('{$fetchNotificationUrl}', null,
-                                                    function (data){ldelim}
-                                                                        var notifications = data.content;
-                                                                        var i, l;
-                                                                        if (notifications && notifications.general) {ldelim}
-                                                                                                $.each(notifications.general, function (notificationLevel, notificationList) {ldelim}
-                                                                                                                            $.each(notificationList, function (notificationId, notification) {ldelim}
-                                                                                                                                                            $.pnotify(notification);
-                                    {rdelim});
-                                    {rdelim});
-                                    {rdelim}
-                                    {rdelim}, 'json');
-                                    {rdelim});
-                                </script>
-                            {/if}{* hasSystemNotifications *}
-
-                                {$additionalHeadData}
+                            {$additionalHeadData}
                         </head>
                         <body id="pkp-{$pageTitle|replace:'.':'-'}">
                             <div id="headerPanel">&nbsp;</div>
@@ -252,7 +252,7 @@
                                             {if $headerLinkLogo != ""}
                                                 <a href="{$headerLinkLogo}" class="header_link" style="text-decoration:none; outline:none;">
                                                 {else}
-                                                    {*            <a href="{url page="index"}" class="header_link" style="text-decoration:none; outline:none;">*}
+                                                    {*                                                    <a href="{url page="index"}" class="header_link" style="text-decoration:none; outline:none;">*}
                                                     <a href="http://www.press.muni.cz{translate key="header.link.web"}" class="header_link" style="text-decoration:none; outline:none;">
                                                     {/if}
                                                     {if $displayPageHeaderLogo && is_array($displayPageHeaderLogo)}
@@ -283,26 +283,27 @@
                                 <div id="body">
 
                                     {*upraveno aby se nezobrazoval levý blok ve chvíli, kdy jej někdo použije s korporátním designem*}
+
                                     {if $currentJournal}
                                         {if  $currentJournal->getId() !=67}
-                                        <div id="sidebar">
-                                            {assign var=blok value="0"} 
-                                            {if $rightSidebarCode}   
-                                                <div id="rightSidebar">
-                                                    {$rightSidebarCode}
-                                                    {include file="nove_pridane/blok_jmc.tpl"}
-                                                    {assign var=blok value="1"}
-                                                </div>
-                                            {/if}
-                                            {if !$currentJournal->getSetting('useMuniStyle') && $leftSidebarCode}
-                                                <div id="leftSidebar">
-                                                    {$leftSidebarCode}
-                                                    {if ! blok=="1"}
+                                            <div id="sidebar">
+                                                {assign var=blok value="0"} 
+                                                {if $rightSidebarCode}   
+                                                    <div id="rightSidebar">
+                                                        {$rightSidebarCode}
                                                         {include file="nove_pridane/blok_jmc.tpl"}
-                                                    {/if}
-                                                </div>
-                                            {/if}
-                                        </div>
+                                                        {assign var=blok value="1"}
+                                                    </div>
+                                                {/if}
+                                                {if !$currentJournal->getSetting('useMuniStyle') && $leftSidebarCode}
+                                                    <div id="leftSidebar">
+                                                        {$leftSidebarCode}
+                                                        {if ! blok=="1"}
+                                                            {include file="nove_pridane/blok_jmc.tpl"}
+                                                        {/if}
+                                                    </div>
+                                                {/if}
+                                            </div>
                                         {/if}
                                     {else}
                                         {if $rightSidebarCode}
@@ -313,6 +314,7 @@
                                                 </div>
                                             </div>
                                         {/if}
+
                                     {/if}
 
                                     <div id="main" {if $homePage}class="homepage"{/if}>
