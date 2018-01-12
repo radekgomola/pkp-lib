@@ -244,6 +244,13 @@
                         <element name="datumVydani" type="date" minOccurs="0" maxOccurs="1"/>
                         <element name="urlWeb" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded"/>
                         <element name="poznamka" type="pkp:localizedNode" minOccurs="0" maxOccurs="unbounded"/>
+                        <element name="categories">
+                            <complexType>
+                                <sequence>
+                                    <element name="category" type="int" minOccurs="0" maxOccurs="unbounded" />
+                                </sequence>
+                            </complexType>
+                        </element>
                         <!-- MUNIPRESS END -->
                         
 			<element ref="pkp:keywords" minOccurs="0" maxOccurs="unbounded" />
@@ -365,5 +372,5 @@
 			<attribute name="locale" type="string" />
 		</complexType>
 	</element>
-
+        
 </schema>

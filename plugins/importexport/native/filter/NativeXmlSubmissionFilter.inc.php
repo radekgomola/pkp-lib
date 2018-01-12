@@ -184,6 +184,9 @@ class NativeXmlSubmissionFilter extends NativeImportFilter {
 				break;
                         case 'poznamkaAdmin': $submission->setPoznamkaAdmin($n->textContent);
 				break;
+                        case 'categories': 
+                                $this->parseCategories($n, $submission);
+				break;
                         /*------------------*/
 			default:
 				$deployment->addError(ASSOC_TYPE_SUBMISSION, $submission->getId(), __('plugins.importexport.common.error.unknownElement', array('param' => $n->tagName)));
@@ -193,6 +196,26 @@ class NativeXmlSubmissionFilter extends NativeImportFilter {
 	//
 	// Element parsing
 	//
+        
+        /* 
+         * Parse categories
+         * @param $element DOMElement
+	 * @param $submission Submission
+         */
+        
+        function parseCategories($node, $submission) {
+                $submissionDao = Application::getSubmissionDAO();
+		for ($n = $node->firstChild; $n !== null; $n=$n->nextSibling) {
+			if (is_a($n, 'DOMElement')) {
+				assert($n->tagName == 'category');
+				$submissionDao->addCategory(
+                                        $submission->getId(),
+                                        $n->textContent
+                                );
+			}
+		}
+	}
+        
 	/**
 	 * Parse an identifier node and set up the submission object accordingly
 	 * @param $element DOMElement
