@@ -182,7 +182,7 @@ class NativeXmlSubmissionFilter extends NativeImportFilter {
 				break;                                                   
                         case 'datumVydani': $submission->setDatumVydani($n->textContent);
 				break;
-                        case 'poznamkaAdmin': $submission->setPoznamkaAdmin($n->textContent);
+                        case 'poznamkaAdmin': $submission->setPoznamkaAdmin($n->textContent); 
 				break;
                         case 'categories': 
                                 $this->parseCategories($n, $submission);
