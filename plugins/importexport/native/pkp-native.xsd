@@ -258,7 +258,7 @@
 			<element ref="pkp:disciplines" minOccurs="0" maxOccurs="unbounded" />
 			<element ref="pkp:subjects" minOccurs="0" maxOccurs="unbounded" />
                         <element ref="pkp:languages" minOccurs="0" maxOccurs="unbounded" />
-			<element ref="pkp:authors" minOccurs="1" maxOccurs="1" />
+			<element ref="pkp:authors" minOccurs="0" maxOccurs="1" />
 			<element ref="pkp:submission_file" minOccurs="0" maxOccurs="unbounded" />
 			<element ref="pkp:representation" minOccurs="0" maxOccurs="unbounded" />
 		</sequence>
