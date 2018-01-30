@@ -227,7 +227,11 @@ abstract class SubmissionDAO extends DAO implements PKPPubIdPluginDAO {
 
 		$this->update('DELETE FROM submission_settings WHERE submission_id = ?', (int) $submissionId);
 		$this->update('DELETE FROM submissions WHERE submission_id = ?', (int) $submissionId);
+                /*
+                 * MUNIPRESS
+                 */
                 $this->update('DELETE FROM munipress_metadata WHERE submission_id = ?', (int) $submissionId);
+                
 	}
 
 	/**
