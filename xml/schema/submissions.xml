@@ -366,5 +366,8 @@
         <index name="munipress_submission_languages_id">
             <col>munipress_submission_languages_id</col>
         </index>
+        <index name="munipress_submission_languages_submission_id">
+            <col>submission_id</col>
+        </index>
     </table>    
 </schema>
