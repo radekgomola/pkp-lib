@@ -125,7 +125,7 @@
         {/if}
         {if $referencesEnabled}
             {fbvFormSection label="submission.citations"}
-            {fbvElement type="textarea" id="citations" value=$citations disabled=$readOnly}
+            {fbvElement type="textarea" id="citations" value=$citations disabled=$readOnly rich=true}
             {/fbvFormSection}
         {/if}
         {/fbvFormArea}
