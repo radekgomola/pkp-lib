@@ -14,7 +14,7 @@
  */
 
 /** GeoIp tool for geo location based on ip */
-include('lib' . DIRECTORY_SEPARATOR . 'geoIp' . DIRECTORY_SEPARATOR . 'geoipcity.inc');
+//include('lib' . DIRECTORY_SEPARATOR . 'geoIp' . DIRECTORY_SEPARATOR . 'geoipcity.inc');
 
 class GeoLocationTool {
 
