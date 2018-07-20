@@ -56,7 +56,8 @@ class ValidatorORCID extends ValidatorRegExp {
 	 * @return string
 	 */
 	static function getRegexp() {
-		return '/^http:\/\/orcid.org\/(\d{4})-(\d{4})-(\d{4})-(\d{3}[0-9X])$/';
+//		return '/^http:\/\/orcid.org\/(\d{4})-(\d{4})-(\d{4})-(\d{3}[0-9X])$/';
+		return '/^https?:\/\/orcid.org\/(\d{4})-(\d{4})-(\d{4})-(\d{3}[0-9X])$/';
 	}
 }
 
