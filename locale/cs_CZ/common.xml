@@ -515,4 +515,7 @@
 	<message key="user.authorization.submissionAuthor">Stáavající uživatel není autorem požadovaného příspěvku. prosím zkontrolujte, že jste přihlášen jako pod správným uživatelským účtem.</message>
         
         <message key="common.name">Název</message>
+        
+        <message key="common.file.namingPattern">{$username}, {$userGroup}, {$originalFilename}</message>
+	<message key="common.file.anonymousNamingPattern">{$userGroup}, {$originalFilename}</message>
 </locale>
