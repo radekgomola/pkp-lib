@@ -111,7 +111,19 @@ class PKPTemplateManager extends Smarty {
 		if (is_a($router, 'PKPPageRouter')) $this->assign('requestedPage', $router->getRequestedPage($this->request));
 		$this->assign('currentUrl', $this->request->getCompleteUrl());
 		$this->assign('dateFormatTrunc', Config::getVar('general', 'date_format_trunc'));
-		$this->assign('dateFormatShort', Config::getVar('general', 'date_format_short'));
+                
+                //MUNIPRESS//
+                $journal =& $this->request->getJournal();
+                $journalId = $journal->getId();
+                if($journalId == 67){
+                    $this->assign('dateFormatShort', Config::getVar('general', 'datetime_format_short'));
+                }else{
+                    $this->assign('dateFormatShort', Config::getVar('general', 'date_format_short'));
+                }
+                /************************************/
+                //$this->assign('dateFormatShort', Config::getVar('general', 'date_format_short'));
+                
+                
 		$this->assign('dateFormatLong', Config::getVar('general', 'date_format_long'));
 		$this->assign('datetimeFormatShort', Config::getVar('general', 'datetime_format_short'));
 		$this->assign('datetimeFormatLong', Config::getVar('general', 'datetime_format_long'));

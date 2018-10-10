@@ -251,10 +251,11 @@
                                         <h1>
                                             {if $headerLinkLogo != ""}
                                                 <a href="{$headerLinkLogo}" class="header_link" style="text-decoration:none; outline:none;">
-                                                {else}
-                                                    {*                                                    <a href="{url page="index"}" class="header_link" style="text-decoration:none; outline:none;">*}
-                                                    <a href="http://www.press.muni.cz{translate key="header.link.web"}" class="header_link" style="text-decoration:none; outline:none;">
-                                                    {/if}
+                                            {else}
+                                                                                                        <a href="{url page="index"}" class="header_link" style="text-decoration:none; outline:none;">
+{*                                                    <a href="http://www.press.muni.cz{translate key="header.link.web"}" class="header_link" style="text-decoration:none; outline:none;">*}
+                                            {/if}
+                                            
                                                     {if $displayPageHeaderLogo && is_array($displayPageHeaderLogo)}
                                                         <div class="header_logo">
                                                             <img class="right_header_logo" src="{$publicFilesDir}/{$displayPageHeaderLogo.uploadName|escape:"url"}" width="{$displayPageHeaderLogo.width|escape}" height="{$displayPageHeaderLogo.height|escape}" {if $displayPageHeaderLogoAltText != ''}alt="{$displayPageHeaderLogoAltText|escape}"{else}alt="{translate key="common.pageHeaderLogo.altText"}"{/if} />
