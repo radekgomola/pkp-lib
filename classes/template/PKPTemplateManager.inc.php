@@ -114,10 +114,14 @@ class PKPTemplateManager extends Smarty {
                 
                 //MUNIPRESS//
                 $journal =& $this->request->getJournal();
-                $journalId = $journal->getId();
-                if($journalId == 67){
-                    $this->assign('dateFormatShort', Config::getVar('general', 'datetime_format_short'));
-                }else{
+                if($journal){
+                    $journalId = $journal->getId();
+                    if($journalId == 67){
+                        $this->assign('dateFormatShort', Config::getVar('general', 'datetime_format_short'));
+                    }else{
+                        $this->assign('dateFormatShort', Config::getVar('general', 'date_format_short'));
+                    }
+                } else {
                     $this->assign('dateFormatShort', Config::getVar('general', 'date_format_short'));
                 }
                 /************************************/
