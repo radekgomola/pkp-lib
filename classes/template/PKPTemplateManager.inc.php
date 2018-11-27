@@ -25,6 +25,9 @@ define('SMARTY_DIR', Core::getBaseDir() . '/lib/pkp/lib/vendor/smarty/smarty/lib
 require_once('./lib/pkp/lib/vendor/smarty/smarty/libs/Smarty.class.php');
 require_once('./lib/pkp/lib/vendor/smarty/smarty/libs/plugins/modifier.escape.php'); // Seems to be needed?
 
+/* SCSS compiler */
+use Leafo\ScssPhp\Compiler as Compiler;
+
 define('CACHEABILITY_NO_CACHE',		'no-cache');
 define('CACHEABILITY_NO_STORE',		'no-store');
 define('CACHEABILITY_PUBLIC',		'public');
@@ -372,10 +375,10 @@ class PKPTemplateManager extends Smarty {
 	}
 
 	/**
-	 * Compile a LESS stylesheet
+	 * Compile a LESS and SCSS stylesheets
 	 *
-	 * @param $name string Unique name for this LESS stylesheet
-	 * @param $lessFile string Path to the LESS file to compile
+	 * @param $name string Unique name for this LESS or SCSS stylesheet
+	 * @param $lessFile string Path to the LESS or SCSS file to compile
 	 * @param $args array Optional arguments. SUpports:
 	 *   'baseUrl': Base URL to use when rewriting URLs in the LESS file.
 	 *   'addLess': Array of additional LESS files to parse before compiling
@@ -385,10 +388,14 @@ class PKPTemplateManager extends Smarty {
 
 		// Load the LESS compiler
 		require_once('lib/pkp/lib/vendor/oyejorge/less.php/lessc.inc.php');
-		$less = new Less_Parser(array(
-			'relativeUrls' => false,
-			'compress' => true,
-		));
+		$pathinfo = pathinfo($lessFile);
+		$compiledCss = null;
+		// compile LESS
+		if ($pathinfo['extension'] == 'less') {
+			$less = new Less_Parser(array(
+				'relativeUrls' => false,
+				'compress' => true,
+			));
 
 		$request = $this->_request;
 
@@ -413,8 +420,15 @@ class PKPTemplateManager extends Smarty {
 		// Set the @baseUrl variable
 		$baseUrl = !empty($args['baseUrl']) ? $args['baseUrl'] : $request->getBaseUrl(true);
 		$less->parse("@baseUrl: '$baseUrl';");
-
-		return $less->getCSS();
+                $compiledCss = $compiledCss . $less->getCSS();
+		// compile SCSS
+		} elseif ($pathinfo['extension'] == 'scss') {
+			$scss = new Compiler();
+		$scss->setFormatter('Leafo\ScssPhp\Formatter\Compressed');
+ 			$compiledCss = $compiledCss . $scss->compile('@import "' . $lessFile . '";');
+		}
+		
+		return $compiledCss;
 	}
 
 	/**
