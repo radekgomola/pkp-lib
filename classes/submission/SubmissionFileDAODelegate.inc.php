@@ -18,7 +18,7 @@
 import('lib.pkp.classes.db.DAO');
 import('lib.pkp.classes.submission.SubmissionFile');
 
-define('SUBMISSION_FLIPBOOK_GENRE_ID', 17);
+define('SUBMISSION_FLIPBOOK_GENRE_ID', 32);
 
 class SubmissionFileDAODelegate extends DAO {
 	/**
@@ -90,16 +90,17 @@ class SubmissionFileDAODelegate extends DAO {
 		if (!$fileId) {
 			$submissionFile->setFileId($this->_getInsertId('submission_files', 'file_id'));
 		}
+                error_log("TEST = ".$submissionFile->getFlipbookChecker());
                 /*MUNIPRESS*/
-//                $this->update('INSERT INTO munipress_submission_files
-//				(file_id, flipbook)
-//				VALUES
-//				(?, ?)',
-//			array(
-//                                (int) $submissionFile->getFileId(),
-//				$submissionFile->getFlipbookChecker() ? 1:0,
-//			)
-//		);
+                $this->update('INSERT INTO munipress_submission_files
+				(file_id, flipbook_checker)
+				VALUES
+				(?, ?)',
+			array(
+                                (int) $submissionFile->getFileId(),
+				(int) $submissionFile->getFlipbookChecker() ? 1:0,
+			)
+		);
                 /**************/
                 
 		$reviewStage = in_array($submissionFile->getFileStage(), array(
@@ -138,7 +139,8 @@ class SubmissionFileDAODelegate extends DAO {
                         if($success && $submissionFile->getGenreId() == SUBMISSION_FLIPBOOK_GENRE_ID && ($fileType == "application/zip")) {
                             $targetFlipbookPath = $submissionFile->getFlipbookFolderPath();
                             //vytvoř flipbook složku se soubory
-                            $flipsuccess = $fileManager->createFlipbook($targetFilePath,$targetFlipbookPath);
+                            $flipsuccess = $fileManager->createFlipbook($targetFilePath,$targetFlipbookPath, $submissionFile->getSubmissionId(), $submissionFile->getAssocId(), $submissionFile->getBestId());
+//                            $flipsuccess = $fileManager->createFlipbook($targetFilePath,$targetFlipbookPath);
                         }
 			if (!$success) {
 				// If the copy/upload operation fails then remove
@@ -256,8 +258,8 @@ class SubmissionFileDAODelegate extends DAO {
 		if ($result->RecordCount() == 0) {
 			$this->update('DELETE FROM submission_file_settings WHERE file_id = ?',
 			array((int) $submissionFile->getFileId()));
-//                        $this->update('DELETE FROM munipress_submission_files WHERE file_id = ?',
-//			array((int) $submissionFile->getFileId()));
+                        $this->update('DELETE FROM munipress_submission_files WHERE file_id = ?',
+			array((int) $submissionFile->getFileId()));
 		}
 
 		// Delete all dependent objects.
@@ -265,12 +267,16 @@ class SubmissionFileDAODelegate extends DAO {
 
 		// Delete the file on the file system, too.
 		$filePath = $submissionFile->getFilePath();
+                $flipbookFolderPath = $submissionFile->getFlipbookFolderPath();
 		if(!(is_file($filePath) && is_readable($filePath))) return false;
 		assert(is_writable(dirname($filePath)));
 
 		import('lib.pkp.classes.file.FileManager');
 		$fileManager = new FileManager();
 		$fileManager->deleteFile($filePath);
+                if(is_dir($flipbookFolderPath) && is_readable($flipbookFolderPath)){
+                    $fileManager->rmtree($flipbookFolderPath);
+                }
 
 		return !file_exists($filePath);
 	}
@@ -301,7 +307,7 @@ class SubmissionFileDAODelegate extends DAO {
 		$submissionFile->setDateModified($this->datetimeFromDB($row['date_modified']));
 		$submissionFile->setDirectSalesPrice($row['direct_sales_price']);
 		$submissionFile->setSalesType($row['sales_type']);
-//                $submissionFile->setFlipbookChecker($row['flipboook']);
+                $submissionFile->setFlipbookChecker($row['flipbook_checker']);
 
 		$this->getDataObjectSettings('submission_file_settings', 'file_id', $row['submission_file_id'], $submissionFile);
 

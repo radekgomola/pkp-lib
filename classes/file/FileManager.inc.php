@@ -615,13 +615,28 @@ class FileManager {
         /**
 	 * Create flipbook folder.
 	 * @param $fileName string the name of the file used in the POST form
-	 * @param $dest string the path where the file is to be extracted
+	 * @param $destFolderName string the path where the file is to be extracted
 	 * @return boolean returns true if successful
 	 */
-	function createFlipbook($fileName, $destFolderName) {
+	function createFlipbook($fileName, $destFolderName, $submissionId, $publicatinFormatId, $fileId) {
                 
 		$destDir = $destFolderName;
                 $zip = new ZipArchive;
+                $application = PKPApplication::getApplication();
+		$request = $application->getRequest();
+                
+                // Get the context ID
+		$submissionDao = Application::getSubmissionDAO();
+		$submission = $submissionDao->getById($submissionId);
+		if (!$submission) return null;
+		$contextId = $submission->getContextId();
+		unset($submission);
+                $contextDao = Application::getContextDAO();
+		$context = $contextDao->getById($contextId);
+                
+		// Construct the file path
+		import('lib.pkp.classes.file.SubmissionFileManager');
+		$submissionFileManager = new SubmissionFileManager($contextId, $submissionId);
                 
 		if (!$this->fileExists($destDir, 'dir')) {
 			// Try to create the destination directory
@@ -633,6 +648,8 @@ class FileManager {
                     error_log('otevreni probehlo v pohode');
                     $zip->extractTo($destDir);
                     $zip->close();
+                    $fileUrl = $request->getBaseUrl()."/".$context->getPath()."/catalog/flipbook/".$submissionId."/". $publicatinFormatId."/".$fileId;
+                    $this->editFlipbookConfigFile($destFolderName,$fileUrl);
                     return true;
                 } else {
                     return false;
@@ -640,6 +657,66 @@ class FileManager {
                 }
 		return false;
 	}
+        
+        function editFlipbookConfigFile($destFolder, $fileUrl) {
+            $configFile = $destFolder."/mobile/javascript/config.js";
+            $origConfigFile = $destFolder."/mobile/javascript/config.orig.js";
+            if($this->fileExists($configFile) ){
+                $this->copyFile($configFile, $origConfigFile);
+                $contents = $this->readFileFromPath($configFile);
+                if(!$contents) return false;
+                
+                $contents = preg_replace(
+					'/(bookConfig.appLogoIcon)\s*="/',
+					'bookConfig.appLogoIcon="' . $fileUrl . '/',
+					$contents
+			);
+                $contents = preg_replace(
+					'/(bookConfig.backGroundImgURL)\s*="/',
+					'bookConfig.backGroundImgURL="' . $fileUrl . '/',
+					$contents
+			);
+                $contents = preg_replace(
+					'/(bookConfig.searchPositionJS)\s*="/',
+					'bookConfig.searchPositionJS="' . $fileUrl . '/',
+					$contents
+			);
+                $contents = preg_replace(
+					'/(bookConfig.searchTextJS)\s*="/',
+					'bookConfig.searchTextJS="' . $fileUrl . '/',
+					$contents
+			);
+                $contents = preg_replace(
+					'/(bookConfig.normalPath)\s*="/',
+					'bookConfig.normalPath="' . $fileUrl . '/',
+					$contents
+			);
+                $contents = preg_replace(
+					'/(bookConfig.largePath)\s*="/',
+					'bookConfig.largePath="' . $fileUrl . '/',
+					$contents
+			);
+                $contents = preg_replace(
+					'/(bookConfig.thumbPath)\s*="/',
+					'bookConfig.thumbPath="' . $fileUrl . '/',
+					$contents
+			);
+                $contents = preg_replace(
+					'/(bookConfig.UIBaseURL)\s*=\'/',
+					'bookConfig.UIBaseURL=\'' . $fileUrl . '/',
+					$contents
+			);
+                $contents = preg_replace(
+					'/(bookConfig.userListPath)\s*="/',
+					'bookConfig.userListPath="' . $fileUrl . '/',
+					$contents
+			);
+                $this->writeFile($configFile, $contents);
+                return true;
+            }else {
+                return false;
+            }
+        }
 
         /********************/
         
