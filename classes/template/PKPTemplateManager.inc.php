@@ -116,6 +116,7 @@ class PKPTemplateManager extends Smarty {
                 $journal =& $this->request->getJournal();
                 if($journal){
                     $journalId = $journal->getId();
+                    $this->assign('journalId', $journalId);
                     if($journalId == 67){
                         $this->assign('dateFormatShort', Config::getVar('general', 'datetime_format_short'));
                     }else{

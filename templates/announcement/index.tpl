@@ -22,6 +22,7 @@
 	</tr>
 {/if}
 {iterate from=announcements item=announcement}
+    {if !($journalId == 76 && $announcement->getTitle($currentLocale)  == null)}
 	<tr class="title">
 	{if $announcement->getTypeId()}
 		<td class="title"><h4><span style="font-style: italic; color: #616265;">{$announcement->getAnnouncementTypeName()|escape}:</span> {$announcement->getLocalizedTitle()|escape}</h4></td>
@@ -42,6 +43,7 @@
 	<tr>
 		<td colspan="2" class="{if $announcements->eof()}end{/if}separator">&nbsp;</td>
 	</tr>
+        {/if}
 {/iterate}
 {if $announcements->wasEmpty()}
 	<tr>

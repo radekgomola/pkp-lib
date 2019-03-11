@@ -15,6 +15,8 @@
 
 {counter start=1 skip=1 assign="count"}
 {iterate from=announcements item=announcement}
+{$currentLocale}
+    {if !($journalId == 76 && $announcement->getTitle($currentLocale)  == null)}
 	{if !$numAnnouncementsHomepage || $count <= $numAnnouncementsHomepage}
 		<tr class="title">
 		{if $announcement->getTypeId()}
@@ -38,6 +40,7 @@
 		<td colspan="2" class="{if $announcements->eof()}end{/if}separator">&nbsp;</td>
 	</tr>
 	{counter}
+        {/if}
 {/iterate}
 {if $announcements->wasEmpty()}
 	<tr>
