@@ -160,6 +160,7 @@ class RegistrationForm extends Form {
 			'reviewerGroup',
 			'authorGroup',
 			'readerGroup',
+                        'zlatyFond'
 		));
 
 		if ($this->captchaEnabled) {
@@ -215,7 +216,11 @@ class RegistrationForm extends Form {
 
 		$user->setDateRegistered(Core::getCurrentDate());
 		$user->setInlineHelp(1); // default new users to having inline help visible.
-
+                
+                /*MUNIPRESS*/
+                $user->setZlatyFond($this->getData('zlatyFond'));
+                /*****************************/
+                        
 		if (isset($this->defaultAuth)) {
 			$user->setPassword($this->getData('password'));
 			// FIXME Check result and handle failures

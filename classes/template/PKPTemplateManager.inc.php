@@ -343,6 +343,7 @@ class PKPTemplateManager extends Smarty {
 				$this->assign(array(
 					'loggedInUsername' => $user->getUserName(),
 					'initialHelpState' => (int) $user->getInlineHelp(),
+                                        'zlatyFondPristup' => $user->getZlatyFond()
 				));
 			}
 		}

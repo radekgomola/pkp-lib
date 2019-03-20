@@ -52,7 +52,9 @@ class PKPUserDAO extends DAO {
 	 */
 	function getById($userId, $allowDisabled = true) {
 		$result = $this->retrieve(
-			'SELECT * FROM users WHERE user_id = ?' . ($allowDisabled?'':' AND disabled = 0'),
+			'SELECT * FROM users u '
+                        . 'LEFT JOIN munipress_zlaty_fond mzf ON u.user_id = mzf.user_id'
+                        . ' WHERE u.user_id = ?' . ($allowDisabled?'':' AND disabled = 0'),
 			array((int) $userId)
 		);
 
@@ -72,7 +74,9 @@ class PKPUserDAO extends DAO {
 	 */
 	function &getByUsername($username, $allowDisabled = true) {
 		$result = $this->retrieve(
-			'SELECT * FROM users WHERE username = ?' . ($allowDisabled?'':' AND disabled = 0'),
+			'SELECT * FROM users u '
+                        . 'LEFT JOIN munipress_zlaty_fond mzf ON u.user_id = mzf.user_id'
+                        . ' WHERE username = ?' . ($allowDisabled?'':' AND disabled = 0'),
 			array($username)
 		);
 
@@ -92,7 +96,9 @@ class PKPUserDAO extends DAO {
 	 */
 	function &getUserByAuthStr($authstr, $allowDisabled = true) {
 		$result = $this->retrieve(
-			'SELECT * FROM users WHERE auth_str = ?' . ($allowDisabled?'':' AND disabled = 0'),
+			'SELECT * FROM users u '
+                        . 'LEFT JOIN munipress_zlaty_fond mzf ON u.user_id = mzf.user_id'
+                        . ' WHERE auth_str = ?' . ($allowDisabled?'':' AND disabled = 0'),
 			array($authstr)
 		);
 
@@ -112,7 +118,9 @@ class PKPUserDAO extends DAO {
 	 */
 	function &getUserByEmail($email, $allowDisabled = true) {
 		$result = $this->retrieve(
-			'SELECT * FROM users WHERE email = ?' . ($allowDisabled?'':' AND disabled = 0'),
+			'SELECT * FROM users u '
+                        . 'LEFT JOIN munipress_zlaty_fond mzf ON u.user_id = mzf.user_id'
+                        . ' WHERE email = ?' . ($allowDisabled?'':' AND disabled = 0'),
 			array($email)
 		);
 
@@ -133,7 +141,9 @@ class PKPUserDAO extends DAO {
 	 */
 	function &getUserByCredentials($username, $password, $allowDisabled = true) {
 		$result = $this->retrieve(
-			'SELECT * FROM users WHERE username = ? AND password = ?' . ($allowDisabled?'':' AND disabled = 0'),
+			'SELECT * FROM users u '
+                        . 'LEFT JOIN munipress_zlaty_fond mzf ON u.user_id = mzf.user_id'
+                        . 'WHERE username = ? AND password = ?' . ($allowDisabled?'':' AND disabled = 0'),
 			array($username, $password)
 		);
 
@@ -382,6 +392,11 @@ class PKPUserDAO extends DAO {
 		$user->setAuthId($row['auth_id']);
 		$user->setAuthStr($row['auth_str']);
 		$user->setInlineHelp($row['inline_help']);
+                
+                /*MUNIPRESS*/
+                $user->setZlatyFond($row['zlaty_fond']);
+                $user->setDateZlatyFond($this->datetimeFromDB($row['zlaty_fond_date']));
+                /**************/
 
 		if ($callHook) HookRegistry::call('UserDAO::_returnUserFromRow', array(&$user, &$row));
 
@@ -399,6 +414,11 @@ class PKPUserDAO extends DAO {
 		if ($user->getDateLastLogin() == null) {
 			$user->setDateLastLogin(Core::getCurrentDate());
 		}
+                /*MUNIPRESS*/
+                if ($user->getDateZlatyFond() == null) {
+			$user->setDateZlatyFond(Core::getCurrentDate());
+		}
+                /**********/
 		$this->update(
 			sprintf('INSERT INTO users
 				(username, password, salutation, first_name, middle_name, initials, last_name, suffix, gender, email, url, phone, mailing_address, billing_address, country, locales, date_last_email, date_registered, date_validated, date_last_login, must_change_password, disabled, disabled_reason, auth_id, auth_str, inline_help)
@@ -432,6 +452,19 @@ class PKPUserDAO extends DAO {
 		);
 
 		$user->setId($this->getInsertId());
+                /*MUNIPRESS*/
+                $this->update(
+			sprintf('INSERT INTO munipress_zlaty_fond
+				(user_id, zlaty_fond, date_registered)
+				VALUES
+				(?, ?, %s)',
+				$this->datetimeToDB($user->getDateZlatyFond())),
+			array(
+				$user->getId(),
+				(int) $user->getZlatyFond(),
+			)
+		);
+                /**************/
 		$this->updateLocaleFields($user);
 		return $user->getId();
 	}
@@ -543,6 +576,10 @@ class PKPUserDAO extends DAO {
 	 */
 	function deleteUserById($userId) {
 		$this->update('DELETE FROM user_settings WHERE user_id = ?', array((int) $userId));
+                
+                /*MUNIPRESS*/
+                $this->update('DELETE FROM munipress_zlaty_fond WHERE user_id = ?', array((int) $userId));
+                /***********/
 		return $this->update('DELETE FROM users WHERE user_id = ?', array((int) $userId));
 	}
 

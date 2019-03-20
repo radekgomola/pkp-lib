@@ -39,5 +39,5 @@
 		</li>
 	</ul>
 </div>
-
+                        
 {include file="frontend/components/footer.tpl"}

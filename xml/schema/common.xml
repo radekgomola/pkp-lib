@@ -706,7 +706,7 @@
 			<NOTNULL/>
 		</field>
 		<field name="zlaty_fond" type="I1" />
-		<field name="date_registered" type="T">
+		<field name="zlaty_fond_date" type="T">
 			<NOTNULL/>
 		</field>
 		<descr>Zlatý fond povolení registrace.</descr>

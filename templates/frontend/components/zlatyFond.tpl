@@ -38,7 +38,7 @@
         <div class="fields">
             <div class="optin optin-privacy">
                 <label class="inp-item inp-item--checkbox">
-                    <input type="checkbox" name="zlatyFondConsent" value="1"{if $zlatyFondConsent} checked="checked"{/if}>
+                    <input type="checkbox" name="zlatyFond" value="1"{if $zlatyFond} checked="checked"{/if}>
                     <span class="label">{translate key="registration.zlatyFond.checkbox"}</span>
                 </label>
             </div>
