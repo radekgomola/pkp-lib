@@ -7,7 +7,7 @@
  *
  * Usage statistics privacy information block.
  *}
-<div class="pkp_block plugins_generic_usageStats_optout" id="usageStatsOptout">
+<!--<div class="pkp_block plugins_generic_usageStats_optout" id="usageStatsOptout">
 	<span class="title">
 		{translate key="plugins.generic.usageStats.optout.title"}
 	</span>
@@ -15,4 +15,4 @@
 		{url|assign:privacyInfoUrl router=$smarty.const.ROUTE_PAGE page="usageStats" op="privacyInformation"}
 		<p>{translate key="plugins.generic.usageStats.optout.shortDesc" privacyInfo=$privacyInfoUrl}</p>
 	</div>
-</div>
+</div>-->

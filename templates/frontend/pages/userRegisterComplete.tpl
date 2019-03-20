@@ -22,11 +22,11 @@
 				</a>
 			</li>
 		{/if}
-		<li class="new_submission">
+		{*<li class="new_submission">
 			<a href="{url page="submission" op="wizard"}">
 				{translate key="user.login.registrationComplete.newSubmission"}
 			</a>
-		</li>
+		</li>*}
 		<li class="edit_profile">
 			<a href="{url router=$smarty.const.ROUTE_PAGE page="user" op="profile"}">
 				{translate key="user.editMyProfile"}

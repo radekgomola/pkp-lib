@@ -18,7 +18,7 @@
 import('lib.pkp.classes.db.DAO');
 import('lib.pkp.classes.submission.SubmissionFile');
 
-define('SUBMISSION_FLIPBOOK_GENRE_ID', 32);
+define('SUBMISSION_FLIPBOOK_GENRE_ID', 17);
 
 class SubmissionFileDAODelegate extends DAO {
 	/**
@@ -90,7 +90,7 @@ class SubmissionFileDAODelegate extends DAO {
 		if (!$fileId) {
 			$submissionFile->setFileId($this->_getInsertId('submission_files', 'file_id'));
 		}
-                error_log("TEST = ".$submissionFile->getFlipbookChecker());
+//                error_log("TEST = ".$submissionFile->getFlipbookChecker());
                 /*MUNIPRESS*/
                 $this->update('INSERT INTO munipress_submission_files
 				(file_id, flipbook_checker)

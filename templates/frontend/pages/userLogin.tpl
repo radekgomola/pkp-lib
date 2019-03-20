@@ -35,7 +35,6 @@
 
         <fieldset class="fields">
             <div class="username">
-                <p>
                     <label for="username">
                         {*					<span class="label">*}
                         {translate key="user.username"}
@@ -49,7 +48,6 @@
                     <span class="inp-fix">
                         <input type="text" name="username" id="username" value="{$username|escape}" maxlength="32" required class="inp-text">
                     </span>
-                </p>
             </div>
                     <br />
             <div class="password">
@@ -85,15 +83,9 @@
             </div>
                     <br />
             <div class="buttons">
-                {*<button class="btn btn-primary btn-s" type="submit">
-                    {translate key="user.login"}
-                </button>*}
-                
-                <a  href="#" onclick="document.getElementById('login').submit(); return false;" class="btn btn-primary btn-s">
+                <button class="btn btn-primary btn-s" type="submit">
                     <span>{translate key="user.login"}</span>
-                </a>
-                
-
+                </button>
                 {if !$disableUserReg}
                     {url|assign:registerUrl page="user" op="register" source=$source}
                     <a href="{$registerUrl}" class="register">

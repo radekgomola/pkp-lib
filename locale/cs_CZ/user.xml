@@ -17,7 +17,7 @@
 <locale name="cs_CZ" full_name = "Čeština">
    
 	<message key="user.accountInformation">Informace o účtu</message>
-  <message key="user.affiliation">Pracoviště</message>
+  <message key="user.affiliation">Pracoviště nebo adresa Vašeho bydliště</message>
 	<message key="user.affiliation.description">(Vaše instituce, např. "Simon Fraser University")</message>
 	<message key="user.affiliations">Pracoviště</message>
   <message key="user.authorization.accessDenied">Přístup zamítnut.</message>
@@ -63,6 +63,12 @@
 	<message key="user.login.lostPassword.invalidUser">Neexistuje žádný uživatel s uvedenou emailovou adresou.</message>
 	<message key="user.login.lostPassword.passwordSent">Nové heslo bylo odesláno na Vaši emailovou adresu. Nyní se můžete přihlásit pomocí nového hesla.</message>
 	<message key="user.login.registeredEmail">Email registrovaného uživatele</message>
+        <message key="user.login.registrationComplete">Registrace dokončena</message>
+	<message key="user.login.registrationComplete.instructions">Děkujeme za registraci. Kam pokračovat dále?</message>
+	<message key="user.login.registrationComplete.manageSubmissions">Přohlížet příspěvky</message>
+	<message key="user.login.registrationComplete.newSubmission">Zaslat nový příspěvek</message>
+	<message key="user.login.registrationComplete.continueBrowsing">Pokračovat v procházení</message>
+	<message key="user.login.registrationPendingValidation">Vaše registrace ještě nebyla ověřena.</message>
 	<message key="user.login.rememberUsernameAndPassword">Zapamatovat moje uživatelské jméno a heslo</message>
 	<message key="user.login.resetPassword">Resetovat heslo</message>
 	<message key="user.logOut">Odhlásit</message>
@@ -103,8 +109,7 @@
 	<message key="user.profile.repeatNewPassword">Nové heslo znovu</message>
   <!-- Login -->
 	<message key="user.login.registerNewAccount">Nejste uživatelem? Registrujte se</message>
-	<message key="user.login.resetPasswordInstructions"><![CDATA[Z bezpěčnostních důvodů zasílá systém resetované hestlo na email uživatel, spíše než zadávání 
-e-mailu níže pro resetování hesla. Potvrzení příjde na tuto e-mailovou adresu.]]></message>
+	<message key="user.login.resetPasswordInstructions"><![CDATA[Z bezpečnostních důvodů zasílá systém resetované heslo na email uživatele. Zadejte svůj uživatelský e-mail pro resetování hesla. Potvrzení příjde na tuto e-mailovou adresu.]]></message>
 
 	<message key="user.register.form.emailExists">Zvolenou emailovou adresu již používá jiný uživatel.</message>
 	<message key="user.register.form.passwordsDoNotMatch">Hesla nejsou totožná.</message>

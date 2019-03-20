@@ -19,10 +19,10 @@
 	<ul>
 		<li><a name="identity" href="{url router=$smarty.const.ROUTE_COMPONENT component="tab.user.ProfileTabHandler" op="identity"}">{translate key="user.profile.identity"}</a></li>
 		<li><a name="contact" href="{url router=$smarty.const.ROUTE_COMPONENT component="tab.user.ProfileTabHandler" op="contact"}">{translate key="user.profile.contact"}</a></li>
-		<li><a name="roles" href="{url router=$smarty.const.ROUTE_COMPONENT component="tab.user.ProfileTabHandler" op="roles"}">{translate key="user.roles"}</a></li>
+		{if array_intersect(array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT, ROLE_ID_REVIEWER), (array)$userRoles)}<li><a name="roles" href="{url router=$smarty.const.ROUTE_COMPONENT component="tab.user.ProfileTabHandler" op="roles"}">{translate key="user.roles"}</a></li>{/if}
 		<li><a name="publicProfile" href="{url router=$smarty.const.ROUTE_COMPONENT component="tab.user.ProfileTabHandler" op="publicProfile"}">{translate key="user.profile.public"}</a></li>
 		<li><a name="changePassword" href="{url router=$smarty.const.ROUTE_COMPONENT component="tab.user.ProfileTabHandler" op="changePassword"}">{translate key="user.password"}</a></li>
-		<li><a name="notificationSettings" href="{url router=$smarty.const.ROUTE_COMPONENT component="tab.user.ProfileTabHandler" op="notificationSettings"}">{translate key="notification.notifications"}</a></li>
+		{if array_intersect(array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT, ROLE_ID_REVIEWER), (array)$userRoles)}<li><a name="notificationSettings" href="{url router=$smarty.const.ROUTE_COMPONENT component="tab.user.ProfileTabHandler" op="notificationSettings"}">{translate key="notification.notifications"}</a></li>{/if}
 	</ul>
 </div>
 

@@ -62,6 +62,9 @@ class RegistrationForm extends Form {
 			$this->addCheck(new FormValidatorCustom($this, 'username', 'required', 'user.register.form.usernameExists', create_function('$username,$form,$auth', 'return (!$auth->userExists($username) || $auth->authenticate($username, $form->getData(\'password\')));'), array(&$this, $this->defaultAuth)));
 		}
 
+                $this->addCheck(new FormValidator($this, 'privacyConsent', 'required', 'user.profile.form.privacyConsentRequired'));
+                $this->addCheck(new FormValidator($this, 'ageLimit', 'required', 'user.profile.form.ageLimitRequired'));
+                
 		$this->addCheck(new FormValidatorPost($this));
 		$this->addCheck(new FormValidatorCSRF($this));
 	}
@@ -152,6 +155,8 @@ class RegistrationForm extends Form {
 			'email',
 			'country',
 			'interests',
+                        'privacyConsent',
+                        'ageLimit',
 			'reviewerGroup',
 			'authorGroup',
 			'readerGroup',

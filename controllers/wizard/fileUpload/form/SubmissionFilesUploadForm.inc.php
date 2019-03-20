@@ -91,7 +91,7 @@ class SubmissionFilesUploadForm extends SubmissionFilesUploadBaseForm {
 	 */
 	function readInputData() {
 		$this->readUserVars(array('genreId', 'uploaderUserGroupId', 'testValue', 'flipbookChecker'));
-                error_log("TEST 4=".$this->getData('flipbookChecker'));
+//                error_log("TEST 4=".$this->getData('flipbookChecker'));
 		return parent::readInputData();
 	}
 
@@ -245,7 +245,7 @@ class SubmissionFilesUploadForm extends SubmissionFilesUploadBaseForm {
 			$fileGenre = $this->getData('genreId') ? (int)$this->getData('genreId') : null;
 		}
                 $flipbookChecker = $this->getData('flipbookChecker') ? 1 : 0;
-                error_log("TEST 2 = " .$flipbookChecker);
+//                error_log("TEST 2 = " .$flipbookChecker);
 		// Retrieve the uploader's user group.
 		$uploaderUserGroupId = $this->getData('uploaderUserGroupId');
 		if (!$uploaderUserGroupId) fatalError('Invalid uploader user group!');

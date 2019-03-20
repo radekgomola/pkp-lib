@@ -691,4 +691,32 @@
 			<UNIQUE />
 		</index>
 	</table>
+        
+        <!--
+	  *
+	  * TABLE munipress_zlaty_fond
+	  *
+	  -->
+          <table name="munipress_zlaty_fond">
+                <field name="munipress_zlaty_fond_id" type="I8">
+			<KEY />
+			<AUTOINCREMENT />
+		</field>
+		<field name="user_id" type="I8">
+			<NOTNULL/>
+		</field>
+		<field name="zlaty_fond" type="I1" />
+		<field name="date_registered" type="T">
+			<NOTNULL/>
+		</field>
+		<descr>Zlatý fond povolení registrace.</descr>
+		<index name="munipress_zlaty_fond_user_id">
+			<col>user_id</col>
+		</index>
+                <index name="munipress_zlaty_fond_pkey">
+			<col>user_id</col>
+			<col>munipress_zlaty_fond_id</col>
+			<UNIQUE />
+		</index>
+	</table>
 </schema>

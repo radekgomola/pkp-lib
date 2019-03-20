@@ -144,7 +144,7 @@
 		<field name="file_id" type="I8">
 			<NOTNULL/>
 		</field>
-                <field name="flipbookChecker" type="I1" />  
+                <field name="flipbook_checker" type="I1" />  
                 <descr>Munipress metadata for submission_file</descr>
 		<index name="munipress_file_id">
 			<col>file_id</col>

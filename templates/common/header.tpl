@@ -68,9 +68,10 @@
 								<span class="pkp_spinner"></span>
 							</a>
 						{/capture}
+                                                {if array_intersect(array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT, ROLE_ID_REVIEWER, ROLE_ID_AUTHOR), (array)$userRoles)}
 						{load_url_in_el el="li" class="pkp_tasks" id="userTasksWrapper" url=$fetchTaskUrl placeholder=$tasksNavPlaceholder}
 
-						{if array_intersect(array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT, ROLE_ID_REVIEWER, ROLE_ID_AUTHOR), (array)$userRoles)}
+						
 							<li>
 								<a href="{url router=$smarty.const.ROUTE_PAGE page="submissions"}">
 									{translate key="navigation.submissions"}

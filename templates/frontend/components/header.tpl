@@ -68,12 +68,19 @@
                     <ul id="navigationUser" class="pkp_navigation_user pkp_nav_list">
                         {if $isUserLoggedIn}
                             <li class="profile {if $unreadNotificationCount} has_tasks{/if} header__menu__secondary__item has_submenu" aria-haspopup="true" aria-expanded="false">
-                                <a href="{url router=$smarty.const.ROUTE_PAGE page="submissions"}">
-                                    {$loggedInUsername|escape}
-                                    <span class="task_count">
-                                        {$unreadNotificationCount}
-                                    </span>
-                                </a>
+                                {if array_intersect(array(ROLE_ID_MANAGER, ROLE_ID_ASSISTANT, ROLE_ID_REVIEWER, ROLE_ID_AUTHOR), (array)$userRoles)}
+                                    <a href="{url router=$smarty.const.ROUTE_PAGE page="submissions"}">
+                                        {$loggedInUsername|escape}
+                                         
+                                        <span class="task_count">
+                                            {$unreadNotificationCount}
+                                        </span>
+                                    </a>
+                                {else}
+                                    <a href="{url router=$smarty.const.ROUTE_PAGE page="user" op="profile"}">
+                                        {$loggedInUsername|escape}
+                                    </a>
+                                {/if}
                                 <ul>
                                     {if array_intersect(array(ROLE_ID_MANAGER, ROLE_ID_ASSISTANT, ROLE_ID_REVIEWER, ROLE_ID_AUTHOR), (array)$userRoles)}
                                         <li class="header__menu__secondary__item">

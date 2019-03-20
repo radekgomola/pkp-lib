@@ -34,7 +34,7 @@
 						<li class="context">
 							<div class="name">
 								{$context->getLocalizedName()}
-							</div class="name">
+							</div>
 							<fieldset class="roles">
 								<legend>
 									{translate key="user.register.otherContextRoles"}
