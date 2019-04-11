@@ -99,6 +99,10 @@ class UserDetailsForm extends UserForm {
 				'biography' => $user->getBiography(null), // Localized
 				'interests' => $interestManager->getInterestsForUser($user),
 				'userLocales' => $user->getLocales(),
+                                /*MUNIPRESS*/
+                                'zlatyFond' => $user->getZlatyFond(),
+                                'zlatyFondDate' => $user->getZlatyFondDate()
+                                /***********/
 			);
 		} else if (isset($this->author)) {
 			$author = $this->author;
@@ -196,7 +200,10 @@ class UserDetailsForm extends UserForm {
 			'userLocales',
 			'generatePassword',
 			'sendNotify',
-			'mustChangePassword'
+			'mustChangePassword',
+                        /*MUNIPRESS*/
+                        'zlatyFond'
+                        /**********/
 		));
 		if ($this->userId == null) {
 			$this->readUserVars(array('username'));
@@ -254,6 +261,11 @@ class UserDetailsForm extends UserForm {
 		$user->setBiography($this->getData('biography'), null); // Localized
 		$user->setMustChangePassword($this->getData('mustChangePassword') ? 1 : 0);
 		$user->setAuthId((int) $this->getData('authId'));
+                
+                /*MUNIPRESS*/
+                $user->setZlatyFond($this->getData('zlatyFond') ? 1 : 0);
+                $user->setZlatyFondText($this->getData('zlatyFondText'));
+                /*********/
 
 		$site = $request->getSite();
 		$availableLocales = $site->getSupportedLocales();

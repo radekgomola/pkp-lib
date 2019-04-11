@@ -709,6 +709,7 @@
 		<field name="zlaty_fond_date" type="T">
 			<NOTNULL/>
 		</field>
+                <field name="zlaty_fond_text" type="X"/>
 		<descr>Zlatý fond povolení registrace.</descr>
 		<index name="munipress_zlaty_fond_user_id">
 			<col>user_id</col>

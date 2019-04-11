@@ -402,20 +402,37 @@ class PKPUser extends Identity {
 		$this->setData('zlatyFond', $zlatyFond);
 	}
         
+        /*MUNIPRESS*/
+        /**
+	 * Get the status for Zlaty Fond Text.
+	 * @return string
+	 */
+	function getZlatyFondText() {
+		return $this->getData('zlatyFondText');
+	}
+
+	/**
+	 * Set the status for Zlaty Fond text.
+	 * @param $zlatyFondText string
+	 */
+	function setZlatyFondText($zlatyFondText) {
+		$this->setData('zlatyFondText', $zlatyFondText);
+	}
+        
         /**
 	 * Get date user registered with the site to Zlaty Fond.
 	 * @return datestamp (YYYY-MM-DD HH:MM:SS)
 	 */
 	function getDateZlatyFond() {
-		return $this->getData('dateRegistered');
+		return $this->getData('zlatyFondDate');
 	}
 
 	/**
 	 * Set date user registered with the site  to Zlaty Fond.
 	 * @param $dateRegistered datestamp (YYYY-MM-DD HH:MM:SS)
 	 */
-	function setDateZlatyFond($dateRegistered) {
-		$this->setData('dateRegistered', $dateRegistered);
+	function setDateZlatyFond($zlatyFondDate) {
+		$this->setData('zlatyFondDate', $zlatyFondDate);
 	}
 }
 

@@ -30,6 +30,7 @@
         <br />
         <p>
             {translate key="registration.zlatyFond.prohlaseni"}
+            {translate|assign:"zlatyFondText" key="registration.zlatyFond.prohlaseni"}
         </p>
     </div>
     <br />
@@ -43,5 +44,6 @@
                 </label>
             </div>
         </div>
+        <input type="hidden" name="zlatyFondText" value="{$zlatyFondText|strip_tags|escape}">
     </fieldset>
 </fieldset>

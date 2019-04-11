@@ -396,6 +396,7 @@ class PKPUserDAO extends DAO {
                 /*MUNIPRESS*/
                 $user->setZlatyFond($row['zlaty_fond']);
                 $user->setDateZlatyFond($this->datetimeFromDB($row['zlaty_fond_date']));
+                $user->setZlatyFondText($row['zlaty_fond_text']);
                 /**************/
 
 		if ($callHook) HookRegistry::call('UserDAO::_returnUserFromRow', array(&$user, &$row));
@@ -455,15 +456,18 @@ class PKPUserDAO extends DAO {
                 /*MUNIPRESS*/
                 $this->update(
 			sprintf('INSERT INTO munipress_zlaty_fond
-				(user_id, zlaty_fond, date_registered)
+				(user_id, zlaty_fond_text, zlaty_fond, zlaty_fond_date)
 				VALUES
-				(?, ?, %s)',
+				(?, ?, ?, %s)',
 				$this->datetimeToDB($user->getDateZlatyFond())),
 			array(
 				$user->getId(),
-				(int) $user->getZlatyFond(),
+                                $user->getZlatyFondText(),
+				(int) $user->getZlatyFond(),                                
+                                
 			)
 		);
+                
                 /**************/
 		$this->updateLocaleFields($user);
 		return $user->getId();
@@ -503,8 +507,24 @@ class PKPUserDAO extends DAO {
 			$user->setDateLastLogin(Core::getCurrentDate());
 		}
 
+                $user->setDateZlatyFond(Core::getCurrentDate());
 		$this->updateLocaleFields($user);
 
+                /*MUNIPRESS*/
+                $this->update(
+			sprintf('UPDATE munipress_zlaty_fond
+				SET zlaty_fond = ?, 
+                                    zlaty_fond_date = %s, 
+                                    zlaty_fond_text = ?
+				WHERE	user_id = ?',
+				$this->datetimeToDB($user->getDateZlatyFond())),
+			array(
+                                (int) $user->getZlatyFond() ? 1 : 0,
+                                $user->getZlatyFondText(),
+				$user->getId(),				
+			)
+		);
+                
 		return $this->update(
 			sprintf('UPDATE	users
 				SET	username = ?,
@@ -560,6 +580,8 @@ class PKPUserDAO extends DAO {
 				(int) $user->getId(),
 			)
 		);
+                 
+                /**************/
 	}
 
 	/**
