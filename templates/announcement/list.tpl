@@ -15,7 +15,6 @@
 
 {counter start=1 skip=1 assign="count"}
 {iterate from=announcements item=announcement}
-{$currentLocale}
     {if !($journalId == 76 && $announcement->getTitle($currentLocale)  == null)}
 	{if !$numAnnouncementsHomepage || $count <= $numAnnouncementsHomepage}
 		<tr class="title">
