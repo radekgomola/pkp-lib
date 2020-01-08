@@ -181,7 +181,9 @@ class DAO {
 				return $value;
 			}
 		}
-
+//                print("TEST = ".$sql."<br /><br />");
+//                print_r($params);
+//                print("<br /><br />");
 		if (isset($dbResultRange) && $dbResultRange->isValid()) {
 			$start = Core::microtime();
 			$dataSource = $this->getDataSource();

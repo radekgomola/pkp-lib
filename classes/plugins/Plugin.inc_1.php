@@ -1,14 +1,16 @@
 <?php
+
 /**
  * @defgroup plugins Plugins
  * Implements a plugin structure that can be used to flexibly extend PKP
  * software via the use of a set of plugin categories.
  */
+
 /**
  * @file classes/plugins/Plugin.inc.php
  *
- * Copyright (c) 2014-2019 Simon Fraser University
- * Copyright (c) 2000-2019 John Willinsky
+ * Copyright (c) 2014-2017 Simon Fraser University
+ * Copyright (c) 2000-2017 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Plugin
@@ -40,21 +42,27 @@
  *
  *  <lazy-load>1</lazy-load>
  */
+
+
 // Define the well-known file name for filter configuration data.
 define('PLUGIN_FILTER_DATAFILE', 'filterConfig.xml');
-define('PLUGIN_TEMPLATE_RESOURCE_PREFIX', 'plugins');
+
 abstract class Plugin {
 	/** @var string Path name to files for this plugin */
 	var $pluginPath;
+
 	/** @var string Category name this plugin is registered to*/
 	var $pluginCategory;
+
 	/** @var PKPRequest the current request object */
 	var $request;
+
 	/**
 	 * Constructor
 	 */
 	function __construct() {
 	}
+
 	/*
 	 * Public Plugin API (Registration and Initialization)
 	 */
@@ -70,15 +78,10 @@ abstract class Plugin {
 	 *
 	 * @param $category String Name of category plugin was registered to
 	 * @param $path String The path the plugin was found in
-	 * @param $mainContextId integer To identify if the plugin is enabled
-	 *  we need a context. This context is usually taken from the
-	 *  request but sometimes there is no context in the request
-	 *  (e.g. when executing CLI commands). Then the main context
-	 *  can be given as an explicit ID.
 	 * @return boolean True iff plugin registered successfully; if false,
 	 * 	the plugin will not be executed.
 	 */
-	function register($category, $path, $mainContextId = null) {
+	function register($category, $path) {
 		$this->pluginPath = $path;
 		$this->pluginCategory = $category;
 		if ($this->getInstallSchemaFile()) {
@@ -106,12 +109,15 @@ abstract class Plugin {
 		HookRegistry::register ('Installer::postInstall', array($this, 'installFilters'));
 		return true;
 	}
+
 	/**
 	 * Protected methods (may be overridden by custom plugins)
 	 */
+
 	//
 	// Plugin Display
 	//
+
 	/**
 	 * Get the name of this plugin. The name must be unique within
 	 * its category, and should be suitable for part of a filename
@@ -120,21 +126,25 @@ abstract class Plugin {
 	 * @return string name of plugin
 	 */
 	abstract function getName();
+
 	/**
 	 * Get the display name for this plugin.
 	 *
 	 * @return string
 	 */
 	abstract function getDisplayName();
+
 	/**
 	 * Get a description of this plugin.
 	 *
 	 * @return string
 	 */
 	abstract function getDescription();
+
 	//
 	// Plugin Behavior and Management
 	//
+
 	/**
 	 * Return a number indicating the sequence in which this plugin
 	 * should be registered compared to others of its category.
@@ -145,6 +155,7 @@ abstract class Plugin {
 	function getSeq() {
 		return 0;
 	}
+
 	/**
 	 * Site-wide plugins should override this function to return true.
 	 *
@@ -153,6 +164,7 @@ abstract class Plugin {
 	function isSitePlugin() {
 		return false;
 	}
+
 	/**
 	 * Perform a management function.
 	 * @param $args array
@@ -162,6 +174,7 @@ abstract class Plugin {
 	function manage($args, $request) {
 		assert(false); // Unhandled case; this shouldn't happen.
 	}
+
 	/**
 	 * Determine whether or not this plugin should be hidden from the
 	 * management interface. Useful in the case of derivative plugins,
@@ -172,9 +185,11 @@ abstract class Plugin {
 	function getHideManagement() {
 		return false;
 	}
+
 	//
 	// Plugin Installation
 	//
+
 	/**
 	 * Get the filename of the ADODB schema for this plugin.
 	 * Subclasses using SQL tables should override this.
@@ -184,6 +199,7 @@ abstract class Plugin {
 	function getInstallSchemaFile() {
 		return null;
 	}
+
 	/**
 	 * Get the filename of the install data for this plugin.
 	 * Subclasses using SQL tables should override this.
@@ -193,6 +209,7 @@ abstract class Plugin {
 	function getInstallDataFile() {
 		return null;
 	}
+
 	/**
 	 * Get the filename of the settings data for this plugin to install
 	 * when the system is installed (i.e. site-level plugin settings).
@@ -203,6 +220,7 @@ abstract class Plugin {
 	function getInstallSitePluginSettingsFile() {
 		return null;
 	}
+
 	/**
 	 * Get the filename of the controlled vocabulary for this plugin to
 	 * install when the system is installed. Null if none included.
@@ -211,6 +229,7 @@ abstract class Plugin {
 	function getInstallControlledVocabFiles() {
 		return array();
 	}
+
 	/**
 	 * Get the filename of the settings data for this plugin to install
 	 * when a new application context (e.g. journal, conference or press)
@@ -223,6 +242,7 @@ abstract class Plugin {
 	function getContextSpecificPluginSettingsFile() {
 		return null;
 	}
+
 	/**
 	 * Get the filename of the email templates for this plugin.
 	 * Subclasses using email templates should override this.
@@ -232,6 +252,7 @@ abstract class Plugin {
 	function getInstallEmailTemplatesFile() {
 		return null;
 	}
+
 	/**
 	 * Get the filename of the email template data for this plugin.
 	 * Subclasses using email templates should override this.
@@ -241,6 +262,7 @@ abstract class Plugin {
 	function getInstallEmailTemplateDataFile() {
 		return null;
 	}
+
 	/**
 	 * Get the filename(s) of the filter configuration data for
 	 * this plugin. Subclasses using filters can override this.
@@ -260,6 +282,7 @@ abstract class Plugin {
 		);
 		return $filterConfigFiles;
 	}
+
 	/*
 	 * Protected helper methods (can be used by custom plugins but
 	 * should not be overridden by custom plugins)
@@ -271,6 +294,7 @@ abstract class Plugin {
 	function getCategory() {
 		return $this->pluginCategory;
 	}
+
 	/**
 	 * Get the path this plugin's files are located in.
 	 * @return String pathname
@@ -278,20 +302,7 @@ abstract class Plugin {
 	function getPluginPath() {
 		return $this->pluginPath;
 	}
-	/**
-	 * Return the Resource Name for templates in this plugin.
-	 *
-	 * @return string
-	 */
-	public function getTemplateResourceName($inCore = false) {
-		$pluginPath = $this->getPluginPath();
-		if ($inCore) {
-			$pluginPath = PKP_LIB_PATH . DIRECTORY_SEPARATOR . $pluginPath;
-		}
-		$plugin = basename($pluginPath);
-		$category = basename(dirname($pluginPath));
-		return join('/', array(PLUGIN_TEMPLATE_RESOURCE_PREFIX, $pluginPath, $category, $plugin));
-	}
+
 	/**
 	 * Return the canonical template path of this plug-in
 	 * @param $inCore Return the core template path if true.
@@ -300,52 +311,11 @@ abstract class Plugin {
 	function getTemplatePath($inCore = false) {
 		$basePath = Core::getBaseDir();
 		if ($inCore) {
-			$basePath .= DIRECTORY_SEPARATOR . PKP_LIB_PATH;
+			$basePath = $basePath . DIRECTORY_SEPARATOR . PKP_LIB_PATH;
 		}
 		return "file:$basePath" . DIRECTORY_SEPARATOR . $this->getPluginPath() . DIRECTORY_SEPARATOR;
 	}
-	/**
-	 * Register this plugin's templates as a template resource
-	 */
-	public function _registerTemplateResource($inCore = false) {
-		$templateMgr = TemplateManager::getManager();
-		$pluginPath = $this->getPluginPath();
-		if ($inCore) {
-			$pluginPath = PKP_LIB_PATH . DIRECTORY_SEPARATOR . $pluginPath;
-		}
-		$pluginTemplateResource = new PKPTemplateResource($pluginPath);
-		$templateMgr->register_resource($this->getTemplateResourceName($inCore), array(
-			array($pluginTemplateResource, 'fetch'),
-			array($pluginTemplateResource, 'fetchTimestamp'),
-			array($pluginTemplateResource, 'getSecure'),
-			array($pluginTemplateResource, 'getTrusted')
-		));
-	}
-	/**
-	 * Call this method when an enabled plugin is registered in order to override
-	 * template files in other plugins. Any plugin which calls this method can
-	 * override template files by adding their own templates to:
-	 * <overridingPlugin>/templates/plugins/<category>/<originalPlugin>/<path>.tpl
-	 *
-	 * @param $hookName string TemplateResource::getFilename
-	 * @param $args array [
-	 *		@option string File path to preferred template. Leave as-is to not
-	 *			override template.
-	 *		@option string Template file requested
-	 * ]
-	 */
-	public function _overridePluginTemplates($hookName, $args) {
-		$filePath =& $args[0];
-		$template = $args[1];
-		if (strpos($filePath, PLUGIN_TEMPLATE_RESOURCE_PREFIX) !== 0) {
-			return false;
-		}
-		$checkPath = sprintf('%s/templates/%s', $this->getPluginPath(), $filePath);
-		if (file_exists($checkPath)) {
-			$filePath = $checkPath;
-		}
-		return false;
-	}
+
 	/**
 	 * Load locale data for this plugin.
 	 *
@@ -364,6 +334,7 @@ abstract class Plugin {
 		}
 		return false;
 	}
+
 	/**
 	 * Retrieve a plugin setting within the given context
 	 *
@@ -372,15 +343,18 @@ abstract class Plugin {
 	 */
 	function getSetting($contextId, $name) {
 		if (!defined('RUNNING_UPGRADE') && !Config::getVar('general', 'installed')) return null;
+
 		// Construct the argument list and call the plug-in settings DAO
 		$arguments = array(
 			$contextId,
 			$this->getName(),
 			$name,
 		);
+
 		$pluginSettingsDao = DAORegistry::getDAO('PluginSettingsDAO');
 		return call_user_func_array(array(&$pluginSettingsDao, 'getSetting'), $arguments);
 	}
+
 	/**
 	 * Update a plugin setting within the given context.
 	 *
@@ -390,6 +364,7 @@ abstract class Plugin {
 	 * @param $type string optional
 	 */
 	function updateSetting($contextId, $name, $value, $type = null) {
+
 		// Construct the argument list and call the plug-in settings DAO
 		$arguments = array(
 			$contextId,
@@ -398,9 +373,11 @@ abstract class Plugin {
 			$value,
 			$type,
 		);
+
 		$pluginSettingsDao = DAORegistry::getDAO('PluginSettingsDAO');
 		call_user_func_array(array(&$pluginSettingsDao, 'updateSetting'), $arguments);
 	}
+
 	/**
 	 * Load a PHP file from this plugin's installation directory.
 	 *
@@ -409,6 +386,7 @@ abstract class Plugin {
 	function import($class) {
 		require_once($this->getPluginPath() . '/' . str_replace('.', '/', $class) . '.inc.php');
 	}
+
 	/*
 	 * Protected helper methods (for internal use only, should not
 	 * be used by custom plug-ins)
@@ -433,6 +411,7 @@ abstract class Plugin {
 		if (file_exists($masterLibPkpFilename)) $filenames[] = $libPkpFilename;
 		return $filenames;
 	}
+
 	/**
 	 * Callback used to install data files.
 	 *
@@ -443,9 +422,11 @@ abstract class Plugin {
 	function installData($hookName, $args) {
 		$installer =& $args[0];
 		$result =& $args[1];
+
 		// Treat single and multiple data files uniformly.
 		$dataFiles = $this->getInstallDataFile();
 		if (is_scalar($dataFiles)) $dataFiles = array($dataFiles);
+
 		// Install all data files.
 		foreach($dataFiles as $dataFile) {
 			$sql = $installer->dataXMLParser->parseData($dataFile);
@@ -460,6 +441,7 @@ abstract class Plugin {
 		}
 		return false;
 	}
+
 	/**
 	 * Callback used to install settings on system install.
 	 *
@@ -480,8 +462,10 @@ abstract class Plugin {
 		$arguments[] = $this->getInstallSitePluginSettingsFile();
 		$pluginSettingsDao = DAORegistry::getDAO('PluginSettingsDAO');
 		call_user_func_array(array(&$pluginSettingsDao, 'installSettings'), $arguments);
+
 		return false;
 	}
+
 	/**
 	 * Callback used to install controlled vocabularies on system install.
 	 * @param $hookName string
@@ -511,18 +495,22 @@ abstract class Plugin {
 		$contextDepth = $application->getContextDepth();
 		if ($contextDepth > 0) {
 			$context =& $args[1];
+
 			// Make sure that this is really a new context
 			$isNewContext = isset($args[3]) ? $args[3] : true;
 			if (!$isNewContext) return false;
+
 			// Install context specific settings
 			$pluginSettingsDao = DAORegistry::getDAO('PluginSettingsDAO');
 			switch ($contextDepth) {
 				case 1:
 					$pluginSettingsDao->installSettings($context->getId(), $this->getName(), $this->getContextSpecificPluginSettingsFile());
 					break;
+
 				case 2:
 					$pluginSettingsDao->installSettings($context->getId(), 0, $this->getName(), $this->getContextSpecificPluginSettingsFile());
 					break;
+
 				default:
 					// No application can have a context depth > 2
 					assert(false);
@@ -530,6 +518,7 @@ abstract class Plugin {
 		}
 		return false;
 	}
+
 	/**
 	 * Callback used to install email templates.
 	 *
@@ -540,8 +529,10 @@ abstract class Plugin {
 	function installEmailTemplates($hookName, $args) {
 		$installer =& $args[0]; /* @var $installer Installer */
 		$result =& $args[1];
+
 		$emailTemplateDao = DAORegistry::getDAO('EmailTemplateDAO'); /* @var $emailTemplateDao EmailTemplateDAO */
 		$sql = $emailTemplateDao->installEmailTemplates($this->getInstallEmailTemplatesFile(), true, null, true);
+
 		if ($sql === false) {
 			// The template file seems to be invalid.
 			$installer->setError(INSTALLER_ERROR_DB, str_replace('{$file}', $this->getInstallDataFile(), __('installer.installParseEmailTemplatesFileError')));
@@ -556,6 +547,7 @@ abstract class Plugin {
 		}
 		return false;
 	}
+
 	/**
 	 * Callback used to install email template data.
 	 *
@@ -566,6 +558,7 @@ abstract class Plugin {
 	function installEmailTemplateData($hookName, $args) {
 		$installer =& $args[0];
 		$result =& $args[1];
+
 		$emailTemplateDao = DAORegistry::getDAO('EmailTemplateDAO');
 		foreach ($installer->installedLocales as $locale) {
 			$filename = str_replace('{$installedLocale}', $locale, $this->getInstallEmailTemplateDataFile());
@@ -580,6 +573,7 @@ abstract class Plugin {
 		}
 		return false;
 	}
+
 	/**
 	 * Callback used to install email template data on locale install.
 	 *
@@ -594,6 +588,7 @@ abstract class Plugin {
 		$emailTemplateDao->installEmailTemplateData($filename);
 		return false;
 	}
+
 	/**
 	 * Callback used to install filters.
 	 * @param $hookName string
@@ -602,14 +597,17 @@ abstract class Plugin {
 	function installFilters($hookName, $args) {
 		$installer =& $args[0]; /* @var $installer Installer */
 		$result =& $args[1]; /* @var $result boolean */
+
 		// Get the filter configuration file name(s).
 		$filterConfigFiles = $this->getInstallFilterConfigFiles();
 		if (is_scalar($filterConfigFiles)) $filterConfigFiles = array($filterConfigFiles);
+
 		// Run through the config file positions and see
 		// whether one of these exists and needs to be installed.
 		foreach($filterConfigFiles as $filterConfigFile) {
 			// Is there a filter configuration?
 			if (!file_exists($filterConfigFile)) continue;
+
 			// Install the filter configuration.
 			$result = $installer->installFilterConfig($filterConfigFile);
 			if (!$result) {
@@ -617,9 +615,11 @@ abstract class Plugin {
 				$installer->setError(INSTALLER_ERROR_DB, str_replace('{$file}', $filterConfigFile, __('installer.installParseFilterConfigFileError')));
 			}
 		}
+
 		// Do not stop installation.
 		return false;
 	}
+
 	/**
 	 * Called during the install process to install the plugin schema,
 	 * if applicable.
@@ -631,6 +631,7 @@ abstract class Plugin {
 	function updateSchema($hookName, $args) {
 		$installer =& $args[0];
 		$result =& $args[1];
+
 		$schemaXMLParser = new adoSchema($installer->dbconn);
 		$dict =& $schemaXMLParser->dict;
 		$dict->SetCharSet($installer->dbconn->charSet);
@@ -643,6 +644,7 @@ abstract class Plugin {
 		}
 		return false;
 	}
+
 	/**
 	 * Extend the {url ...} smarty to support plugins.
 	 *
@@ -661,6 +663,7 @@ abstract class Plugin {
 		}
 		return $smarty->smartyUrl($params, $smarty);
 	}
+
 	/**
 	 * Get the current version of this plugin
 	 *
@@ -672,12 +675,14 @@ abstract class Plugin {
 		$product = basename($pluginPath);
 		$category = basename(dirname($pluginPath));
 		$installedPlugin = $versionDao->getCurrentVersion('plugins.'.$category, $product, true);
+
 		if ($installedPlugin) {
 			return $installedPlugin;
 		} else {
 			return false;
 		}
 	}
+
 	/**
 	 * Get the current request object
 	 * @return PKPRequest
@@ -688,6 +693,7 @@ abstract class Plugin {
 		}
 		return $this->request;
 	}
+
 	/*
 	 * Private helper methods
 	 */
@@ -698,10 +704,13 @@ abstract class Plugin {
 	 */
 	function _getContextSpecificInstallationHook() {
 		$application = PKPApplication::getApplication();
+
 		if ($application->getContextDepth() == 0) return null;
+
 		$contextList = $application->getContextList();
 		return ucfirst(array_shift($contextList)).'SiteSettingsForm::execute';
 	}
+
 	/**
 	 * Get a list of link actions for plugin management.
 	 * @param request PKPRequest
@@ -711,6 +720,7 @@ abstract class Plugin {
 	function getActions($request, $actionArgs) {
 		return array();
 	}
+
 	/**
 	 * Determine whether the plugin can be enabled.
 	 * @return boolean
@@ -718,6 +728,7 @@ abstract class Plugin {
 	function getCanEnable() {
 		return false;
 	}
+
 	/**
 	 * Determine whether the plugin can be disabled.
 	 * @return boolean
@@ -725,6 +736,7 @@ abstract class Plugin {
 	function getCanDisable() {
 		return false;
 	}
+
 	/**
 	 * Determine whether the plugin is enabled.
 	 * @return boolean
@@ -732,6 +744,7 @@ abstract class Plugin {
 	function getEnabled() {
 		return true;
 	}
+
 	/**
 	 * Retrieve a namespace used when attaching JavaScript data to $.pkp.plugins
 	 * @return string
@@ -740,4 +753,5 @@ abstract class Plugin {
 		return '$.pkp.plugins.' . strtolower(get_class($this));
 	}
 }
+
 ?>
