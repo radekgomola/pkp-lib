@@ -101,7 +101,8 @@ class UserDetailsForm extends UserForm {
 				'userLocales' => $user->getLocales(),
                                 /*MUNIPRESS*/
                                 'zlatyFond' => $user->getZlatyFond(),
-                                'zlatyFondDate' => $user->getZlatyFondDate()
+                                'zlatyFondDate' => $user->getZlatyFondDate(),
+                                'initCode' => $user->getInitCode()
                                 /***********/
 			);
 		} else if (isset($this->author)) {
@@ -202,7 +203,8 @@ class UserDetailsForm extends UserForm {
 			'sendNotify',
 			'mustChangePassword',
                         /*MUNIPRESS*/
-                        'zlatyFond'
+                        'zlatyFond',
+                        'initCode'
                         /**********/
 		));
 		if ($this->userId == null) {
@@ -265,6 +267,8 @@ class UserDetailsForm extends UserForm {
                 /*MUNIPRESS*/
                 $user->setZlatyFond($this->getData('zlatyFond') ? 1 : 0);
                 $user->setZlatyFondText($this->getData('zlatyFondText'));
+                
+                $user->setInitCode($this->getData('initCode'));
                 /*********/
 
 		$site = $request->getSite();

@@ -54,6 +54,7 @@ class PKPUserDAO extends DAO {
 		$result = $this->retrieve(
 			'SELECT * FROM users u '
                         . 'LEFT JOIN munipress_zlaty_fond mzf ON u.user_id = mzf.user_id'
+                        . ' LEFT JOIN munipress_user mu ON u.user_id = mu.user_id'
                         . ' WHERE u.user_id = ?' . ($allowDisabled?'':' AND disabled = 0'),
 			array((int) $userId)
 		);
@@ -76,6 +77,7 @@ class PKPUserDAO extends DAO {
 		$result = $this->retrieve(
 			'SELECT * FROM users u '
                         . 'LEFT JOIN munipress_zlaty_fond mzf ON u.user_id = mzf.user_id'
+                        . ' LEFT JOIN munipress_user mu ON u.user_id = mu.user_id'
                         . ' WHERE username = ?' . ($allowDisabled?'':' AND disabled = 0'),
 			array($username)
 		);
@@ -98,6 +100,7 @@ class PKPUserDAO extends DAO {
 		$result = $this->retrieve(
 			'SELECT * FROM users u '
                         . 'LEFT JOIN munipress_zlaty_fond mzf ON u.user_id = mzf.user_id'
+                        . ' LEFT JOIN munipress_user mu ON u.user_id = mu.user_id'
                         . ' WHERE auth_str = ?' . ($allowDisabled?'':' AND disabled = 0'),
 			array($authstr)
 		);
@@ -120,6 +123,7 @@ class PKPUserDAO extends DAO {
 		$result = $this->retrieve(
 			'SELECT * FROM users u '
                         . 'LEFT JOIN munipress_zlaty_fond mzf ON u.user_id = mzf.user_id'
+                        . ' LEFT JOIN munipress_user mu ON u.user_id = mu.user_id'
                         . ' WHERE email = ?' . ($allowDisabled?'':' AND disabled = 0'),
 			array($email)
 		);
@@ -143,6 +147,7 @@ class PKPUserDAO extends DAO {
 		$result = $this->retrieve(
 			'SELECT * FROM users u '
                         . 'LEFT JOIN munipress_zlaty_fond mzf ON u.user_id = mzf.user_id'
+                        . ' LEFT JOIN munipress_user mu ON u.user_id = mu.user_id'
                         . 'WHERE username = ? AND password = ?' . ($allowDisabled?'':' AND disabled = 0'),
 			array($username, $password)
 		);
@@ -397,6 +402,8 @@ class PKPUserDAO extends DAO {
                 $user->setZlatyFond($row['zlaty_fond']);
                 $user->setDateZlatyFond($this->datetimeFromDB($row['zlaty_fond_date']));
                 $user->setZlatyFondText($row['zlaty_fond_text']);
+                
+                $user->setInitCode($row['init_code']);
                 /**************/
 
 		if ($callHook) HookRegistry::call('UserDAO::_returnUserFromRow', array(&$user, &$row));
@@ -467,6 +474,20 @@ class PKPUserDAO extends DAO {
                                 
 			)
 		);
+
+                if($user->getZlatyFondText()) $user->setInitCode("zlaty-fond");
+                
+                $this->update(
+			sprintf('INSERT INTO munipress_user
+				(user_id, init_code)
+				VALUES
+				(?, ?)'),
+			array(
+				$user->getId(),
+                                $user->getInitCode()                               
+                                
+			)
+		);
                 
                 /**************/
 		$this->updateLocaleFields($user);
@@ -524,6 +545,19 @@ class PKPUserDAO extends DAO {
 				$user->getId(),				
 			)
 		);
+                
+                if($user->getZlatyFondText()) $user->setInitCode("zlaty-fond");
+                
+                $this->update(
+			sprintf('UPDATE munipress_user
+				SET init_code = ?
+				WHERE	user_id = ?'),
+			array(
+                                $user->getInitCode(),
+				$user->getId(),				
+			)
+		);
+                /****************/
                 
 		return $this->update(
 			sprintf('UPDATE	users

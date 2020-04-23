@@ -345,6 +345,7 @@ class PKPTemplateManager extends Smarty {
 					'initialHelpState' => (int) $user->getInlineHelp(),
                                         'zlatyFondPristup' => $user->getZlatyFond(),
                                         'zlatyFondExpirace' => $user->getDateZlatyFond(),
+                                        'userInitCode' => $user->getInitCode(),
 				));
 			}
 		}

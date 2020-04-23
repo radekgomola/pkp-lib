@@ -52,6 +52,7 @@ class SubmissionFileManager extends BaseSubmissionFileManager {
      * @return SubmissionFile
      */
     function uploadSubmissionFile($fileName, $fileStage, $uploaderUserId, $uploaderUserGroupId, $revisedFileId = null, $genreId = null, $assocType = null, $assocId = null, $flipbookChecker = null) {
+        error_log("TEST2 = ".$flipbookChecker);
         return $this->_handleUpload(
                         $fileName, $fileStage, $uploaderUserId, $uploaderUserGroupId, $revisedFileId, $genreId, $assocType, $assocId, $flipbookChecker
         );
@@ -147,7 +148,7 @@ class SubmissionFileManager extends BaseSubmissionFileManager {
         //Flipbook checker
         $submissionFile->setFlipbookChecker($flipbookChecker);
         /*         * ************* */
-
+        error_log("TEST SFM = ".$flipbookChecker);
         // Copy the temporary file to its final destination and persist
         // its metadata to the database.
         $submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO'); /* @var $submissionFileDao SubmissionFileDAO */

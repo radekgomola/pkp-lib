@@ -195,7 +195,7 @@
             {else}
                 {assign var="checked" value=false}
             {/if}
-            {fbvElement type="checkbox" name="flipbookChecker" id="flipbookChecker" value="flipbookChecker" checked=$checked label="submission.upload.flipbookChecker"}
+            {fbvElement type="checkbox" name="flipbookChecker" id="flipbookChecker" checked=$checked label="submission.upload.flipbookChecker"}
         </ul>
         {/fbvFormSection}
 

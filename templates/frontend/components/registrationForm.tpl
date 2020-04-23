@@ -19,7 +19,11 @@
 <fieldset class="identity">
     <legend>
         <h3>
-        {translate key="user.profile"}
+        {if $initCode =="munipomaha"}
+            {translate key="navigation.munipomaha"}
+        {else}
+            {translate key="user.profile"}
+        {/if}
         </h3>
     </legend>
     <div class="fields">
@@ -80,7 +84,11 @@
             </label>
             <br />
             <span class="inp-fix">
+                {if $initCode == "munipomaha"}
+                       <input type="text" name="affiliation[{$primaryLocale|escape}]" id="affiliation" value="{$initCode|escape}" required class="inp-text"> 
+                {else}
                 <input type="text" name="affiliation[{$primaryLocale|escape}]" id="affiliation" value="{$affiliation.$primaryLocale|escape}" required class="inp-text">
+                {/if}
             </span>
         </div>
         <br />

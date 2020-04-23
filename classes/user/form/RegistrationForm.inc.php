@@ -161,7 +161,8 @@ class RegistrationForm extends Form {
 			'authorGroup',
 			'readerGroup',
                         'zlatyFond',
-                        'zlatyFondText'
+                        'zlatyFondText',
+                        'initCode'
 		));
 
 		if ($this->captchaEnabled) {
@@ -221,6 +222,8 @@ class RegistrationForm extends Form {
                 /*MUNIPRESS*/
                 $user->setZlatyFond($this->getData('zlatyFond'));
                 $user->setZlatyFondText($this->getData('zlatyFondText'));
+                
+                $user->setInitCode($this->getData('initCode'));
                 /*****************************/
                         
 		if (isset($this->defaultAuth)) {

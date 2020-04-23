@@ -671,6 +671,20 @@ class SubmissionFile extends PKPFile {
 	function getFlipbookChecker() {
 		return $this->getData('flipbookChecker');
 	}
+        
+        /**
+	 * @param $initCode
+	 */
+	function setInitCode($initCode) {
+		$this->setData('initCode', $initCode);
+	}
+
+	/**
+	 * @return int
+	 */
+	function getInitCode() {
+		return $this->getData('initCode');
+	}
 
         /**
 	 * Cestu do složky, kde bude uložený flipbook.

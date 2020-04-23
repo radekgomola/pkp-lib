@@ -143,8 +143,12 @@
                     </label>
                 </div>
             </div>
-        </fieldset>        
-        {include file="frontend/components/zlatyFond.tpl"}
+        </fieldset>   
+        {if $initCode != 'munipomaha'}
+            {include file="frontend/components/zlatyFond.tpl"}
+        {else}
+            <input type="hidden" name="initCode" value="{$initCode}">       
+        {/if}
         <hr />
         <legend>
             <h3>

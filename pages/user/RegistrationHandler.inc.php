@@ -40,7 +40,15 @@ class RegistrationHandler extends UserHandler {
 	function register($args, $request) {
 		$this->validate($request);
 		$this->setupTemplate($request);
-
+                
+                /*MUNIPRESS*/
+                $initCode = trim(strip_tags($request->getUserVar("initCode")));
+                
+                if($initCode != 'munipomaha') $initCode = null;
+                               
+                $templateMgr = TemplateManager::getManager($request);
+		$templateMgr->assign('initCode', $initCode);
+                
 		import('lib.pkp.classes.user.form.RegistrationForm');
 		$regForm = new RegistrationForm($request->getSite());
 		$regForm->initData($request);
@@ -56,6 +64,7 @@ class RegistrationHandler extends UserHandler {
 		$this->validate($request);
 		$this->setupTemplate($request);
 
+                
 		import('lib.pkp.classes.user.form.RegistrationForm');
 		$regForm = new RegistrationForm($request->getSite());
 		$regForm->readInputData();

@@ -90,8 +90,8 @@ class SubmissionFilesUploadForm extends SubmissionFilesUploadBaseForm {
 	 * @copydoc Form::readInputData()
 	 */
 	function readInputData() {
-		$this->readUserVars(array('genreId', 'uploaderUserGroupId', 'testValue', 'flipbookChecker'));
-//                error_log("TEST 4=".$this->getData('flipbookChecker'));
+		$this->readUserVars(array('genreId', 'uploaderUserGroupId', 'flipbookCheck'));
+                error_log("TEST 4 =".$this->getData('flipbookChecker'));
 		return parent::readInputData();
 	}
 
@@ -244,8 +244,9 @@ class SubmissionFilesUploadForm extends SubmissionFilesUploadBaseForm {
 			// This is a new file so we need the file genre and category from the form.
 			$fileGenre = $this->getData('genreId') ? (int)$this->getData('genreId') : null;
 		}
+                error_log("TEST execute 1 = " .$this->getData('flipbookChecker'));
                 $flipbookChecker = $this->getData('flipbookChecker') ? 1 : 0;
-//                error_log("TEST 2 = " .$flipbookChecker);
+                error_log("TEST execute = " .$flipbookChecker);
 		// Retrieve the uploader's user group.
 		$uploaderUserGroupId = $this->getData('uploaderUserGroupId');
 		if (!$uploaderUserGroupId) fatalError('Invalid uploader user group!');

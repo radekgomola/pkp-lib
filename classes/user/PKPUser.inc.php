@@ -401,8 +401,7 @@ class PKPUser extends Identity {
 	function setZlatyFond($zlatyFond) {
 		$this->setData('zlatyFond', $zlatyFond);
 	}
-        
-        /*MUNIPRESS*/
+
         /**
 	 * Get the status for Zlaty Fond Text.
 	 * @return string
@@ -433,6 +432,22 @@ class PKPUser extends Identity {
 	 */
 	function setDateZlatyFond($zlatyFondDate) {
 		$this->setData('zlatyFondDate', $zlatyFondDate);
+	}
+        
+        /**
+	 * Get the munipress InitCode.
+	 * @return int
+	 */
+	function getInitCode() {
+		return $this->getData('initCode');
+	}
+
+	/**
+	 * Set the munipress initCode.
+	 * @param $initCode int
+	 */
+	function setInitCode($initCode) {
+		$this->setData('initCode', $initCode);
 	}
 }
 

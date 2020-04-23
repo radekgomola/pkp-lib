@@ -87,7 +87,7 @@
                 <div class="inline-block align-left">
                     <a href="{translate key='footer.muni.link'}" title="{translate key='footer.muni'}" target="_blank" class="footer-light__copyrights__img">
                         <svg version="1.1" id="Vrstva_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                             width="110px" height="50px" viewBox="0 0 145 50" enable-background="new 0 0 145 50" xml:space="preserve">
+                             width="130px" height="50px" viewBox="0 0 145 50" enable-background="new 0 0 145 50" xml:space="preserve">
                             <path fill="#0000DC" d="M0.82,9.052h6.322v40.601H0.82V9.052z M7.375,9.052h2.146l3.944,40.601h-2.146L7.375,9.052z M17.64,9.052
                                   h2.146l-3.944,40.601h-2.146L17.64,9.052z M20.018,9.052h6.38v40.601h-6.38V9.052z M50.352,9.052v31.03
                                   c0,1.044,0.396,1.934,1.189,2.668c0.792,0.734,1.672,1.102,2.639,1.102c0.966,0,1.846-0.367,2.639-1.102
@@ -101,7 +101,7 @@
                 </div>
                 <div class="inline-block align-right">
                     <a href="{translate key='footer.uvt.link'}" title="{translate key='footer.uvt'}" target="_blank">
-                        <img src="{$baseUrl}/images/uvt_logo_small.png" alt="{translate key='footer.uvt'}" class="box-article-list__imgMunipress"/>
+                        <img src="https://imageserver.ebscohost.com/branding/s8431878/UVT-lg-eng-rgb.png" alt="{translate key='footer.uvt'}" class="box-article-list__imgMunipress" style="max-height: 50px;"/>
                     </a>
                 </div>
                 <a href="{url page="about" op="aboutThisPublishingSystem"}">

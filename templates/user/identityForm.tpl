@@ -58,7 +58,7 @@
                         {translate|assign:"zlatyFondText" key="registration.zlatyFond.prohlaseni"|escape}
                         {translate key="registration.zlatyFond.prohlaseni"}
                         {fbvElement type="checkbox" name="zlatyFond" id="zlatyFond" value=1 checked=$checked label="registration.zlatyFond.checkbox" translate=true}
-                        {fbvElement type="hidden" id="zlatyFondText" value=$zlatyFondText}
+                        {fbvElement type="hidden" id="zlatyFondText" name="zlatyFond" value=$zlatyFondText}
                     {/if}
             {/fbvFormSection}
     {/fbvFormArea}

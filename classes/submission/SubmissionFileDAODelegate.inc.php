@@ -90,15 +90,26 @@ class SubmissionFileDAODelegate extends DAO {
 		if (!$fileId) {
 			$submissionFile->setFileId($this->_getInsertId('submission_files', 'file_id'));
 		}
-//                error_log("TEST = ".$submissionFile->getFlipbookChecker());
+//                error_log("TEST insert = ".$submissionFile->getFlipbookChecker());
                 /*MUNIPRESS*/
+//                $this->update('INSERT INTO munipress_submission_files
+//				(file_id, revision, flipbook_checker)
+//				VALUES
+//				(?, ?, ?)',
+//			array(
+//                                (int) $submissionFile->getFileId(),
+//                                (int) $submissionFile->getRevision(),
+//				(int) $submissionFile->getFlipbookChecker() ? 1:0,
+//			)
+//		);
                 $this->update('INSERT INTO munipress_submission_files
-				(file_id, flipbook_checker)
+				(file_id, flipbook_checker, init_code)
 				VALUES
-				(?, ?)',
+				(?, ?, ?)',
 			array(
                                 (int) $submissionFile->getFileId(),
 				(int) $submissionFile->getFlipbookChecker() ? 1:0,
+                                $submissionFile->getInitCode()
 			)
 		);
                 /**************/
@@ -212,6 +223,25 @@ class SubmissionFileDAODelegate extends DAO {
 			)
 		);
 
+//                error_log("TEST update = ".$submissionFile->getFlipbookChecker());
+                /*MUNIPRESS*/
+                $this->update('UPDATE munipress_submission_files
+                                SET
+                                    file_id = ?, 
+                                    flipbook_checker = ?,
+                                    init_code = ?
+				WHERE file_id = ?',
+			array(
+                                (int) $submissionFile->getFileId(),
+//                                (int) $submissionFile->getRevision(),
+				(int) $submissionFile->getFlipbookChecker() ? 1:0,
+                                $submissionFile->getInitCode(),
+                                (int)   $previousFile->getFileId(),
+				
+			)
+		);
+                /**************/
+                
 		$this->updateLocaleFields($submissionFile);
 
 		// Update all dependent objects.
@@ -308,6 +338,7 @@ class SubmissionFileDAODelegate extends DAO {
 		$submissionFile->setDirectSalesPrice($row['direct_sales_price']);
 		$submissionFile->setSalesType($row['sales_type']);
                 $submissionFile->setFlipbookChecker($row['flipbook_checker']);
+                $submissionFile->setInitCode($row['init_code']);
 
 		$this->getDataObjectSettings('submission_file_settings', 'file_id', $row['submission_file_id'], $submissionFile);
 

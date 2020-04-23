@@ -93,7 +93,6 @@ class DAO {
 				return $value;
 			}
 		}
-                
 		$dataSource = $this->getDataSource();
 		$result = $dataSource->execute($sql, $params !== false && !is_array($params) ? array($params) : $params);
 		if ($dataSource->errorNo()) {

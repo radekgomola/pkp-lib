@@ -720,4 +720,31 @@
 			<UNIQUE />
 		</index>
 	</table>
+        
+        <!--
+	  *
+	  * TABLE munipress_user
+	  *
+	  -->
+          <table name="munipress_user">
+                <field name="munipress_user_id" type="I8">
+			<KEY />
+			<AUTOINCREMENT />
+		</field>
+		<field name="user_id" type="I8">
+			<NOTNULL/>
+		</field>
+		<field name="init_code" type="C2" size="250">
+			<NOTNULL/>
+		</field>
+		<descr>Doplňkove informace Munipress.</descr>
+		<index name="munipress_user_id">
+			<col>user_id</col>
+		</index>
+                <index name="munipress_user_pkey">
+			<col>user_id</col>
+			<col>munipress_user_id</col>
+			<UNIQUE />
+		</index>
+	</table>
 </schema>
